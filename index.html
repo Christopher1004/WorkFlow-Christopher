@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkFlow</title>
+    <link rel="stylesheet" href="src/css/index/index.css">
+    <link rel="icon" type="image/x-icon" href="src/assets/icons/icon.ico">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#index">
+                <img src="./src/assets/image/logo.svg" alt="Logo WorkFlow">
+            </a>
+        </div>
+
+        <button class="hamburger">☰</button>
+
+        <ul class="menu">
+            <li class="menu-item"><a href="#explorar">Explorar</a></li>
+            <li class="menu-item"><a href="#projetos">Projetos</a></li>
+            <!-- Add search bar and buttons as menu items for mobile -->
+            <li class="menu-search-bar">
+                <div class="search-bar">
+                    <button type="submit"><img src="./src/assets/image/search-icon.svg" alt="search"></button>
+                    <input type="text" placeholder="Pesquisar" name="text" id="searchBarText"> 
+                </div>
+            </li>
+            <li class="menu-buttons">
+                <div class="buttons">
+                    <button type="Login">Entrar</button>
+                    <button type="Register">Criar conta</button>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Keep search bar and buttons in their original positions for desktop -->
+        <div class="search-bar desktop-only">
+            <button type="submit"><img src="./src/assets/image/search-icon.svg" alt="search"></button>
+            <input type="text" placeholder="Pesquisar" name="text" id="searchBarTextDesktop"> 
+        </div>
+
+        <div class="buttons desktop-only">
+            <button type="Login">Entrar</button>
+            <button type="Register">Criar conta</button>
+        </div>
+    </nav>
+    <script src="./src/js/hamburguer.js"></script>
+</body>
+
+</html>

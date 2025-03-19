@@ -1,0 +1,240 @@
+/* Navbar styling */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1A1A1A;
+    padding: 10px 20px;
+    border-radius: 5px;
+    height: 60px;
+    font-family: 'Work Sans', sans-serif;
+    margin-inline: 100px;
+    margin-block: 40px;
+}
+
+/* Logo styling */
+.logo img {
+    height: 25px;
+}
+
+/* Menu styling */
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    margin-inline: -20px 10px;
+}
+
+.menu li.menu-item a {
+    color: var(--white);
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.menu li.menu-item a:hover {
+    color: var(--tertiary);
+}
+
+/* Search bar styling */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--gray);
+    border-radius: 5px;
+    padding: 5px 5px;
+    height: 30px;
+    margin-inline: 10px;
+    flex-grow: 1;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search-bar img {
+    width: 15px;
+    height: 15px;
+}
+
+.search-bar input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: 15px;
+    padding-left: 10px;
+    width: 40%;
+    flex-grow: 1;
+}
+
+/* Buttons styling */
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.buttons button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttons button[type="Login"] {
+    background-color: transparent;
+    border: 1px solid var(--white);
+    color: var(--white);
+}
+
+.buttons button[type="Login"]:hover {
+    background-color: var(--tertiary);
+    border-color: var(--tertiary);
+}
+
+.buttons button[type="Register"] {
+    background-color: var(--primary);
+    border: none;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.buttons button[type="Register"]:hover {
+    background-color: var(--tertiary);
+}
+
+/* Hamburger menu */
+.hamburger {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* Hide menu items in desktop view */
+.menu-search-bar,
+.menu-buttons {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        margin-block: 10px;
+        margin-inline: 5px;
+        flex-wrap: wrap;
+        display: flex;
+        height: auto;
+        padding: 10px;
+        justify-content: space-between;
+        animation: slideDown 0.3s ease-in-out forwards;
+    }
+
+    
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .menu {
+        display: none;
+        animation: slideDown 0.3s ease-in-out forwards;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    /* Hide desktop-only elements */
+    .desktop-only {
+        display: none;
+    }
+
+    /* Show menu when active */
+    /* Adicionando a animação para o dropdown */
+.menu.active {
+    display: flex;
+    flex-direction: column;
+    top: 60px;
+    left: 0;
+    background-color: #1A1A1A;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border-radius: 0 0 5px 5px;
+    z-index: 1000;
+    animation: slideDown 0.3s ease-in-out forwards;
+}
+
+        /* Keyframes para a animação de slide */
+    @keyframes slideDown {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsividade */
+
+
+    .menu.active li {
+        margin: 10px 0;
+    }
+
+    .menu.active li.menu-item a {
+        font-size: 1.2rem;
+    }
+
+    /* Show search bar and buttons in the menu */
+    .menu-search-bar,
+    .menu-buttons {
+        display: block;
+    }
+
+    /* Style search bar in the menu */
+    .menu-search-bar .search-bar {
+        width: 100%;
+        margin: 0;
+    }
+
+    .menu-search-bar .search-bar input {
+        width: 100%;
+    }
+
+    /* Style buttons in the menu */
+    .menu-buttons .buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .menu-buttons .buttons button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .navbar {
+        display: flex;
+        height: auto;
+        padding: 10px;
+        justify-content: space-between;
+    }
+
+    .logo {
+        align-content: center;
+    }
+}
