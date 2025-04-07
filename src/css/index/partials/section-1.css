@@ -45,7 +45,7 @@
 }
 
 .title span{
-    background: -webkit-linear-gradient(90deg, #4199BF, #30BFA5);
+    background: -webkit-linear-gradient(0deg, #4199BF, var(--primary));
     rotate: 60deg;
     -webkit-background-clip: text;
     background-clip: text;

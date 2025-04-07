@@ -8,59 +8,57 @@
     <link rel="icon" type="image/x-icon" href="src/assets/icons/icon.ico">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">
-            <a href="#index">
-                <img src="./src/assets/image/logo.svg" alt="Logo WorkFlow">
-            </a>
-        </div>
-
-        <button class="hamburger">☰</button>
-
-        <ul class="menu">
-            <li class="menu-item"><a href="#explorar">Explorar</a>
-                <div class="mega-menu">
-                    <div class="mega-menu-section" id="projetos-menu">
-                        <h3>Projetos</h3>
-                        <p>Encontre projetos de outros freelancers, tendo inspirações para suas próprias criações</p>
+    <div class="nav-background">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#index">
+                    <img src="./src/assets/image/logo.svg" alt="Logo WorkFlow">
+                </a>
+            </div>
+            <button class="hamburger">☰</button>
+            <ul class="menu">
+                <li class="menu-item"><a href="#explorar">Explorar</a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-section" id="projetos-menu">
+                            <h3>Projetos</h3>
+                            <p>Encontre projetos de outros freelancers, tendo inspirações para suas próprias criações</p>
+                        </div>
+                        <div class="mega-menu-section" id="freelancers-menu">
+                            <h3>Freelancers</h3>
+                            <p>Veja os melhores Freelancers do WorkFlow, conhecendo quem são e seus projetos</p>
+                        </div>
+                        <div class="mega-menu-section" id="desafios-menu">
+                            <h3>Desafios</h3>
+                            <p>Encontre o desafio da comunidade desse mês</p>
+                        </div>
                     </div>
-                    <div class="mega-menu-section" id="freelancers-menu">
-                        <h3>Freelancers</h3>
-                        <p>Veja os melhores Freelancers do WorkFlow, conhecendo quem são e seus projetos</p>
+                </li>
+                <li class="menu-item"><a href="#projetos">Projetos</a></li>
+                <!-- Add search bar and buttons as menu items for mobile -->
+                <li class="menu-search-bar">
+                    <div class="search-bar">
+                        <button type="submit"><img src="./src/assets/image/search-icon.svg" alt="search"></button>
+                        <input type="text" placeholder="Pesquisar" name="text" id="searchBarText">
                     </div>
-                    <div class="mega-menu-section" id="desafios-menu">
-                        <h3>Desafios</h3>
-                        <p>Encontre o desafio da comunidade desse mês</p>
+                </li>
+                <li class="menu-buttons">
+                    <div class="buttons">
+                        <button type="Login">Entrar</button>
+                        <button type="Register">Criar conta</button>
                     </div>
-                </div>
-            </li>
-            <li class="menu-item"><a href="#projetos">Projetos</a></li>
-            <!-- Add search bar and buttons as menu items for mobile -->
-            <li class="menu-search-bar">
-                <div class="search-bar">
-                    <button type="submit"><img src="./src/assets/image/search-icon.svg" alt="search"></button>
-                    <input type="text" placeholder="Pesquisar" name="text" id="searchBarText"> 
-                </div>
-            </li>
-            <li class="menu-buttons">
-                <div class="buttons">
-                    <button type="Login">Entrar</button>
-                    <button type="Register">Criar conta</button>
-                </div>
-            </li>
-        </ul>
-
-        <!-- Keep search bar and buttons in their original positions for desktop -->
-        <div class="search-bar desktop-only">
-            <button type="submit"><img src="./src/assets/image/search-icon.svg" alt="search"></button>
-            <input type="text" placeholder="Pesquisar" name="text" id="searchBarTextDesktop"> 
-        </div>
-
-        <div class="buttons desktop-only">
-            <button type="Login">Entrar</button>
-            <button type="Register">Criar conta</button>
-        </div>
-    </nav>
+                </li>
+            </ul>
+            <!-- Keep search bar and buttons in their original positions for desktop -->
+            <div class="search-bar desktop-only">
+                <button type="submit"><img src="./src/assets/image/search-icon.svg" alt="search"></button>
+                <input type="text" placeholder="Pesquisar" name="text" id="searchBarTextDesktop">
+            </div>
+            <div class="buttons desktop-only">
+                <button type="Login">Entrar</button>
+                <button type="Register">Criar conta</button>
+            </div>
+        </nav>
+    </div>
 
     <section class="section-1">
         <div class="title">
@@ -82,10 +80,501 @@
     </section>
 
     <section class="selection-2">
+
         <div class="card_projeto">
-            <div class="capa"></div>
-            <div class="autor"></div>
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
         </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <path 
+                                    fill-rule="evenodd" 
+                                    clip-rule="evenodd" 
+                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                    fill="none"
+                                    stroke="black"
+                                    />
+                            </svg>
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+
     </section>
 
     <script src="./src/js/hamburguer.js"></script>
