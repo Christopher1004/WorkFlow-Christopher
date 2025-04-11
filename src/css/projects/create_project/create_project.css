@@ -1,0 +1,11 @@
+@import "../../globals/globals.css";
+
+@import "../../index/partials/nav.css";
+@import  "./partials/background.css";
+@import  "./partials/title.css";
+@import  "./partials/sections.css";
+@import  "./partials/camada.css";
+@import  "./partials/component.css";
+@import  "./partials/menu.css";
+@import  "./partials/opcoes.css";
+@import  "./partials/artboard.css";

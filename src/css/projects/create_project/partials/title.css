@@ -1,0 +1,7 @@
+.title {
+    width: 100vw;
+    font-family: 'Work Sans', sans-serif;
+    color: var(--white);
+    text-align: center;
+    font-size: var(--f2);
+}

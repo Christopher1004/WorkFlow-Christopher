@@ -1,0 +1,37 @@
+.menu-create {
+    background-color: var(--darkgray);
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.menu-create .cancelar, .proximo {
+    padding: 15px;
+    border-radius: 5px;
+    font-family: "Work Sans", sans-serif;
+    font-weight: bold;
+    color: var(--white);
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.menu-create .cancelar {
+    background-color: var(--background);
+    transition: background-color 0.3s ease;
+}
+.menu-create .cancelar:hover {
+    background-color: var(--gray);
+    transition: background-color 0.3s ease;
+}
+
+.menu-create .proximo {
+    background-color: var(--primary);
+    transition: background-color 0.3s ease;
+}
+.menu-create .proximo:hover {
+    background-color: var(--tertiary);
+    transition: background-color 0.3s ease;
+}

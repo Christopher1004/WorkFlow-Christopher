@@ -10,14 +10,13 @@ body {
     top: 0px;
     z-index: 1000;
     padding-block: 10px;
-    background: linear-gradient(180deg, rgba(45,45,45,1) 0%, rgba(0,0,0,0) 100%);
 }
 /* Navbar styling */
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #1A1A1A;
+    background-color: var(--darkgray);
     padding: 5px 20px;
     border-radius: 5px;
     height: 60px;
@@ -27,8 +26,13 @@ body {
 }
 
 /* Logo styling */
-.logo img {
-    height: 25px;
+.logo-svg {
+    color: var(--white);
+}
+
+.search-icon {
+    color: var(--white);
+    fill: var(--white);
 }
 
 /* Menu styling */
@@ -72,7 +76,7 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #1A1A1A;
+    background-color: var(--gray);
     border-radius: 5px;
     padding: 20px;
     width: 60vw;
@@ -115,7 +119,7 @@ body {
 }
 
 .mega-menu-section:hover {
-    background-color: var(--gray);
+    background-color: var(--darkgray);
 }
 
 .mega-menu-section h3 {
@@ -131,7 +135,7 @@ body {
     line-height: 1.4;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 812px) {
     .navbar {
         margin-inline: 20px;
     }
@@ -155,17 +159,20 @@ body {
     height: 30px;
     margin-inline: 10px;
     flex-grow: 1;
+    max-width: 500px; /* Add max-width for larger screens */
+    min-width: 100px; /* Add min-width to prevent too narrow search bar */
 }
 
 .search-bar button {
     background: none;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
-.search-bar img {
-    width: 15px;
-    height: 15px;
+.search-bar .search-icon {
+    color: var(--white);
 }
 
 .search-bar input {
@@ -175,6 +182,7 @@ body {
     color: var(--white);
     font-size: 15px;
     padding-left: 10px;
+    min-width: none;
     flex-grow: 1;
 }
 
@@ -199,6 +207,38 @@ body {
     color: var(--white);
 }
 
+/* Theme toggle styling */
+.theme {
+    display: flex;
+    gap: 5px;
+    margin-left: 10px;
+    align-items: center;
+}
+
+.theme button {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.theme button:hover {
+    background-color: var(--gray);
+}
+
+.theme button svg {
+    width: 20px;
+    height: 20px;
+    color: var(--white);
+}
+
+.theme button[type="dark"].active,
+.theme button[type="White"].active {
+    background-color: var(--gray);
+}
+
 .buttons button[type="Login"]:hover {
     background-color: var(--tertiary);
     border-color: var(--tertiary);
@@ -208,7 +248,7 @@ body {
     background-color: var(--primary);
     border: none;
     font-weight: 700;
-    color: var(--white);
+    color: white;
 }
 
 .buttons button[type="Register"]:hover {
@@ -232,7 +272,7 @@ body {
     display: none;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
     .navbar {
         margin-block: 30px;
         margin-inline: 80px;
@@ -244,7 +284,7 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 812px) {
     .navbar {
         margin-block: 10px;
         margin-inline: 5px;
@@ -256,8 +296,16 @@ body {
         animation: slideDown 0.3s ease-in-out forwards;
     }
 
-    
+    .theme desktop-only {
+        display: none;
+    }
 
+    .theme {
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .logo {
         display: flex;
         align-items: center;
@@ -285,7 +333,7 @@ body {
         left: 0%;
         transform: translateX(-50%);
         justify-content: center;
-        background-color: #1A1A1A;
+        background-color: var(--darkgray);
         width: calc(100% - 20px); /* Ajusta a largura para corresponder à navbar (80px de cada lado) */
         padding: 10px;
         margin: 0;
@@ -324,6 +372,8 @@ body {
     /* Style search bar in the menu */
     .menu-search-bar .search-bar {
         margin: 0;
+        max-width: 100%; /* Allow full width on mobile menu */
+        min-width: auto; /* Remove min-width restriction on mobile */
     }
 
     .menu-search-bar .search-bar input {

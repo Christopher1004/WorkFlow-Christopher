@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar projeto</title>
+    <link rel="stylesheet" href="../../../src/css/projects/create_project/create_project.css">
+    <link rel="icon" type="image/x-icon" href="src/assets/icons/icon.ico">
+</head>
+<body>
+    <div class="nav-background">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#index">
+                    <svg width="40" height="45" viewBox="0 0 62 45" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+                        <g clip-path="url(#clip0_240_473)">
+                            <path d="M3.2069 0.922363H61.9786V9.24757C61.9786 10.9991 60.5419 12.4207 58.7717 12.4207H0V4.09548C0 2.34392 1.43669 0.922363 3.2069 0.922363Z" fill="currentColor"/>
+                            <path d="M0 13.4207L20.6994 19.3004H41.2792L20.6994 13.4207H0Z" fill="currentColor"/>
+                            <path d="M3.2069 20.3005H41.2792V28.6257C41.2792 30.3773 39.8425 31.7989 38.0723 31.7989H0V23.4737C0 21.7221 1.43669 20.3005 3.2069 20.3005Z" fill="currentColor"/>
+                            <path d="M0 32.7988L10.3048 35.8905H20.7208L10.432 32.7988H0Z" fill="currentColor"/>
+                            <path d="M3.2069 36.8904H20.6994V40.9044C20.6994 42.6559 19.2628 44.0775 17.4926 44.0775H0V40.0635C0 38.3119 1.43669 36.8904 3.2069 36.8904Z" fill="currentColor"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_240_473">
+                                <rect width="62" height="43.1552" fill="white" transform="translate(0 0.922363)"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </a>
+            </div>
+            <button class="hamburger">☰</button>
+            <ul class="menu">
+                <li class="menu-item"><a href="#explorar">Explorar</a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-section" id="projetos-menu">
+                            <h3>Projetos</h3>
+                            <p>Encontre projetos de outros freelancers, tendo inspirações para suas próprias criações</p>
+                        </div>
+                        <div class="mega-menu-section" id="freelancers-menu">
+                            <h3>Freelancers</h3>
+                            <p>Veja os melhores Freelancers do WorkFlow, conhecendo quem são e seus projetos</p>
+                        </div>
+                        <div class="mega-menu-section" id="desafios-menu">
+                            <h3>Desafios</h3>
+                            <p>Encontre o desafio da comunidade desse mês</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="menu-item"><a href="./public/projects/create_project/create_project.html">Projetos</a></li>
+                <!-- Add search bar and buttons as menu items for mobile -->
+                <li class="menu-search-bar">
+                    <div class="search-bar">
+                        <button type="submit">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/></svg>
+                        </button>
+                        <input type="text" placeholder="Pesquisar" name="text" id="searchBarText">
+                    </div>
+                </li>
+                <li class="menu-buttons">
+                    <div class="buttons">
+                        <button type="Login">Entrar</button>
+                        <button type="Register">Criar conta</button>
+                    </div>
+                    <div class="theme">
+                        <button type="White" class="theme" id="theme">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M12 19a1 1 0 0 1 .993.883L13 20v1a1 1 0 0 1-1.993.117L11 21v-1a1 1 0 0 1 1-1m6.313-2.09l.094.083l.7.7a1 1 0 0 1-1.32 1.497l-.094-.083l-.7-.7a1 1 0 0 1 1.218-1.567zm-11.306.083a1 1 0 0 1 .083 1.32l-.083.094l-.7.7a1 1 0 0 1-1.497-1.32l.083-.094l.7-.7a1 1 0 0 1 1.414 0M4 11a1 1 0 0 1 .117 1.993L4 13H3a1 1 0 0 1-.117-1.993L3 11zm17 0a1 1 0 0 1 .117 1.993L21 13h-1a1 1 0 0 1-.117-1.993L20 11zM6.213 4.81l.094.083l.7.7a1 1 0 0 1-1.32 1.497l-.094-.083l-.7-.7A1 1 0 0 1 6.11 4.74zm12.894.083a1 1 0 0 1 .083 1.32l-.083.094l-.7.7a1 1 0 0 1-1.497-1.32l.083-.094l.7-.7a1 1 0 0 1 1.414 0M12 2a1 1 0 0 1 .993.883L13 3v1a1 1 0 0 1-1.993.117L11 4V3a1 1 0 0 1 1-1m0 5a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7"/></svg>
+                        </button>
+                        <button type="dark" class="theme">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.992a10 10 0 1 0 9.236 13.838c.341-.82-.476-1.644-1.298-1.31a6.5 6.5 0 0 1-6.864-10.787l.077-.08c.551-.63.113-1.653-.758-1.653h-.266l-.068-.006z"/></svg>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            <!-- Keep search bar and buttons in their original positions for desktop -->
+            <div class="search-bar desktop-only">
+                <button type="submit"><svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/></svg></button>
+                <input type="text" placeholder="Pesquisar" name="text" id="searchBarTextDesktop">
+            </div>
+            <div class="buttons desktop-only">
+                <button type="Login">Entrar</button>
+                <button type="Register">Criar conta</button>
+            </div>
+            <div class="theme desktop-only">
+                <button type="White" class="theme" id="theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M12 19a1 1 0 0 1 .993.883L13 20v1a1 1 0 0 1-1.993.117L11 21v-1a1 1 0 0 1 1-1m6.313-2.09l.094.083l.7.7a1 1 0 0 1-1.32 1.497l-.094-.083l-.7-.7a1 1 0 0 1 1.218-1.567zm-11.306.083a1 1 0 0 1 .083 1.32l-.083.094l-.7.7a1 1 0 0 1-1.497-1.32l.083-.094l.7-.7a1 1 0 0 1 1.414 0M4 11a1 1 0 0 1 .117 1.993L4 13H3a1 1 0 0 1-.117-1.993L3 11zm17 0a1 1 0 0 1 .117 1.993L21 13h-1a1 1 0 0 1-.117-1.993L20 11zM6.213 4.81l.094.083l.7.7a1 1 0 0 1-1.32 1.497l-.094-.083l-.7-.7A1 1 0 0 1 6.11 4.74zm12.894.083a1 1 0 0 1 .083 1.32l-.083.094l-.7.7a1 1 0 0 1-1.497-1.32l.083-.094l.7-.7a1 1 0 0 1 1.414 0M12 2a1 1 0 0 1 .993.883L13 3v1a1 1 0 0 1-1.993.117L11 4V3a1 1 0 0 1 1-1m0 5a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7"/></svg>
+                </button>
+                <button type="dark" class="theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.992a10 10 0 1 0 9.236 13.838c.341-.82-.476-1.644-1.298-1.31a6.5 6.5 0 0 1-6.864-10.787l.077-.08c.551-.63.113-1.653-.758-1.653h-.266l-.068-.006z"/></svg>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <div class="title">
+        <h1>Criar novo projeto</h1>
+    </div>
+
+    <div class="creator">
+        <div class="section-1">
+            <div class="componentes">
+                <h2>Componentes</h2>
+                <div class="texto">
+                    <image class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                            <g fill="none">
+                                <path d="M0 0h24v24H0z" />
+                                <path fill="currentColor" d="M5 3.5a1.5 1.5 0 1 0 0 3h5.5V20a1.5 1.5 0 0 0 3 0V6.5H19a1.5 1.5 0 0 0 0-3z" />
+                            </g>
+                        </svg>
+                    </image>
+                    <p>texto</p>
+                </div>
+                <div class="imagem">
+                    <image class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" />
+                                <circle cx="8.5" cy="8.5" r="2.5" />
+                                <path d="M14.526 12.621L6 22h12.133A3.867 3.867 0 0 0 22 18.133V18c0-.466-.175-.645-.49-.99l-4.03-4.395a2 2 0 0 0-2.954.006" />
+                            </g>
+                        </svg>
+                    </image>
+                    <p>Imagem</p>
+                </div>
+            </div>
+        </div>
+        <div class="section-2">
+            <div class="opcoes">
+                <button class="btn-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                        <path fill="currentColor" d="M4 2h4.5a3.501 3.501 0 0 1 2.852 5.53A3.499 3.499 0 0 1 9.5 14H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1m1 7v3h4.5a1.5 1.5 0 0 0 0-3Zm3.5-2a1.5 1.5 0 0 0 0-3H5v3Z" />
+                    </svg>
+                </button>
+                <button class="btn-italic">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5h6M7 19h6m1-14l-4 14" />
+                    </svg>
+                </button>
+                <button class="btn-align-left">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                            <path fill="currentColor" d="M20 17.5a1.5 1.5 0 0 1 .144 2.993L20 20.5H10a1.5 1.5 0 0 1-.144-2.993L10 17.5zm0-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm0-5a1.5 1.5 0 0 1 .144 2.993L20 10.5H10a1.5 1.5 0 0 1-.144-2.993L10 7.5zm0-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
+                        </g>
+                    </svg>
+                </button>
+                <button class="btn-align-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                            <path fill="currentColor" d="M17 17.5a1.5 1.5 0 0 1 .144 2.993L17 20.5H7a1.5 1.5 0 0 1-.144-2.993L7 17.5zm3-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm-3-5a1.5 1.5 0 0 1 .144 2.993L17 10.5H7a1.5 1.5 0 0 1-.144-2.993L7 7.5zm3-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
+                        </g>
+                    </svg>
+                </button>
+                <button class="btn-align-right">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                            <path fill="currentColor" d="M14 17.5a1.5 1.5 0 0 1 .144 2.993L14 20.5H4a1.5 1.5 0 0 1-.144-2.993L4 17.5zm6-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm-6-5a1.5 1.5 0 0 1 .144 2.993L14 10.5H4a1.5 1.5 0 0 1-.144-2.993L4 7.5zm6-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
+                        </g>
+                    </svg>
+                </button>
+                <button class="btn-h1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m7 5v-6.786a.1.1 0 0 0-.164-.077L16 12.5" />
+                    </svg>
+                </button>
+                <button class="btn-h2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m4-1c0-1 3-1.5 3 1c0 1.977-2.932 2-2.999 4.898A.1.1 0 0 0 16.1 17h3.2" />
+                    </svg>
+                </button>
+                <button class="btn-h3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m4-1c0-.5.832-1 1.6-1s1.9.311 1.9 1.5a1.535 1.535 0 0 1-.952 1.482c-.01.004-.008.023.002.024c.261.04 1.45.3 1.45 1.794c0 1.2-.5 2.2-2.2 2.2c0 0-1.8 0-1.8-.7" />
+                    </svg>
+                </button>
+                <button class="btn-h4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m6-2l-2.717 4.851a.1.1 0 0 0 .087.149h4.83M19 17v-3.4" />
+                    </svg>
+                </button>
+            </div>
+            <div class="artboard">
+                <div class="content">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="section-3">
+            <div class="camadas">
+                <h2>Camada</h2>
+                <div class="camadaArea"></div>
+            </div>
+            <div class="menu-create">
+                <button class="cancelar">Cancelar</button>
+                <button class="proximo">Proximo</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

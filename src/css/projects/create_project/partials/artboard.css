@@ -1,0 +1,12 @@
+.artboard {
+    background-color: var(--white);
+    height: 460px;
+    margin: 4px;
+    overflow: auto;
+    border-radius: 10px;
+}
+
+.artboard .content {
+    height: 3000px;
+    background-color: red;
+}
