@@ -198,5 +198,39 @@
             </div>
         </div>
     </div>
+
+    <div class="modalSalvar">
+        <h2>Detalhes</h2>
+        <div class="container-titulo">
+            <label for="Titulo">Titulo</label>
+            <input type="text" name="Titulo" id="titulo">
+        </div>
+        <div class="container-capa">
+            <label for="capa">Capa</label>
+            <input type="file" name="capa" id="capa" class="capa-uploader" hidden="true">
+            <label for="capa-upload" class="capa-upload">
+                <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11m18-4v7a2 2 0 0 1-2 2h-3m5-9c-6.442 0-10.105 1.985-12.055 4.243M3 16v3a2 2 0 0 0 2 2v0h11M3 16c1.403-.234 3.637-.293 5.945.243M16 21c-1.704-2.768-4.427-4.148-7.055-4.757M8.5 7C8 7 7 7.3 7 8.5S8 10 8.5 10S10 9.7 10 8.5S9 7 8.5 7" />
+                </svg></div>
+                <p>Puxe ou solte por clique aqui para fazer o upload da imagem.</p>
+            </label>
+            
+        </div>
+        <div class="container-descricao">
+            <label for="descricao">Descrição</label>
+            <input type="text" name="descricao" id="descricao">
+        </div>
+        <div class="container-tags">
+            <label for="tags">Tags</label>
+            <input type="text" name="tags" id="tags">
+        </div>
+        <div class="button-finalizar">
+            <button class="finalizar">Finalizar</button>
+        </div>
+
+    </div>
+
+    <script src="../../../src/js/projects/create_project/modal.js"></script>
+    <script src="../../../src/js/theme.js"></script>
 </body>
 </html>

@@ -1,0 +1,126 @@
+.modalSalvar {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--darkgray);
+    font-family: "Work Sans", sans-serif;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modalSalvar.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+.container-titulo, .container-capa, .container-descricao, .container-tags {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+.modalSalvar input[type="text"] {
+    padding: 5px;
+    font-size: var(--f3);
+    color: var(--white);
+    padding-block: 10px;
+    background-color: var(--background);
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    font-size: var(--f2);
+}
+
+.modalSalvar .container-capa .capa-upload {
+    background-color: var(--darkgray);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--gray);
+    text-align: center;
+    font-family: "Work Sans", sans-serif;
+    color: var(--white);
+    font-size: var(--f2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.modalSalvar .container-capa .capa-upload:hover {
+    background-color: var(--gray);
+    transition: background-color 0.3s ease;
+}
+
+
+.modalSalvar label {
+    margin-block: 15px;
+}
+
+.modalSalvar input[type="file"]::file-selector-button {
+    background-color: var(--gray);
+    color: var(--white);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modalSalvar input[type="file"]::file-selector-button:hover {
+    background-color: var(--white);
+    color: var(--darkgray);
+}
+
+.modalSalvar .button-finalizar {
+    display: flex;
+    justify-content: end;
+    height: 100%;
+    margin-top: 15px;
+}
+
+.modalSalvar .button-finalizar button {
+    padding: 10px 30px;
+    font-family: "Work Sans", sans-serif;
+    border-radius: 5px;
+    border: none;
+    color: var(--white);
+    font-size: var(--f3);
+    background-color: var(--primary);
+    transition: background-color 0.3s ease;
+}
+
+.modalSalvar .button-finalizar button:hover {
+    background-color: var(--secundary);
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 812px) {
+    .modalSalvar {
+        width: 80vw;
+    }
+}

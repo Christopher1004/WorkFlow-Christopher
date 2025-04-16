@@ -10,3 +10,22 @@
     height: 3000px;
     background-color: red;
 }
+
+.artboard::-webkit-scrollbar {
+    width: 8px;
+}
+
+.artboard::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.0);
+    border-radius: 4px;
+}
+
+.artboard::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.artboard::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
