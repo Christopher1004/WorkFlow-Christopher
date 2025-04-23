@@ -1,0 +1,80 @@
+.propostas {
+    padding-inline: 10px;
+}
+
+.propostas .proposta-card {
+    background-color: var(--darkgray);
+    color: var(--white);
+    padding: 20px;
+    margin-bottom: 10px;
+    
+}
+
+.proposta-card .head {
+    font-size: var(--f2);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.proposta-card .head .price {
+    font-weight: 500;
+}
+
+.proposta-card .head h3 {
+    margin: 0px;
+}
+
+.proposta-card .criadoEm {
+    font-size: var(--f3);
+    margin: 5px;
+    color: var(--gray);
+}
+
+.tags {
+    padding-block: 10px;
+}
+
+.tags .tag {
+    font-family: var(--f3);
+    border: 1px solid var(--white);
+    background-color: var(--white);
+    color: var(--background);
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.proposta-card .footer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+}
+
+.client .profilePic {
+    background-color: var(--white);
+    aspect-ratio: 1/1;
+    width: 10px;
+    border-radius: 100px;
+    height: 10px;
+}
+.proposta-card .description {
+    margin-block: 5px;
+}
+
+.buttons .verMais {
+    background-color: var(--gray);
+    border: none;
+    padding: 10px;
+    color: var(--white);
+}
+
+.buttons .enviar {
+    background-color: var(--primary);
+    border: none;
+    color: var(--white);
+    padding: 10px;
+    font-weight: 600;
+}

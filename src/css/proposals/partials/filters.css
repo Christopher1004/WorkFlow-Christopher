@@ -1,0 +1,77 @@
+.section2 {
+    font-family: "Work Sans", sans-serif;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.container {
+    grid-area: 1 / 1 / 2 / 2;
+
+}
+
+.filtro {
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--darkgray);
+}
+
+.filtro h2 {
+    color: var(--white);
+
+}
+
+.container-area,
+.container-periodo,
+.container-preco {
+    margin-bottom: 5px;
+}
+
+label {
+    display: block;
+    font-size: var(--f3);
+    color: var(--white);
+    margin-block: 10px;
+}
+
+.filtro select,
+.filtro input[type="text"] {
+    width: 100%;
+    padding-block: 10px;
+    font-size: var(--f2);
+    border-radius: 4px;
+    border: none;
+    background-color: var(--background);
+    color: var(--white);
+}
+
+.container-preco {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 10px;
+}
+
+.container-botao button {
+    width: 100%;
+    padding: 10px;
+    font-size: var(--f2);
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: var(--secundary);
+    }
+}
+
+.propostas {
+    grid-area: 1 / 2 / 2 / 3; 
+}
