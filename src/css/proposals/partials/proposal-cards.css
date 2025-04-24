@@ -7,12 +7,15 @@
     color: var(--white);
     padding: 20px;
     margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--gray);
     
 }
 
 .proposta-card .head {
     font-size: var(--f2);
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
@@ -20,6 +23,7 @@
 
 .proposta-card .head .price {
     font-weight: 500;
+    font-size: 24px;
 }
 
 .proposta-card .head h3 {
@@ -29,7 +33,7 @@
 .proposta-card .criadoEm {
     font-size: var(--f3);
     margin: 5px;
-    color: var(--gray);
+    color: var(--white);
 }
 
 .tags {
@@ -38,9 +42,8 @@
 
 .tags .tag {
     font-family: var(--f3);
-    border: 1px solid var(--white);
-    background-color: var(--white);
-    color: var(--background);
+    background-color: var(--tertiary);
+    color: white;
     border-radius: 20px;
     padding: 5px;
 }
@@ -49,6 +52,8 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    row-gap: 10px;
+    flex-wrap: wrap;
     align-items: center;
     padding: 5px;
 }
@@ -74,7 +79,7 @@
 .buttons .enviar {
     background-color: var(--primary);
     border: none;
-    color: var(--white);
+    color: white;
     padding: 10px;
     font-weight: 600;
 }

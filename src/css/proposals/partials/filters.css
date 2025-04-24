@@ -2,7 +2,7 @@
     font-family: "Work Sans", sans-serif;
     padding: 10px;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr 3fr;
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
@@ -19,6 +19,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--darkgray);
+    border: 1px solid var(--gray);
 }
 
 .filtro h2 {
@@ -56,6 +57,10 @@ label {
     margin-bottom: 10px;
 }
 
+.min, .max {
+    width: 50%;
+}
+
 .container-botao button {
     width: 100%;
     padding: 10px;
@@ -74,4 +79,23 @@ label {
 
 .propostas {
     grid-area: 1 / 2 / 2 / 3; 
+}
+
+@media (max-width: 812px) {
+    .section2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+    }
+
+    .container {
+        grid-area: 1 / 1 / 2 / 2;
+        margin-bottom: 20px;
+        
+    }
+
+    .propostas {
+        grid-area: 2 / 1 / 3 / 2;
+    }
 }
