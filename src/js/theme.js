@@ -33,8 +33,8 @@ function setTheme(isDark) {
         root.style.setProperty('--tertiary', '#5274D9');
         root.style.setProperty('--quaternary', '#30BFA5');
         root.style.setProperty('--gray', '#F5F5F5');
-        root.style.setProperty('--darkgray', '#D9D9D9');
-        root.style.setProperty('--background', '#FFFFFF');
+        root.style.setProperty('--darkgray', '#e9ecef');
+        root.style.setProperty('--background', '#f8f9fa');
         root.style.setProperty('--white', '#1E1E1E');
     }
     updateButtonStates(isDark);

@@ -6,7 +6,7 @@
     transform: translate(-50%, -50%);
     background-color: var(--darkgray);
     font-family: "Work Sans", sans-serif;
-    color: white;
+    color: var(--white);
     padding: 20px;
     border-radius: 10px;
     z-index: 1000;
@@ -108,7 +108,7 @@
     font-family: "Work Sans", sans-serif;
     border-radius: 5px;
     border: none;
-    color: var(--white);
+    color: white;
     font-size: var(--f3);
     background-color: var(--primary);
     transition: background-color 0.3s ease;
