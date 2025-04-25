@@ -1,0 +1,1 @@
+import '../js/projects/create_project/componentesProjeto'
