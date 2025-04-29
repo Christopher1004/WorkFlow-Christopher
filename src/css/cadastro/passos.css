@@ -1,0 +1,5 @@
+@import "../globals/globals.css";
+@import "../globals/normalize.css";
+@import "./partials/background.css";
+@import "./partials/nav.css";
+@import "./partials/section-5.css";
