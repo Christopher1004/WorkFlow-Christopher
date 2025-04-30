@@ -9,12 +9,9 @@
 <div>
     Workflow é uma plataforma inovadora que conecta freelancers iniciantes com contratantes em busca de talentos. Nosso objetivo é criar um ecossistema acessível, justo e eficiente para quem quer contratar serviços ou expor seus projetos e habilidades.
     
-  <img src="https://i.pinimg.com/564x/79/b7/a9/79b7a9cec29bc6e2e0579579a053ed10.jpg" width="330" height="330"/>
-  <img src="https://i.pinimg.com/564x/79/b7/a9/79b7a9cec29bc6e2e0579579a053ed10.jpg" width="330" height="330"/>
-  <img src="https://i.pinimg.com/564x/79/b7/a9/79b7a9cec29bc6e2e0579579a053ed10.jpg" width="330" height="330"/>
-    
 </div>
-
+ <img  src="https://i.pinimg.com/564x/79/b7/a9/79b7a9cec29bc6e2e0579579a053ed10.jpg" width="1200" height="400"/>
+  
 # Nosso propósito 
 <div>
     Facilitar o início da jornada de quem está começando como freelancer, oferecendo visibilidade, oportunidades e ferramentas que realmente ajudam, enquanto damos aos contratantes acesso a novos talentos e ideias.
