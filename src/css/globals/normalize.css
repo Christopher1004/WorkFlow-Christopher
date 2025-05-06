@@ -1,3 +1,8 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
   html {
     -webkit-text-size-adjust: 100%;
     -moz-osx-font-smoothing: grayscale;
@@ -51,4 +56,17 @@
   pre, code, kbd, samp {
     font-family: monospace, monospace;
     white-space: pre-wrap;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    line-height: 1.2;
+  }
+  
+  button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: none;
+    background: none;
   }

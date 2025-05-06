@@ -3,16 +3,17 @@
     height: 100vh;
     margin: 0px;
     padding: 0px;
-    justify-content: left;
     display: flex;
-    align-items: center;
 }
 
 .conteudo {
-    width: 30%;
+    width: 40%;
     padding: 15px;
     background-color: var(--background);
     height: 100%;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
 }
 .topo{
     display: flex;
