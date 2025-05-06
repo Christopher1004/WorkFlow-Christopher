@@ -1,8 +1,8 @@
-![banner]()
 
-<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=3395b9&height=120&section=header"/>
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=3395b9&size=35&center=true&vCenter=true&width=1000&lines=W+O+R+K+F+L+O+W)](https://git.io/typing-svg)
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=2a2357&height=120&section=header"/>
+
+[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=2a2357&size=35&center=true&vCenter=true&width=1000&lines=W+O+R+K+F+L+O+W)](https://git.io/typing-svg)
 
 # Sobre
 
@@ -10,7 +10,8 @@
     Workflow é uma plataforma inovadora que conecta freelancers iniciantes com contratantes em busca de talentos. Nosso objetivo é criar um ecossistema acessível, justo e eficiente para quem quer contratar serviços ou expor seus projetos e habilidades.
     
 </div>
- <img  src="https://i.pinimg.com/564x/79/b7/a9/79b7a9cec29bc6e2e0579579a053ed10.jpg" width="1200" height="400"/>
+
+ ![image](https://github.com/user-attachments/assets/b17bb37e-088a-4b13-ae14-6995a5995ea7)
   
 # Nosso propósito 
 <div>
