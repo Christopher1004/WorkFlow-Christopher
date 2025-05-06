@@ -610,6 +610,13 @@
 
     <script src="./src/js/hamburguer.js"></script>
     <script src="./src/js/theme.js"></script>
+    <script>
+        document.querySelectorAll('button[type="Register"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                window.location.href = './public/login/login.html';
+            });
+        });
+    </script>    
 </body>
 
 </html>
