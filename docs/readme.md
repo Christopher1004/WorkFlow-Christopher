@@ -49,4 +49,4 @@
   <img align="center" alt="CSS" height="50" width="50" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg">
 </div>
 
-<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=3395b9&height=120&section=footer"/>
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=2a2357&height=120&section=footer"/>
