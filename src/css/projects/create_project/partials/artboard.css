@@ -9,7 +9,7 @@
 
 .artboard .content {
     height: 3000px;
-    background-color: red;
+    background-color: #1e1e1e;
 }
 
 .artboard::-webkit-scrollbar {

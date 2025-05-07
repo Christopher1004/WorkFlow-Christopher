@@ -22,25 +22,25 @@
             </div>
 
            <div class ="freelancer">
-            <form method="post" id="formfreelancer">
+            <form  id="formfreelancer">
                 <label> Email</label>
-                <input type="email" name="temail" id="temail" class="caixadetexto" placeholder="email" 
+                <input type="email" name="temail" id="txtEmail" class="caixadetexto" placeholder="email" 
                 maxlength="50" minlength="5"/> <br/>
 
                 <label> Senha</label>
-                <input type="password" name="tsenha" id="tsenha" class="caixadetexto" placeholder="senha" 
+                <input type="password" name="tsenha" id="txtSenha" class="caixadetexto" placeholder="senha" 
                 maxlength="50" minlength="5"/> <br/>
 
                 <label> Confirmar Senha</label>
-                <input type="password" name="tsenha" id="tsenha" class="caixadetexto" placeholder="confirmar senha" 
+                <input type="password" name="tsenha" id="tConfirmarSenha" class="caixadetexto" placeholder="confirmar senha" 
                 maxlength="50" minlength="5"/> <br/>
 
                 <label> Data de nascimento</label>
                 <div class="dataenviar">
-                    <input type="datetime-local" name="tdata" id="tdata" class="tdata" placeholder=" " 
+                    <input type="date" name="tdata" id="txtData" class="tdata" placeholder=" " 
                     maxlength="50" minlength="5"/> <br/>
 
-                    <input type="submit" name="btnenviar" id="btnenviar"
+                    <input type="submit" name="btnenviar" id="btnEnviar"
                     class="botao" value="Enviar"/> 
                 </div>
 
@@ -55,6 +55,7 @@
 
 
     <script src="../../src/js/hamburguer.js"></script>
+    <script type="module" src="../../../src/js/cadastro.js"></script>
 </body>
 
 </html>

@@ -32,18 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
             componente.style.minHeight = "40px";
             componente.style.marginBottom = "1px";
         } else if (tipo === 'imagem') {
+
             const inputImagem = document.createElement('input');
             inputImagem.type = 'file';
             inputImagem.accept = 'image/*';
             inputImagem.style.display = "none";
 
-
             const divUpload = document.createElement("div");
             divUpload.style.width = "100%";
-            
-
             divUpload.style.padding = "30px";
-            divUpload.style.border = "2px dashed #555";
+            divUpload.style.border = "2px solid #555";
             divUpload.style.borderRadius = "10px";
             divUpload.style.backgroundColor = "#1e1e1e";
             divUpload.style.color = "#bbb";
@@ -52,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             divUpload.style.fontFamily = "sans-serif";
             divUpload.textContent = "Clique para adicionar uma imagem";
             divUpload.style.marginBottom = "1px";
-            
+
             divUpload.addEventListener("click", () => {
                 inputImagem.click();
             });
@@ -76,15 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     reader.readAsDataURL(file);
                 }
             });
-
+            componente._divUpload = divUpload;
+            componente._inputImagem = inputImagem;
             componente.appendChild(inputImagem);
             componente.appendChild(divUpload);
         }
 
-        // Adicionar o componente à área de componentes
         areaComponentes.appendChild(componente);
 
-        // Criar camada correspondente
         const camada = document.createElement('div');
         camada.dataset.id = idCounter;
         camada.textContent = tipo;
@@ -98,12 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
         camada.style.borderRadius = '10px';
         camada.style.justifyContent = 'center';
         camada.style.alignItems = 'center';
-        
+
         // Evento de clique para selecionar camada
         camada.addEventListener('click', () => {
             selectComponente(camada, componente);
         });
-
         areaCamada.appendChild(camada);
     }
 
@@ -119,24 +115,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    
+
     function selectComponente(camada, componente) {
-        // Limpa a seleção anterior APENAS dos componentes
         const componentesSelecionados = document.querySelectorAll('.componente.selecionado');
         componentesSelecionados.forEach(item => {
             item.classList.remove('selecionado');
             item.style.borderColor = '#555'; // Cor padrão de borda
             item.style.backgroundColor = '#1e1e1e'; // Cor padrão de fundo
         });
-    
-        // Remove a seleção anterior de todas as camadas
+
         const camadasSelecionadas = document.querySelectorAll('.camada.selecionado');
         camadasSelecionadas.forEach(item => {
             item.classList.remove('selecionado');
             item.style.borderColor = '#555'; // Cor padrão de borda
             item.style.backgroundColor = '#1e1e1e'; // Cor padrão de fundo
         });
-    
+
         componente.style.borderColor = '#ffcc00';
         componente.style.backgroundColor = '#333';
         componente.classList.add('componente')
@@ -144,24 +138,35 @@ document.addEventListener('DOMContentLoaded', () => {
         camada.style.borderColor = '#ffcc00';
         camada.style.backgroundColor = '#333';
         camada.classList.add('selecionado'); // Marcar camada como selecionada
-    
+
         // Destacar o componente selecionado e marcá-lo como selecionado
         if (componente) {
             componente.style.borderColor = '#ffcc00';
             componente.style.backgroundColor = '#333';
-            componente.classList.add('selecionado'); // Marcar o componente como selecionado            
+            componente.classList.add('selecionado');
         }
         if (componente.contentEditable === "true") {
             document.getSelection().removeAllRanges();  // Remove seleção atual
             componente.focus();  // Coloca o foco no componente
         }
-    }
-    
-    
-    
+        if (componente.dataset.tipo === "imagem") {
+            const divUpload = componente._divUpload;
+            const inputImagem = componente._inputImagem;
         
-    
-   
+            if (divUpload && inputImagem) {
+                console.log("Selecionando componente de imagem");
+        
+                divUpload.style.borderColor = '#ffcc00';
+                divUpload.style.backgroundColor = '#333';
+                divUpload.classList.add('componente', 'selecionado');
+        
+                inputImagem.classList.add('componente', 'selecionado');
+            }
+        }
+        
+    }
+
+
     // Sincronizando a ordem entre as áreas 
     new Sortable(areaCamada, {
         animation: 150,
