@@ -1,7 +1,9 @@
+<div align="center">
+<img  src="https://imghost.net/ib/x5bzs5lEfXkRdZw_1746616925.png" alt="workflowLogo.png" width="50%"/></a>
+    
+## Onde iniciantes se tornam profissionais
 
-<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=2a2357&height=120&section=header"/>
-
-[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=ffffff&size=35&center=true&vCenter=true&width=1000&lines=W+O+R+K+F+L+O+W)](https://git.io/typing-svg)
+</div>
 
 # Sobre
 
