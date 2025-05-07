@@ -1,0 +1,95 @@
+@import "../globals/globals.css";
+
+body {
+    background-color: var(--background);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+}
+
+.title 	{
+    font-size: var(--f1);
+    color: var(--white);
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-login {
+    display: flex;
+    max-width: 350px;
+    width: 90%;
+    padding: 0;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-inline: 0;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input {
+    background-color: var(--darkgray);
+    color: var(--white);
+    border: 1px solid var(--gray);
+    font-size: var(--f2);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.entrar {
+    background-color: var(--primary);
+    color: white;
+    margin-top: 15px;
+    padding: 15px;
+    font-size: var(--f3);
+    width: 100%;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+    border-radius: 5px;
+}
+
+.entrar:hover {
+    background-color: var(--tertiary);
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+label {
+    font-size: var(--f3);
+    color: var(--white);
+    margin-bottom: 5px;
+}
+
+.register-link {
+    color: var(--white);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: var(--f3);
+    margin-top: 10px;
+}

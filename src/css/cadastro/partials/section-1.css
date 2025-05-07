@@ -1,119 +1,127 @@
-.section-1 {
-    width: 100%;
-    height: 100vh;
+body {
     margin: 0px;
     padding: 0px;
-    justify-content: left;
-    display: flex;
-    align-items: center;
 }
+
+.section-1 {
+    margin: 0px;
+    padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 100vw;
+    height: 100vh;
+} 
 
 .conteudo {
-    width: 30%;
-    padding: 15px;
+    grid-area: 1 / 1 / 2 / 2;
     background-color: var(--background);
-    height: 100%;
-}
-.topo{
     display: flex;
-    flex-direction: column;
-    color: var(--white);
-    margin-top: 10px;
-    text-align: center;
     align-items: center;
-    justify-content: center;
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
 }
-
-.topo h1{
-    padding-top: 20px;
-}
-
-
 
 .banner {
-    width: 70%;
-    height: 100%;
+    grid-area: 1 / 2 / 2 / 3;
+    color: var(--white);
     display: flex;
-    padding: 50px;
     align-items: center;
-    justify-content: left;
+    padding-inline: 40px;
+
+}
+
+.slogan h3 {
+    font-size: var(--f1);
+    color: var(--white);
+    margin: 0px;
+    padding: 0px;
+}
+.slogan h1 {
+    font-size: 80px;
+    color: var(--white);
+    margin: 0px;
+    padding: 0px;
+}
+
+
+
+.topo {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--white);
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .botao {
-    font-family: "Work Sans", sans-serif;
-    font-size: var(--f2);
-    color: var(--white);
-    text-align: left;
-    padding-top: 20px;
-
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 
-.botao button {
-    color: var(--white);
-    background-color: var(--gray);
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 10px;
-    padding-inline: 20px;
+.botao .button {
     width: 100%;
-    height: 180px;
-    text-align: left;
+    height: 190px;
+    margin-bottom: 15px;
+    background-color: var(--gray);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 0px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: flex-end;
     align-items: flex-start;
-    align-content: normal;
-    transition: 200ms linear;
+    align-content: stretch;
+    transition: 0.3s;
 }
 
-.botao button:hover {
-    background-color: var(--primary);
-    transition: 200ms linear;
+.botao .button:hover {
+    background-color: var(--darkgray);
+    transition: 0.3s;
 }
 
-.entrar button:hover {
-    background-color: var(--primary);
-    border: 1px solid var(--primary);
-    transition: 200ms linear;
-}
-
-.botao button span {
-    font-size: 12px;
-    font-weight: 400;
-}
-
-.entrar {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+.button h1, p {
+    margin: 5px;
 }
 
 .entrar button {
-    padding: 5px;
-    border-radius: 5px;
+    background-color: var(--background);
     border: 1px solid var(--white);
-    color: var(--white);
-    transition: 200ms linear;
+    color: white;
+    margin-top: 15px;
+    padding: 15px;
+    font-size: var(--f3);
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
-.slogan {
-    font-size: var(--f3) ;
-    color: var(--white);
-    
-}
+.entrar button:hover {
+    background-color: var(--white);
+    color: var(--background);
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+} 
 
-.slogan h1{ 
-    font-weight: 800;
-}
-@media (max-width: 768px) {
+@media (max-width: 920px) {
+    .section-1 {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+    }
+
     .banner {
         display: none;
-        width: 100%;
-    }
-    .conteudo {
-        width: 100%;
     }
 }
