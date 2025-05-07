@@ -617,6 +617,13 @@
             });
         });
     </script>    
+        <script>
+            document.querySelectorAll('button[type="Login"]').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    window.location.href = './public/login-user/login.html';
+                });
+            });
+        </script>    
 </body>
 
 </html>
