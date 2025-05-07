@@ -14,12 +14,12 @@ async function cadastroDados(emailFree, senhaFree, dataNascimentoFree) {
             .select()
             .eq('email', emailFree)
             .single()
-            console.log('verificado')
+        console.log('verificado')
         if (erroConsulta && erroConsulta.code !== 'PGRST116') {
             console.error('Erro ao consultar email:', erroConsulta);
             return false;
         }
-        if (emailFree) {
+        if (emailExistente) {
             alert('Este e-mail já está cadastrado.')
             return false;
         }
@@ -39,6 +39,9 @@ async function cadastroDados(emailFree, senhaFree, dataNascimentoFree) {
             }])
         console.log('Dados enviados com sucesso', data)
         return true
+
+
+
 
     }
     catch (err) {
@@ -60,14 +63,14 @@ form.addEventListener('submit', async (event) => {
     const confirmarSenha = inputConfirmarSenha.value;
     const dataNascimento = inputDataNascimento.value;
 
-    
-    if(senha == ''){
+
+    if (senha == '') {
         alert('por favor preencha a senha')
-        return 
+        return
     }
-    else if (confirmarSenha == ''){
+    else if (confirmarSenha == '') {
         alert('preencha a confirmação da  senha')
-    } 
+    }
     if (senha != confirmarSenha) {
         alert('as senhas nao coincidem')
         return
