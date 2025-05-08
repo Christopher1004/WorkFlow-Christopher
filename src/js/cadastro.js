@@ -6,24 +6,31 @@ const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const supabase = createClient(supabaseURL, supabaseChave)
 
 
-async function cadastroDados(emailFree, senhaFree, dataNascimentoFree) {
+async function varificarEmail(emailFree) {
     try {
-
         const { data: emailExistente, error: erroConsulta } = await supabase
             .from('freelancer')
             .select()
             .eq('email', emailFree)
-            .single()
+            .maybeSingle()
+        if (erroConsulta) {
+            console.error('Erro ao consultar email: ', erroConsulta)
+            return false
+        }
+        alert('Este e-mail já está cadastrado.')
         console.log('verificado')
-        if (erroConsulta && erroConsulta.code !== 'PGRST116') {
-            console.error('Erro ao consultar email:', erroConsulta);
-            return false;
-        }
-        if (emailExistente) {
-            alert('Este e-mail já está cadastrado.')
-            return false;
-        }
+        return false;
 
+    }
+    catch (err) {
+        console.error('Erro inesperado')
+        return false
+    }
+}
+
+
+async function cadastroDados(emailFree, senhaFree, dataNascimentoFree) {
+    try {
         const { data, error } = await supabase
             .from('freelancer')
             .insert([{
@@ -39,10 +46,6 @@ async function cadastroDados(emailFree, senhaFree, dataNascimentoFree) {
             }])
         console.log('Dados enviados com sucesso', data)
         return true
-
-
-
-
     }
     catch (err) {
         console.error('Erro inesperado', err)
@@ -75,10 +78,17 @@ form.addEventListener('submit', async (event) => {
         alert('as senhas nao coincidem')
         return
     }
-    const resultado = await cadastroDados(email, senha, dataNascimento)
-    if (resultado) {
-        alert('dados enviados com sucesso')
-        form.reset();
+
+    const verificarDadosBD = await varificarEmail(email)
+    if (verificarDadosBD) {
+        return
     }
+    await cadastroDados(email, senha, dataNascimento)
+    alert('dados enviados com sucesso')
+    form.reset();
+
+
+
+
 
 })
