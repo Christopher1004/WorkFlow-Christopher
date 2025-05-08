@@ -6,25 +6,24 @@ const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const supabase = createClient(supabaseURL, supabaseChave)
 
 
-async function varificarEmail(emailFree) {
+async function verificarEmail(emailFree) {
     try {
-        const { data: emailExistente, error: erroConsulta } = await supabase
+        const { data, error} = await supabase
             .from('freelancer')
-            .select()
+            .select('email')
             .eq('email', emailFree)
             .maybeSingle()
-        if (erroConsulta) {
-            console.error('Erro ao consultar email: ', erroConsulta)
-            return false
+        
+        if(error){
+            console.error('Erro ao verificar email no banco')
+            return {exists: false, error: true}
         }
-        alert('Este e-mail já está cadastrado.')
-        console.log('verificado')
-        return false;
+        return { exists: !!data, error: false}
 
     }
     catch (err) {
         console.error('Erro inesperado')
-        return false
+        return {exists: false, error: true}
     }
 }
 
@@ -38,18 +37,23 @@ async function cadastroDados(emailFree, senhaFree, dataNascimentoFree) {
                 nome_usuario: null,
                 email: emailFree,
                 senha: senhaFree,
-                data_cadastro: null,
+                data_cadastro: new Date().toISOString(),
                 telefone: null,
                 biografia: null,
                 foto_perfil: null,
                 datanascimento: dataNascimentoFree
             }])
+        if(error){
+            alert('O email inserido já foi cadastrado')
+            form.reset()
+            return {success: false, error: error.message}
+        }
         console.log('Dados enviados com sucesso', data)
-        return true
+        return {success: true, error: null}
     }
     catch (err) {
         console.error('Erro inesperado', err)
-        return false
+        return { success: false, error: err.message };
     }
 }
 const form = document.getElementById('formfreelancer')
@@ -66,29 +70,54 @@ form.addEventListener('submit', async (event) => {
     const confirmarSenha = inputConfirmarSenha.value;
     const dataNascimento = inputDataNascimento.value;
 
+    let Validado = true
 
-    if (senha == '') {
+    if (!senha) {
         alert('por favor preencha a senha')
-        return
+        Validado = false
     }
-    else if (confirmarSenha == '') {
+    else if (!confirmarSenha) {
         alert('preencha a confirmação da  senha')
+        Validado = false
     }
     if (senha != confirmarSenha) {
         alert('as senhas nao coincidem')
-        return
+        Validado = false
+    }
+    if(!email){
+        alert('Preencha o e-mail')
+        Validado = false
+    }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Por favor insira um e-mail válido');
+        isValid = false;
+    }
+    if(!dataNascimento){
+        alert('Preencha a Data de Nascimento')
+        Validado = false 
     }
 
-    const verificarDadosBD = await varificarEmail(email)
-    if (verificarDadosBD) {
-        return
+    if(!Validado) return
+
+    try{
+        const {exists: emailJaExiste, error: emailError} = await (verificarEmail(email));
+        if(emailError){
+            alert('Ocorreu um erro ao verificar o email')
+            return;
+        }
+        if(emailJaExiste){
+            alert('Este email ja existe')
+            return
+        }
+        const {success, error: cadastroError} = await cadastroDados(email, senha, dataNascimento)
+        if(success){
+            alert('Cadastro realizado')
+            form.reset();
+        }
     }
-    await cadastroDados(email, senha, dataNascimento)
-    alert('dados enviados com sucesso')
-    form.reset();
-
-
-
-
+    catch (error){
+        console.error('Erro geral:', error);
+        alert('Ocorreu um erro inesperado durante o cadastro');
+    }
 
 })
