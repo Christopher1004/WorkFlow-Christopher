@@ -30,7 +30,7 @@ async function loginUsuario(event) {
       }
     } else {
       alert('Login bem-sucedido!');
-      window.location.href = 'index.html';
+      window.location.href = '../../index.html';
     }
   } catch (err) {
     console.error('Erro inesperado:', err);
@@ -42,6 +42,6 @@ document.getElementById('login-form').addEventListener('submit', loginUsuario);
 
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_IN' && session) {
-    window.location.href = 'index.html';
+    window.location.href = '../../index.html';
   }
 });
