@@ -2,7 +2,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js';
 
 const supabase = createClient(
   'https://uvvquwlgbkdcnchiyqzs.supabase.co',
-  'hbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE'
 );
 
 async function loginUsuario(event) {
@@ -23,10 +23,14 @@ async function loginUsuario(event) {
     });
 
     if (error) {
-      alert('Erro ao fazer login: ' + error.message);
+      if (error.message === 'Invalid login credentials') {
+        alert('E-mail ou senha incorretos.');
+      } else {
+        alert('Erro ao fazer login: ' + error.message);
+      }
     } else {
       alert('Login bem-sucedido!');
-      // Redirecionar ou realizar outras ações após o login
+      window.location.href = '../../index.html';
     }
   } catch (err) {
     console.error('Erro inesperado:', err);
@@ -35,3 +39,9 @@ async function loginUsuario(event) {
 }
 
 document.getElementById('login-form').addEventListener('submit', loginUsuario);
+
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    window.location.href = '../../index.html';
+  }
+});
