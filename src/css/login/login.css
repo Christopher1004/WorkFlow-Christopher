@@ -4,7 +4,7 @@ body {
     background-color: var(--background);
     margin: 0;
     padding: 0;
-    font-family: "workflow", sans-serif;
+    font-family: "work sans", sans-serif;
 }
 
 .container {
@@ -18,7 +18,7 @@ body {
 }
 
 .title 	{
-    font-size: var(--f1);
+    font-size: var(--f5);
     color: var(--white);
     width: 100%;
     margin-bottom: 20px;
@@ -79,7 +79,7 @@ input {
 }
 
 label {
-    font-size: var(--f3);
+    font-size: var(--f2);
     color: var(--white);
     margin-bottom: 5px;
 }
@@ -91,6 +91,6 @@ label {
 a {
     color: var(--primary);
     text-decoration: none;
-    font-size: var(--f3);
+    font-size: var(--f2);
     margin-top: 10px;
 }

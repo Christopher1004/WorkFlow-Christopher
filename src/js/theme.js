@@ -25,7 +25,7 @@ function setTheme(isDark) {
         root.style.setProperty('--quaternary', '#30BFA5');
         root.style.setProperty('--gray', '#404040');
         root.style.setProperty('--darkgray', '#1E1E1E');
-        root.style.setProperty('--background', '#222222');
+        root.style.setProperty('--background', '#171616');
         root.style.setProperty('--white', '#D9D9D9');
     } else {
         root.style.setProperty('--primary', '#3C38A6');

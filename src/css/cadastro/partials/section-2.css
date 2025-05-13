@@ -1,25 +1,35 @@
-.section-2 {
-    width: 100%;
-    height: 100vh;
+body {
     margin: 0px;
     padding: 0px;
-    display: flex;
+}
+
+.section-2 {
+    margin: 0px;
+    padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 100vw;
+    height: 100vh;
 }
 
 .topo h1 {
     font-weight: 600;
-    padding-top: 20px;
-    padding-bottom: 5px;
-    font-size: 35px;
+    font-size: var(--f6);
+    margin-bottom: 10px;
+    margin-top: 2px;
 }
 
 .topo h3 {
     font-weight: 200;
-    font-size: 15px,
+    margin-top: 2px;
+    margin-bottom: 10px;
+    font-size: var(--f3);
 }
 
 .topo {
-    
     margin-top: 10px;
     display: flex;
     justify-content: center;
@@ -29,11 +39,11 @@
 
 
  .conteudo {
-    width: 40%;
+    grid-area: 1 / 1 / 2 / 2;
     padding: 15px;
     font-family: "Work Sans", sans-serif;
     background-color: var(--background);
-    height: 100%;
+    justify-content: center;
     color: var(--white);
     display: flex;
     text-align: center;
@@ -45,16 +55,23 @@
     flex-direction: column;
     text-align: left;
     justify-content: flex-start;
-    margin-top: 20px;
 }
 
 
 .conteudo input  {
-    background-color: var(--gray);
+    background-color: var(--darkgray);
     margin-top: 1px;
-    padding: 10px;
+    font-size: var(--f2);
+    border: 1px solid var(--gray);
+    padding: 13px;
     border-radius: 5px;
     
+}
+
+.conteudo label {
+    font-size: var(--f2);
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .dataenviar{
@@ -72,16 +89,22 @@
 }
 
 form .botao {
+    margin-top: 10px;
+    border: none;
+    width: 100%;
     padding-left: 10px;
     background-color: var(--primary);
     color: var(--white);
-    width: 65%;
     
 }
 
 @media (max-width: 768px) {
    
-    .conteudo {
-        width: 100%;
+    .section-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
     }
 }

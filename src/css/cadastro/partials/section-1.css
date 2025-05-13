@@ -1,6 +1,7 @@
 body {
     margin: 0px;
     padding: 0px;
+    font-family: 'work sans', sans-serif;
 }
 
 .section-1 {
@@ -19,6 +20,7 @@ body {
     grid-area: 1 / 1 / 2 / 2;
     background-color: var(--background);
     display: flex;
+    justify-content: center;
     align-items: center;
     padding: 20px;
     flex-direction: column;
@@ -35,7 +37,7 @@ body {
 }
 
 .slogan h3 {
-    font-size: var(--f1);
+    font-size: var(--f4);
     color: var(--white);
     margin: 0px;
     padding: 0px;
@@ -55,7 +57,6 @@ body {
     flex-direction: column;
     color: var(--white);
     align-items: center;
-    margin-bottom: 20px;
 }
 
 .botao {
@@ -98,7 +99,7 @@ body {
     color: white;
     margin-top: 15px;
     padding: 15px;
-    font-size: var(--f3);
+    font-size: var(--f2);
     width: 100%;
     border-radius: 5px;
     cursor: pointer;

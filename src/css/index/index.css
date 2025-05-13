@@ -1,6 +1,7 @@
 @import "../globals/globals.css";
 
 @import "./partials/background.css";
+@import "./partials/footer.css";
 @import "./partials/nav.css";
 @import "./partials/section-1.css";
 @import "./partials/card.css"

@@ -1,51 +1,72 @@
-.section {
-    height: 100vh;
-    display: flex;
+.section-1 {
     font-family: 'Work Sans', sans-serif;
     text-align: center;
+    margin-inline: 30px;
 }
 
 .title {
     justify-content: center;
     font-family: 'Work Sans', sans-serif;
-    font-size: var(--f1);
+    font-size: var(--f6);
 }
 
 .title h1 {
-    text-align: center;
+    text-align: left;
     color: var(--white);
 }
 
+.categorias-wrapper {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;    
+    border-top: 1px solid var(--gray);
+    justify-content: center;
+}
+
 .categorias {
+    transition: 0.3s ease-in-out;
+    scroll-behavior: smooth;
     gap: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    margin-inline: 40px;
+    width: 100%;
     text-align: center;
-    flex-wrap: wrap;
+    padding-top: 20px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.categorias::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .categorias .button_categoria {
     border-radius: 5px;
     font-family: 'work sans', sans-serif;
     font-weight: 500;
-    font-size: var( --f2);
+    font-size: var(--f2);
     padding: 8px 10px;
     color: var(--white);
     border: solid 0px;
     background-color: var(--gray);
     cursor: pointer;
     transition: 80ms linear;
+    white-space: nowrap;
 }
-
-
 
 .categorias .button_categoria:hover {
     background-color: var(--darkgray);
     transition: 80ms linear;
 }
 
-.title span{
-    background: -webkit-linear-gradient(0deg, #4199BF, var(--primary));
+.title span {
+    background: -webkit-linear-gradient(0deg, #7572D5, #3C38A6);
     rotate: 60deg;
     -webkit-background-clip: text;
     background-clip: text;
@@ -56,15 +77,45 @@
     border-radius: 5px;
     font-family: 'work sans', sans-serif;
     font-weight: 500;
-    font-size: var( --f2);
+    font-size: var(--f2);
     padding: 8px 10px;
     color: white;
     border: solid 0px;
-    background-color: var(--primary); 
+    background-color: var(--primary);
 }
 
-@media (max-width: 1100px) { 
+.scroll-arrow {
+    background: none;
+    margin-top: 10px;
+    padding: 0;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: var(--white);
+    font-size: var(--f2);
+    font-family: "work sans", sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+}
+
+.prev {
+    transform: rotate(180deg); /* Inverte a seta */
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+@media (max-width: 1100px) {
     .title {
         margin-top: 50px;
+    }
+    .categorias {
+        flex-wrap: nowrap; /* Ensure no wrapping */
     }
 }
