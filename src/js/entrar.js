@@ -1,15 +1,30 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const supabase = createClient(
-  'https://uvvquwlgbkdcnchiyqzs.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE'
-);
+const firebaseConfig = {
+    apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
+    authDomain: "workflow-da28d.firebaseapp.com",
+    projectId: "workflow-da28d",
+    storageBucket: "workflow-da28d.firebasestorage.app",
+    messagingSenderId: "939828605253",
+    appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
+    measurementId: "G-3LXB7BR5M1"
+};
 
-async function loginUsuario(event) {
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const database = getDatabase(app)
+
+const form = document.getElementById('login-form');
+const inputEmail = document.getElementById('email');
+const inputSenha = document.getElementById('password');
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const email = document.getElementById('email').value;
-  const senha = document.getElementById('password').value;
+  const email = inputEmail.value.trim();
+  const senha = inputSenha.value.trim();
 
   if (!email || !senha) {
     alert('Por favor, preencha todos os campos.');
@@ -17,31 +32,26 @@ async function loginUsuario(event) {
   }
 
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password: senha,
-    });
+    const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+    const user = userCredential.user;
+    console.log('Usuário autenticado:', user);
 
-    if (error) {
-      if (error.message === 'Invalid login credentials') {
-        alert('E-mail ou senha incorretos.');
-      } else {
-        alert('Erro ao fazer login: ' + error.message);
-      }
-    } else {
-      alert('Login bem-sucedido!');
-      window.location.href = '../../index.html';
-    }
-  } catch (err) {
-    console.error('Erro inesperado:', err);
-    alert('Ocorreu um erro inesperado. Tente novamente.');
-  }
-}
-
-document.getElementById('login-form').addEventListener('submit', loginUsuario);
-
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_IN' && session) {
+    // Redirecionar para a página principal ou dashboard
     window.location.href = '../../index.html';
+  } catch (error) {
+    let errorMessage = 'Erro no login: ';
+    switch (error.code) {
+      case 'auth/user-not-found':
+        errorMessage += 'Usuário não encontrado.';
+        break;
+      case 'auth/wrong-password':
+        errorMessage += 'Senha incorreta.';
+        break;
+      default:
+        errorMessage += error.message;
+    }
+    alert(errorMessage);
   }
 });
+
+
