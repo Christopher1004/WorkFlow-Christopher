@@ -1,22 +1,46 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
+const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
+
+const supabase = createClient(supabaseURL, supabaseChave)
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
+    authDomain: "workflow-da28d.firebaseapp.com",
+    projectId: "workflow-da28d",
+    storageBucket: "workflow-da28d.firebasestorage.app",
+    messagingSenderId: "939828605253",
+    appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
+    measurementId: "G-3LXB7BR5M1"
+};
+
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const database = getDatabase(app)
+
+
 const documentoInput = document.getElementById('documento');
 
 // Máscara automática durante a digitação
 documentoInput.addEventListener('input', function (e) {
     let value = this.value.replace(/\D/g, '');
 
-    // Limita o comprimento máximo
+    // Limitar máximo de 14 dígitos
     if (value.length > 14) {
         value = value.substring(0, 14);
     }
 
-    // Aplica máscara conforme o tamanho
     if (value.length <= 11) {
-        // Formata como CPF (000.000.000-00)
+        // Máscara CPF 000.000.000-00
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
         value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
     } else {
-        // Formata como CNPJ (00.000.000/0000-00)
+        // Máscara CNPJ 00.000.000/0000-00
         value = value.replace(/^(\d{2})(\d)/, '$1.$2');
         value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
         value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
@@ -26,165 +50,128 @@ documentoInput.addEventListener('input', function (e) {
     this.value = value;
 });
 
-// Permite apenas números e teclas de controle
-documentoInput.addEventListener('keydown', function (e) {
-    // Permite: backspace, delete, tab, escape, enter
-    if ([46, 8, 9, 27, 13].includes(e.keyCode) ||
-
-        (e.keyCode === 65 && e.ctrlKey === true) ||
-        (e.keyCode === 67 && e.ctrlKey === true) ||
-        (e.keyCode === 86 && e.ctrlKey === true) ||
-        (e.keyCode === 88 && e.ctrlKey === true) ||
-
-        (e.keyCode >= 35 && e.keyCode <= 39)) {
-        return;
-    }
-
-    if ((e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105)) {
-        e.preventDefault();
-    }
-});
 
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
-
-const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
-const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
-
-const supabase = createClient(supabaseURL, supabaseChave)
-
-
-async function verificarEmailCadastrado(email) {
-    const { data, error } = await supabase
-        .rpc('verificar_email_detalhado', { email_input: email });
-
-    if (error || !data) {
-        console.error('Erro ao verificar email:', error);
-        return { existe: true, tabela: 'erro' };
-    }
-
-    return data;
-}
-async function cadastroContratantesFisico(cpfContratante, emailContratante, senhaContratante, dataNascimentoContratante) {
-    try {
-        const { data, error } = await supabase
-            .from('contratantefisico')
-            .insert([{
-                cpf: cpfContratante,
-                nome_usuario: null,
-                email: emailContratante,
-                senha: senhaContratante,
-                data_cadastro: new Date().toISOString(),
-                telefone: null,
-                biografia: null,
-                foto_perfil: null,
-                datanascimento: dataNascimentoContratante
-            }])
-        if (error) {
-            alert('O Email inserido ja foi cadastrado: ')
-            return { success: false, error: error.message }
-        }
-        console.log('Cadastro Contratante Fisico realizado', data)
-        alert('O Cadastro Contratante Fisico realizado com sucesso')
-        return { success: true, error: null }
-    }
-    catch (err) {
-        console.error('Erro inesperado', err)
-        return { success: false, error: err.message }
-    }
-}
-
-async function cadastroContratantesJuridico(cnpjContratante, emailContratante, senhaContratante, dataNascimentoContratante) {
-    try {
-        const { data, error } = await supabase
-            .from('contratantejuridico')
-            .insert([{
-                cnpj: cnpjContratante,
-                nome_usuario: null,
-                email: emailContratante,
-                senha: senhaContratante,
-                data_cadastro: new Date().toISOString(),
-                telefone: null,
-                biografia: null,
-                foto_perfil: null,
-                datanascimento: dataNascimentoContratante
-            }])
-        if (error) {
-            alert('O email inserido ja foi cadastrado: ')
-            form.reset()
-            return { success: false, error: error.message }
-        }
-        console.log('Cadastro Contratante Juridico realizado', data)
-        alert('O Cadastro Contratante Juridico realizado com sucesso')
-
-        return { success: true, error: null }
-    }
-    catch (err) {
-        console.error('Erro inesperado', err)
-        return { success: false, error: err.message }
-    }
-}
 const form = document.getElementById('formcontratante')
 const inputEmailContratante = document.getElementById('txtEmailContra')
 const inputSenhaContrantante = document.getElementById('txtSenhaContra')
 const inputConfirmarSenhaContratante = document.getElementById('txtConfirmarSenhaContra')
-const inputDataNascimentoContrantante = document.getElementById('txtDataContra')
+const inputDataNascimentoContratante = document.getElementById('txtDataContra')
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault()
 
-    const emailContrat = inputEmailContratante.value
-    const senhaContratante = inputSenhaContrantante.value
-    const confirmarSenhaContratante = inputConfirmarSenhaContratante.value
-    const dataNascimentoContrat = inputDataNascimentoContrantante.value
-    const documentoContratante = documentoInput.value
+    const email = inputEmailContratante.value.trim();
+    const senha = inputSenhaContrantante.value.trim();
+    const confirmarSenha = inputConfirmarSenhaContratante.value.trim();
+    const dataNascimento = inputDataNascimentoContratante.value;
+    const documento = documentoInput.value.replace(/\D/g, ''); // Remove máscara
 
-    let Validado = true
+    let validado = true
 
-    if (!senhaContratante) {
-        alert('por favor preencha a senha')
-        Validado = false
+    if (!senha || !confirmarSenha) {
+        alert('Por vaor preencha a senha e a confirmação')
+        validado = false;
     }
-    else if (!confirmarSenhaContratante) {
-        alert('preencha a confirmação da  senha')
-        Validado = false
+    else if (senha !== confirmarSenha) {
+        alert('As senhas não coincidem')
+        validado = false
     }
-    if (senhaContratante != confirmarSenhaContratante) {
-        alert('as senhas nao coincidem')
-        Validado = false
-    }
-    if (!emailContrat) {
-        alert('Preencha o e-mail')
-        Validado = false
-    }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailContrat)) {
-        alert('Por favor insira um e-mail válido');
-        isValid = false;
-    }
-    if (!dataNascimentoContrat) {
-        alert('Preencha a Data de Nascimento')
-        Validado = false
-    }
-    if (!documentoContratante) {
-        alert('Preencha o documento para CPF: 11 digitos para CNPJ 14 Digitos')
-        Validado = false
+    if (!email) {
+        alert('Preencha o e-mail.');
+        validado = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Por favor insira um e-mail válido.');
+        validado = false;
     }
 
-    if (!Validado) return
+    if (!dataNascimento) {
+        alert('Preencha a Data de Nascimento.');
+        validado = false;
+    }
 
-    const verificacao = await verificarEmailCadastrado(emailContrat);
-    if (verificacao.existe) {
-        alert(`Este email já está cadastrado como ${verificacao.tabela === 'contratantefisico' ? 'pessoa física' : 'pessoa jurídica'}`);
-        return;
+    if (!documento || (documento.length !== 11 && documento.length !== 14)) {
+        alert('Documento inválido. CPF deve ter 11 dígitos, CNPJ 14.');
+        validado = false;
     }
-    const documentoSemPonto = documentoContratante.replace(/\D/g, '')
-    if (documentoSemPonto.length === 11) {
-        await cadastroContratantesFisico(documentoContratante, emailContrat, senhaContratante, dataNascimentoContrat)
+
+    if (!validado) return;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+        const firebaseUser = userCredential.user;
+        const uid = firebaseUser.uid;
+
+        const userData = {
+            email: email,
+            dataNascimento: dataNascimento,
+            dataCadastro: new Date().toISOString(),
+            emailVerificado: false,
+            tipoUsuario: 'contratante',
+            documento: documento,
+            Nome_usuario: null,
+            Telefone: null,
+            Biografia: null,
+            Foto_perfil: null
+        };
+        await set(ref(database, `Contratante/${uid}`), userData)
+
+        //Dados supabase
+
+        let tabela;
+
+        let dadosSupabase = {
+            uid_firebase: uid,
+            nome_usuario: null,
+            email: email,
+            senha: senha,
+            data_cadastro: new Date().toISOString(),
+            telefone: null,
+            biografia: null,
+            foto_perfil: null,
+            datanascimento: dataNascimento
+        }
+
+        if (documento.length === 11) {
+            tabela = 'contratantefisico'
+            dadosSupabase.cpf = documento
+        }
+        else if (documento.length === 14) {
+            tabela = 'contratantejuridico'
+            dadosSupabase.cnpj = documento
+        }
+        else {
+            throw new Error('Documento Inválido')
+        }
+        const { data, error } = await supabase
+            .from(tabela)
+            .insert([dadosSupabase])
+
+        if (error) {
+            console.error('Erro ao inserir no Supabase: ', error.message)
+            alert('Erro ao salvar no Supabase. Tente novamente.');
+
+            await firebaseUser.delete();
+            return
+        }
+        alert('Cadastro realizado com sucesso')
+        form.reset()
     }
-    else if (documentoSemPonto.length === 14) {
-        await cadastroContratantesJuridico(documentoContratante, emailContrat, senhaContratante, dataNascimentoContrat)
+    catch (error) {
+        let errorMessage = 'Erro no cadastro: ';
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage += 'Este email já está em uso.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage += 'Email inválido.';
+                break;
+            case 'auth/weak-password':
+                errorMessage += 'Senha muito fraca (mínimo 6 caracteres).';
+                break;
+            default:
+                errorMessage += error.message || error;
+        }
+        alert(errorMessage);
     }
-    else {
-        alert('documento inválido')
-    }
-})
+})    
