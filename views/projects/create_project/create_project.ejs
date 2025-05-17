@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="../../../public/css/projects/create_project/create_project.css">
+<div class="title">
+    <h1>Criar novo projeto</h1>
+</div>
+
+<div class="creator">
+    <div class="section-1">
+        <div class="componentes toolbar">
+            <h2>Componentes</h2>
+            <div class="texto" id="btnTexto" draggable="true" data-type="texto">
+                <image class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path d="M0 0h24v24H0z" />
+                            <path fill="currentColor"
+                                d="M5 3.5a1.5 1.5 0 1 0 0 3h5.5V20a1.5 1.5 0 0 0 3 0V6.5H19a1.5 1.5 0 0 0 0-3z" />
+                        </g>
+                    </svg>
+                </image>
+                <p>texto</p>
+            </div>
+            <div class="imagem" id="btnImage" draggable="true" data-type="imagem">
+                <image class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2">
+                            <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" />
+                            <circle cx="8.5" cy="8.5" r="2.5" />
+                            <path
+                                d="M14.526 12.621L6 22h12.133A3.867 3.867 0 0 0 22 18.133V18c0-.466-.175-.645-.49-.99l-4.03-4.395a2 2 0 0 0-2.954.006" />
+                        </g>
+                    </svg>
+                </image>
+                <p>Imagem</p>
+            </div>
+        </div>
+    </div>
+    <div class="section-2">
+        <div class="opcoes">
+            <button class="btn-bold" onclick="formatarTexto('bold')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="M4 2h4.5a3.501 3.501 0 0 1 2.852 5.53A3.499 3.499 0 0 1 9.5 14H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1m1 7v3h4.5a1.5 1.5 0 0 0 0-3Zm3.5-2a1.5 1.5 0 0 0 0-3H5v3Z" />
+                </svg>
+            </button>
+            <button class="btn-italic" onclick="formatarTexto('italic')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M11 5h6M7 19h6m1-14l-4 14" />
+                </svg>
+            </button>
+            <button class="btn-align-left" onclick="formatarTexto('justifyRight')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <g fill="none">
+                        <path
+                            d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                        <path fill="currentColor"
+                            d="M20 17.5a1.5 1.5 0 0 1 .144 2.993L20 20.5H10a1.5 1.5 0 0 1-.144-2.993L10 17.5zm0-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm0-5a1.5 1.5 0 0 1 .144 2.993L20 10.5H10a1.5 1.5 0 0 1-.144-2.993L10 7.5zm0-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
+                    </g>
+                </svg>
+            </button>
+            <button class="btn-align-center" onclick="formatarTexto('justifyCenter')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <g fill="none">
+                        <path
+                            d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                        <path fill="currentColor"
+                            d="M17 17.5a1.5 1.5 0 0 1 .144 2.993L17 20.5H7a1.5 1.5 0 0 1-.144-2.993L7 17.5zm3-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm-3-5a1.5 1.5 0 0 1 .144 2.993L17 10.5H7a1.5 1.5 0 0 1-.144-2.993L7 7.5zm3-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
+                    </g>
+                </svg>
+            </button>
+            <button class="btn-align-right" onclick="formatarTexto('justifyLeft')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <g fill="none">
+                        <path
+                            d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                        <path fill="currentColor"
+                            d="M14 17.5a1.5 1.5 0 0 1 .144 2.993L14 20.5H4a1.5 1.5 0 0 1-.144-2.993L4 17.5zm6-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm-6-5a1.5 1.5 0 0 1 .144 2.993L14 10.5H4a1.5 1.5 0 0 1-.144-2.993L4 7.5zm6-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
+                    </g>
+                </svg>
+            </button>
+            <button class="btn-h1" onclick="formatarTexto('formatBlock', 'h1')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m7 5v-6.786a.1.1 0 0 0-.164-.077L16 12.5" />
+                </svg>
+            </button>
+            <button class="btn-h2" onclick="formatarTexto('formatBlock', 'h2')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m4-1c0-1 3-1.5 3 1c0 1.977-2.932 2-2.999 4.898A.1.1 0 0 0 16.1 17h3.2" />
+                </svg>
+            </button>
+            <button class="btn-h3" onclick="formatarTexto('formatBlock', 'h3')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m4-1c0-.5.832-1 1.6-1s1.9.311 1.9 1.5a1.535 1.535 0 0 1-.952 1.482c-.01.004-.008.023.002.024c.261.04 1.45.3 1.45 1.794c0 1.2-.5 2.2-2.2 2.2c0 0-1.8 0-1.8-.7" />
+                </svg>
+            </button>
+            <button class="btn-h4" onclick="formatarTexto('formatBlock', 'h4')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m6-2l-2.717 4.851a.1.1 0 0 0 .087.149h4.83M19 17v-3.4" />
+                </svg>
+            </button>
+        </div>
+        <div class="artboard">
+            <div class="content">
+                <!-- arena componente -->
+            </div>
+        </div>
+    </div>
+    <div class="section-3">
+        <div class="camadas">
+            <h2>Camada</h2>
+            <div class="camadaArea">
+                <!--
+area camada <- somente para eu encontrar aonde esta
+-->
+            </div>
+        </div>
+        <div class="menu-create">
+            <button class="cancelar">Cancelar</button>
+            <button class="proximo">Proximo</button>
+        </div>
+    </div>
+</div>
+
+<div class="modalSalvar">
+    <h2>Detalhes</h2>
+    <div class="container-titulo">
+        <label for="Titulo">Titulo</label>
+        <input type="text" name="Titulo" id="titulo">
+    </div>
+    <div class="container-capa">
+        <label for="capa">Capa</label>
+        <input type="file" name="capa" id="capa" class="capa-uploader" hidden="true">
+        <label for="capa-upload" class="capa-upload">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 12V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11m18-4v7a2 2 0 0 1-2 2h-3m5-9c-6.442 0-10.105 1.985-12.055 4.243M3 16v3a2 2 0 0 0 2 2v0h11M3 16c1.403-.234 3.637-.293 5.945.243M16 21c-1.704-2.768-4.427-4.148-7.055-4.757M8.5 7C8 7 7 7.3 7 8.5S8 10 8.5 10S10 9.7 10 8.5S9 7 8.5 7" />
+                </svg></div>
+            <p>Puxe ou solte por clique aqui para fazer o upload da imagem.</p>
+        </label>
+
+    </div>
+    <div class="container-descricao">
+        <label for="descricao">Descrição</label>
+        <input type="text" name="descricao" id="descricao">
+    </div>
+    <div class="container-tags">
+        <label for="tags">Tags</label>
+        <input type="text" name="tags" id="tags">
+    </div>
+    <div class="button-finalizar">
+        <button class="finalizar">Finalizar</button>
+    </div>
+
+</div>
+
+<script src="../../../src/js/projects/create_project/modal.js"></script>
+<script src="../../../src/js/theme.js"></script>
+<script type="module" src="../../../src/js/main.js"></script>
+<script src="../../../src/js/projects/create_project/componentesProjeto.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>

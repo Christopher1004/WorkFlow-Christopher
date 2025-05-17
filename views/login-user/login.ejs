@@ -1,0 +1,26 @@
+<head>
+    <title>Login</title>
+</head>
+<link rel="stylesheet" href="/css/login/login.css">
+<div class="container">
+    <div class="logo-container">
+        <img src="/assets/image/logo.svg" alt="Logo" class="logo">
+    </div>
+    <h1 class="title">Entrar na sua conta</h1>
+    <form method="post" class="form-login" id="login-form">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Digite seu email">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+        </div>
+
+        <button class="entrar" type="submit">Entrar</button>
+    </form>
+    <p class="register-link">Não tem uma conta? <a href="/register">Cadastre-se</a></p>
+</div>
+
+<script type="module" src="/js/entrar.js"></script>

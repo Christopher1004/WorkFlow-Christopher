@@ -1,0 +1,81 @@
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">
+            <img class="logo" src="/assets/image/logoWorkFlow-com-nome.svg" alt="logoWorkFlow">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="links">
+            <a href="/" class="links projetos active">Projetos</a>
+            <a href="/propostas" class="links propostas">Propostas</a>
+            <a href="#" class="links freeelancers">Freelancers</a>
+            <a href="#" class="links desafios">Desafios</a>
+        </div>
+        <div class="searchbarContainer">
+            <div class="searchbar">
+                <img src="/assets/image/search-icon.svg" alt="searchIcon" class="icon">
+                <input type="text" class="searchbar-input" placeholder="Buscar">
+            </div>
+        </div>
+        <div class="buttonsContainer">
+            <a href="/login">
+                <button class="buttonNav entrar" id="btnEntrar">Entrar</button>
+            </a>
+            <a href="/register">
+                <button class="buttonNav registrar" id="btnCriarConta">Criar Conta</button>
+            </a>
+            <div id="userControls" style="display:none; align-items: center; gap: 12px;">
+                <button id="btnAdd" class="buttonAdd" title="Adicionar novo">+</button>
+                <div id="userPhoto" class="userPhoto"></div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<style>
+    .buttonsContainer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Botão + circular */
+    .buttonAdd {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #3c38a6;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .buttonAdd:hover {
+        background-color: #6f6dcc;
+    }
+
+    /* Avatar circular (div) */
+    .userPhoto {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #ddd;
+        /* cor padrão enquanto carrega */
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        border: 3px solid #3c38a6;
+    }
+</style>
+<script type="module" src="/js/navBar-auth.js"></script>
