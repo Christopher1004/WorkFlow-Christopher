@@ -11,28 +11,51 @@ const firebaseConfig = {
     measurementId: "G-3LXB7BR5M1"
 };
 
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-const btnLogin = document.getElementById('btnEntrar')
-const btnRegister = document.getElementById('btnCriarConta')
+const btnLogin = document.getElementById('btnEntrar');
+const btnRegister = document.getElementById('btnCriarConta');
 const userControls = document.getElementById('userControls');
 const userPhoto = document.getElementById('userPhoto');
 const btnAdd = document.getElementById('btnAdd');
+const btnLogout = document.getElementById('btnLogout'); 
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        if (btnLogin) btnLogin.style.display = 'none'
-        if (btnRegister) btnRegister.style.display = 'none'
+        if (btnLogin) btnLogin.style.display = 'none';
+        if (btnRegister) btnRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
 
-    }
-    else {
-        // Usuário não logado → mostra "Entrar" e "Criar Conta", esconde "Sair"
+        // Mostrar foto do usuário, se houver
+        if (userPhoto) {
+            if (user.photoURL) {
+                userPhoto.src = user.photoURL;
+                userPhoto.style.display = 'block';
+            } else {
+                userPhoto.style.display = 'none';
+            }
+        }
+
+        if (btnLogout) {
+            btnLogout.style.display = 'inline-block';
+            btnLogout.onclick = () => {
+                signOut(auth)
+                    .then(() => {
+                        console.log("Usuário deslogado.");
+                        window.location.reload(); 
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao sair:", error);
+                    });
+            };
+        }
+
+    } else {
         if (btnLogin) btnLogin.style.display = 'inline-block';
         if (btnRegister) btnRegister.style.display = 'inline-block';
         if (userControls) userControls.style.display = 'none';
-
+        if (userPhoto) userPhoto.style.display = 'none';
+        if (btnLogout) btnLogout.style.display = 'none';
     }
-})
-
+});
