@@ -19,7 +19,9 @@ const btnRegister = document.getElementById('btnCriarConta');
 const userControls = document.getElementById('userControls');
 const userPhoto = document.getElementById('userPhoto');
 const btnAdd = document.getElementById('btnAdd');
-const btnLogout = document.getElementById('btnLogout'); 
+const btnLogout = document.getElementById('btnLogout');
+
+const DEFAULT_USER_PHOTO = 'https://www.gravatar.com/avatar/?d=mp';
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -27,14 +29,10 @@ onAuthStateChanged(auth, (user) => {
         if (btnRegister) btnRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
 
-        // Mostrar foto do usuário, se houver
         if (userPhoto) {
-            if (user.photoURL) {
-                userPhoto.src = user.photoURL;
-                userPhoto.style.display = 'block';
-            } else {
-                userPhoto.style.display = 'none';
-            }
+            const photoURL = user.photoURL || DEFAULT_USER_PHOTO;
+            userPhoto.style.backgroundImage = `url('${photoURL}')`;
+            userPhoto.style.display = 'block';
         }
 
         if (btnLogout) {
@@ -43,7 +41,7 @@ onAuthStateChanged(auth, (user) => {
                 signOut(auth)
                     .then(() => {
                         console.log("Usuário deslogado.");
-                        window.location.reload(); 
+                        window.location.reload();
                     })
                     .catch((error) => {
                         console.error("Erro ao sair:", error);
@@ -55,7 +53,12 @@ onAuthStateChanged(auth, (user) => {
         if (btnLogin) btnLogin.style.display = 'inline-block';
         if (btnRegister) btnRegister.style.display = 'inline-block';
         if (userControls) userControls.style.display = 'none';
-        if (userPhoto) userPhoto.style.display = 'none';
+
+        if (userPhoto) {
+            userPhoto.style.backgroundImage = `url('${DEFAULT_USER_PHOTO}')`;
+            userPhoto.style.display = 'none';
+        }
+
         if (btnLogout) btnLogout.style.display = 'none';
     }
 });
