@@ -20,6 +20,7 @@ const database = getDatabase(app)
 const form = document.getElementById('login-form');
 const inputEmail = document.getElementById('email');
 const inputSenha = document.getElementById('password');
+
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
 

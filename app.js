@@ -11,6 +11,10 @@ app.use(express.static('public'))
 const expressLayouts = require('express-ejs-layouts');
 app.use(expressLayouts)
 app.set('layout', 'base')
+app.use((req,res,next) => {
+    res.locals.currentRoute = req.path;
+    next();
+})
 
 const indexRouter = require('./routes/index')
 app.use('/', indexRouter)
@@ -29,6 +33,9 @@ app.use('/login', loginRouter)
 
 const propostaRouter = require('./routes/propostas')
 app.use('/propostas', propostaRouter)
+
+const criarProjetosRoutes = require('./routes/criarProjeto')
+app.use('/criarProjeto', criarProjetosRoutes)
 
 
 

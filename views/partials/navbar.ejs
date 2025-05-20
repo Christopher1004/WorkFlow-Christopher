@@ -1,8 +1,18 @@
+<div id="modalUpload"
+    style="display:none; position:relative; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:8px; max-width:400px; width:100%;">
+        <h3>Atualizar Foto de Perfil</h3>
+        <input type="file" id="inputFotoPerfil" accept="image/*" />
+        <button id="btnEnviarFoto">Enviar</button>
+        <button id="btnFecharModal">Cancelar</button>
+        <div id="statusUpload" style="margin-top:10px;"></div>
+    </div>
+</div>
 <nav class="navbar">
     <div class="container">
         <div class="logo">
             <a href="/">
-            <img class="logo" src="/assets/image/logoWorkFlow-com-nome.svg" alt="logoWorkFlow">
+                <img class="logo" src="/assets/image/logoWorkFlow-com-nome.svg" alt="logoWorkFlow">
             </a>
             <div class="hamburger">
                 <span></span>
@@ -11,10 +21,12 @@
             </div>
         </div>
         <div class="links">
-            <a href="/" class="links projetos active">Projetos</a>
-            <a href="/propostas" class="links propostas">Propostas</a>
-            <a href="#" class="links freeelancers">Freelancers</a>
-            <a href="#" class="links desafios">Desafios</a>
+            <a href="/" class="links projetos <%= currentRoute === '/' ? 'active' : '' %>">Projetos</a>
+            <a href="/propostas"
+                class="links propostas <%= currentRoute === '/propostas' ? 'active' : '' %>">Propostas</a>
+            <a href="/freelancers"
+                class="links freelancers <%= currentRoute === '/freelancers' ? 'active' : '' %>">Freelancers</a>
+            <a href="/desafios" class="links desafios <%= currentRoute === '/desafios' ? 'active' : '' %>">Desafios</a>
         </div>
         <div class="searchbarContainer">
             <div class="searchbar">
@@ -30,15 +42,21 @@
                 <button class="buttonNav registrar" id="btnCriarConta">Criar Conta</button>
             </a>
             <div id="userControls" style="display:none; align-items: center; gap: 12px;">
-                <button id="btnAdd" class="buttonAdd" title="Adicionar novo">+</button>
+                <a href="/criarProjeto">
+                    <button id="btnAdd" class="buttonAdd" title="Adicionar novo">+</button>
+                </a>
                 <div id="userPhoto" class="userPhoto"></div>
-                <button class="buttonNav sair" id="btnLogout">Logout</button>
-                
             </div>
         </div>
 
     </div>
 </nav>
+<div id="dropDownMenu" class="dropDownMenu" style="display: none;">
+    <a href="">Perfil</a>
+    <a href="">Configurações</a>
+    <a href="" id="dropDownLogout">Sair</a>
+</div>
+
 <style>
     .buttonsContainer {
         display: flex;
@@ -46,7 +64,6 @@
         gap: 12px;
     }
 
-    /* Botão + circular */
     .buttonAdd {
         width: 40px;
         height: 40px;
@@ -68,10 +85,9 @@
         background-color: #6f6dcc;
     }
 
-    /* Avatar circular (div) */
     .userPhoto {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background-color: #ddd;
         /* cor padrão enquanto carrega */
@@ -80,6 +96,62 @@
         background-repeat: no-repeat;
         cursor: pointer;
         border: 3px solid #3c38a6;
+    }
+
+
+    .dropDownMenu {
+        position: absolute;
+        top: 80px;
+        right: 0;
+        min-width: 180px;
+        background-color: #1A1A1A;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        border: 1px solid #2a2a2a;
+        z-index: 1000;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        animation: fadeIn 0.2s ease;
+    }
+
+    .dropDownMenu a {
+        display: block;
+        padding: 12px 16px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 15px;
+        border: 1px solid #2a2a2a;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .dropDownMenu a:hover {
+        background-color: #3c38a6;
+        color: white;
+    }
+
+    .dropDownMenu::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 20px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #1A1A1A;
+        filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.04));
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 <script type="module" src="/js/navBar-auth.js"></script>
