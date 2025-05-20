@@ -1,11 +1,13 @@
 .section-1 {
     font-family: 'Work Sans', sans-serif;
     text-align: center;
+    
     margin-inline: 30px;
 }
 
 .title {
     justify-content: center;
+    padding-block: 10px;
     font-family: 'Work Sans', sans-serif;
     font-size: var(--f6);
 }

@@ -1,18 +1,25 @@
 body {
     margin: 0;
     padding: 0;
+    margin-top: 50px;
     padding-top: 70px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .navbar {
     z-index: 1000;
     display: flex;
     width: 100%;
-    padding-block: 20px;
+    height: 80px;
+    padding-block: 15px;
     overflow-x: auto;
     background-color: var(--background);
     border-bottom: 1px solid var(--gray);
-    height: 50px;
     font-size: var(--f2);
     font-family: "Work Sans", sans-serif;
     position: fixed;
@@ -82,7 +89,7 @@ body {
     height: 100%;
     border: 1px solid var(--gray);
     background-color: var(--darkgray);
-    padding-inline: 15px;
+    padding: 15px;
     border-radius: 5px;
 }
 
@@ -167,13 +174,15 @@ a {
 @media (max-width: 990px) {
     .navbar {
         overflow: visible;
-        height: auto;
-        overflow-x: auto;
+        justify-content: center;
+        height: 80px;
+        padding-top: 20px;
     }
 
     .links, .searchbarContainer, .buttonsContainer {
         display: none;
         width: 100%;
+        height: auto;
         opacity: 0;
         transform: translateY(-20px);
         transition: all 0.3s ease-in-out;
@@ -189,6 +198,13 @@ a {
         display: flex;
         opacity: 1;
         transform: translateY(0);
+    }
+
+    .nav-active .searchbarContainer {
+        flex-grow: unset;
+        width: 100%;
+        padding: 0;
+        margin: 0;
     }
 
     .hamburger {
@@ -235,24 +251,56 @@ a {
     .nav-active .hamburger span:nth-child(3) {
         transform: translateY(-11px) rotate(-45deg);
     }
+
     .container {
         flex-direction: column;
+        height: auto;
     }
+
     .links {
         flex-direction: column;
         align-items: center;
+        height: auto;
     }
+
+    .links a {
+        width: 100%;
+        margin: 0;
+        height: 60px;
+        justify-content: center;
+        padding: 0;
+    };
+
     .buttonsContainer {
-        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
         align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        gap: 10px;
     }
+
+    .buttonsContainer a {
+        width: 100%;
+        height: 70px;
+        margin: 0;
+        padding: 0;
+    }
+
     .buttonNav {
         width: 100%;
-        padding: 15px;
+        min-width: 120px;
+        height: 70px;
+        padding: 0 20px;
     }
+    
     .logo {
         width: 100%;
         display: flex;
+        align-items: center;
         justify-content: space-between;
     }
 

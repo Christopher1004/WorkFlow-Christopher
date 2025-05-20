@@ -13,6 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    gap: 10px;
     width: 100vw;
     text-align: center;
 }
@@ -93,4 +94,26 @@ a {
     text-decoration: none;
     font-size: var(--f2);
     margin-top: 10px;
+}
+
+.auth {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 350px;
+    padding-inline: 20px;
+}
+
+.auth .auth-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: 0.3s;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--darkgray);
+    border: 1px solid var(--gray);
 }
