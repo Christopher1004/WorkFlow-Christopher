@@ -1,13 +1,14 @@
-<div id="modalUpload"
-    style="display:none; position:relative; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
-    <div style="background:#fff; padding:20px; border-radius:8px; max-width:400px; width:100%;">
-        <h3>Atualizar Foto de Perfil</h3>
-        <input type="file" id="inputFotoPerfil" accept="image/*" />
-        <button id="btnEnviarFoto">Enviar</button>
-        <button id="btnFecharModal">Cancelar</button>
-        <div id="statusUpload" style="margin-top:10px;"></div>
+<!--
+    <div id="popupOverlay" class="popup-overlay">
+    <div class="popup">
+        <h2>Atualizar Foto</h2>
+        <input type="file" id="imageInput" accept="image/*" />
+        <button id="uploadButton">Enviar</button>
+        <button id="closePopup" class="close-btn">Fechar</button>
     </div>
 </div>
+-->
+
 <nav class="navbar">
     <div class="container">
         <div class="logo">
@@ -152,6 +153,53 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Caixa do popup */
+    .popup {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup input[type="file"] {
+        margin: 20px 0;
+        width: 100%;
+    }
+
+    .popup button {
+        padding: 10px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    #uploadButton {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .close-btn {
+        background-color: #f44336;
+        color: white;
     }
 </style>
 <script type="module" src="/js/navBar-auth.js"></script>

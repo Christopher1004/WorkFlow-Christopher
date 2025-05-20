@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
+import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 
 const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
@@ -20,6 +21,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app)
 
 const btnLogin = document.getElementById('btnEntrar');
 const btnRegister = document.getElementById('btnCriarConta');
@@ -29,16 +31,32 @@ const btnAdd = document.getElementById('btnAdd');
 const dropDownLogout = document.getElementById('dropDownLogout');
 const dropDown = document.getElementById('dropDownMenu');
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     if (user) {
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnRegister) btnRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
 
         if (userPhoto) {
-            const photoURL = user.photoURL || DEFAULT_USER_PHOTO;
-            userPhoto.style.backgroundImage = `url('${photoURL}')`;
-            userPhoto.style.display = 'block';
+            const db = getDatabase();
+            const userRef = ref(db, 'Freelancer/' + user.uid);
+
+            try {
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    const photoURL = userData.foto_perfil || DEFAULT_USER_PHOTO;
+                    userPhoto.style.backgroundImage = `url('${photoURL}')`;
+                    userPhoto.style.display = 'block';
+                } else {
+                    userPhoto.style.backgroundImage = `url('${DEFAULT_USER_PHOTO}')`;
+                    userPhoto.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("Erro ao buscar avatar:", error);
+                userPhoto.style.backgroundImage = `url('${DEFAULT_USER_PHOTO}')`;
+                userPhoto.style.display = 'block';
+            }
         }
 
         if (dropDownLogout) {
@@ -64,8 +82,46 @@ onAuthStateChanged(auth, (user) => {
             userPhoto.style.display = 'none';
         }
 
-        if (btnLogout) btnLogout.style.display = 'none';
+
     }
+    const fileInput = document.getElementById('imageInput')
+    const uploadBtn = document.getElementById('uploadButton')
+
+    uploadBtn.addEventListener('click', async () => {
+        const file = fileInput.files[0]
+        if (!file) {
+            alert('Selecione uma imagem')
+            return
+        }
+
+        // Usa o nome original do arquivo
+        const filePath = `avatars/${file.name}`
+
+        // Envia o arquivo
+        const { error: uploadError } = await supabase.storage
+            .from('freelancer-photos')
+            .upload(filePath, file)
+
+        if (uploadError) {
+            alert('Erro ao enviar imagem: ' + uploadError.message)
+            return
+        }
+        const { data } = supabase.storage.from('freelancer-photos').getPublicUrl(filePath)
+        const publicUrl = data.publicUrl
+
+        alert('Imagem enviada com sucesso!')
+
+        const userRef = ref(db, 'Freelancer/' + user.uid)
+        try {
+            await update(userRef, {
+                foto_perfil: publicUrl
+            })
+            alert('Perfil atualizado')
+        }
+        catch (error) {
+            alert('Erro ao atualizar perfil' + error.message)
+        }
+    })
 });
 
 userPhoto.addEventListener('click', (e) => {
@@ -80,6 +136,23 @@ dropDown.addEventListener('click', (e) => {
 })
 
 const DEFAULT_USER_PHOTO = 'https://www.gravatar.com/avatar/?d=mp';
+
+const popupOverlay = document.getElementById('popupOverlay');
+const closeBtn = document.getElementById('closePopup');
+
+
+userPhoto.addEventListener('click', () => {
+    popupOverlay.style.display = 'flex';
+});
+
+// Fechar popup
+closeBtn.addEventListener('click', () => {
+    popupOverlay.style.display = 'none';
+});
+
+
+
+
 
 
 
