@@ -3,10 +3,10 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
-const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
+//const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
+//const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
 
-const supabase = createClient(supabaseURL, supabaseChave)
+//const  supabase = createClient(supabaseURL, supabaseChave)
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -116,46 +116,10 @@ form.addEventListener('submit', async (event) => {
         };
         await set(ref(database, `Contratante/${uid}`), userData)
 
-        //Dados supabase
-
-        let tabela;
-
-        let dadosSupabase = {
-            uid_firebase: uid,
-            nome_usuario: null,
-            email: email,
-            senha: senha,
-            data_cadastro: new Date().toISOString(),
-            telefone: null,
-            biografia: null,
-            foto_perfil: null,
-            datanascimento: dataNascimento
-        }
-
-        if (documento.length === 11) {
-            tabela = 'contratantefisico'
-            dadosSupabase.cpf = documento
-        }
-        else if (documento.length === 14) {
-            tabela = 'contratantejuridico'
-            dadosSupabase.cnpj = documento
-        }
-        else {
-            throw new Error('Documento Inválido')
-        }
-        const { data, error } = await supabase
-            .from(tabela)
-            .insert([dadosSupabase])
-
-        if (error) {
-            console.error('Erro ao inserir no Supabase: ', error.message)
-            alert('Erro ao salvar no Supabase. Tente novamente.');
-
-            await firebaseUser.delete();
-            return
-        }
         alert('Cadastro realizado com sucesso')
         form.reset()
+        window.location.href = '/login';
+
     }
     catch (error) {
         let errorMessage = 'Erro no cadastro: ';
