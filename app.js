@@ -34,6 +34,9 @@ app.use('/login', loginRouter)
 const propostaRouter = require('./routes/propostas')
 app.use('/propostas', propostaRouter)
 
+const criarPropostaRouter = require('./routes/criarPropostas')
+app.use('/criarproposta', criarPropostaRouter)
+
 const criarProjetosRoutes = require('./routes/criarProjeto')
 app.use('/criarProjeto', criarProjetosRoutes)
 

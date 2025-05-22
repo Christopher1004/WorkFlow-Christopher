@@ -1,3 +1,171 @@
-<!--
-comentario para manter a pagina
--->
+<head>
+    <link rel="stylesheet" href="css\proposals\create\create.css">
+</head>
+<body>
+    <section class="section-1">
+        <div class="titulo">
+            <h1>Criar uma Proposta</h1>
+        </div>
+    </section>
+    
+    <section class="section-2">
+
+        <div class="container-1">
+            <div class="form-container-descricao">
+                <textarea placeholder="descreva sua proposta para os freelancers" name="descricao" id="descricao" cols="30"></textarea>
+            </div>
+        </div>
+
+        <div class="container-2">
+            <div class="form-container">
+                <label class="label-proposta" for="titulo-proposta">Título</label>
+                <input type="text" class="input" name="titulo-proposta" id="tituloProposta">
+            </div>
+
+            <div class="form-container">
+                <label class="label-proposta" for="tags">Tags</label>
+                <div class="selector-container">
+                    <!-- Área para exibir as tags selecionadas -->
+                    <div class="selected-tags">
+                      <!-- Tags serão adicionadas dinamicamente via JavaScript -->
+                    </div>
+                  
+                    <!-- Barra de pesquisa -->
+                    <div class="search-bar">
+                      <input type="text" id="search-input" placeholder="Search">
+                      <button type="button" id="clear-search">Limpar</button>
+                    </div>
+                  
+                    <!-- Lista de opções -->
+                    <ul class="options-list">
+                      <li>
+                        <input type="checkbox" value="Family" id="option-1">
+                        <label for="option-1">Family</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Family in law" id="option-2">
+                        <label for="option-2">Family in law</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Co-workers" id="option-3">
+                        <label for="option-3">Co-workers</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Friends" id="option-4">
+                        <label for="option-4">Friends</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Basketball Club" id="option-5">
+                        <label for="option-5">Basketball Club</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Startup Investor Colleagues" id="option-6">
+                        <label for="option-6">Startup Investor Colleagues</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Swiss Embassy" id="option-7">
+                        <label for="option-7">Swiss Embassy</label>
+                      </li>
+                      <li>
+                        <input type="checkbox" value="Zurich Meetup Group" id="option-8">
+                        <label for="option-8">Zurich Meetup Group</label>
+                      </li>
+                    </ul>
+                  </div>
+            </div>
+            
+            <div class="form-container-valor">
+                <h3>Valor</h3>
+                <div class="container-valor">
+                    <div class="min">
+                        <label class="label-proposta" for="preco-min">Min.</label>
+                        <input type="text" class="input" name="preco-min" id="precoMin">
+                    </div>
+                    <div class="max">
+                        <label class="label-proposta" for="preco-max">Max.</label>
+                        <input type="text" class="input" name="preco-max" id="precoMin">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container idade">
+                <label class="menorIdade" for="menorIdade">
+                    <input type="checkbox" name="permitirMenorDeIdade" id="menorIdade">
+                    Permitir menores de idade
+                </label>
+            </div>
+
+            <div class="form-container-button">       
+                <button class="button-forms Cancelar" type="submit" id="Cancelar">Cancelar</button>
+                <button class="button-forms publicar" type="submit" id="publicar">Publicar</button>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="section-3">
+    </section>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const selectedTagsContainer = document.querySelector('.selected-tags');
+  const searchInput = document.getElementById('search-input');
+  const optionsList = document.querySelectorAll('.options-list li');
+  const clearSearchBtn = document.getElementById('clear-search');
+
+  // Função para adicionar uma tag à lista de selecionados
+  function addTag(value) {
+    const tag = document.createElement('span');
+    tag.classList.add('tag');
+    tag.innerHTML = `
+      ${value}
+      <span class="remover" onclick="removeTag('${value}')">X</span>
+    `;
+    selectedTagsContainer.appendChild(tag);
+  }
+
+  // Função para remover uma tag da lista de selecionados
+  function removeTag(value) {
+    const tag = document.querySelector(`.tag:contains("${value}")`);
+    if (tag) {
+      tag.remove();
+    }
+  }
+
+  // Função para atualizar os checkboxes quando uma tag é removida
+  function updateCheckboxFromTag(value) {
+    const checkbox = document.querySelector(`input[value="${value}"]`);
+    if (checkbox) {
+      checkbox.checked = false;
+    }
+  }
+
+  // Evento para lidar com a seleção/deseleção de checkboxes
+  optionsList.forEach((item) => {
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        addTag(checkbox.value);
+      } else {
+        removeTag(checkbox.value);
+        updateCheckboxFromTag(checkbox.value);
+      }
+    });
+  });
+
+  // Evento para filtrar as opções com base na barra de pesquisa
+  searchInput.addEventListener('input', () => {
+    const filterText = searchInput.value.toLowerCase();
+    optionsList.forEach((item) => {
+      const label = item.querySelector('label').textContent.toLowerCase();
+      if (label.includes(filterText)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+</html>
