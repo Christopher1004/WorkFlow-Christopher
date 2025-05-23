@@ -72,6 +72,25 @@ onAuthStateChanged(auth, async (user) => {
             };
         }
 
+        if (btnAdd) {
+    btnAdd.addEventListener('click', async () => {
+        try {
+            const freelancerRef = ref(db, 'Freelancer/' + user.uid);
+            const freelancerSnap = await get(freelancerRef);
+
+            if (freelancerSnap.exists()) {
+                window.location.href = '/criarProjeto';
+            } else {
+                window.location.href = '/criarProposta';
+            }
+        } catch (error) {
+            console.error('Erro ao verificar tipo de usuário:', error);
+            alert('Erro ao verificar tipo de usuário. Tente novamente.');
+        }
+    });
+}
+
+
     } else {
         if (btnLogin) btnLogin.style.display = 'inline-block';
         if (btnRegister) btnRegister.style.display = 'inline-block';
