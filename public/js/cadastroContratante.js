@@ -57,6 +57,17 @@ const inputEmailContratante = document.getElementById('txtEmailContra')
 const inputSenhaContrantante = document.getElementById('txtSenhaContra')
 const inputConfirmarSenhaContratante = document.getElementById('txtConfirmarSenhaContra')
 const inputDataNascimentoContratante = document.getElementById('txtDataContra')
+const mensagemErro = document.getElementById('form-error')
+
+function mostrarPopup() {
+    const popup = document.getElementById('popup');
+    popup.classList.remove('popup-hidden');
+
+    setTimeout(() => {
+        popup.classList.add('popup-hidden');
+        window.location.href = '/login';
+    }, 2000);  // 2 segundos
+}
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault()
@@ -67,35 +78,20 @@ form.addEventListener('submit', async (event) => {
     const dataNascimento = inputDataNascimentoContratante.value;
     const documento = documentoInput.value.replace(/\D/g, ''); // Remove máscara
 
-    let validado = true
-
-    if (!senha || !confirmarSenha) {
-        alert('Por vaor preencha a senha e a confirmação')
-        validado = false;
+    if (!email || !senha || !confirmarSenha || !dataNascimento) {
+        mensagemErro.style.display = 'block'
+        return;
     }
-    else if (senha !== confirmarSenha) {
-        alert('As senhas não coincidem')
-        validado = false
-    }
-    if (!email) {
-        alert('Preencha o e-mail.');
-        validado = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('Por favor insira um e-mail válido.');
-        validado = false;
-    }
-
-    if (!dataNascimento) {
-        alert('Preencha a Data de Nascimento.');
-        validado = false;
+    if (senha !== confirmarSenha) {
+        mensagemErro.style.display = 'block'
+        mensagemErro.textContent = 'A senhas não coincidem'
+        return;
     }
 
     if (!documento || (documento.length !== 11 && documento.length !== 14)) {
-        alert('Documento inválido. CPF deve ter 11 dígitos, CNPJ 14.');
-        validado = false;
+        mensagemErro.style.display = 'block'
+        mensagemErro.textContent = 'Documento inválido. CPF deve ter 11 dígitos, CNPJ 14.'
     }
-
-    if (!validado) return;
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
@@ -116,9 +112,8 @@ form.addEventListener('submit', async (event) => {
         };
         await set(ref(database, `Contratante/${uid}`), userData)
 
-        alert('Cadastro realizado com sucesso')
-        form.reset()
-        window.location.href = '/login';
+        mostrarPopup()
+
 
     }
     catch (error) {

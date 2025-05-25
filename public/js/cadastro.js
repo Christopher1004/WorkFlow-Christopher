@@ -28,6 +28,17 @@ const inputEmail = document.getElementById('txtEmail')
 const inputSenha = document.getElementById('txtSenha')
 const inputConfirmarSenha = document.getElementById('tConfirmarSenha')
 const inputDataNascimento = document.getElementById('txtData')
+const mensagemErro = document.getElementById('form-error')
+
+function mostrarPopup() {
+    const popup = document.getElementById('popup');
+    popup.classList.remove('popup-hidden');
+
+    setTimeout(() => {
+        popup.classList.add('popup-hidden');
+        window.location.href = '/login';
+    }, 2000);  // 2 segundos
+}
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault()
@@ -38,12 +49,14 @@ form.addEventListener('submit', async (event) => {
     const dataNascimento = inputDataNascimento.value;
 
     if (!email || !senha || !confirmarSenha || !dataNascimento) {
-        alert('Por favor, preencha todos os campos.');
+        mensagemErro.style.display = 'block'
+        inputEmail.focus()
         return;
-    }
-
+    } 
+        
     if (senha !== confirmarSenha) {
-        alert('As senhas não coincidem.');
+        mensagemErro.style.display = 'block'
+        mensagemErro.textContent = 'A senhas não coincidem'
         return;
     }
     try {
@@ -65,9 +78,7 @@ form.addEventListener('submit', async (event) => {
         };
         await set(ref(database, `Freelancer/${uid}`), userData);
 
-        alert('Cadastro realizado com sucesso!');
-        form.reset();
-        window.location.href = '/login';
+        mostrarPopup()
     }
     catch (error) {
         let errorMessage = 'Erro no cadastro: ';
@@ -84,7 +95,8 @@ form.addEventListener('submit', async (event) => {
             default:
                 errorMessage += error.message;
         }
-        alert(errorMessage);
-
+        mensagemErro.style.display = 'block'
+        mensagemErro.textContent = errorMessage
     }
 })
+
