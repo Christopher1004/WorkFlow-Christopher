@@ -55,11 +55,11 @@
         <div class="container-valor">
           <div class="min">
             <label class="label-proposta" for="preco-min">Min.</label>
-            <input type="text" class="input" name="preco-min" id="precoMin">
+            <input type="number" class="input" name="preco-min" id="precoMin">
           </div>
           <div class="max">
             <label class="label-proposta" for="preco-max">Max.</label>
-            <input type="text" class="input" name="preco-max" id="precoMin">
+            <input type="number" class="input" name="preco-max" id="precoMax">
           </div>
         </div>
       </div>
@@ -83,6 +83,16 @@
   </section>
 
 <script src="js/proposals/create_proposals/proposals.js" defer></script>
+
+<div id="modal-confirmacao" class="modal hidden">
+  <div class="modal-content">
+    <p>Quer criar mais uma proposta?</p>
+    <div class="modal-buttons">
+      <button id="btn-sim">Sim</button>
+      <button id="btn-nao">Não</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
