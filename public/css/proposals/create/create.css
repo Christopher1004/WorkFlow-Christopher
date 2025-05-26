@@ -128,7 +128,7 @@ textarea {
     height: 18px;
     cursor: pointer;
     background-color: var(--darkgray);
-    accent-color: var(--primary);
+    accent-color: var(--darkgray);
 }
 
 .form-container-button {
@@ -261,7 +261,6 @@ textarea {
     flex: 1;
   }
   
-  /* Estilização da barra de rolagem */
   .options-list::-webkit-scrollbar {
     width: 8px;
   }
@@ -279,3 +278,20 @@ textarea {
   .options-list::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
   }
+  .options-list li {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 15px;
+  margin: 4px;
+  background-color: var(--gray);
+  color: var(--white);
+  font-size: var(--f3);
+  cursor: pointer;
+  transition: 0.2s ease;
+  user-select: none;
+}
+
+.options-list li.selected {
+  background-color: var(--primary);
+  color: var(--white);
+}
