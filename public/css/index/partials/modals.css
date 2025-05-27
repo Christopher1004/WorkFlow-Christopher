@@ -23,7 +23,7 @@ body {
 .modal {
     background-color: #1a1a1a;
     border-radius: 10px;
-    width: 100%;
+    width: 75%;
     max-width: 80em;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
 }
