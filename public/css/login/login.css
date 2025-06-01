@@ -117,3 +117,28 @@ a {
     background-color: var(--darkgray);
     border: 1px solid var(--gray);
 }
+.btn-voltar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3c38a6;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-decoration: none;
+    margin: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-voltar:hover {
+    background-color: #2d2a7f;
+}
+
+.btn-voltar svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+}
