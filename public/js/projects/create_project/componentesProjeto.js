@@ -1,3 +1,10 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
+const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
+
+const supabase = createClient(supabaseURL, supabaseChave)
+
 document.addEventListener('DOMContentLoaded', () => {
     const textoButton = document.querySelector('.texto');
     const imagemButton = document.querySelector('.imagem');
@@ -55,29 +62,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputImagem.click();
             });
 
-            inputImagem.addEventListener("change", () => {
+            inputImagem.addEventListener("change", async () => {
                 if (inputImagem.files.length > 0) {
                     const file = inputImagem.files[0];
-                    const reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        divUpload.innerHTML = "";
-                        const img = document.createElement("img");
-                        img.src = e.target.result;
-                        img.style.maxWidth = "100%";
-                        img.style.maxHeight = "300px";
-                        img.style.borderRadius = "8px";
-                        img.style.marginTop = "10px";
-                        divUpload.appendChild(img);
-                    };
+                    const filename = `${Date.now()}_${file.name}`
 
-                    reader.readAsDataURL(file);
+                    const { data, error } = await supabase.storage
+                        .from('imagensprojeto')
+                        .upload(filename, file, {
+                            cacheControl: '3600',
+                            upsert: false
+
+                        })
+
+                    if (error) {
+                        console.error('Erro ao fazer upload no firebase:', error.message)
+                        return
+                    }
+
+                    const publicUrl = supabase.storage
+                        .from('imagensprojeto')
+                        .getPublicUrl(filename).data.publicUrl
+
+                    divUpload.innerHTML = ''
+                    const img = document.createElement('img')
+                    img.src = publicUrl
+                    img.style.maxWidth = '100%'
+                    img.style.maxHeight = '300px'
+                    img.style.borderRadius = '8px'
+                    img.style.marginTop = '10px'
+                    divUpload.appendChild(img)
+
+                    componente.dataset.imgUrl = publicUrl
                 }
             });
-            componente._divUpload = divUpload;
-            componente._inputImagem = inputImagem;
+            componente.classList.add('componente');
             componente.appendChild(inputImagem);
             componente.appendChild(divUpload);
+            componente._divUpload = divUpload;
+            componente._inputImagem = inputImagem;
         }
 
         areaComponentes.appendChild(componente);
@@ -152,18 +176,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (componente.dataset.tipo === "imagem") {
             const divUpload = componente._divUpload;
             const inputImagem = componente._inputImagem;
-        
+
             if (divUpload && inputImagem) {
                 console.log("Selecionando componente de imagem");
-        
+
                 divUpload.style.borderColor = '#ffcc00';
                 divUpload.style.backgroundColor = '#333';
                 divUpload.classList.add('componente', 'selecionado');
-        
+
                 inputImagem.classList.add('componente', 'selecionado');
             }
         }
-        
+
     }
 
 
@@ -203,3 +227,24 @@ function formatarTexto(comando, valor = null) {
         document.execCommand(comando, false, null);
     }
 }
+export function getEstadoElementos() {
+    const areaComponentes = document.querySelector('.content') // <- define aqui
+
+    const componentes = [...areaComponentes.children].map(componente => {
+        const id = componente.dataset.id
+        const tipo = componente.dataset.tipo
+
+        let conteudo
+
+        if (tipo === 'texto') {
+            conteudo = componente.innerHTML.trim()
+        }
+        else if (tipo === 'imagem') {
+            conteudo = componente.dataset.imgUrl || null
+        }
+        return { id, tipo, conteudo }
+    })
+    return componentes
+}
+
+
