@@ -14,6 +14,8 @@ function addTag(value) {
     <span class="remover" data-value="${value}">X</span>
   `;
   selectedTagsContainer.appendChild(tag);
+
+  atualizarPreview();
 }
 
 function removeTag(value) {
@@ -25,6 +27,8 @@ function removeTag(value) {
   optionsListItems.forEach(item => {
     if (item.dataset.value === value) item.classList.remove('selected');
   });
+
+  atualizarPreview();
 }
 
 selectedTagsContainer.addEventListener('click', (e) => {
@@ -128,3 +132,43 @@ document.getElementById('publicar').addEventListener('click', function (e) {
   });
 
 });
+
+function atualizarPreview() {
+  const titulo = document.getElementById('tituloProposta').value;
+  const descricao = document.getElementById('descricao').value;
+  const precoMin = parseFloat(document.getElementById('precoMin').value) || 0;
+  const precoMax = parseFloat(document.getElementById('precoMax').value) || 0;
+
+  // Atualiza título, descrição e faixa de preço
+  document.getElementById('preview-titulo').textContent = titulo || 'Título da proposta';
+  document.getElementById('preview-descricao').textContent = descricao || 'A descrição da proposta aparecerá aqui.';
+  document.getElementById('preview-preco').textContent = `R$${precoMin} - R$${precoMax}`;
+
+  // Atualiza a data com o dia atual
+  const dataAtual = new Date().toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+  document.getElementById('preview-data').textContent = `Criado em ${dataAtual}`;
+
+  // Atualiza tags selecionadas
+  const tags = [...document.querySelector('.selected-tags').querySelectorAll('.tag')]
+    .map(tag => tag.dataset.value || tag.textContent.trim());
+
+  const previewTags = document.getElementById('preview-tags');
+  previewTags.innerHTML = tags.length
+    ? tags.map(tag => `<span class="tag">${tag}</span>`).join('')
+    : '<span class="tag">Nenhuma tag</span>';
+}
+
+
+// Escuta os inputs do formulário
+['tituloProposta', 'descricao', 'precoMin', 'precoMax'].forEach(id => {
+  document.getElementById(id).addEventListener('input', atualizarPreview);
+});
+
+// Escuta mudanças nas tags
+selectedTagsContainer.addEventListener('DOMSubtreeModified', atualizarPreview);
+
+

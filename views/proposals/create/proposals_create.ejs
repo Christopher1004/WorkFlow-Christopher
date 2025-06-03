@@ -11,12 +11,32 @@
 
   <section class="section-2">
 
+
+
+
     <div class="container-1">
       <div class="form-container-descricao">
+        <div class="propostas">
+          <div class="proposta-card">
+            <div class="head">
+              <h3 id="preview-titulo">Título da proposta</h3>
+              <div class="price" id="preview-preco">R$0 - R$0</div>
+            </div>
+            <p class="criadoEm"><span id="preview-data">data de criação</data></span></p>
+            <div class="tags" id="preview-tags">
+              <span class="tag">Nenhuma tag</span>
+            </div>
+            <p class="description" id="preview-descricao">A descrição da proposta aparecerá aqui.</p>
+            <div class="footer">
+            </div>
+          </div>
+        </div>
         <textarea placeholder="descreva sua proposta para os freelancers" name="descricao" id="descricao"
           cols="30"></textarea>
       </div>
     </div>
+
+
 
     <div class="container-2">
       <div class="form-container">
@@ -82,17 +102,18 @@
   <section class="section-3">
   </section>
 
-<script src="js/proposals/create_proposals/proposals.js" defer></script>
+  <script src="js/proposals/create_proposals/proposals.js" defer></script>
 
-<div id="modal-confirmacao" class="modal hidden">
-  <div class="modal-content">
-    <p>Quer criar mais uma proposta?</p>
-    <div class="modal-buttons">
-      <button id="btn-sim">Sim</button>
-      <button id="btn-nao">Não</button>
+  <div id="modal-confirmacao" class="modal hidden">
+    <div class="modal-content">
+      <p>Quer criar mais uma proposta?</p>
+      <div class="modal-buttons">
+        <button id="btn-sim">Sim</button>
+        <button id="btn-nao">Não</button>
+      </div>
     </div>
   </div>
-</div>
 
 </body>
+
 </html>

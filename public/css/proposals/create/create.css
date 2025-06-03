@@ -96,7 +96,7 @@ textarea:focus {
 textarea {
     width: 100%;
     padding: 10px;
-    height:  100%;
+    height:  60%;
     font-family: 'work sans', sans-serif;
     color: var(--white);
     font-size: var(--f2);
@@ -371,4 +371,76 @@ textarea:disabled {
 
 #btn-voltar:hover {
   background-color: #444;
+}
+
+.proposta-card {
+  position: relative;
+  background-color: var(--darkgray);
+  color: var(--white);
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--gray);
+  box-shadow: 0 0 12px 2px rgba(155, 89, 255, 0.6); 
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.proposta-card:hover {
+  box-shadow: 0 0 18px 4px rgba(155, 89, 255, 0.8); 
+}
+
+
+.proposta-card .head {
+    font-size: var(--f4);
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.proposta-card .head:hover {
+    cursor: pointer;
+}
+
+.proposta-card .head .price {
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.proposta-card .head h3 {
+    margin: 0px;
+}
+
+.proposta-card .criadoEm {
+    font-size: var(--f3);
+    margin: 5px;
+    color: var(--gray);
+}
+
+.tags {
+    padding-block: 10px;
+}
+
+.tags .tag {
+    font-family: var(--f3);
+    background-color: var(--tertiary);
+    color: white;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.proposta-card .footer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    row-gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 5px;
+}
+
+.proposta-card .description {
+    margin-block: 5px;
 }
