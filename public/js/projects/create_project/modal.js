@@ -24,3 +24,4 @@ document.addEventListener('DOMContentLoaded', () => {
     proximoButton.addEventListener('click', showModal);
     modalOverlay.addEventListener('click', hideModal);
 })
+

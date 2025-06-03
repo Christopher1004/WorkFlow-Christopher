@@ -248,3 +248,32 @@ export function getEstadoElementos() {
 }
 
 
+
+export function renderizarComponente({ id, tipo, conteudo }) {
+    const componente = document.createElement('div');
+    componente.dataset.id = id;
+    componente.dataset.tipo = tipo;
+
+    if (tipo === 'texto') {
+        componente.classList.add('componenteTexto');
+        componente.innerHTML = conteudo;
+        componente.style.width = "100%";
+        componente.style.padding = "12px 16px";
+        componente.style.border = "1.5px solid #444";
+        componente.style.borderRadius = "8px";
+        componente.style.backgroundColor = "#1e1e1e";
+        componente.style.color = "#fff";
+        componente.style.fontSize = "16px";
+        componente.style.fontFamily = "sans-serif";
+        componente.style.minHeight = "40px";
+    } else if (tipo === 'imagem') {
+        const img = document.createElement('img');
+        img.src = conteudo;
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '300px';
+        img.style.borderRadius = '8px';
+        componente.appendChild(img);
+    }
+
+    return componente;
+}
