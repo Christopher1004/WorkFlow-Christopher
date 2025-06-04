@@ -22,6 +22,9 @@ app.use('/', indexRouter)
 const freelancerRouter = require('./routes/freelancer')
 app.use('/freelancer', freelancerRouter)
 
+const freelancersRouter = require('./routes/freelancers')
+app.use('/freelancers', freelancersRouter)
+
 const contratanteRouter = require('./routes/contratante')
 app.use('/contratante', contratanteRouter)
 
