@@ -18,33 +18,37 @@ app.use((req,res,next) => {
 
 const indexRouter = require('./routes/index')
 app.use('/', indexRouter)
-
-const freelancerRouter = require('./routes/freelancer')
+const freelancerRouter = require('./routes/Freelancer/freelancer')
 app.use('/freelancer', freelancerRouter)
-
 const freelancersRouter = require('./routes/freelancers')
 app.use('/freelancers', freelancersRouter)
-
-const contratanteRouter = require('./routes/contratante')
+const contratanteRouter = require('./routes/Contratante/contratante')
 app.use('/contratante', contratanteRouter)
-
 const registerRouter = require('./routes/register')
 app.use('/register', registerRouter)
-
 const loginRouter = require('./routes/login')
 app.use('/login', loginRouter)
-
 const propostaRouter = require('./routes/propostas')
 app.use('/propostas', propostaRouter)
-
 const perfilRouter = require('./routes/perfil')
 app.use('/perfil', perfilRouter)
-
 const criarPropostaRouter = require('./routes/criarPropostas')
 app.use('/criarProposta', criarPropostaRouter)
-
 const criarProjetosRoutes = require('./routes/criarProjeto')
 app.use('/criarProjeto', criarProjetosRoutes)
+
+const freelancerInfo = require('./routes/Freelancer/freeInfo')
+app.use('/freeInfo', freelancerInfo)
+const freePassos = require('./routes/Freelancer/passosFree')
+app.use('/freePassos', freePassos)
+
+const contraInfo = require('./routes/Contratante/infoContra')
+app.use('/contraInfo', contraInfo)
+const contraPasso = require('./routes/Contratante/contraPasso')
+app.use('/contraPasso', contraPasso)
+
+const confirmarEmail = require('./routes/confirmacaoEmail')
+app.use('/confirmarEmail', confirmarEmail)
 
 
 
