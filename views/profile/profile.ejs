@@ -1,10 +1,13 @@
 <link rel="stylesheet" href="/css/profile/profile.css">
 
 <section class="section-1">
-    <div class="banner">
-        <img src="" alt="banner">
-    </div>
+  <div class="banner" id="banner">
+    <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
+  </div>
 </section>
+
+<input type="file" id="inputBanner" accept="image/*" style="display:none;">
+
 
 <section class="section-2">
     <div class="container-1">
@@ -48,7 +51,32 @@
                         <p>Propostas finalizadas</p>
                     </div>
                 </div>
-                    <button class="editarinfos">Editar informações</button>
+                    <!-- Botão para abrir o modal -->
+<button class="editarinfos" onclick="abrirModal()">Editar informações</button>
+
+<!-- Modal -->
+<div id="modal-editar" class="modal">
+  <div class="modal-conteudo">
+    <span class="fechar" onclick="fecharModal()">&times;</span>
+    <h2>Editar Perfil</h2>
+    <form id="form-editar">
+      <label for="fotoPerfil">Foto de Perfil:</label>
+      <input type="file" id="fotoPerfil" accept="image/*"><br>
+
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" placeholder="Digite seu nome"><br>
+
+      <label for="tag">Tag (Cargo):</label>
+      <input type="text" id="tag" placeholder="Ex: UI Designer"><br>
+
+      <label for="bio">Biografia:</label>
+      <textarea id="bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea><br>
+
+      <button type="submit">Salvar alterações</button>
+    </form>
+  </div>
+</div>
+
             </div>
         </div>
     </div>
@@ -381,5 +409,89 @@
             </div>
         </main>
     </div>
+    
 </section>
-  </script>
+<script>
+    const inputFotoPerfil = document.getElementById('fotoPerfil'); 
+const userPhotoDiv = document.querySelector('.userPhoto'); 
+
+inputFotoPerfil.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  if (file && userPhotoDiv) {
+    const imageURL = URL.createObjectURL(file);
+    userPhotoDiv.style.backgroundImage = `url('${imageURL}')`;
+
+    const imgPerfilModal = document.querySelector('.profile-pic img');
+    if (imgPerfilModal) imgPerfilModal.src = imageURL;
+  }
+});
+
+</script>
+  <script>
+  function abrirModal() {
+    document.getElementById('modal-editar').style.display = 'block';
+  }
+
+  function fecharModal() {
+    document.getElementById('modal-editar').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('modal-editar');
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+<script>
+  const formEditar = document.getElementById('form-editar');
+
+  formEditar.addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    const inputNome = document.getElementById('nome').value.trim();
+    const inputTag = document.getElementById('tag').value.trim();
+    const inputBio = document.getElementById('bio').value.trim();
+
+    const h1Nome = document.querySelector('.nome h1');
+    const pTag = document.querySelector('.tag p');
+    const pBio = document.querySelector('.descricao p');
+
+    if (inputNome) h1Nome.textContent = inputNome;
+    if (inputTag) pTag.textContent = inputTag;
+    if (inputBio) pBio.textContent = inputBio;
+
+    const inputFoto = document.getElementById('fotoPerfil');
+    if (inputFoto.files && inputFoto.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgPerfil = document.querySelector('.profile-pic img');
+        imgPerfil.src = e.target.result;
+      };
+      reader.readAsDataURL(inputFoto.files[0]);
+    }
+
+    fecharModal();
+
+    formEditar.reset();
+  });
+</script>
+<script>
+  const banner = document.getElementById('banner');
+  const imgBanner = document.getElementById('imgBanner');
+  const inputBanner = document.getElementById('inputBanner');
+
+  banner.addEventListener('click', () => {
+    inputBanner.click(); // abre o seletor de arquivo
+  });
+
+  inputBanner.addEventListener('change', () => {
+    const file = inputBanner.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      imgBanner.src = url;
+    }
+  });
+</script>
+
+
