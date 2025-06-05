@@ -24,16 +24,16 @@ const db = getDatabase(app);
 const container = document.querySelector("#card-zone");
 const modal = document.getElementById("modal");
 
-function criarCardProjeto(id, { titulo, descricao, datacriacao }) {
+function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl }) {
     console.log("Criando card para projeto:", id, titulo);
     const card = document.createElement("div");
     card.className = "card_projeto";
-    card.dataset.projetoId = id; // <<<< Adiciona aqui!
+    card.dataset.projetoId = id; 
 
     card.innerHTML = `
     <div class="capa">
       <figure>
-        <img src="" alt="thumbnail" class="thumbnail">
+        <img src="${capaUrl}" alt="thumbnail" class="thumbnail">
       </figure>
       <div class="thumbnail-overlay">
         <div class="project-overlay-content">
@@ -92,6 +92,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao) {
                         const img = document.createElement('img');
                         img.src = comp.conteudo || '';
                         img.alt = 'Imagem do projeto';
+                        img.style.width = '100%'
                         img.style.maxWidth = '100%';
                         compDiv.appendChild(img);
                     } else if (comp.tipo === 'texto') {
