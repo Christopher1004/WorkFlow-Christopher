@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Sincronizando a ordem entre as áreas 
+    
     new Sortable(areaCamada, {
         animation: 150,
         onEnd: () => {
@@ -228,7 +228,7 @@ function formatarTexto(comando, valor = null) {
     }
 }
 export function getEstadoElementos() {
-    const areaComponentes = document.querySelector('.content') // <- define aqui
+    const areaComponentes = document.querySelector('.content') 
 
     const componentes = [...areaComponentes.children].map(componente => {
         const id = componente.dataset.id
@@ -277,3 +277,40 @@ export function renderizarComponente({ id, tipo, conteudo }) {
 
     return componente;
 }
+
+const inputCapa = document.getElementById('capa')
+const divCapaPreview = document.getElementById('capaPreview')
+
+divCapaPreview.addEventListener('click', () => inputCapa.click())
+
+inputCapa.addEventListener('change', async () => {
+    if(inputCapa.files.length > 0){
+        const file = inputCapa.files[0]
+        const filename = `${Date.now()}_${file.name}`
+
+        const { data, error} = await supabase.storage
+        .from('imagensprojeto')
+        .upload(filename, file, {
+            cacheControl: '3600',
+            upsert: false
+        })
+        if(error){
+            console.error('Erro ao fazer upload no supabase ', error.message)
+            return
+        }
+        const publicUrl = supabase.storage
+        .from('imagensprojeto')
+        .getPublicUrl(filename).data.publicUrl
+
+        divCapaPreview.innerHTML = ''
+        const img = document.createElement('img')
+        img.src = publicUrl
+        img.style.maxWidth = '100%'
+        img.style.height = '300px'
+        divCapaPreview.appendChild(img)
+
+        divCapaPreview.dataset.imgUrl = publicUrl
+
+
+    }
+})

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 
@@ -19,48 +19,46 @@ const db = getDatabase(app)
 
 import { getEstadoElementos } from "./componentesProjeto.js";
 
+const divCapaPreview = document.getElementById('capaPreview');
 
-function salvarProjetoBanco(){
-    const titulo = document.getElementById('titulo').value
-    const descricao = document.getElementById('descricao').value
-    const dataCriacao = new Date().toISOString()
+async function salvarProjetoBanco() {
+    try {
+        const titulo = document.getElementById('titulo').value;
+        const descricao = document.getElementById('descricao').value;
+        const dataCriacao = new Date().toISOString();
 
-    const projetoRef = push(ref(db, 'Projetos/'))
-    const projetoID = projetoRef.key
+        // Pega a URL da imagem da capa do dataset
+        const capaUrl = divCapaPreview.dataset.imgUrl || null;
 
-    const dadosProjetos = {
-        titulo,
-        descricao,
-        dataCriacao
-    }
+        const dadosProjetos = {
+            titulo,
+            descricao,
+            dataCriacao,
+            capaUrl // adiciona aqui
+        };
 
-    set(projetoRef, dadosProjetos)
-    .then(() => {
-        console.log('projeto salvo com sucesso')
+        const projetoRef = push(ref(db, 'Projetos/'));
+        const projetoID = projetoRef.key;
+
+        await set(projetoRef, dadosProjetos);
+        console.log('Projeto salvo com sucesso');
 
         document.querySelectorAll('.content > div').forEach(componente => {
-            componente.dataset.projectId = projetoID
-        })
+            componente.dataset.projectId = projetoID;
+        });
 
-        const estado = getEstadoElementos()
+        const estado = getEstadoElementos();
         const componentesComIDProjeto = estado.map((c, index) => ({
             ...c,
             projetoID,
             ordem: index
-        }))
+        }));
 
-        set(ref(db, `componentesProjeto/${projetoID}`), componentesComIDProjeto)
-        .then(() => {
-            console.log('componentes salvos com sucesso')
-        })
-        .catch((error) => {
-            console.error('Erro ao salvar componentes', error)
-        })
-    })
-    .catch((error) => {
-            console.error('Erro ao salvar projeto:', error);
-        });
-
-
+        await set(ref(db, `componentesProjeto/${projetoID}`), componentesComIDProjeto);
+        console.log('Componentes salvos com sucesso');
+    } catch (error) {
+        console.error('Erro ao salvar projeto ou componentes:', error);
+    }
 }
+
 document.getElementById('btnFinalizar').addEventListener('click', salvarProjetoBanco);
