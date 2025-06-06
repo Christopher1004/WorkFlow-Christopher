@@ -21,20 +21,20 @@ import { getEstadoElementos } from "./componentesProjeto.js";
 
 const divCapaPreview = document.getElementById('capaPreview');
 
-async function salvarProjetoBanco() {
+
+export async function salvarProjetoBanco() {
     try {
         const titulo = document.getElementById('titulo').value;
         const descricao = document.getElementById('descricao').value;
         const dataCriacao = new Date().toISOString();
 
-        // Pega a URL da imagem da capa do dataset
         const capaUrl = divCapaPreview.dataset.imgUrl || null;
 
         const dadosProjetos = {
             titulo,
             descricao,
             dataCriacao,
-            capaUrl // adiciona aqui
+            capaUrl 
         };
 
         const projetoRef = push(ref(db, 'Projetos/'));
@@ -56,9 +56,34 @@ async function salvarProjetoBanco() {
 
         await set(ref(db, `componentesProjeto/${projetoID}`), componentesComIDProjeto);
         console.log('Componentes salvos com sucesso');
+        return true;
     } catch (error) {
         console.error('Erro ao salvar projeto ou componentes:', error);
+        return false
     }
 }
 
-document.getElementById('btnFinalizar').addEventListener('click', salvarProjetoBanco);
+document.getElementById('btnFinalizar').addEventListener('click', () => {
+    document.getElementById('modal-confirmacao').classList.remove('hidden')
+});
+
+document.getElementById('btn-sim').addEventListener('click',  async () => {
+    const sucesso = await salvarProjetoBanco()
+    const modalSucesso = document.getElementById('modal-sucesso')
+    const mensagemModal = document.getElementById('mensagemModal')
+
+    if(sucesso){
+        mensagemModal.textContent = 'Projeto salvo com sucesso!'
+    }
+    else{   
+        mensagemModal.textContent = 'Erro ao salvar projeto'
+    }
+    document.getElementById('modal-confirmacao').classList.add('hidden')
+    modalSucesso.classList.remove('hidden')
+    
+})
+
+document.getElementById('btn-nao').addEventListener('click', () => {
+    document.getElementById('modal-confirmacao').classList.add('hidden')
+})
+
