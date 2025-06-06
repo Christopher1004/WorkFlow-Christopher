@@ -27,6 +27,7 @@ const btnLogin = document.getElementById('btnEntrar');
 const btnRegister = document.getElementById('btnCriarConta');
 const userControls = document.getElementById('userControls');
 const userPhoto = document.getElementById('userPhoto');
+const userPhotoDrop = document.getElementById('userPhotoDrop')
 const btnAdd = document.getElementById('btnAdd');
 const dropDownLogout = document.getElementById('dropDownLogout');
 const dropDown = document.getElementById('dropDownMenu');
@@ -39,19 +40,29 @@ onAuthStateChanged(auth, async (user) => {
 
         if (userPhoto) {
             const db = getDatabase();
-            const userRef = ref(db, 'Freelancer/' + user.uid);
+            const uid = user.uid
 
+            const freelancerRef = ref(db, 'Freelancer/' + uid);
+            const contratanteRef = ref(db, 'Contratante/' + uid);
             try {
-                const snapshot = await get(userRef);
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const photoURL = userData.foto_perfil || DEFAULT_USER_PHOTO;
-                    userPhoto.style.backgroundImage = `url('${photoURL}')`;
-                    userPhoto.style.display = 'block';
-                } else {
-                    userPhoto.style.backgroundImage = `url('${DEFAULT_USER_PHOTO}')`;
-                    userPhoto.style.display = 'block';
+                let userData = null
+                let snapshot = await get(freelancerRef);
+
+                if(snapshot.exists()){
+                    userData = snapshot.val()
                 }
+                else{
+                    snapshot = await get(contratanteRef)
+                    if(snapshot.exists()){
+                        userData = snapshot.val()
+                    }
+                }
+                const photoUrl = userData?.foto_perfil || DEFAULT_USER_PHOTO
+                
+                userPhoto.style.backgroundImage = `url('${photoUrl}')`
+                userPhoto.style.display = 'block'
+
+                if(userPhotoDrop) userPhotoDrop.src = photoUrl
             } catch (error) {
                 console.error("Erro ao buscar avatar:", error);
                 userPhoto.style.backgroundImage = `url('${DEFAULT_USER_PHOTO}')`;
@@ -73,22 +84,22 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         if (btnAdd) {
-    btnAdd.addEventListener('click', async () => {
-        try {
-            const freelancerRef = ref(db, 'Freelancer/' + user.uid);
-            const freelancerSnap = await get(freelancerRef);
+            btnAdd.addEventListener('click', async () => {
+                try {
+                    const freelancerRef = ref(db, 'Freelancer/' + user.uid);
+                    const freelancerSnap = await get(freelancerRef);
 
-            if (freelancerSnap.exists()) {
-                window.location.href = '/criarProjeto';
-            } else {
-                window.location.href = '/criarProposta';
-            }
-        } catch (error) {
-            console.error('Erro ao verificar tipo de usuário:', error);
-            alert('Erro ao verificar tipo de usuário. Tente novamente.');
+                    if (freelancerSnap.exists()) {
+                        window.location.href = '/criarProjeto';
+                    } else {
+                        window.location.href = '/criarProposta';
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar tipo de usuário:', error);
+                    alert('Erro ao verificar tipo de usuário. Tente novamente.');
+                }
+            });
         }
-    });
-}
 
 
     } else {
@@ -154,7 +165,7 @@ dropDown.addEventListener('click', (e) => {
     e.stopPropagation()
 })
 
-const DEFAULT_USER_PHOTO = 'https://www.gravatar.com/avatar/?d=mp';
+const DEFAULT_USER_PHOTO = '/assets/image/defaultIcon.jpg';
 
 const popupOverlay = document.getElementById('popupOverlay');
 const closeBtn = document.getElementById('closePopup');
