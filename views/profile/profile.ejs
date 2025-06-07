@@ -42,7 +42,7 @@
             <div class="container-card-3">
                 <div class="container-card-3-3">
                     <div class="container-infos projetos-realizados">
-                        <span class="quantidade">10</span>
+                        <span class="quantidade" id="quantidadeProjetos">10</span>
                         <p>Projetos realizados</p>
                     </div>
                     <div class="container-infos propostas-finalizadas">
@@ -111,9 +111,7 @@
     </div>
 
 </section>
-
 <script>
-    // Modal open/close + popular inputs
     function abrirModal() {
         document.getElementById('modal-editar').style.display = 'block';
 
@@ -137,9 +135,7 @@
             modal.style.display = "none";
         }
     }
-</script>
 
-<script>
     // Atualiza foto de perfil preview no modal
     const inputFotoPerfil = document.getElementById('fotoPerfil');
 
@@ -151,10 +147,6 @@
             if (imgPerfilModal) imgPerfilModal.src = imageURL;
         }
     });
-</script>
-
-<script>
-    // Banner e input banner
     const banner = document.getElementById('banner');
     const imgBanner = document.getElementById('imgBanner');
     const inputBanner = document.getElementById('inputBanner');
@@ -171,10 +163,10 @@
         }
     });
 </script>
-
 <script type="module">
+    import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, update, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
     import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
     const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co";
@@ -312,3 +304,4 @@
         }
     });
 </script>
+<script type="module" src="/js/perfil.js"></script>

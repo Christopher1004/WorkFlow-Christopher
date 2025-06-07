@@ -24,7 +24,7 @@ const db = getDatabase(app);
 const container = document.querySelector("#card-zone");
 const modal = document.getElementById("modal");
 
-function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl }) {
+function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl, userId }) {
     console.log("Criando card para projeto:", id, titulo);
     const card = document.createElement("div");
     card.className = "card_projeto";
@@ -51,11 +51,29 @@ function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl }) {
       </div>
     </div>
     <div class="autor">
-      <img src="" alt="Profile pic">
+      <img class='autor-img' src="" alt="Profile pic">
       <h2 class="username">User</h2>
     </div>
   `;
 
+    if(userId){
+        const autorRef = ref(db, `Freelancer/${userId}`)
+        get(autorRef)
+        .then((snapshot) => {
+            if(snapshot.exists()){
+                const autor = snapshot.val()
+
+                const nome = autor.nome
+                const foto = autor.foto_perfil
+
+                const imgCard = card.querySelector('.autor-img')
+                const nomeCard = card.querySelector('.username')
+
+                imgCard.src = foto
+                nomeCard.textContent = nome
+            }
+        })
+    }
     card.addEventListener("click", () => abrirModalProjeto(id, titulo, descricao, datacriacao));
     container.appendChild(card);
 }
