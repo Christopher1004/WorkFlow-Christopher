@@ -11,13 +11,15 @@
         <div class="container-area">
           <label for="area">Área</label>
           <select name="area" id="area">
-            <option value="frontend">FrontEnd</option>
-            <option value="designDeInteriores">Design de interiores</option>
-            <option value="designDeInterface">Design de Interface</option>
-            <option value="arquiteto">Arquiteto</option>
-            <option value="paisagismo">Paisagismo</option>
-            <option value="design3d">Design 3D</option>
-            <option value="posterDesign">Poster Design</option>
+            <option value="Todos">Todos</option>
+            <option value="Design">Design</option>
+            <option value="UI design">UI Design</option>
+            <option value="3D design">3D Design</option>
+            <option value="Canva design">Canva design</option>
+            <option value="UX">UX</option>
+            <option value="Web design">Web design</option>
+            <option value="Interior design">interior design</option>
+            <option value="Poster design">Poster Design</option>
           </select>
         </div>
         <div class="container-periodo">
@@ -34,12 +36,12 @@
             <input type="text" name="min" id="precomin">
           </div>
           <div class="max">
-            <label for="min">Preço Max.</label>
+            <label for="max">Preço Max.</label>
             <input type="text" name="max" id="precomax">
           </div>
         </div>
         <div class="container-botao">
-          <button type="submit">Filtrar</button>
+          <button type="submit" id="btnFiltrar">Filtrar</button>
         </div>
       </div>
     </div>
@@ -48,6 +50,7 @@
       <!-- Cards serão inseridos aqui via JS -->
     </div>
   </section>
+
   <script type="module">
     import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -71,18 +74,25 @@
     const db = getDatabase(app);
 
     const propostasContainer = document.querySelector('.section2 .propostas');
+    const btnFiltrar = document.getElementById('btnFiltrar');
+
+    // Guarda as propostas para filtrar localmente
+    let propostas = [];
 
     function formatarData(isoString) {
       const data = new Date(isoString);
       return data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
     }
 
-    onValue(ref(db, 'Propostas'), (snapshot) => {
+    function renderizarPropostas(propostasFiltradas) {
       propostasContainer.innerHTML = '';
 
-      snapshot.forEach(childSnap => {
-        const p = childSnap.val();
+      if (propostasFiltradas.length === 0) {
+        propostasContainer.innerHTML = '<p>Nenhuma proposta encontrada com os filtros selecionados.</p>';
+        return;
+      }
 
+      propostasFiltradas.forEach(p => {
         const card = document.createElement('div');
         card.classList.add('proposta-card');
 
@@ -107,9 +117,58 @@
             </div>
           </div>
         `;
-
         propostasContainer.appendChild(card);
       });
+    }
+
+    function filtrarPropostas() {
+      const area = document.getElementById('area').value;
+      const periodo = document.getElementById('periodo').value;
+      const precoMin = parseFloat(document.getElementById('precomin').value) || 0;
+      const precoMax = parseFloat(document.getElementById('precomax').value) || Infinity;
+
+      const agora = new Date();
+
+      const propostasFiltradas = propostas.filter(p => {
+        const dataCriacao = new Date(p.datacriacao);
+
+        // Se "Todos", ignora filtro de área
+        const dentroDaArea = (area === "Todos") ? true : p.tags.includes(area);
+
+        // Filtrar por período
+        let dentroDoPeriodo = true;
+        if (periodo === 'hoje') {
+          dentroDoPeriodo = dataCriacao.toDateString() === agora.toDateString();
+        } else if (periodo === 'ultimaSemana') {
+          const seteDiasAtras = new Date();
+          seteDiasAtras.setDate(agora.getDate() - 7);
+          dentroDoPeriodo = dataCriacao >= seteDiasAtras;
+        } else if (periodo === 'ultimoMes') {
+          const trintaDiasAtras = new Date();
+          trintaDiasAtras.setDate(agora.getDate() - 30);
+          dentroDoPeriodo = dataCriacao >= trintaDiasAtras;
+        }
+
+        // Filtrar por preço
+        const dentroDoPreco = p.precoMin >= precoMin && p.precoMax <= precoMax;
+
+        return dentroDaArea && dentroDoPeriodo && dentroDoPreco;
+      });
+
+      renderizarPropostas(propostasFiltradas);
+    }
+
+    onValue(ref(db, 'Propostas'), (snapshot) => {
+      propostas = [];
+      snapshot.forEach(childSnap => {
+        propostas.push(childSnap.val());
+      });
+      renderizarPropostas(propostas);
+    });
+
+    btnFiltrar.addEventListener('click', (e) => {
+      e.preventDefault();
+      filtrarPropostas();
     });
   </script>
 </body>
