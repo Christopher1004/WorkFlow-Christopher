@@ -1,306 +1,314 @@
 <link rel="stylesheet" href="/css/profile/profile.css">
 
 <section class="section-1">
-  <div class="banner" id="banner">
-    <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
-  </div>
+    <div class="banner" id="banner">
+        <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
+    </div>
 </section>
 
 <input type="file" id="inputBanner" accept="image/*" style="display:none;">
 
 <section class="section-2">
-  <div class="container-1">
-    <div class="card-infos">
-      <div class="container-card-1">
-        <div class="profile-pic">
-          <img src="" alt="pic">
-        </div>
-        <div class="nome">
-          <h1>Nome</h1>
-          <div class="tag">
-            <p>UI Designer</p>
-          </div>
-        </div>
-        <div class="experiencia">
-          <span>Profissional</span>
-          <div class="exp-blocks">
-            <div class="exp"></div>
-            <div class="exp"></div>
-            <div class="exp"></div>
-            <div class="exp"></div>
-          </div>
-        </div>
-        <div class="container-card-2">
-          <div class="descricao">
-            <p>Olá, estou em busca de um especialista em tráfego pago para
-              gerenciar e otimizar campanhas no Instagram, com o objetivo de atrair
-              novos clientes e aumentar as vendas da minha empresa. Sou correspondente
-              bancário e o ig da minha empresa para avaliação</p>
-          </div>
-        </div>
-      </div>
-      <div class="container-card-3">
-        <div class="container-card-3-3">
-          <div class="container-infos projetos-realizados">
-            <span class="quantidade">10</span>
-            <p>Projetos realizados</p>
-          </div>
-          <div class="container-infos propostas-finalizadas">
-            <span class="quantidade">10</span>
-            <p>Propostas finalizadas</p>
-          </div>
-        </div>
-
-        <!-- Botão para abrir o modal -->
-        <button class="editarinfos" onclick="abrirModal()">Editar informações</button>
-
-        <!-- Modal -->
-        <div id="modal-editar" class="modal">
-          <div class="modal-conteudo">
-            <span class="fechar" onclick="fecharModal()">&times;</span>
-            <h2>Editar Perfil</h2>
-            <form id="form-editar">
-              <label for="fotoPerfil">Foto de Perfil:</label>
-              <input type="file" id="fotoPerfil" accept="image/*"><br>
-
-              <label for="nome">Nome:</label>
-              <input type="text" id="nome" placeholder="Digite seu nome"><br>
-
-              <label for="tag">Tag (Cargo):</label>
-              <input type="text" id="tag" placeholder="Ex: UI Designer"><br>
-
-              <label for="bio">Biografia:</label>
-              <textarea id="bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea><br>
-
-              <button type="submit">Salvar alterações</button>
-            </form>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <div class="container-2">
-    <main class="card-zone">
-      <div class="card_projeto">
-        <div class="capa">
-          <figure>
-            <img src="" alt="" class="thumbnail">
-          </figure>
-          <div class="thumbnail-overlay">
-            <div class="project-overlay-content">
-              <div class="like">
-                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                    fill="none" stroke="black" />
-                </svg>
-              </div>
-              <div class="project-title">
-                <h1>Project 1</h1>
-              </div>
+    <div class="container-1">
+        <div class="card-infos">
+            <div class="container-card-1">
+                <div class="profile-pic">
+                    <img src="" alt="pic">
+                </div>
+                <div class="nome">
+                    <h1>Nome</h1>
+                    <div class="tag">
+                        <p>UI Designer</p>
+                    </div>
+                </div>
+                <div class="experiencia">
+                    <span>Profissional</span>
+                    <div class="exp-blocks">
+                        <div class="exp"></div>
+                        <div class="exp"></div>
+                        <div class="exp"></div>
+                        <div class="exp"></div>
+                    </div>
+                </div>
+                <div class="container-card-2">
+                    <div class="descricao">
+                        <p>Olá, estou em busca de um especialista em tráfego pago para
+                            gerenciar e otimizar campanhas no Instagram, com o objetivo de atrair
+                            novos clientes e aumentar as vendas da minha empresa. Sou correspondente
+                            bancário e o ig da minha empresa para avaliação</p>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="container-card-3">
+                <div class="container-card-3-3">
+                    <div class="container-infos projetos-realizados">
+                        <span class="quantidade">10</span>
+                        <p>Projetos realizados</p>
+                    </div>
+                    <div class="container-infos propostas-finalizadas">
+                        <span class="quantidade">10</span>
+                        <p>Propostas finalizadas</p>
+                    </div>
+                </div>
+
+                <!-- Botão para abrir o modal -->
+                <button class="editarinfos" onclick="abrirModal()">Editar informações</button>
+
+                <!-- Modal -->
+                <div id="modal-editar" class="modal">
+                    <div class="modal-conteudo">
+                        <span class="fechar" onclick="fecharModal()">&times;</span>
+                        <h2>Editar Perfil</h2>
+                        <form id="form-editar">
+                            <label for="fotoPerfil">Foto de Perfil:</label>
+                            <input type="file" id="fotoPerfil" accept="image/*"><br>
+
+                            <label for="nome">Nome:</label>
+                            <input type="text" id="nome" placeholder="Digite seu nome"><br>
+
+                            <label for="tag">Tag (Cargo):</label>
+                            <input type="text" id="tag" placeholder="Ex: UI Designer"><br>
+
+                            <label for="bio">Biografia:</label>
+                            <textarea id="bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea><br>
+
+                            <button type="submit">Salvar alterações</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="autor">
-          <img src="" alt="Profile pic">
-          <h2 class="username">User</h2>
-        </div>
-      </div>
-    </main>
-  </div>
+    </div>
+    <div class="container-2">
+        <main class="card-zone">
+            <div class="card_projeto">
+                <div class="capa">
+                    <figure>
+                        <img src="" alt="" class="thumbnail">
+                    </figure>
+                    <div class="thumbnail-overlay">
+                        <div class="project-overlay-content">
+                            <div class="like">
+                                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                        fill="none" stroke="black" />
+                                </svg>
+                            </div>
+                            <div class="project-title">
+                                <h1>Project 1</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="autor">
+                    <img src="" alt="Profile pic">
+                    <h2 class="username">User</h2>
+                </div>
+            </div>
+        </main>
+    </div>
 
 </section>
 
 <script>
-  // Modal open/close + popular inputs
-  function abrirModal() {
-    document.getElementById('modal-editar').style.display = 'block';
+    // Modal open/close + popular inputs
+    function abrirModal() {
+        document.getElementById('modal-editar').style.display = 'block';
 
-    // Popula os campos com dados atuais
-    const h1Nome = document.querySelector('.nome h1');
-    const pTag = document.querySelector('.tag p');
-    const pBio = document.querySelector('.descricao p');
+        // Popula os campos com dados atuais
+        const h1Nome = document.querySelector('.nome h1');
+        const pTag = document.querySelector('.tag p');
+        const pBio = document.querySelector('.descricao p');
 
-    document.getElementById('nome').value = h1Nome.textContent || '';
-    document.getElementById('tag').value = pTag.textContent || '';
-    document.getElementById('bio').value = pBio.textContent || '';
-  }
-
-  function fecharModal() {
-    document.getElementById('modal-editar').style.display = 'none';
-  }
-
-  window.onclick = function (event) {
-    const modal = document.getElementById('modal-editar');
-    if (event.target === modal) {
-      modal.style.display = "none";
+        document.getElementById('nome').value = h1Nome.textContent || '';
+        document.getElementById('tag').value = pTag.textContent || '';
+        document.getElementById('bio').value = pBio.textContent || '';
     }
-  }
+
+    function fecharModal() {
+        document.getElementById('modal-editar').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        const modal = document.getElementById('modal-editar');
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
 </script>
 
 <script>
-  // Atualiza foto de perfil preview no modal
-  const inputFotoPerfil = document.getElementById('fotoPerfil');
+    // Atualiza foto de perfil preview no modal
+    const inputFotoPerfil = document.getElementById('fotoPerfil');
 
-  inputFotoPerfil.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      const imgPerfilModal = document.querySelector('.profile-pic img');
-      if (imgPerfilModal) imgPerfilModal.src = imageURL;
-    }
-  });
+    inputFotoPerfil.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const imageURL = URL.createObjectURL(file);
+            const imgPerfilModal = document.querySelector('.profile-pic img');
+            if (imgPerfilModal) imgPerfilModal.src = imageURL;
+        }
+    });
 </script>
 
 <script>
-  // Banner e input banner
-  const banner = document.getElementById('banner');
-  const imgBanner = document.getElementById('imgBanner');
-  const inputBanner = document.getElementById('inputBanner');
+    // Banner e input banner
+    const banner = document.getElementById('banner');
+    const imgBanner = document.getElementById('imgBanner');
+    const inputBanner = document.getElementById('inputBanner');
 
-  banner.addEventListener('click', () => {
-    inputBanner.click();
-  });
+    banner.addEventListener('click', () => {
+        inputBanner.click();
+    });
 
-  inputBanner.addEventListener('change', () => {
-    const file = inputBanner.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      imgBanner.src = url;
-    }
-  });
+    inputBanner.addEventListener('change', () => {
+        const file = inputBanner.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            imgBanner.src = url;
+        }
+    });
 </script>
 
 <script type="module">
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-  import { createClient } from "https://esm.sh/@supabase/supabase-js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-  const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co";
-  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE";
-  const supabase = createClient(supabaseURL, supabaseKey);
+    const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE";
+    const supabase = createClient(supabaseURL, supabaseKey);
 
-  const auth = getAuth();
-  const db = getDatabase();
+    const auth = getAuth();
+    const db = getDatabase();
 
-  const imgPerfil = document.querySelector('.profile-pic img');
-  const h1Nome = document.querySelector('.nome h1');
-  const pTag = document.querySelector('.tag p');
-  const pBio = document.querySelector('.descricao p');
+    const imgPerfil = document.querySelector('.profile-pic img');
+    const h1Nome = document.querySelector('.nome h1');
+    const pTag = document.querySelector('.tag p');
+    const pBio = document.querySelector('.descricao p');
+    const menuUserName = document.querySelector('.user-name');
 
-  let currentUserUid = null;
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      currentUserUid = user.uid;
-      console.log('Usuário autenticado:', currentUserUid);
+    let currentUserUid = null;
 
-      try {
-        const userRef = ref(db, `Freelancer/${currentUserUid}`);
-        const snapshot = await get(userRef);
-        if (snapshot.exists()) {
-          const data = snapshot.val();
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentUserUid = user.uid;
+            console.log('Usuário autenticado:', currentUserUid);
 
-          if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
-          if (data.nome) h1Nome.textContent = data.nome;
-          if (data.tag) pTag.textContent = data.tag;
-          if (data.bio) pBio.textContent = data.bio;
-          if (data.banner) imgBanner.src = data.banner;
+            try {
+                const userRef = ref(db, `Freelancer/${currentUserUid}`);
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
 
-          console.log('Dados carregados do usuário:', data);
+                    if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
+                    if (data.nome) h1Nome.textContent = data.nome;
+                    if (data.tag) pTag.textContent = data.tag;
+                    if (data.bio) pBio.textContent = data.bio;
+                    if (data.banner) imgBanner.src = data.banner;
+                    if (data.nome && menuUserName) menuUserName.textContent = data.nome;
+
+
+                    console.log('Dados carregados do usuário:', data);
+                }
+            } catch (err) {
+                console.error("Erro ao carregar dados do usuário:", err);
+            }
+        } else {
+            currentUserUid = null;
+            console.log('Usuário não autenticado');
         }
-      } catch (err) {
-        console.error("Erro ao carregar dados do usuário:", err);
-      }
-    } else {
-      currentUserUid = null;
-      console.log('Usuário não autenticado');
-    }
-  });
+    });
 
-  async function uploadImageToSupabase(file, folder) {
-    const filePath = `${folder}/${Date.now()}_${file.name}`;
-    const { data, error } = await supabase.storage
-      .from('freelancer-photos')
-      .upload(filePath, file);
+    async function uploadImageToSupabase(file, folder) {
+        const filePath = `${folder}/${Date.now()}_${file.name}`;
+        const { data, error } = await supabase.storage
+            .from('freelancer-photos')
+            .upload(filePath, file);
 
-    if (error) throw error;
+        if (error) throw error;
 
-    const { data: publicUrlData } = supabase.storage
-      .from('freelancer-photos')
-      .getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage
+            .from('freelancer-photos')
+            .getPublicUrl(filePath);
 
-    return publicUrlData.publicUrl;
-  }
-
-  const formEditar = document.getElementById('form-editar');
-
-  formEditar.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    if (!currentUserUid) {
-      alert("Usuário não autenticado");
-      return;
+        return publicUrlData.publicUrl;
     }
 
-    const nome = document.getElementById('nome').value.trim();
-    const tag = document.getElementById('tag').value.trim();
-    const bio = document.getElementById('bio').value.trim();
-    const fotoPerfilInput = document.getElementById('fotoPerfil');
-    const fotoPerfilFile = fotoPerfilInput.files[0];
+    const formEditar = document.getElementById('form-editar');
 
-    const updates = {};
+    formEditar.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    if (nome) updates.nome = nome;
-    if (tag) updates.tag = tag;
-    if (bio) updates.bio = bio;
+        if (!currentUserUid) {
+            alert("Usuário não autenticado");
+            return;
+        }
 
-    try {
-      if (fotoPerfilFile) {
-        const fotoUrl = await uploadImageToSupabase(fotoPerfilFile, currentUserUid);
-        updates.foto_perfil = fotoUrl;
-        imgPerfil.src = fotoUrl;
-      }
+        const nome = document.getElementById('nome').value.trim();
+        const tag = document.getElementById('tag').value.trim();
+        const bio = document.getElementById('bio').value.trim();
+        const fotoPerfilInput = document.getElementById('fotoPerfil');
+        const fotoPerfilFile = fotoPerfilInput.files[0];
+        const menuUserName = document.querySelector('.user-name');
 
-      const userRef = ref(db, `Freelancer/${currentUserUid}`);
-      await update(userRef, updates);
+        const updates = {};
 
-      // Atualiza os textos na tela (mesmo que o Firebase já esteja atualizado)
-      if (updates.nome !== undefined) h1Nome.textContent = updates.nome;
-      if (updates.tag !== undefined) pTag.textContent = updates.tag;
-      if (updates.bio !== undefined) pBio.textContent = updates.bio;
+        if (nome) updates.nome = nome;
+        if (tag) updates.tag = tag;
+        if (bio) updates.bio = bio;
 
-      console.log("Dados atualizados:", updates);
+        try {
+            if (fotoPerfilFile) {
+                const fotoUrl = await uploadImageToSupabase(fotoPerfilFile, currentUserUid);
+                updates.foto_perfil = fotoUrl;
+                imgPerfil.src = fotoUrl;
+            }
 
-      formEditar.reset();
-      fecharModal();
-    } catch (err) {
-      console.error("Erro ao atualizar dados:", err);
-      alert("Erro ao salvar. Tente novamente.");
-    }
-  });
+            const userRef = ref(db, `Freelancer/${currentUserUid}`);
+            await update(userRef, updates);
 
-  // Evento para atualizar banner no Supabase e Firebase (similar a fotoPerfil)
-  inputBanner.addEventListener('change', async () => {
-    const file = inputBanner.files[0];
-    if (!file) return;
+            // Atualiza os textos na tela (mesmo que o Firebase já esteja atualizado)
+            if (updates.nome !== undefined) h1Nome.textContent = updates.nome;
+            if (updates.tag !== undefined) pTag.textContent = updates.tag;
+            if (updates.bio !== undefined) pBio.textContent = updates.bio;
+            if (menuUserName && updates.nome !== undefined) {
+                menuUserName.textContent = updates.nome;
+            }
 
-    if (!currentUserUid) {
-      alert("Usuário não autenticado");
-      return;
-    }
+            console.log("Dados atualizados:", updates);
 
-    try {
-      const bannerUrl = await uploadImageToSupabase(file, currentUserUid);
-      imgBanner.src = bannerUrl;
+            formEditar.reset();
+            fecharModal();
+        } catch (err) {
+            console.error("Erro ao atualizar dados:", err);
+            alert("Erro ao salvar. Tente novamente.");
+        }
+    });
 
-      const userRef = ref(db, `Freelancer/${currentUserUid}`);
-      await update(userRef, { banner: bannerUrl });
+    // Evento para atualizar banner no Supabase e Firebase (similar a fotoPerfil)
+    inputBanner.addEventListener('change', async () => {
+        const file = inputBanner.files[0];
+        if (!file) return;
 
-      console.log("Banner atualizado:", bannerUrl);
-    } catch (error) {
-      console.error("Erro ao atualizar banner:", error);
-    }
-  });
+        if (!currentUserUid) {
+            alert("Usuário não autenticado");
+            return;
+        }
+
+        try {
+            const bannerUrl = await uploadImageToSupabase(file, currentUserUid);
+            imgBanner.src = bannerUrl;
+
+            const userRef = ref(db, `Freelancer/${currentUserUid}`);
+            await update(userRef, { banner: bannerUrl });
+
+            console.log("Banner atualizado:", bannerUrl);
+        } catch (error) {
+            console.error("Erro ao atualizar banner:", error);
+        }
+    });
 </script>

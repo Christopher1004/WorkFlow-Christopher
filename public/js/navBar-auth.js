@@ -57,6 +57,11 @@ onAuthStateChanged(auth, async (user) => {
                         userData = snapshot.val()
                     }
                 }
+                const userNameSpan = document.querySelector(".user-name");
+if (userData?.nome && userNameSpan) {
+    userNameSpan.textContent = userData.nome;
+}
+
                 const photoUrl = userData?.foto_perfil || DEFAULT_USER_PHOTO
                 
                 userPhoto.style.backgroundImage = `url('${photoUrl}')`
