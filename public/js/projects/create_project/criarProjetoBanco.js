@@ -24,6 +24,11 @@ const divCapaPreview = document.getElementById('capaPreview');
 
 export async function salvarProjetoBanco() {
     try {
+        const auth = auth.currentUser
+
+        if(!user){
+            throw new Error('Usuário não autenticado')
+        }
         const titulo = document.getElementById('titulo').value;
         const descricao = document.getElementById('descricao').value;
         const dataCriacao = new Date().toISOString();
@@ -34,7 +39,8 @@ export async function salvarProjetoBanco() {
             titulo,
             descricao,
             dataCriacao,
-            capaUrl 
+            capaUrl,
+            userId: user.uid
         };
 
         const projetoRef = push(ref(db, 'Projetos/'));
