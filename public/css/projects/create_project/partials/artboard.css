@@ -1,15 +1,13 @@
 .artboard {
-    background-color: var(--white);
-    height: 460px;
+    background-color: var(--background);
+    height: 100%;
     margin: 4px;
     padding: 0;
-    overflow: auto;
-    border-radius: 10px;
 }
 
 .artboard .content {
-    height: 3000px;
-    background-color: #1e1e1e;
+    background-color: var(--darkgray);
+    height: 100%;
 }
 
 .artboard::-webkit-scrollbar {

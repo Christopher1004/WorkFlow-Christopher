@@ -1,42 +1,56 @@
 <link rel="stylesheet" href="/css/projects/create_project/create_project.css">
-<div class="title">
-    <h1>Criar novo projeto</h1>
+
+<div class="top-menu">
+    <div class="buttons">
+        <a href="/"><button class="cancelar">Cancelar</button></a>
+        <button id="btnProximo" class="proximo">Proximo</button>
+    </div>
 </div>
 
-<div class="creator">
-    <div class="section-1">
-        <div class="componentes toolbar">
-            <h2>Componentes</h2>
-            <div class="texto" id="btnTexto" draggable="true" data-type="texto">
-                <image class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-                        <g fill="none">
-                            <path d="M0 0h24v24H0z" />
-                            <path fill="currentColor"
-                                d="M5 3.5a1.5 1.5 0 1 0 0 3h5.5V20a1.5 1.5 0 0 0 3 0V6.5H19a1.5 1.5 0 0 0 0-3z" />
-                        </g>
-                    </svg>
-                </image>
-                <p>texto</p>
+<section class="creator">
+    <div class="left">
+        <div class="componente">
+            <div class="componentes toolbar">
+                <h2>Componentes</h2>
+                <div class="texto" id="btnTexto" draggable="true" data-type="texto">
+                    <image class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                            <g fill="none">
+                                <path d="M0 0h24v24H0z" />
+                                <path fill="currentColor"
+                                    d="M5 3.5a1.5 1.5 0 1 0 0 3h5.5V20a1.5 1.5 0 0 0 3 0V6.5H19a1.5 1.5 0 0 0 0-3z" />
+                            </g>
+                        </svg>
+                    </image>
+                    <p>texto</p>
+                </div>
+                <div class="imagem" id="btnImage" draggable="true" data-type="imagem">
+                    <image class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2">
+                                <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" />
+                                <circle cx="8.5" cy="8.5" r="2.5" />
+                                <path
+                                    d="M14.526 12.621L6 22h12.133A3.867 3.867 0 0 0 22 18.133V18c0-.466-.175-.645-.49-.99l-4.03-4.395a2 2 0 0 0-2.954.006" />
+                            </g>
+                        </svg>
+                    </image>
+                    <p>Imagem</p>
+                </div>
             </div>
-            <div class="imagem" id="btnImage" draggable="true" data-type="imagem">
-                <image class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2">
-                            <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" />
-                            <circle cx="8.5" cy="8.5" r="2.5" />
-                            <path
-                                d="M14.526 12.621L6 22h12.133A3.867 3.867 0 0 0 22 18.133V18c0-.466-.175-.645-.49-.99l-4.03-4.395a2 2 0 0 0-2.954.006" />
-                        </g>
-                    </svg>
-                </image>
-                <p>Imagem</p>
-            </div>
-
         </div>
+        <div class="camadas">
+            <h2>Camada</h2>
+            <div class="camadaArea">
+                <!--
+    area camada <- somente para eu encontrar aonde esta
+    -->
+            </div>
+        </div>
+
     </div>
-    <div class="section-2">
+    <div class="right">
         <div class="opcoes">
             <button class="btn-bold" onclick="formatarTexto('bold')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
@@ -105,27 +119,14 @@
                 </svg>
             </button>
         </div>
+
         <div class="artboard">
             <div class="content">
                 <!-- arena componente -->
             </div>
         </div>
     </div>
-    <div class="section-3">
-        <div class="camadas">
-            <h2>Camada</h2>
-            <div class="camadaArea">
-                <!--
-area camada <- somente para eu encontrar aonde esta
--->
-            </div>
-        </div>
-        <div class="menu-create">
-            <button class="cancelar">Cancelar</button>
-            <button id="btnProximo" class="proximo">Proximo</button>
-        </div>
-    </div>
-</div>
+</section>
 
 <div class="modalSalvar">
     <h2>Detalhes</h2>
@@ -163,6 +164,10 @@ area camada <- somente para eu encontrar aonde esta
     </div>
 
 </div>
+
+
+
+
 
 <div id="modal-confirmacao" class="modal hidden">
     <div class="modal-content">

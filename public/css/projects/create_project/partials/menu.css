@@ -1,38 +1,29 @@
-.menu-create {
-    background-color: var(--darkgray);
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-    margin-top: 20px;
-    border-radius: 10px;
-}
-
-.menu-create .cancelar, .proximo {
-    padding: 15px;
+.cancelar, .proximo {
+    padding: 15px 30px;
+    font-size: var(--f2);
     border-radius: 5px;
     font-family: "Work Sans", sans-serif;
-    font-weight: bold;
     color: white;
     border: none;
     margin: 5px;
     cursor: pointer;
 }
 
-.menu-create .cancelar {
+.cancelar {
     background-color: var(--background);
     color: var(--white);
     transition: background-color 0.3s ease;
 }
-.menu-create .cancelar:hover {
+.cancelar:hover {
     background-color: var(--gray);
     transition: background-color 0.3s ease;
 }
 
-.menu-create .proximo {
+.proximo {
     background-color: var(--primary);
     transition: background-color 0.3s ease;
 }
-.menu-create .proximo:hover {
+.proximo:hover {
     background-color: var(--tertiary);
     transition: background-color 0.3s ease;
 }

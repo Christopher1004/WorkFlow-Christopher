@@ -6,6 +6,12 @@
     color: var(--white);
 }
 
+.camadas h2 {
+    font-size: var(--f2);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
 .camadas .camadaArea {
     height: 300px;
     background-color: var(--background);

@@ -8,7 +8,9 @@
 .componentes h2 {
     color: var(--white);
     font-family: "Work Sans", sans-serif;
+    margin-bottom: 5px;
     font-size: var(--f2);
+    font-weight: 600;
 }
 
 .componentes .texto, .componentes .imagem {

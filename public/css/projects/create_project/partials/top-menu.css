@@ -1,0 +1,38 @@
+.top-menu {
+    width: 100%;
+    display: flex;
+    padding: 5px;
+    flex-direction: row;
+}
+
+.top-menu .buttons {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.top-menu .btn {
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Work Sans', sans-serif;
+    color: var(--white);
+    font-size: var(--f2);
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-cancelar {
+    background-color: var(--darkgray);
+    color: var(--white);
+    transition: background-color 0.3s ease;
+}
+
+.btn-salvar {
+    background-color: var(--primary);
+    color: var(--white);
+    transition: background-color 0.3s ease;
+}
