@@ -62,7 +62,6 @@ export async function salvarProjetoBanco() {
         const estado = getEstadoElementos();
         const componentesComIDProjeto = estado.map((c, index) => ({
             ...c,
-            projetoID,
             ordem: index
         }));
 
@@ -76,7 +75,8 @@ export async function salvarProjetoBanco() {
 }
 
 const btnCancelar = document.getElementById('btnCancelar')
-btnCancelar.addEventListener('click', async () => {
+btnCancelar.addEventListener('click', async (e) => {
+    e.preventDefault()
     const componentesImagem = document.querySelectorAll('.content > div[data-tipo="imagem"]')
     const arquivosParaExcluir = []
 
@@ -102,9 +102,9 @@ btnCancelar.addEventListener('click', async () => {
         console.log('imagens excluidas com sucesso')
     }
 
-    setInterval(() => {
+    setTimeout(() => {
         window.location.href = '/'
-    }, 1000)
+    }, 300)
 })
 document.getElementById('btnFinalizar').addEventListener('click', () => {
     document.getElementById('modal-confirmacao').classList.remove('hidden')

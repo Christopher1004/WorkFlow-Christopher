@@ -74,18 +74,23 @@ function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl, userId 
             }
         })
     }
-    card.addEventListener("click", () => abrirModalProjeto(id, titulo, descricao, datacriacao));
+    card.addEventListener("click", () => abrirModalProjeto(id, titulo, descricao, datacriacao, userId));
     container.appendChild(card);
 }
 
-function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao) {
-    console.log("Abrindo modal do projeto:", idProjeto);
+function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId) {
 
     const modal = document.getElementById("modal");
     const containerComponentes = document.getElementById('modal-componentes');
     const modalTitulo = modal.querySelector(".modal-titulo h1");
     const modalDescricao = modal.querySelector(".modal-description.center");
+    const modalCreator = modal.querySelector('.modal-creator p')
 
+    const modalUserPhoto = document.getElementById('modalUserPhoto')
+    const modalAutor = document.getElementById('modalAutor')
+    const modalTag = document.getElementById('modalTag')
+
+    const btnVerperfil = document.getElementById('btnVerPerfil')
     // Atualiza conteúdo do modal
     modalTitulo.textContent = titulo || 'Sem título';
 
@@ -97,7 +102,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao) {
 
     const dbRef = ref(db);
 
-    // Buscar componentes do projeto
+    
     get(child(dbRef, `componentesProjeto/${idProjeto}`))
         .then((snapshot) => {
             if (snapshot.exists()) {
@@ -115,7 +120,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao) {
                         compDiv.appendChild(img);
                     } else if (comp.tipo === 'texto') {
                         const p = document.createElement('p');
-                        p.textContent = comp.conteudo || '';
+                        p.innerHTML = comp.conteudo || '';
                         compDiv.appendChild(p);
                     } else {
                         compDiv.textContent = `Tipo: ${comp.tipo || 'N/A'} - Conteúdo: ${comp.conteudo || 'Sem conteúdo'}`;
@@ -131,6 +136,27 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao) {
             console.error('Erro ao buscar componentes:', error);
             containerComponentes.textContent = 'Erro ao carregar componentes.';
         });
+    if(userId){
+        get(child(dbRef, `Freelancer/${userId}`))
+        .then((snapshot) => {
+            if(snapshot.exists()){
+                const autor = snapshot.val()
+                const nomeAutor = autor.nome
+                const userPhoto = autor.foto_perfil
+                const tagAutor = autor.tag
+
+                modalCreator.innerHTML = `Projeto criado por <a href="/perfil?id=${userId}" class="user-name-modal">${nomeAutor}</a>.`
+                modalAutor.textContent = nomeAutor
+                btnVerperfil.addEventListener('click', () => {
+                    window.location.href = `/perfil?id=${userId}`
+                })
+                modalUserPhoto.src = userPhoto
+                modalTag.textContent = tagAutor
+                
+            }
+        })
+    }
+    
 }
 
 

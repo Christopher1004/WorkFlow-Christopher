@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
             componente.style.outline = "none";
             componente.style.minHeight = "40px";
             componente.style.marginBottom = "1px";
+            componente.contentEditable = 'true'
+
         } else if (tipo === 'imagem') {
 
             const inputImagem = document.createElement('input');
@@ -90,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     img.src = publicUrl
                     img.style.maxWidth = '100%'
                     img.style.maxHeight = '300px'
-                    img.style.width = '100%',
+                    img.style.width = '100%'
                     img.style.height = '100%'
                     img.style.borderRadius = '8px'
                     img.style.marginTop = '10px'
@@ -194,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    
+
     new Sortable(areaCamada, {
         animation: 150,
         onEnd: () => {
@@ -223,32 +225,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function formatarTexto(comando, valor = null) {
-    if (valor) {
-        document.execCommand(comando, false, valor);
-    } else {
-        document.execCommand(comando, false, null);
-    }
-}
+
 export function getEstadoElementos() {
-    const areaComponentes = document.querySelector('.content') 
+    const componentes = document.querySelectorAll('.content > div');
+    const estado = [];
 
-    const componentes = [...areaComponentes.children].map(componente => {
-        const id = componente.dataset.id
-        const tipo = componente.dataset.tipo
+    componentes.forEach((elemento, index) => {
+        const tipo = elemento.dataset.tipo;
 
-        let conteudo
+        let conteudo = null;
 
         if (tipo === 'texto') {
-            conteudo = componente.innerHTML.trim()
+            conteudo = elemento.innerHTML || "";
         }
         else if (tipo === 'imagem') {
-            conteudo = componente.dataset.imgUrl || null
+            conteudo = elemento.dataset.imgUrl || null
         }
-        return { id, tipo, conteudo }
-    })
-    return componentes
+        else {
+            conteudo = elemento.textContent || "";
+        }
+
+        estado.push({
+            tipo,
+            conteudo,
+            ordem: index,
+            projectId: elemento.dataset.projectId || null,
+        });
+    });
+
+    return estado;
 }
+
+
 
 
 
@@ -287,23 +295,23 @@ const divCapaPreview = document.getElementById('capaPreview')
 divCapaPreview.addEventListener('click', () => inputCapa.click())
 
 inputCapa.addEventListener('change', async () => {
-    if(inputCapa.files.length > 0){
+    if (inputCapa.files.length > 0) {
         const file = inputCapa.files[0]
         const filename = `${Date.now()}_${file.name}`
 
-        const { data, error} = await supabase.storage
-        .from('imagensprojeto')
-        .upload(filename, file, {
-            cacheControl: '3600',
-            upsert: false
-        })
-        if(error){
+        const { data, error } = await supabase.storage
+            .from('imagensprojeto')
+            .upload(filename, file, {
+                cacheControl: '3600',
+                upsert: false
+            })
+        if (error) {
             console.error('Erro ao fazer upload no supabase ', error.message)
             return
         }
         const publicUrl = supabase.storage
-        .from('imagensprojeto')
-        .getPublicUrl(filename).data.publicUrl
+            .from('imagensprojeto')
+            .getPublicUrl(filename).data.publicUrl
 
         divCapaPreview.innerHTML = ''
         const img = document.createElement('img')

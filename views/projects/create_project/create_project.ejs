@@ -127,7 +127,15 @@
         </div>
     </div>
 </section>
-
+<script>
+    function formatarTexto(comando, valor = null) {
+        if (valor) {
+            document.execCommand(comando, false, valor);
+        } else {
+            document.execCommand(comando, false, null);
+        }
+    }
+</script>
 <div class="modalSalvar">
     <h2>Detalhes</h2>
     <div class="container-titulo">
