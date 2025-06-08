@@ -33,9 +33,7 @@
                 <div class="container-card-2">
                     <div class="descricao">
                         <p>Olá, estou em busca de um especialista em tráfego pago para
-                            gerenciar e otimizar campanhas no Instagram, com o objetivo de atrair
-                            novos clientes e aumentar as vendas da minha empresa. Sou correspondente
-                            bancário e o ig da minha empresa para avaliação</p>
+                            gerenciar e otimizar campanhas no Instagram...</p>
                     </div>
                 </div>
             </div>
@@ -51,10 +49,8 @@
                     </div>
                 </div>
 
-                <!-- Botão para abrir o modal -->
                 <button class="editarinfos" onclick="abrirModal()">Editar informações</button>
 
-                <!-- Modal -->
                 <div id="modal-editar" class="modal">
                     <div class="modal-conteudo">
                         <span class="fechar" onclick="fecharModal()">&times;</span>
@@ -90,11 +86,7 @@
                     <div class="thumbnail-overlay">
                         <div class="project-overlay-content">
                             <div class="like">
-                                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                                        fill="none" stroke="black" />
-                                </svg>
+                                <!-- SVG -->
                             </div>
                             <div class="project-title">
                                 <h1>Project 1</h1>
@@ -109,17 +101,14 @@
             </div>
         </main>
     </div>
-
 </section>
+
 <script>
     function abrirModal() {
         document.getElementById('modal-editar').style.display = 'block';
-
-        // Popula os campos com dados atuais
         const h1Nome = document.querySelector('.nome h1');
         const pTag = document.querySelector('.tag p');
         const pBio = document.querySelector('.descricao p');
-
         document.getElementById('nome').value = h1Nome.textContent || '';
         document.getElementById('tag').value = pTag.textContent || '';
         document.getElementById('bio').value = pBio.textContent || '';
@@ -136,43 +125,42 @@
         }
     }
 
-    // Atualiza foto de perfil preview no modal
-    const inputFotoPerfil = document.getElementById('fotoPerfil');
-
-    inputFotoPerfil.addEventListener('change', (event) => {
+    // Atualiza preview da foto de perfil
+    document.getElementById('fotoPerfil').addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
-            const imageURL = URL.createObjectURL(file);
-            const imgPerfilModal = document.querySelector('.profile-pic img');
-            if (imgPerfilModal) imgPerfilModal.src = imageURL;
+            const imgPerfil = document.querySelector('.profile-pic img');
+            imgPerfil.src = URL.createObjectURL(file);
         }
     });
-    const banner = document.getElementById('banner');
-    const imgBanner = document.getElementById('imgBanner');
-    const inputBanner = document.getElementById('inputBanner');
 
-    banner.addEventListener('click', () => {
-        inputBanner.click();
-    });
-
-    inputBanner.addEventListener('change', () => {
-        const file = inputBanner.files[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            imgBanner.src = url;
-        }
+    // Aciona input de banner
+    document.getElementById('banner').addEventListener('click', () => {
+        document.getElementById('inputBanner').click();
     });
 </script>
+
 <script type="module">
-    import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getDatabase, ref, update, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, get, update, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
     import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-    const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE";
-    const supabase = createClient(supabaseURL, supabaseKey);
+    const firebaseConfig = {
+        apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
+        authDomain: "workflow-da28d.firebaseapp.com",
+        projectId: "workflow-da28d",
+        storageBucket: "workflow-da28d.firebasestorage.app",
+        messagingSenderId: "939828605253",
+        appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
+        measurementId: "G-3LXB7BR5M1"
+    };
+    initializeApp(firebaseConfig);
 
+    const supabase = createClient(
+        "https://uvvquwlgbkdcnchiyqzs.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
+    );
     const auth = getAuth();
     const db = getDatabase();
 
@@ -180,128 +168,87 @@
     const h1Nome = document.querySelector('.nome h1');
     const pTag = document.querySelector('.tag p');
     const pBio = document.querySelector('.descricao p');
-    const menuUserName = document.querySelector('.user-name');
-
+    const imgBanner = document.getElementById('imgBanner');
+    const inputBanner = document.getElementById('inputBanner');
 
     let currentUserUid = null;
+    let currentTipoUsuario = null;
 
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUserUid = user.uid;
-            console.log('Usuário autenticado:', currentUserUid);
+    async function detectarTipoUsuario(uid) {
+        const dbRef = ref(db);
+        if ((await get(child(dbRef, `Freelancer/${uid}`))).exists()) return 'Freelancer';
+        if ((await get(child(dbRef, `Contratante/${uid}`))).exists()) return 'Contratante';
+        return null;
+    }
 
-            try {
-                const userRef = ref(db, `Freelancer/${currentUserUid}`);
-                const snapshot = await get(userRef);
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-
-                    if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
-                    if (data.nome) h1Nome.textContent = data.nome;
-                    if (data.tag) pTag.textContent = data.tag;
-                    if (data.bio) pBio.textContent = data.bio;
-                    if (data.banner) imgBanner.src = data.banner;
-                    if (data.nome && menuUserName) menuUserName.textContent = data.nome;
-
-
-                    console.log('Dados carregados do usuário:', data);
-                }
-            } catch (err) {
-                console.error("Erro ao carregar dados do usuário:", err);
-            }
-        } else {
-            currentUserUid = null;
-            console.log('Usuário não autenticado');
-        }
-    });
-
-    async function uploadImageToSupabase(file, folder) {
-        const filePath = `${folder}/${Date.now()}_${file.name}`;
-        const { data, error } = await supabase.storage
-            .from('freelancer-photos')
-            .upload(filePath, file);
-
+    // Função atualizada para aceitar bucket dinâmico
+    async function uploadImageToSupabase(file, folder, bucketName) {
+        const path = `${folder}/${Date.now()}_${file.name}`;
+        const { error } = await supabase.storage.from(bucketName).upload(path, file);
         if (error) throw error;
-
-        const { data: publicUrlData } = supabase.storage
-            .from('freelancer-photos')
-            .getPublicUrl(filePath);
-
+        const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(path);
         return publicUrlData.publicUrl;
     }
 
-    const formEditar = document.getElementById('form-editar');
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) return;
+        currentUserUid = user.uid;
+        currentTipoUsuario = await detectarTipoUsuario(currentUserUid);
+        if (!currentTipoUsuario) return;
 
-    formEditar.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        if (!currentUserUid) {
-            alert("Usuário não autenticado");
-            return;
+        const snap = await get(ref(db, `${currentTipoUsuario}/${currentUserUid}`));
+        if (snap.exists()) {
+            const data = snap.val();
+            if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
+            if (data.nome) h1Nome.textContent = data.nome;
+            if (data.tag) pTag.textContent = data.tag;
+            if (data.bio) pBio.textContent = data.bio;
+            if (data.banner) imgBanner.src = data.banner;
         }
+    });
+
+    document.getElementById('form-editar').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!currentUserUid || !currentTipoUsuario) return;
 
         const nome = document.getElementById('nome').value.trim();
         const tag = document.getElementById('tag').value.trim();
         const bio = document.getElementById('bio').value.trim();
-        const fotoPerfilInput = document.getElementById('fotoPerfil');
-        const fotoPerfilFile = fotoPerfilInput.files[0];
-        const menuUserName = document.querySelector('.user-name');
+        const fotoFile = document.getElementById('fotoPerfil').files[0];
 
-        const updates = {};
-
-        if (nome) updates.nome = nome;
-        if (tag) updates.tag = tag;
-        if (bio) updates.bio = bio;
+        const updates = { nome, tag, bio };
 
         try {
-            if (fotoPerfilFile) {
-                const fotoUrl = await uploadImageToSupabase(fotoPerfilFile, currentUserUid);
-                updates.foto_perfil = fotoUrl;
-                imgPerfil.src = fotoUrl;
+            // Escolhe bucket conforme tipo de usuário
+            const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
+
+            if (fotoFile) {
+                updates.foto_perfil = await uploadImageToSupabase(fotoFile, currentUserUid, bucket);
+                imgPerfil.src = updates.foto_perfil;
             }
 
-            const userRef = ref(db, `Freelancer/${currentUserUid}`);
-            await update(userRef, updates);
+            await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), updates);
 
-            // Atualiza os textos na tela (mesmo que o Firebase já esteja atualizado)
-            if (updates.nome !== undefined) h1Nome.textContent = updates.nome;
-            if (updates.tag !== undefined) pTag.textContent = updates.tag;
-            if (updates.bio !== undefined) pBio.textContent = updates.bio;
-            if (menuUserName && updates.nome !== undefined) {
-                menuUserName.textContent = updates.nome;
-            }
-
-            console.log("Dados atualizados:", updates);
-
-            formEditar.reset();
+            h1Nome.textContent = nome;
+            pTag.textContent = tag;
+            pBio.textContent = bio;
             fecharModal();
         } catch (err) {
-            console.error("Erro ao atualizar dados:", err);
-            alert("Erro ao salvar. Tente novamente.");
+            console.error("Erro ao salvar:", err);
         }
     });
 
-    // Evento para atualizar banner no Supabase e Firebase (similar a fotoPerfil)
     inputBanner.addEventListener('change', async () => {
         const file = inputBanner.files[0];
-        if (!file) return;
-
-        if (!currentUserUid) {
-            alert("Usuário não autenticado");
-            return;
-        }
+        if (!file || !currentUserUid || !currentTipoUsuario) return;
 
         try {
-            const bannerUrl = await uploadImageToSupabase(file, currentUserUid);
+            const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
+            const bannerUrl = await uploadImageToSupabase(file, currentUserUid, bucket);
             imgBanner.src = bannerUrl;
-
-            const userRef = ref(db, `Freelancer/${currentUserUid}`);
-            await update(userRef, { banner: bannerUrl });
-
-            console.log("Banner atualizado:", bannerUrl);
+            await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), { banner: bannerUrl });
         } catch (error) {
             console.error("Erro ao atualizar banner:", error);
         }
     });
 </script>
-<script type="module" src="/js/perfil.js"></script>
