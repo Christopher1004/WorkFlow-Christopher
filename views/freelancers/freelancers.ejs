@@ -4,48 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Freelancers</title>
-  <link rel="stylesheet" href="css/freelancers/freelancers.css" />
+  <link rel="stylesheet" href="/css/freelancers/freelancers.css" />
 </head>
 <body>
 
 <section class="section-1">
-  <div class="container-filter">
-    <div class="filtro">
-      <h2>Filtrar</h2>
-      <div class="filter-container container-classificacao">
-        <label for="periodo">Classificar por</label>
-        <select name="classificar" id="classificar">
-          <option value="relevancia">Relevancia</option>
-          <option value="maisNovos">Mais novos</option>
-          <option value="maisProjetos">Mais projetos</option>
-        </select>
-      </div>
-      <div class="filter-container container-area">
-        <label for="area">Área</label>
-        <select name="area" id="area">
-          <option value="frontend">FrontEnd</option>
-          <option value="designDeInteriores">Design de interiores</option>
-          <option value="designDeInterface">Design de Interface</option>
-          <option value="arquiteto">Arquiteto</option>
-          <option value="paisagismo">Paisagismo</option>
-          <option value="design3d">Design 3D</option>
-          <option value="posterDesign">Poster Design</option>
-        </select>
-      </div>
-      <div class="filter-container container-tipo">
-        <label for="tipo">Tipo</label>
-        <select name="tipo" id="tipo">
-          <option value="todos">Todos</option>
-          <option value="maiorIdade">Apenas maiores de idade</option>
-          <option value="menorIdade">Apenas menores de idade</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
   <div class="freelancers-grid"></div>
 </section>
-
 
 <script type="module">
   import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -61,6 +26,7 @@
     appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
     measurementId: "G-3LXB7BR5M1"
   };
+
   const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
   const db = getDatabase(app);
 
@@ -70,14 +36,9 @@
     const card = document.createElement('div');
     card.className = 'freelancer-card';
     card.innerHTML = `
-      <div class="top">
-        <div class="project pro-1"></div>
-        <div class="project pro-2"></div>
-        <div class="project pro-3"></div>
-      </div>
       <div class="botton">
         <div class="profile-pic">
-          <img src="${foto_perfil || 'img/default-profile.png'}" alt="profile-pic">
+          <img src="${foto_perfil || '/img/default-profile.png'}" alt="profile-pic">
         </div>
         <div class="infos">
           <div class="name">${nome || 'Sem nome'}</div>
@@ -97,10 +58,15 @@
       }
 
       const data = snapshot.val();
-      grid.innerHTML = ''; 
+      grid.innerHTML = '';
 
-      Object.values(data).forEach(freelancer => {
+      // data é objeto { id1: {...}, id2: {...} }
+      Object.entries(data).forEach(([id, freelancer]) => {
         const card = criarCard(freelancer);
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+          window.location.href = `/perfil?id=${id}`;
+        });
         grid.appendChild(card);
       });
 

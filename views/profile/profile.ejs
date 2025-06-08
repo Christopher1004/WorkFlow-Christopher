@@ -161,6 +161,7 @@
         "https://uvvquwlgbkdcnchiyqzs.supabase.co",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
     );
+
     const auth = getAuth();
     const db = getDatabase();
 
@@ -170,9 +171,17 @@
     const pBio = document.querySelector('.descricao p');
     const imgBanner = document.getElementById('imgBanner');
     const inputBanner = document.getElementById('inputBanner');
+    const botaoEditar = document.querySelector('.editarinfos');
 
     let currentUserUid = null;
     let currentTipoUsuario = null;
+
+    function getUidFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
+    }
+
+    const uidFromURL = getUidFromURL();
 
     async function detectarTipoUsuario(uid) {
         const dbRef = ref(db);
@@ -181,7 +190,6 @@
         return null;
     }
 
-    // Função atualizada para aceitar bucket dinâmico
     async function uploadImageToSupabase(file, folder, bucketName) {
         const path = `${folder}/${Date.now()}_${file.name}`;
         const { error } = await supabase.storage.from(bucketName).upload(path, file);
@@ -192,7 +200,10 @@
 
     onAuthStateChanged(auth, async (user) => {
         if (!user) return;
-        currentUserUid = user.uid;
+
+        const loggedInUid = user.uid;
+        currentUserUid = uidFromURL || loggedInUid;
+
         currentTipoUsuario = await detectarTipoUsuario(currentUserUid);
         if (!currentTipoUsuario) return;
 
@@ -205,21 +216,24 @@
             if (data.bio) pBio.textContent = data.bio;
             if (data.banner) imgBanner.src = data.banner;
         }
+
+        // Mostra ou esconde botão de edição
+        if (currentUserUid === loggedInUid) {
+            botaoEditar.style.display = 'block';
+        } else {
+            botaoEditar.style.display = 'none';
+        }
     });
 
     document.getElementById('form-editar').addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (!currentUserUid || !currentTipoUsuario) return;
-
         const nome = document.getElementById('nome').value.trim();
         const tag = document.getElementById('tag').value.trim();
         const bio = document.getElementById('bio').value.trim();
         const fotoFile = document.getElementById('fotoPerfil').files[0];
 
         const updates = { nome, tag, bio };
-
         try {
-            // Escolhe bucket conforme tipo de usuário
             const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
 
             if (fotoFile) {
@@ -252,3 +266,4 @@
         }
     });
 </script>
+
