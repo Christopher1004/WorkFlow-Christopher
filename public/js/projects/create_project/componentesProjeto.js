@@ -90,11 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     img.src = publicUrl
                     img.style.maxWidth = '100%'
                     img.style.maxHeight = '300px'
+                    img.style.width = '100%',
+                    img.style.height = '100%'
                     img.style.borderRadius = '8px'
                     img.style.marginTop = '10px'
                     divUpload.appendChild(img)
 
                     componente.dataset.imgUrl = publicUrl
+                    componente.dataset.filename = filename
                 }
             });
             componente.classList.add('componente');

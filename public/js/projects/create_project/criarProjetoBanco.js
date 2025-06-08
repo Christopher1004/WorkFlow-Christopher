@@ -2,6 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
+const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
+
+const supabase = createClient(supabaseURL, supabaseChave)
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -24,9 +30,9 @@ const divCapaPreview = document.getElementById('capaPreview');
 
 export async function salvarProjetoBanco() {
     try {
-        const auth = auth.currentUser
+        const user = auth.currentUser
 
-        if(!user){
+        if (!user) {
             throw new Error('Usuário não autenticado')
         }
         const titulo = document.getElementById('titulo').value;
@@ -69,24 +75,64 @@ export async function salvarProjetoBanco() {
     }
 }
 
+const btnCancelar = document.getElementById('btnCancelar')
+btnCancelar.addEventListener('click', async () => {
+    const componentesImagem = document.querySelectorAll('.content > div[data-tipo="imagem"]')
+    const arquivosParaExcluir = []
+
+    componentesImagem.forEach(comp => {
+        if (comp.dataset.filename) {
+            arquivosParaExcluir.push(comp.dataset.filename)
+        }
+    })
+    if (arquivosParaExcluir.length === 0) {
+        console.log('Nenhuma imagem para escluir')
+        window.location.href = '/'
+        return
+    }
+
+    const { data, error } = await supabase.storage
+        .from('imagensprojeto')
+        .remove(arquivosParaExcluir)
+
+    if (error) {
+        console.error('Erro ao excluir imagens')
+    }
+    else {
+        console.log('imagens excluidas com sucesso')
+    }
+
+    setInterval(() => {
+        window.location.href = '/'
+    }, 1000)
+})
 document.getElementById('btnFinalizar').addEventListener('click', () => {
     document.getElementById('modal-confirmacao').classList.remove('hidden')
 });
 
-document.getElementById('btn-sim').addEventListener('click',  async () => {
+document.getElementById('btn-sim').addEventListener('click', async () => {
     const sucesso = await salvarProjetoBanco()
     const modalSucesso = document.getElementById('modal-sucesso')
     const mensagemModal = document.getElementById('mensagemModal')
 
-    if(sucesso){
+    if (sucesso) {
         mensagemModal.textContent = 'Projeto salvo com sucesso!'
+        modalSucesso.classList.remove('hidden')
+
+        const user = auth.currentUser
+
+        if (user) {
+            setTimeout(() => {
+                window.location.href = `/perfil?id=${user.uid}`
+            }, 1000)
+        }
     }
-    else{   
+    else {
         mensagemModal.textContent = 'Erro ao salvar projeto'
     }
     document.getElementById('modal-confirmacao').classList.add('hidden')
     modalSucesso.classList.remove('hidden')
-    
+
 })
 
 document.getElementById('btn-nao').addEventListener('click', () => {

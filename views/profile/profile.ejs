@@ -1,5 +1,6 @@
-<link rel="stylesheet" href="/css/profile/profile.css">
-
+<head>
+    <link rel="stylesheet" href="/css/profile/profile.css">
+</head>
 <section class="section-1">
     <div class="banner" id="banner">
         <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
@@ -102,7 +103,12 @@
         </main>
     </div>
 </section>
-
+<script>
+    document.querySelectorAll('.card_projeto').forEach(el => {
+        el.style.display = 'none';
+    });
+</script>
+<script type="module" src="/js/perfil.js"></script>
 <script>
     function abrirModal() {
         document.getElementById('modal-editar').style.display = 'block';
@@ -266,4 +272,3 @@
         }
     });
 </script>
-

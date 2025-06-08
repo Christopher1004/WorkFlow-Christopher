@@ -32,15 +32,17 @@ const btnAdd = document.getElementById('btnAdd');
 const dropDownLogout = document.getElementById('dropDownLogout');
 const dropDown = document.getElementById('dropDownMenu');
 
+const perfilLink = document.querySelector("#dropDownMenu a[href='/perfil']")
 onAuthStateChanged(auth, async (user) => {
     if (user) {
+        const uid = user.uid
+
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnRegister) btnRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
 
         if (userPhoto) {
             const db = getDatabase();
-            const uid = user.uid
 
             const freelancerRef = ref(db, 'Freelancer/' + uid);
             const contratanteRef = ref(db, 'Contratante/' + uid);
@@ -48,26 +50,26 @@ onAuthStateChanged(auth, async (user) => {
                 let userData = null
                 let snapshot = await get(freelancerRef);
 
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     userData = snapshot.val()
                 }
-                else{
+                else {
                     snapshot = await get(contratanteRef)
-                    if(snapshot.exists()){
+                    if (snapshot.exists()) {
                         userData = snapshot.val()
                     }
                 }
                 const userNameSpan = document.querySelector(".user-name");
-if (userData?.nome && userNameSpan) {
-    userNameSpan.textContent = userData.nome;
-}
+                if (userData?.nome && userNameSpan) {
+                    userNameSpan.textContent = userData.nome;
+                }
 
                 const photoUrl = userData?.foto_perfil || DEFAULT_USER_PHOTO
-                
+
                 userPhoto.style.backgroundImage = `url('${photoUrl}')`
                 userPhoto.style.display = 'block'
 
-                if(userPhotoDrop) userPhotoDrop.src = photoUrl
+                if (userPhotoDrop) userPhotoDrop.src = photoUrl
             } catch (error) {
                 console.error("Erro ao buscar avatar:", error);
                 userPhoto.style.backgroundImage = `url('${DEFAULT_USER_PHOTO}')`;
@@ -106,6 +108,10 @@ if (userData?.nome && userNameSpan) {
             });
         }
 
+        if(perfilLink){
+            perfilLink.href = `/perfil?id=${uid}`
+        }
+
 
     } else {
         if (btnLogin) btnLogin.style.display = 'inline-block';
@@ -119,44 +125,7 @@ if (userData?.nome && userNameSpan) {
 
 
     }
-    const fileInput = document.getElementById('imageInput')
-    const uploadBtn = document.getElementById('uploadButton')
 
-    uploadBtn.addEventListener('click', async () => {
-        const file = fileInput.files[0]
-        if (!file) {
-            alert('Selecione uma imagem')
-            return
-        }
-
-        // Usa o nome original do arquivo
-        const filePath = `avatars/${file.name}`
-
-        // Envia o arquivo
-        const { error: uploadError } = await supabase.storage
-            .from('freelancer-photos')
-            .upload(filePath, file)
-
-        if (uploadError) {
-            alert('Erro ao enviar imagem: ' + uploadError.message)
-            return
-        }
-        const { data } = supabase.storage.from('freelancer-photos').getPublicUrl(filePath)
-        const publicUrl = data.publicUrl
-
-        alert('Imagem enviada com sucesso!')
-
-        const userRef = ref(db, 'Freelancer/' + user.uid)
-        try {
-            await update(userRef, {
-                foto_perfil: publicUrl
-            })
-            alert('Perfil atualizado')
-        }
-        catch (error) {
-            alert('Erro ao atualizar perfil' + error.message)
-        }
-    })
 });
 
 userPhoto.addEventListener('click', (e) => {
@@ -178,11 +147,6 @@ const closeBtn = document.getElementById('closePopup');
 
 userPhoto.addEventListener('click', () => {
     popupOverlay.style.display = 'flex';
-});
-
-// Fechar popup
-closeBtn.addEventListener('click', () => {
-    popupOverlay.style.display = 'none';
 });
 
 
