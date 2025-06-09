@@ -426,14 +426,22 @@
 
         <div class="footer-section">
             <div class="footer-left">
-                <div class="footer-title">Lorem Ipsum</div>
-                <div class="footer-description">
-                    Subtítulo ou descrição<br>
-                    ⭐️⭐️⭐️⭐️⭐️<br>
-                    123 comentários<br>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius impedit iure vitae rem iusto cum,
-                    dolores voluptas dolor perspiciatis. Veniam quos expedita ut ab, non voluptates earum excepturi
-                    obcaecati eaque.
+                <div class="input-box">
+                    <input type="text" id="commentInput" placeholder="Escreva um comentário...">
+                    <button>Enviar</button>
+                </div>
+                <div class="message-card" style="margin-top: 20px;">
+                    <div class="user-info">
+                        <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
+                            alt="Usuário">
+                        <div class="user-details">
+                            <span class="user-name">Christopher</span>
+                            <span class="message-time">Há 1 mês</span>
+                        </div>
+                    </div>
+                    <div class="message-text">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus rem vero, adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit nihil delectus saepe minus, ut quis?
+                    </div>
                 </div>
             </div>
 
@@ -470,6 +478,100 @@
 
     </div>
 </div>
+<style>
+    .message-card {
+        background: #404040;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+        padding: 16px 20px;
+        width: 100%;
+        color: white;
+        max-width: 500px;
+        margin-bottom: 20px;
+    }
 
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: bold;
+        font-size: 15px;
+        color: white;
+        letter-spacing: 1px;
+    }
+
+    .message-time {
+        font-size: 12px;
+        color: rgb(221, 221, 221);
+    }
+
+    .message-text {
+        font-size: 14px;
+        color: white;
+        margin-bottom: 12px;
+        text-indent: 10px;
+    }
+
+    .message-actions {
+        font-size: 14px;
+    }
+
+    .message-actions a {
+        color: #6c63ff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .message-actions a:hover {
+        text-decoration: underline;
+    }
+
+    .input-box {
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .input-box input {
+        flex: 1;
+        padding: 10px 14px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .input-box button {
+        padding: 10px 18px;
+        border: none;
+        background: #3c38a6;
+        color: white;
+        font-weight: bold;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .input-box button:hover {
+        background: #574fd9;
+    }
+</style>
 <script type="module" src="/js/projects/mostrarProjeto.js"></script>
 <script type="module" src="/js/projects/modalsProjects.js"></script>

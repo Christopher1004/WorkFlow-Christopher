@@ -90,10 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     divUpload.innerHTML = ''
                     const img = document.createElement('img')
                     img.src = publicUrl
-                    img.style.maxWidth = '100%'
-                    img.style.maxHeight = '300px'
+                    img.style.maxHeight = '1000px'
                     img.style.width = '100%'
-                    img.style.height = '500px'
                     img.style.borderRadius = '8px'
                     img.style.marginTop = '10px'
                     divUpload.appendChild(img)
@@ -156,36 +154,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const camadasSelecionadas = document.querySelectorAll('.camada.selecionado');
         camadasSelecionadas.forEach(item => {
             item.classList.remove('selecionado');
-            item.style.borderColor = '#555'; // Cor padrão de borda
-            item.style.backgroundColor = '#1e1e1e'; // Cor padrão de fundo
+            item.style.borderColor = '#555'; 
+            item.style.backgroundColor = '#1e1e1e'; 
         });
 
-        componente.style.borderColor = '#ffcc00';
+        componente.style.borderColor = '#726fd2';
         componente.style.backgroundColor = '#333';
         componente.classList.add('componente')
-        // Destacar a camada selecionada
-        camada.style.borderColor = '#ffcc00';
+        camada.style.borderColor = '#726fd2';
         camada.style.backgroundColor = '#333';
-        camada.classList.add('selecionado'); // Marcar camada como selecionada
+        camada.classList.add('selecionado'); 
 
-        // Destacar o componente selecionado e marcá-lo como selecionado
+      
         if (componente) {
-            componente.style.borderColor = '#ffcc00';
+            componente.style.borderColor = '#726fd2';
             componente.style.backgroundColor = '#333';
             componente.classList.add('selecionado');
         }
         if (componente.contentEditable === "true") {
-            document.getSelection().removeAllRanges();  // Remove seleção atual
-            componente.focus();  // Coloca o foco no componente
+            document.getSelection().removeAllRanges(); 
+            componente.focus();  
         }
         if (componente.dataset.tipo === "imagem") {
             const divUpload = componente._divUpload;
             const inputImagem = componente._inputImagem;
 
             if (divUpload && inputImagem) {
-                console.log("Selecionando componente de imagem");
 
-                divUpload.style.borderColor = '#ffcc00';
+                divUpload.style.borderColor = '#726fd2';
                 divUpload.style.backgroundColor = '#333';
                 divUpload.classList.add('componente', 'selecionado');
 

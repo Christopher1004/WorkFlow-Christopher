@@ -37,7 +37,7 @@ function mostrarPopup() {
     setTimeout(() => {
         popup.classList.add('popup-hidden');
         window.location.href = '/login';
-    }, 2000);  // 2 segundos
+    }, 2000);
 }
 
 form.addEventListener('submit', async (event) => {
