@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const divUpload = document.createElement("div");
             divUpload.style.width = "100%";
-            divUpload.style.padding = "30px";
+            divUpload.style.padding = "15px";
             divUpload.style.border = "2px solid #555";
             divUpload.style.borderRadius = "10px";
             divUpload.style.backgroundColor = "#1e1e1e";
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     img.style.maxWidth = '100%'
                     img.style.maxHeight = '300px'
                     img.style.width = '100%'
-                    img.style.height = '100%'
+                    img.style.height = '500px'
                     img.style.borderRadius = '8px'
                     img.style.marginTop = '10px'
                     divUpload.appendChild(img)
@@ -283,6 +283,7 @@ export function renderizarComponente({ id, tipo, conteudo }) {
         img.style.maxWidth = '100%';
         img.style.maxHeight = '300px';
         img.style.borderRadius = '8px';
+        
         componente.appendChild(img);
     }
 
