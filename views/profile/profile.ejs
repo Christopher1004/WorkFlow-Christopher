@@ -144,11 +144,7 @@
             imgPerfil.src = URL.createObjectURL(file);
         }
     });
-
-    // Aciona input de banner
-    document.getElementById('banner').addEventListener('click', () => {
-        document.getElementById('inputBanner').click();
-    });
+    
     document.getElementById('fotoPerfil').addEventListener('change', (e) => {
         const label = document.getElementById('labelFotoPerfil');
         const file = e.target.files[0];
@@ -217,31 +213,41 @@
     }
 
     onAuthStateChanged(auth, async (user) => {
-        if (!user) return;
+    if (!user) return;
 
-        const loggedInUid = user.uid;
-        currentUserUid = uidFromURL || loggedInUid;
+    const loggedInUid = user.uid;
+    currentUserUid = uidFromURL || loggedInUid;
 
-        currentTipoUsuario = await detectarTipoUsuario(currentUserUid);
-        if (!currentTipoUsuario) return;
+    currentTipoUsuario = await detectarTipoUsuario(currentUserUid);
+    if (!currentTipoUsuario) return;
 
-        const snap = await get(ref(db, `${currentTipoUsuario}/${currentUserUid}`));
-        if (snap.exists()) {
-            const data = snap.val();
-            if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
-            if (data.nome) h1Nome.textContent = data.nome;
-            if (data.tag) pTag.textContent = data.tag;
-            if (data.bio) pBio.textContent = data.bio;
-            if (data.banner) imgBanner.src = data.banner;
-        }
+    const snap = await get(ref(db, `${currentTipoUsuario}/${currentUserUid}`));
+    if (snap.exists()) {
+        const data = snap.val();
+        if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
+        if (data.nome) h1Nome.textContent = data.nome;
+        if (data.tag) pTag.textContent = data.tag;
+        if (data.bio) pBio.textContent = data.bio;
+        if (data.banner) imgBanner.src = data.banner;
+    }
 
-        // Mostra ou esconde botão de edição
-        if (currentUserUid === loggedInUid) {
-            botaoEditar.style.display = 'block';
-        } else {
-            botaoEditar.style.display = 'none';
-        }
-    });
+    // Mostrar ou esconder botão de editar infos
+    if (currentUserUid === loggedInUid) {
+        botaoEditar.style.display = 'block';
+
+        // Permitir clicar no banner para trocar imagem
+        imgBanner.style.cursor = 'pointer'; // cursor de mãozinha
+        document.getElementById('banner').addEventListener('click', () => {
+            inputBanner.click();
+        });
+
+    } else {
+        botaoEditar.style.display = 'none';
+
+        imgBanner.style.cursor = 'default';
+    }
+});
+
 
     document.getElementById('form-editar').addEventListener('submit', async (e) => {
         e.preventDefault();
