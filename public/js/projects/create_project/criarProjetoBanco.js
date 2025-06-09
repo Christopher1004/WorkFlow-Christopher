@@ -26,7 +26,44 @@ const db = getDatabase(app)
 import { getEstadoElementos } from "./componentesProjeto.js";
 
 const divCapaPreview = document.getElementById('capaPreview');
+const inputTags = document.getElementById('tags')
+const tagsContainer = document.getElementById('tags-container')
+let tags = []
 
+inputTags.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ',' || e.key === ' ') {
+        e.preventDefault()
+        let tag = inputTags.value.trim()
+        tag = pegarPrimeiraLetra(tag)
+        if (tag !== '' && !tags.includes(tag)) {
+            tags.push(tag)
+            renderTags()
+        }
+        inputTags.value = ''
+    }
+})
+
+function pegarPrimeiraLetra(str){
+    if(!str) return ''
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+function renderTags() {
+    tagsContainer.innerHTML = ''
+    tags.forEach((tag, index) => {
+        const tagElement = document.createElement('span')
+        tagElement.classList.add('tag-chip')
+        tagElement.innerHTML = `${tag} <button data-index="${index}">&times;</button>`;
+        tagsContainer.appendChild(tagElement)
+    })
+}
+
+tagsContainer.addEventListener('click', function (e) {
+    if (e.target.tagName === 'BUTTON') {
+        const index = e.target.dataset.index
+        tags.splice(index, 1)
+        renderTags()
+    }
+})
 
 export async function salvarProjetoBanco() {
     try {
@@ -36,17 +73,16 @@ export async function salvarProjetoBanco() {
             throw new Error('Usuário não autenticado')
         }
         const titulo = document.getElementById('titulo').value;
-        const descricao = document.getElementById('descricao').value;
         const dataCriacao = new Date().toISOString();
 
         const capaUrl = divCapaPreview.dataset.imgUrl || null;
 
         const dadosProjetos = {
             titulo,
-            descricao,
             dataCriacao,
             capaUrl,
-            userId: user.uid
+            userId: user.uid,
+            tags
         };
 
         const projetoRef = push(ref(db, 'Projetos/'));

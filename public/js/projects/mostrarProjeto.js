@@ -24,11 +24,11 @@ const db = getDatabase(app);
 const container = document.querySelector("#card-zone");
 const modal = document.getElementById("modal");
 
-function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl, userId }) {
+function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId }) {
     console.log("Criando card para projeto:", id, titulo);
     const card = document.createElement("div");
     card.className = "card_projeto";
-    card.dataset.projetoId = id; 
+    card.dataset.projetoId = id;
 
     card.innerHTML = `
     <div class="capa">
@@ -56,53 +56,98 @@ function criarCardProjeto(id, { titulo, descricao, datacriacao, capaUrl, userId 
     </div>
   `;
 
-    if(userId){
-        const autorRef = ref(db, `Freelancer/${userId}`)
+    if (userId) {
+        const autorRef = ref(db, `Freelancer/${userId}`);
         get(autorRef)
-        .then((snapshot) => {
-            if(snapshot.exists()){
-                const autor = snapshot.val()
-
-                const nome = autor.nome
-                const foto = autor.foto_perfil
-
-                const imgCard = card.querySelector('.autor-img')
-                const nomeCard = card.querySelector('.username')
-
-                imgCard.src = foto
-                nomeCard.textContent = nome
-            }
-        })
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const autor = snapshot.val();
+                    card.querySelector('.autor-img').src = autor.foto_perfil;
+                    card.querySelector('.username').textContent = autor.nome;
+                }
+            });
     }
-    card.addEventListener("click", () => abrirModalProjeto(id, titulo, descricao, datacriacao, userId));
+
+    card.addEventListener("click", () => {
+        // Busca o projeto completo para pegar as tags
+        const dbRef = ref(db);
+        get(child(dbRef, `Projetos/${id}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const projeto = snapshot.val();
+                    abrirModalProjeto(
+                        id,
+                        projeto.titulo,
+                        projeto.descricao,
+                        projeto.dataCriacao,
+                        projeto.userId,
+                        projeto.tags || []  // passa as tags aqui
+                    );
+                } else {
+                    console.warn("Projeto não encontrado:", id);
+                }
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar projeto:", error);
+            });
+    });
+
     container.appendChild(card);
 }
 
-function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId) {
 
+function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, tags = []) {
     const modal = document.getElementById("modal");
     const containerComponentes = document.getElementById('modal-componentes');
     const modalTitulo = modal.querySelector(".modal-titulo h1");
-    const modalDescricao = modal.querySelector(".modal-description.center");
-    const modalCreator = modal.querySelector('.modal-creator p')
+    const modalCreator = modal.querySelector('.modal-creator p');
+    const modalUserPhoto = document.getElementById('modalUserPhoto');
+    const modalAutor = document.getElementById('modalAutor');
+    const modalTag = document.getElementById('modalTag');
+    const txtTituloTag = document.getElementById('txtTituloTag');
 
-    const modalUserPhoto = document.getElementById('modalUserPhoto')
-    const modalAutor = document.getElementById('modalAutor')
-    const modalTag = document.getElementById('modalTag')
+    const btnVerperfil = document.getElementById('btnVerPerfil');
 
-    const btnVerperfil = document.getElementById('btnVerPerfil')
-    // Atualiza conteúdo do modal
     modalTitulo.textContent = titulo || 'Sem título';
+    txtTituloTag.textContent = titulo;
 
-    // Limpa container dos componentes
+
+    modal.style.display = 'flex';
+
+    const dataCriado = modal.querySelector('#data-criado');
+    if (dataCriado && dataCriacao) {
+        const data = new Date(dataCriacao);
+        if (!isNaN(data)) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dataFormatada = data.toLocaleDateString('pt-BR', options);
+            dataCriado.textContent = `Criado em ${dataFormatada}`;
+        } else {
+            dataCriado.textContent = 'Data inválida';
+        }
+    } else if (dataCriado) {
+        dataCriado.textContent = 'teste adsdadadad'; 
+    }
+
+
     containerComponentes.innerHTML = '';
 
-    // Mostra modal
-    modal.style.display = 'flex';
+    function renderTags(tagsArray) {
+        const tagsContainer = modal.querySelector('.tags-container');
+        if (!tagsContainer) return;
+        tagsContainer.innerHTML = '';
+
+        tagsArray.forEach(tag => {
+            const span = document.createElement('span');
+            span.classList.add('tag-span');
+            span.textContent = tag;
+            tagsContainer.appendChild(span);
+        });
+    }
+
+    renderTags(tags);
 
     const dbRef = ref(db);
 
-    
     get(child(dbRef, `componentesProjeto/${idProjeto}`))
         .then((snapshot) => {
             if (snapshot.exists()) {
@@ -115,7 +160,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId) {
                         const img = document.createElement('img');
                         img.src = comp.conteudo || '';
                         img.alt = 'Imagem do projeto';
-                        img.style.width = '100%'
+                        img.style.width = '100%';
                         img.style.maxWidth = '100%';
                         compDiv.appendChild(img);
                     } else if (comp.tipo === 'texto') {
@@ -136,28 +181,29 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId) {
             console.error('Erro ao buscar componentes:', error);
             containerComponentes.textContent = 'Erro ao carregar componentes.';
         });
-    if(userId){
-        get(child(dbRef, `Freelancer/${userId}`))
-        .then((snapshot) => {
-            if(snapshot.exists()){
-                const autor = snapshot.val()
-                const nomeAutor = autor.nome
-                const userPhoto = autor.foto_perfil
-                const tagAutor = autor.tag
 
-                modalCreator.innerHTML = `Projeto criado por <a href="/perfil?id=${userId}" class="user-name-modal">${nomeAutor}</a>.`
-                modalAutor.textContent = nomeAutor
-                btnVerperfil.addEventListener('click', () => {
-                    window.location.href = `/perfil?id=${userId}`
-                })
-                modalUserPhoto.src = userPhoto
-                modalTag.textContent = tagAutor
-                
-            }
-        })
+    if (userId) {
+        get(child(dbRef, `Freelancer/${userId}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const autor = snapshot.val();
+                    const nomeAutor = autor.nome;
+                    const userPhoto = autor.foto_perfil;
+                    const tagAutor = autor.tag;
+
+                    modalCreator.innerHTML = `Projeto criado por <a href="/perfil?id=${userId}" class="user-name-modal">${nomeAutor}</a>.`;
+                    modalAutor.textContent = nomeAutor;
+                    modalUserPhoto.src = userPhoto;
+                    modalTag.textContent = tagAutor;
+
+                    btnVerperfil.addEventListener('click', () => {
+                        window.location.href = `/perfil?id=${userId}`;
+                    });
+                }
+            });
     }
-    
 }
+
 
 
 function carregarProjetos() {

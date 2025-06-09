@@ -316,8 +316,9 @@ inputCapa.addEventListener('change', async () => {
         divCapaPreview.innerHTML = ''
         const img = document.createElement('img')
         img.src = publicUrl
-        img.style.maxWidth = '100%'
-        img.style.height = '300px'
+        img.style.width = '100%'
+        img.style.maxWidth = '500px'
+        img.style.height = '350px'
         divCapaPreview.appendChild(img)
 
         divCapaPreview.dataset.imgUrl = publicUrl

@@ -157,15 +157,10 @@
             <p>Puxe ou solte por clique aqui para fazer o upload da imagem.</p>
         </div>
     </div>
-
-
-    <div class="container-descricao">
-        <label for="descricao">Descrição</label>
-        <input type="text" name="descricao" id="descricao">
-    </div>
     <div class="container-tags">
         <label for="tags">Tags</label>
         <input type="text" name="tags" id="tags">
+        <div id="tags-container"></div>
     </div>
     <div class="button-finalizar">
         <button id="btnFinalizar" class="finalizar">Finalizar</button>
@@ -173,7 +168,26 @@
 
 </div>
 
+<style>
+    .tag-chip {
+        display: inline-block;
+        background: #3c38a6;
+        padding: 5px 10px;
+        margin: 5px;
+        color: white;
+        border-radius: 15px;
+        font-size: 14px;
+        
+    }
 
+    .tag-chip button {
+        background: none;
+        border: none;
+        margin-top: 2px;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+</style>
 
 
 
