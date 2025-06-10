@@ -444,3 +444,21 @@ textarea:disabled {
 .proposta-card .description {
     margin-block: 5px;
 }
+.autor-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.autor-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.autor-info span {
+  font-weight: bold;
+  color: #333;
+}

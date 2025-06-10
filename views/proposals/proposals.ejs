@@ -108,8 +108,8 @@
           <p class="description">${p.descricao}</p>
           <div class="footer">
             <div class="client">
-              <img class="profilePic" src="" alt="Client">
-              <span>João Silva</span>
+              <img class="profilePic" src="${p.fotoAutorUrl || 'https://via.placeholder.com/40'}" alt="${p.nomeAutor || 'Autor'}">
+              <span>${p.nomeAutor || 'Nome não informado'}</span>
             </div>
             <div class="buttons">
               <button class="verMais">Ver mais</button>
