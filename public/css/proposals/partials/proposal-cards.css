@@ -1,86 +1,157 @@
 .propostas .proposta-card {
-    background-color: var(--darkgray);
-    color: var(--white);
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: 1px solid var(--gray);
-    
+  background-color: var(--darkgray);
+  color: var(--white);
+  padding: 24px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--gray);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+.propostas .proposta-card:hover {
+  transform: translateY(-2px);
 }
 
 .proposta-card .head {
-    font-size: var(--f4);
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-}
-
-.proposta-card .head:hover {
-    cursor: pointer;
-}
-
-.proposta-card .head .price {
-    font-weight: 500;
-    font-size: 24px;
+  font-size: var(--f4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
 }
 
 .proposta-card .head h3 {
-    margin: 0px;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.proposta-card .head .price {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--primary);
 }
 
 .proposta-card .criadoEm {
-    font-size: var(--f3);
-    margin: 5px;
-    color: var(--gray);
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 10px;
 }
 
 .tags {
-    padding-block: 10px;
+  padding-block: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .tags .tag {
-    font-family: var(--f3);
-    background-color: var(--tertiary);
-    color: white;
-    border-radius: 20px;
-    padding: 5px;
+  background-color: var(--tertiary);
+  color: white;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+}
+
+.proposta-card .description {
+  margin-block: 10px;
+  line-height: 1.6;
 }
 
 .proposta-card .footer {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    row-gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.client {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .client .profilePic {
-    background-color: var(--white);
-    aspect-ratio: 1/1;
-    width: 10px;
-    border-radius: 100px;
-    height: 10px;
+  background-color: var(--white);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gray);
 }
-.proposta-card .description {
-    margin-block: 5px;
+
+.client span {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .buttons .verMais {
-    background-color: var(--gray);
-    border: none;
-    padding: 10px;
-    color: var(--white);
+  background-color: var(--gray);
+  border: none;
+  padding: 10px 16px;
+  color: var(--white);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buttons .verMais:hover {
+  background-color: #5a5a5a;
 }
 
 .buttons .enviar {
-    background-color: var(--primary);
-    border: none;
-    color: white;
-    padding: 10px;
-    font-weight: 600;
+  background-color: var(--primary);
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buttons .enviar:hover {
+  background-color: #0073e6;
+}
+.client-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.client {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.client .profilePic {
+  background-color: var(--white);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gray);
+}
+
+.client-name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
 }
