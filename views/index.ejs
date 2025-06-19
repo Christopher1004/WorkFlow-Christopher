@@ -106,23 +106,29 @@
             <div class="footer-left">
                 <div class="input-box">
                     <input type="text" id="commentInput" placeholder="Escreva um comentário...">
-                    <button>Enviar</button>
+                    <button id="btnEnviarComentario">Enviar</button>
                 </div>
-                <div class="message-card" style="margin-top: 20px;">
-                    <div class="user-info">
-                        <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
-                            alt="Usuário">
-                        <div class="user-details">
-                            <span class="user-name">Christopher</span>
-                            <span class="message-time">Há 1 mês</span>
+                <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
+                    <div class="containerComentarios" id="containerComentarios">
+                        <div class="user-info">
+                            <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
+                                alt="Usuário">
+                            <div class="user-details">
+                                <span class="user-name">Christopher</span>
+                                <span class="message-time">Há 1 mês</span>
+                            </div>
+                        </div>
+                        <div class="message-text">
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus rem
+                            vero,
+                            adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit
+                            nihil
+                            delectus saepe minus, ut quis?
                         </div>
                     </div>
-                    <div class="message-text">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus rem vero,
-                        adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit nihil
-                        delectus saepe minus, ut quis?
-                    </div>
+
                 </div>
+
             </div>
 
             <div class="footer-right">
@@ -159,15 +165,20 @@
     </div>
 </div>
 <style>
+    .containerComentarios {
+        background-color: #1a1a1a;
+        padding: 1px;
+    }
+
     .message-card {
-        background: #404040;
         border-radius: 12px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-        padding: 16px 20px;
         width: 100%;
         color: white;
         max-width: 500px;
-        margin-bottom: 20px;
+        background-color: #2a2a2a;
+        margin-top: 10px;
+        padding-bottom: 1px;
     }
 
     .user-info {
@@ -206,6 +217,12 @@
         color: white;
         margin-bottom: 12px;
         text-indent: 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        margin-left: 10px;
+        margin-right: 2px;
+
     }
 
     .message-actions {
@@ -252,11 +269,11 @@
     .input-box button:hover {
         background: #574fd9;
     }
-    .button_categoria.active{
+
+    .button_categoria.active {
         background-color: #3c38a6;
     }
-
-
 </style>
 <script type="module" src="/js/projects/mostrarProjeto.js"></script>
 <script type="module" src="/js/projects/modalsProjects.js"></script>
+<script type="module" src="/js/projects/comentarioProjeto.js"></script>

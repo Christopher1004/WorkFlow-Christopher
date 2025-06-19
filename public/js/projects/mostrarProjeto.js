@@ -95,7 +95,7 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
     container.appendChild(card);
 }
 
-
+window.idProjetoAtual = null
 function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, tags = []) {
     const modal = document.getElementById("modal");
     const containerComponentes = document.getElementById('modal-componentes');
@@ -202,6 +202,11 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
                 }
             });
     }
+    window.idProjetoAtual = idProjeto;
+
+    document.dispatchEvent(new CustomEvent("modalProjetoAberto", {
+        detail: { idProjeto }
+    }));
 }
 
 function carregarProjetos(tagFiltro = "tudo") {
