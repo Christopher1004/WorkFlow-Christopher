@@ -1,87 +1,123 @@
+.freelancers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
 .freelancer-card {
-    background-color: var(--darkgray);
-    border-radius: 10px;
-    width: 100%;
-    max-width: 500px;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background-color: var(--darkgray, #2a2a2a);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  max-width: 800px;
+  width: 100%;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
 }
 
 .freelancer-card:hover {
-    cursor: pointer;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
-.top {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    gap: 5px;
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  gap: 20px;
+  height: 100%; 
+  color: #fff;
+  border-radius: 14px;
 }
 
-.project {
-    aspect-ratio: 4/3;
-    width: 100%;
-    background-color: #d3d3d3;
-    border-radius: 5px;
-}
-
-.botton {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.card-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+  border-radius: 14px;
 }
 
 .profile-pic {
-    width: 100px;
-    height: 100px;
-    background-color: var(--primary);
-    border-radius: 50%;
-    margin-bottom: 10px;
-    margin-top: -20px;
-    overflow: hidden;
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #fff;
+  position: relative;
+  z-index: 1;
+  background: #444;
+  box-sizing: border-box;
 }
 
 .profile-pic img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.infos {
-    text-align: center;
+.info {
+  position: relative;
+  z-index: 1;
+  max-width: calc(100% - 120px); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .name {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
 }
 
-.area {
-    font-size: 14px;
-    color: #666;
+.bio {
+  font-size: 14px;
+  color: #ddd;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+  word-wrap: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
-.freelancers-grid {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    max-width: 1600px;
-    margin: 0 auto;
-}
+@media (max-width: 480px) {
+  .freelancer-card {
+    height: auto;
+  }
 
-@media (max-width: 1024px) {
-    .freelancers-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+  .card-content {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
 
-@media (max-width: 600px) {
-    .freelancers-grid {
-        grid-template-columns: 1fr;
-    }
+  .profile-pic {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 12px;
+  }
+
+  .info {
+    max-width: 100%;
+    text-align: center;
+    height: auto;
+  }
 }

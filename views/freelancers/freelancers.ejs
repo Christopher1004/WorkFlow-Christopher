@@ -32,17 +32,20 @@
 
   const grid = document.querySelector('.freelancers-grid');
 
-  function criarCard({ nome, tag, foto_perfil }) {
+  const anonymousAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+  function criarCard({ nome, bio, foto_perfil, banner }) {
+    const foto = foto_perfil && foto_perfil.trim() !== '' ? foto_perfil : anonymousAvatar;
     const card = document.createElement('div');
     card.className = 'freelancer-card';
     card.innerHTML = `
-      <div class="botton">
+      <div class="card-content" style="background-image: url('${banner || ''}')">
         <div class="profile-pic">
-          <img src="${foto_perfil || '/img/default-profile.png'}" alt="profile-pic">
+          <img src="${foto}" alt="Foto de perfil" onerror="this.src='${anonymousAvatar}'">
         </div>
-        <div class="infos">
+        <div class="info">
           <div class="name">${nome || 'Sem nome'}</div>
-          <div class="area">${tag || 'Área não definida'}</div>
+          <div class="bio">${bio || 'Sem biografia disponível.'}</div>
         </div>
       </div>
     `;
@@ -60,7 +63,6 @@
       const data = snapshot.val();
       grid.innerHTML = '';
 
-      // data é objeto { id1: {...}, id2: {...} }
       Object.entries(data).forEach(([id, freelancer]) => {
         const card = criarCard(freelancer);
         card.style.cursor = 'pointer';
