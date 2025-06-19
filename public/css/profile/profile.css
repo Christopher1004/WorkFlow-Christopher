@@ -286,9 +286,13 @@
 
 
 .container-2 {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  max-width: 1200px; /* aumentar largura máxima para o container */
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+
 }
 
 
@@ -392,3 +396,160 @@
   cursor: default;
 }
 
+/* Apenas alterações referentes ao card da proposta */
+
+.proposta-card {
+  background-color: #1e1e1e;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 24px;
+  color: #f0f0f0;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.proposta-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+@media screen and (min-width: 768px) {
+  .proposta-card {
+    padding: 2rem 3rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .proposta-card {
+    max-width: 1000px;
+  }
+}
+
+.proposta-card .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.proposta-card .head h3 {
+  font-size: 1.6rem;
+  color: #8a84d6;
+  margin: 0;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.proposta-card .price {
+  background-color: #3c38a6;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #fff;
+  font-size: 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.proposta-card .criadoEm {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
+.proposta-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.8rem 0 1.2rem 0;
+}
+
+.proposta-card .tag {
+  background-color: #2e2b82;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.proposta-card .tag:hover {
+  background-color: #4b47c7;
+}
+
+.proposta-card .description {
+  font-size: 1.05rem;
+  color: #ddd;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  min-height: 60px; /* evita colapsar em descrições curtas */
+}
+
+.proposta-card .client-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.proposta-card .client {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.proposta-card .profilePic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #444;
+  flex-shrink: 0;
+}
+
+.proposta-card .client-name {
+  font-size: 1rem;
+  color: #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.proposta-card .buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+.proposta-card .buttons button {
+  background-color: #3c38a6;
+  border: none;
+  padding: 0.55rem 1.2rem;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.proposta-card .buttons button:hover {
+  background-color: #2e2b82;
+  transform: scale(1.05);
+}
+
+.proposta-card .buttons button:active {
+  transform: scale(0.95);
+  transition-duration: 0.1s;
+}

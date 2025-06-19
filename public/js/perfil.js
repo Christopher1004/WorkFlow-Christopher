@@ -11,13 +11,14 @@ const containerCard = document.querySelector('.card-zone');
 const contadorProjetos = document.getElementById('quantidadeProjetos');
 const tabButtons = document.querySelectorAll('.tab-button');
 
-let projetosDoUsuario = [];
+let itensDoUsuario = []; 
+let tipoUsuario = null; 
 
 function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
-    card.style.display = 'none'; 
+    card.style.display = 'none';
 
     card.innerHTML = `
         <div class="capa">
@@ -44,7 +45,45 @@ function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
         </div>
     `;
     containerCard.appendChild(card);
-    projetosDoUsuario.push(card);
+    itensDoUsuario.push(card);
+}
+
+function criarCardProposta(p) {
+    const tagsHtml = Array.isArray(p.tags) ? p.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+
+    const fotoUrl = p.fotoAutorUrl || 'https://via.placeholder.com/40';
+    const nomeAutor = p.nomeAutor || 'Nome não informado';
+
+    const card = document.createElement('div');
+    card.className = 'proposta-card';
+    card.style.display = 'none';
+
+    card.innerHTML = `
+      <div class="head">
+        <h3>${p.titulo || 'Sem título'}</h3>
+        <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
+      </div>
+      <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
+      <div class="tags">${tagsHtml}</div>
+      <p class="description">${p.descricao || ''}</p>
+      <div class="client-footer">
+        <div class="client">
+          <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
+          <span class="client-name">${nomeAutor}</span>
+        </div>
+        <div class="buttons">
+          <button class="verMais">Ver mais</button>
+          <button class="enviar">Se candidatar</button>
+        </div>
+      </div>
+    `;
+    containerCard.appendChild(card);
+    itensDoUsuario.push(card);
+}
+
+function formatarData(isoString) {
+    const data = new Date(isoString);
+    return isNaN(data) ? "Data inválida" : data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
 function mostrarCards(tipo) {
@@ -52,26 +91,28 @@ function mostrarCards(tipo) {
 
     const botaoAtivo = [...tabButtons].find(btn =>
         btn.textContent.trim().includes(
-            tipo === 'projetos' ? 'Projetos' :
+            tipo === 'projetos' ? (tipoUsuario === 'Contratante' ? 'Propostas' : 'Projetos') :
             tipo === 'curtidos' ? 'Curtidos' :
             'Favoritos'
         )
     );
     if (botaoAtivo) botaoAtivo.classList.add('active');
 
-    projetosDoUsuario.forEach(card => card.style.display = 'none');
+    itensDoUsuario.forEach(card => card.style.display = 'none');
 
     const mensagens = containerCard.querySelectorAll('.mensagem-aba');
     mensagens.forEach(el => el.remove());
 
     if (tipo === 'projetos') {
-        if (projetosDoUsuario.length === 0) {
+        if (itensDoUsuario.length === 0) {
             const mensagem = document.createElement('p');
-            mensagem.textContent = 'Esse usuário ainda não criou nenhum projeto.';
+            mensagem.textContent = tipoUsuario === 'Contratante'
+                ? 'Esse contratante ainda não criou nenhuma proposta.'
+                : 'Esse usuário ainda não criou nenhum projeto.';
             mensagem.classList.add('mensagem-aba');
             containerCard.appendChild(mensagem);
         } else {
-            projetosDoUsuario.forEach(card => card.style.display = 'block');
+            itensDoUsuario.forEach(card => card.style.display = 'block');
         }
     } else {
         const mensagem = document.createElement('p');
@@ -79,52 +120,78 @@ function mostrarCards(tipo) {
         mensagem.classList.add('mensagem-aba');
         containerCard.appendChild(mensagem);
     }
+    contadorProjetos.textContent = itensDoUsuario.length;
 }
 
-onAuthStateChanged(auth, (user) => {
+async function detectarTipoUsuario(uid) {
+    if (!uid) return null;
+    const freelancerSnap = await get(ref(db, `Freelancer/${uid}`));
+    if (freelancerSnap.exists()) return 'Freelancer';
+
+    const contratanteSnap = await get(ref(db, `Contratante/${uid}`));
+    if (contratanteSnap.exists()) return 'Contratante';
+
+    return null;
+}
+
+onAuthStateChanged(auth, async (user) => {
     if (user && perfilUserId) {
-        get(ref(db, 'Projetos'))
-            .then(snapshot => {
-                projetosDoUsuario = [];
-                containerCard.innerHTML = '';
+        containerCard.innerHTML = '';
+        itensDoUsuario = [];
 
-                if (snapshot.exists()) {
-                    const projetos = snapshot.val();
-                    let projetosTotal = 0;
+        tipoUsuario = await detectarTipoUsuario(perfilUserId);
 
-                    Object.entries(projetos).forEach(([id, dados]) => {
-                        if (dados.userId === perfilUserId) {
-                            criarCardProjeto(id, dados);
-                            projetosTotal++;
-                        }
-                    });
+tabButtons.forEach(btn => {
+    if (btn.dataset.tab === 'projetos') {
+        const span = btn.querySelector('span');
+        if (span) {
+            span.textContent = tipoUsuario === 'Contratante' ? 'Propostas' : 'Projetos';
+        }
+    }
+});
 
-                    contadorProjetos.textContent = projetosTotal;
 
-                    mostrarCards('projetos');
-                } else {
-                    const mensagem = document.createElement('p');
-                    mensagem.textContent = 'Nenhum projeto encontrado.';
-                    mensagem.classList.add('mensagem-aba');
-                    containerCard.appendChild(mensagem);
-                    contadorProjetos.textContent = '0';
-                }
-            })
-            .catch(err => {
-                console.error("Erro ao carregar projetos do perfil:", err);
-            });
-
-        if (perfilUserId) {
-            get(ref(db, `Freelancer/${perfilUserId}/nome`))
-                .then(snapshot => {
-                    if (snapshot.exists()) {
-                        const nomeUsuario = snapshot.val();
-                        document.title = 'Perfil de ' + nomeUsuario;
+       if (tipoUsuario === 'Contratante') {
+   
+    const snapshot = await get(ref(db, 'Propostas'));
+    if (snapshot.exists()) {
+        const propostas = snapshot.val();
+        let count = 0;
+        Object.values(propostas).forEach(p => {
+            if (p.autorId === perfilUserId) {
+                criarCardProposta(p);
+                count++;
+            }
+        });
+        mostrarCards('projetos');
+        contadorProjetos.textContent = count;
+    } else {
+        mostrarCards('projetos');
+    }
+}
+ else if (tipoUsuario === 'Freelancer') {
+        
+            const snapshot = await get(ref(db, 'Projetos'));
+            if (snapshot.exists()) {
+                const projetos = snapshot.val();
+                let count = 0;
+                Object.entries(projetos).forEach(([id, dados]) => {
+                    if (dados.userId === perfilUserId) {
+                        criarCardProjeto(id, dados);
+                        count++;
                     }
                 });
+                mostrarCards('projetos');
+                contadorProjetos.textContent = count;
+            } else {
+                mostrarCards('projetos'); 
+            }
+        } else {
+            containerCard.innerHTML = '<p>Tipo de usuário não encontrado.</p>';
+            contadorProjetos.textContent = '0';
         }
     } else {
-        containerCard.innerHTML = '<p>Faça login para ver projetos.</p>';
+        containerCard.innerHTML = '<p>Faça login para ver projetos ou propostas.</p>';
         contadorProjetos.textContent = '0';
     }
 });
