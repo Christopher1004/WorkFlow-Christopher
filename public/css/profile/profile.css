@@ -379,4 +379,16 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   color: #f0f0f0;
 }
+.avaliacao-estrelas {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.avaliacao-estrelas .estrela {
+  font-size: 24px;
+  color: #facc15; 
+  cursor: default;
+}
 
