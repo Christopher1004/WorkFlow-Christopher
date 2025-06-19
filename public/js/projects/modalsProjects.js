@@ -15,16 +15,3 @@ modal.addEventListener('click', (event) => {
     }
 });
 
-const botoesCategorias = document.querySelector('.categorias')
-
-botoesCategorias.addEventListener('click', (event) => {
-    if(event.target.tagName === 'BUTTON'){
-        botoesCategorias.querySelectorAll('button').forEach(btn => {
-            btn.classList.remove('button_categoria-active')
-            btn.classList.add('button_categoria')
-        })
-
-        event.target.classList.add('button_categoria-active')
-        event.target.classList.remove('button_categoria')
-    }
-})

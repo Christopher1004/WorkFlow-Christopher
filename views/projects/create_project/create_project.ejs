@@ -159,8 +159,16 @@
     </div>
     <div class="container-tags">
         <label for="tags">Tags</label>
-        <input type="text" name="tags" id="tags">
-        <div id="tags-container"></div>
+        <div class="tags-disponiveis">
+            <span class="tag-btn">Design</span>
+            <span class="tag-btn">UI Design</span>
+            <span class="tag-btn">3D Design</span>
+            <span class="tag-btn">Web Design</span>
+            <span class="tag-btn">UX</span>
+            <span class="tag-btn">Interior Design</span>
+            <span class="tag-btn">Poster Design</span>
+        </div>
+
     </div>
     <div class="button-finalizar">
         <button id="btnFinalizar" class="finalizar">Finalizar</button>
@@ -177,7 +185,7 @@
         color: white;
         border-radius: 15px;
         font-size: 14px;
-        
+
     }
 
     .tag-chip button {
@@ -186,6 +194,26 @@
         margin-top: 2px;
         margin-left: 5px;
         cursor: pointer;
+    }
+
+    .tags-disponiveis {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 8px;
+    }
+
+    .tag-btn {
+        padding: 6px 12px;
+        border-radius: 20px;
+        background-color: #444;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .tag-btn.selected {
+        background-color: #4f46e5;
     }
 </style>
 

@@ -125,7 +125,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
             dataCriado.textContent = 'Data inválida';
         }
     } else if (dataCriado) {
-        dataCriado.textContent = 'teste adsdadadad'; 
+        dataCriado.textContent = 'teste adsdadadad';
     }
 
 
@@ -204,17 +204,21 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
     }
 }
 
-
-
-function carregarProjetos() {
+function carregarProjetos(tagFiltro = "tudo") {
     const dbRef = ref(db);
+    container.innerHTML = "";
+
     get(child(dbRef, `Projetos`))
         .then((snapshot) => {
             if (snapshot.exists()) {
                 const projetos = snapshot.val();
-                console.log("Projetos carregados:", projetos);
                 Object.entries(projetos).forEach(([id, dados]) => {
-                    criarCardProjeto(id, dados);
+                    const tagsProjeto = dados.tags || [];
+                    const incluir = tagFiltro === "tudo" || (Array.isArray(tagsProjeto) && tagsProjeto.some(t => t.toLowerCase() === tagFiltro.toLowerCase()));
+
+                    if (incluir) {
+                        criarCardProjeto(id, dados);
+                    }
                 });
             } else {
                 console.log("Nenhum projeto encontrado no banco.");
@@ -224,7 +228,17 @@ function carregarProjetos() {
             console.error("Erro ao carregar projetos:", error);
         });
 }
-
 carregarProjetos();
+
+document.querySelectorAll(".button_categoria").forEach(tagEl => {
+    tagEl.addEventListener("click", () => {
+        document.querySelectorAll(".button_categoria").forEach(el => el.classList.remove("active"));
+        tagEl.classList.add("active");
+
+        const tagSelecionada = tagEl.textContent.trim().toLowerCase();
+        carregarProjetos(tagSelecionada);
+
+    });
+});
 
 
