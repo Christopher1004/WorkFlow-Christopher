@@ -1,15 +1,29 @@
 import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const db = getDatabase();
 
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-function salvarComentario(idProjeto, usuario, textoComentario, fotoUsuario = '') {
+const auth = getAuth();
+
+window.usuarioLogado = null
+
+onAuthStateChanged(auth, (user) => {
+    if(user){
+        window.usuarioLogado = {
+            id: user.uid
+        }
+    }
+    else{
+        window.usuarioLogado = null
+    }
+})
+function salvarComentario(idProjeto, userId, textoComentario) {
     const comentariosRef = ref(db, 'Comentarios/' + idProjeto)
     const novoComentarioRef = push(comentariosRef)
 
     return set(novoComentarioRef, {
-        usuario,
+        userId,
         texto: textoComentario,
-        foto: fotoUsuario,
         data: new Date().toISOString()
     })
 }
@@ -38,13 +52,27 @@ async function carregarComentario(idProjeto) {
         for (const id in comentarios) {
             const c = comentarios[id]
 
+            let nome = ''
+            let foto = ''
+
+            let userSnapshot = await get(ref(db, `Freelancer/${c.userId}`))
+
+            if(!userSnapshot.exists()){
+                userSnapshot = await get(ref(db, `Contratante/${c.userId}`))
+            }
+
+            if(userSnapshot.exists()){
+                const usuario = userSnapshot.val()
+                nome = usuario.nome || nome
+                foto = usuario.foto_perfil || foto
+            }
             const div = document.createElement('div')
             div.className = 'message-card'
             div.innerHTML = `
                 <div class="user-info">
-                    <img src="${c.foto || 'https://via.placeholder.com/50'}" alt="Usuário">
+                    <img src="${foto}" alt="Usuário">
                     <div class="user-details">
-                        <span class="user-name">${c.usuario}</span>
+                        <span class="user-name">${nome}</span>
                         <span class="message-time">${formatarTempo(c.data)}</span>
                     </div>
                 </div>
@@ -68,12 +96,11 @@ document.getElementById('btnEnviarComentario').addEventListener('click', async()
 
     if(texto === '' || !window.idProjetoAtual) return
 
+    const userId = window.usuarioLogado.id
     await salvarComentario(
         window.idProjetoAtual,
-        'Christopher',
-        texto,
-        'https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif'
-
+        userId,
+        texto
     )
     input.value = ''
     carregarComentario(window.idProjetoAtual)
