@@ -1,87 +1,87 @@
 <head>
-    <link rel="stylesheet" href="/css/profile/profile.css">
+  <link rel="stylesheet" href="/css/profile/profile.css">
 </head>
+
 <section class="section-1">
-    <div class="banner" id="banner">
-        <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
-    </div>
+  <div class="banner" id="banner">
+    <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
+    <div class="alterar-texto">CLIQUE PARA ALTERAR</div>
+  </div>
+   <input type="file" id="inputBanner" accept="image/*" style="display:none" />
 </section>
 
-<input type="file" id="inputBanner" accept="image/*" style="display:none;">
-
 <section class="section-2">
-    <div class="container-1">
-        <div class="card-infos">
-            <div class="container-card-1">
-                <div class="profile-pic">
-                    <img src="" alt="pic">
-                </div>
-                <div class="nome">
-                    <h1>Nome</h1>
-                    <div class="tag">
-                        <p>UI Designer</p>
-                    </div>
-                </div>
-                <div class="experiencia">
-                    <span>Profissional</span>
-                    <div class="exp-blocks">
-                        <div class="exp"></div>
-                        <div class="exp"></div>
-                        <div class="exp"></div>
-                        <div class="exp"></div>
-                    </div>
-                </div>
-                <div class="container-card-2">
-                    <div class="descricao">
-                        <p>Olá, estou em busca de um emprego.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="container-card-3">
-                <div class="container-card-3-3">
-                    <div class="container-infos projetos-realizados">
-                        <span class="quantidade" id="quantidadeProjetos">10</span>
-                        <p>Projetos realizados</p>
-                    </div>
-                    <div class="container-infos propostas-finalizadas">
-                        <span class="quantidade">10</span>
-                        <p>Propostas finalizadas</p>
-                    </div>
-                </div>
-
-                <button class="editarinfos" onclick="abrirModal()">Editar informações</button>
-
-                <div id="modal-editar" class="modal">
-                    <div class="modal-conteudo">
-                        <span class="fechar" onclick="fecharModal()">&times;</span>
-                        <h2>Editar Perfil</h2>
-                        <form id="form-editar">
-                             <label for="fotoPerfil">Foto Perfil:</label>
-                            <div class="custom-file">
-                                <label for="fotoPerfil" class="file-label" id="labelFotoPerfil">Selecionar
-                                    imagem</label>
-                                <input type="file" id="fotoPerfil" accept="image/*" class="hidden-file">
-
-                            </div>
-
-
-                            <label for="nome">Nome:</label>
-                            <input type="text" id="nome" placeholder="Digite seu nome"><br>
-
-                            <label for="tag">Tag (Cargo):</label>
-                            <input type="text" id="tag" placeholder="Ex: UI Designer"><br>
-
-                            <label for="bio">Biografia:</label>
-                            <textarea id="bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea><br>
-
-                            <button type="submit">Salvar alterações</button>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+  <div class="container-1" style="position: relative;">
+    <div class="profile-pic">
+      <img src="default-profile.jpg" alt="pic">
     </div>
+
+    <div class="card-infos">
+      <div class="container-card-1">
+        <div class="nome">
+          <h1>Nome</h1>
+          <div class="tag">
+            <p>UI Designer</p>
+          </div>
+        </div>
+        <div class="experiencia">
+          <span>Profissional</span>
+          <div class="exp-blocks">
+            <div class="exp"></div>
+            <div class="exp"></div>
+            <div class="exp"></div>
+            <div class="exp"></div>
+          </div>
+        </div>
+        <div class="container-card-2">
+          <div class="descricao">
+            <p>Olá, estou em busca de um emprego.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-card-3">
+        <div class="container-card-3-3">
+          <div class="container-infos projetos-realizados">
+            <span class="quantidade" id="quantidadeProjetos">10</span>
+            <p>Projetos realizados</p>
+          </div>
+          <div class="container-infos propostas-finalizadas">
+            <span class="quantidade">10</span>
+            <p>Propostas finalizadas</p>
+          </div>
+        </div>
+
+        <button class="editarinfos" onclick="abrirModal()">Editar informações</button>
+
+        <div id="modal-editar" class="modal">
+          <div class="modal-conteudo">
+            <span class="fechar" onclick="fecharModal()">&times;</span>
+            <h2>Editar Perfil</h2>
+            <form id="form-editar">
+              <label for="fotoPerfil">Foto Perfil:</label>
+              <div class="custom-file">
+                <label for="fotoPerfil" class="file-label" id="labelFotoPerfil">Selecionar imagem</label>
+                <input type="file" id="fotoPerfil" accept="image/*" class="hidden-file">
+              </div>
+
+              <label for="nome">Nome:</label>
+              <input type="text" id="nome" placeholder="Digite seu nome"><br>
+
+              <label for="tag">Tag (Cargo):</label>
+              <input type="text" id="tag" placeholder="Ex: UI Designer"><br>
+
+              <label for="bio">Biografia:</label>
+              <textarea id="bio" rows="4" placeholder="Fale um pouco sobre você..."></textarea><br>
+
+              <button type="submit">Salvar alterações</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
     <div class="projetos-wrapper">
 <div class="profile-tabs">
     <button class="tab-button active" onclick="mostrarCards('projetos')">
@@ -263,61 +263,70 @@
     }
 
     if (currentUserUid === loggedInUid) {
-        botaoEditar.style.display = 'block';
+  botaoEditar.style.display = 'block';
+  imgBanner.style.cursor = 'pointer';
+  document.getElementById('banner').classList.add('editable');
 
-        imgBanner.style.cursor = 'pointer'; 
-        document.getElementById('banner').addEventListener('click', () => {
-            inputBanner.click();
-        });
+  document.getElementById('banner').addEventListener('click', () => {
+    inputBanner.click();
+  });
+} else {
+  botaoEditar.style.display = 'none';
+  imgBanner.style.cursor = 'default';
+  document.getElementById('banner').classList.remove('editable'); 
+}
 
-    } else {
-        botaoEditar.style.display = 'none';
-
-        imgBanner.style.cursor = 'default';
-    }
 });
 
 
     document.getElementById('form-editar').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const nome = document.getElementById('nome').value.trim();
-        const tag = document.getElementById('tag').value.trim();
-        const bio = document.getElementById('bio').value.trim();
-        const fotoFile = document.getElementById('fotoPerfil').files[0];
+    e.preventDefault();
+    const nome = document.getElementById('nome').value.trim();
+    const tag = document.getElementById('tag').value.trim();
+    const bio = document.getElementById('bio').value.trim();
+    const fotoFile = document.getElementById('fotoPerfil').files[0];
 
-        const updates = { nome, tag, bio };
-        try {
-            const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
+    const updates = { nome, tag, bio };
+    try {
+        const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
 
-            if (fotoFile) {
-                updates.foto_perfil = await uploadImageToSupabase(fotoFile, currentUserUid, bucket);
-                imgPerfil.src = updates.foto_perfil;
-            }
-
-            await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), updates);
-
-            h1Nome.textContent = nome;
-            pTag.textContent = tag;
-            pBio.textContent = bio;
-            fecharModal();
-        } catch (err) {
-            console.error("Erro ao salvar:", err);
+        if (fotoFile) {
+            updates.foto_perfil = await uploadImageToSupabase(fotoFile, currentUserUid, bucket);
         }
-    });
 
-    inputBanner.addEventListener('change', async () => {
-        const file = inputBanner.files[0];
-        if (!file || !currentUserUid || !currentTipoUsuario) return;
+        await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), updates);
 
-        try {
-            const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
-            const bannerUrl = await uploadImageToSupabase(file, currentUserUid, bucket);
-            imgBanner.src = bannerUrl;
-            await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), { banner: bannerUrl });
-        } catch (error) {
-            console.error("Erro ao atualizar banner:", error);
-        }
-    });
+        h1Nome.textContent = nome;
+        pTag.textContent = tag;
+        pBio.textContent = bio;
+
+        fecharModal();
+
+        location.reload();
+
+    } catch (err) {
+        console.error("Erro ao salvar:", err);
+    }
+});
+
+
+   inputBanner.addEventListener('change', async () => {
+    const file = inputBanner.files[0];
+    if (!file || !currentUserUid || !currentTipoUsuario) return;
+
+    try {
+        const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
+        const bannerUrl = await uploadImageToSupabase(file, currentUserUid, bucket);
+        imgBanner.src = bannerUrl;
+        await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), { banner: bannerUrl });
+
+        location.reload();
+
+    } catch (error) {
+        console.error("Erro ao atualizar banner:", error);
+    }
+});
+
 </script>
 <script>
     function mostrarCards(tipo) {
