@@ -82,31 +82,63 @@
             </div>
         </div>
     </div>
-    <div class="container-2">
-        <main class="card-zone">
-            <div class="card_projeto">
-                <div class="capa">
-                    <figure>
-                        <img src="" alt="" class="thumbnail">
-                    </figure>
-                    <div class="thumbnail-overlay">
-                        <div class="project-overlay-content">
-                            <div class="like">
-                                <!-- SVG -->
-                            </div>
-                            <div class="project-title">
-                                <h1>Project 1</h1>
-                            </div>
+    <div class="projetos-wrapper">
+<div class="profile-tabs">
+    <button class="tab-button active" onclick="mostrarCards('projetos')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        <span>Projetos</span>
+    </button>
+    <button class="tab-button" onclick="mostrarCards('curtidos')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                     2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01
+                     4.5 2.09C13.09 4.01 14.76 3 16.5 3
+                     19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span>Curtidos</span>
+    </button>
+    <button class="tab-button" onclick="mostrarCards('favoritos')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21 16.54 13.97
+                     22 9.24l-7.19-.61L12 2 9.19 8.63
+                     2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <span>Favoritos</span>
+    </button>
+</div>
+
+<div class="container-2">
+    <main class="card-zone">
+        <div class="card_projeto">
+            <div class="capa">
+                <figure>
+                    <img src="" alt="" class="thumbnail">
+                </figure>
+                <div class="thumbnail-overlay">
+                    <div class="project-overlay-content">
+                        <div class="like">
+                        
+                        </div>
+                        <div class="project-title">
+                            <h1>Project 1</h1>
                         </div>
                     </div>
                 </div>
-                <div class="autor">
-                    <img src="" alt="Profile pic">
-                    <h2 class="username">User</h2>
-                </div>
             </div>
-        </main>
-    </div>
+            <div class="autor">
+                <img src="" alt="Profile pic">
+                <h2 class="username">User</h2>
+            </div>
+        </div>
+    </main>
+</div>
+</div>
+
 </section>
 <script>
     document.querySelectorAll('.card_projeto').forEach(el => {
@@ -136,7 +168,6 @@
         }
     }
 
-    // Atualiza preview da foto de perfil
     document.getElementById('fotoPerfil').addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -231,12 +262,10 @@
         if (data.banner) imgBanner.src = data.banner;
     }
 
-    // Mostrar ou esconder botão de editar infos
     if (currentUserUid === loggedInUid) {
         botaoEditar.style.display = 'block';
 
-        // Permitir clicar no banner para trocar imagem
-        imgBanner.style.cursor = 'pointer'; // cursor de mãozinha
+        imgBanner.style.cursor = 'pointer'; 
         document.getElementById('banner').addEventListener('click', () => {
             inputBanner.click();
         });
@@ -289,4 +318,16 @@
             console.error("Erro ao atualizar banner:", error);
         }
     });
+</script>
+<script>
+    function mostrarCards(tipo) {
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        console.log("Selecionado:", tipo);
+
+        document.querySelectorAll('.card_projeto').forEach(el => {
+            el.style.display = 'block';
+        });
+    }
 </script>

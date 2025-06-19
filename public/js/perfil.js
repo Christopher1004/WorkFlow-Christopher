@@ -3,17 +3,21 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import { getDatabase, ref, update, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const params = new URLSearchParams(window.location.search);
-const perfilUserId = params.get('id')
+const perfilUserId = params.get('id');
 
 const auth = getAuth();
 const db = getDatabase();
 const containerCard = document.querySelector('.card-zone');
 const contadorProjetos = document.getElementById('quantidadeProjetos');
+const tabButtons = document.querySelectorAll('.tab-button');
+
+let projetosDoUsuario = [];
 
 function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
+    card.style.display = 'none'; 
 
     card.innerHTML = `
         <div class="capa">
@@ -25,7 +29,7 @@ function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
                     <div class="like">
                         <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731Z"
                                 fill="none" stroke="black" />
                         </svg>
                     </div>
@@ -40,7 +44,38 @@ function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
         </div>
     `;
     containerCard.appendChild(card);
+    projetosDoUsuario.push(card);
 }
+
+function mostrarCards(tipo) {
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+
+   
+    const botaoAtivo = [...tabButtons].find(btn =>
+        btn.textContent.trim().includes(
+            tipo === 'projetos' ? 'Projetos' :
+            tipo === 'curtidos' ? 'Curtidos' :
+            'Favoritos'
+        )
+    );
+    if (botaoAtivo) botaoAtivo.classList.add('active');
+
+    projetosDoUsuario.forEach(card => card.style.display = 'none');
+
+    const mensagens = containerCard.querySelectorAll('.mensagem-aba');
+    mensagens.forEach(el => el.remove());
+
+    if (tipo === 'projetos') {
+        projetosDoUsuario.forEach(card => card.style.display = 'block');
+    } else {
+        const mensagem = document.createElement('p');
+        mensagem.textContent = 'Ainda não há conteúdo nesta aba.';
+        mensagem.classList.add('mensagem-aba');
+        containerCard.appendChild(mensagem);
+    }
+}
+
+
 
 onAuthStateChanged(auth, (user) => {
     if (user && perfilUserId) {
@@ -62,6 +97,8 @@ onAuthStateChanged(auth, (user) => {
                     if (projetosTotal === 0) {
                         containerCard.innerHTML = '<p>Esse usuário ainda não criou nenhum projeto.</p>';
                     }
+
+                    mostrarCards('projetos');
                 } else {
                     containerCard.innerHTML = '<p>Nenhum projeto encontrado.</p>';
                 }
@@ -70,16 +107,18 @@ onAuthStateChanged(auth, (user) => {
                 console.error("Erro ao carregar projetos do perfil:", err);
             });
 
-            if(perfilUserId){
-                get(ref(db, `Freelancer/${perfilUserId}/nome`))
+        if (perfilUserId) {
+            get(ref(db, `Freelancer/${perfilUserId}/nome`))
                 .then(snapshot => {
-                    if(snapshot.exists()){
-                        const nomeUsuario = snapshot.val()
-                        document.title = 'Perfil de ' + nomeUsuario
+                    if (snapshot.exists()) {
+                        const nomeUsuario = snapshot.val();
+                        document.title = 'Perfil de ' + nomeUsuario;
                     }
-                })
-            }
+                });
+        }
     } else {
         containerCard.innerHTML = '<p>Faça login para ver projetos.</p>';
     }
 });
+
+window.mostrarCards = mostrarCards;
