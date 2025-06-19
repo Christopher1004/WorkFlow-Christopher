@@ -50,7 +50,6 @@ function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
 function mostrarCards(tipo) {
     tabButtons.forEach(btn => btn.classList.remove('active'));
 
-   
     const botaoAtivo = [...tabButtons].find(btn =>
         btn.textContent.trim().includes(
             tipo === 'projetos' ? 'Projetos' :
@@ -66,7 +65,14 @@ function mostrarCards(tipo) {
     mensagens.forEach(el => el.remove());
 
     if (tipo === 'projetos') {
-        projetosDoUsuario.forEach(card => card.style.display = 'block');
+        if (projetosDoUsuario.length === 0) {
+            const mensagem = document.createElement('p');
+            mensagem.textContent = 'Esse usuário ainda não criou nenhum projeto.';
+            mensagem.classList.add('mensagem-aba');
+            containerCard.appendChild(mensagem);
+        } else {
+            projetosDoUsuario.forEach(card => card.style.display = 'block');
+        }
     } else {
         const mensagem = document.createElement('p');
         mensagem.textContent = 'Ainda não há conteúdo nesta aba.';
@@ -75,12 +81,13 @@ function mostrarCards(tipo) {
     }
 }
 
-
-
 onAuthStateChanged(auth, (user) => {
     if (user && perfilUserId) {
         get(ref(db, 'Projetos'))
             .then(snapshot => {
+                projetosDoUsuario = [];
+                containerCard.innerHTML = '';
+
                 if (snapshot.exists()) {
                     const projetos = snapshot.val();
                     let projetosTotal = 0;
@@ -94,13 +101,13 @@ onAuthStateChanged(auth, (user) => {
 
                     contadorProjetos.textContent = projetosTotal;
 
-                    if (projetosTotal === 0) {
-                        containerCard.innerHTML = '<p>Esse usuário ainda não criou nenhum projeto.</p>';
-                    }
-
                     mostrarCards('projetos');
                 } else {
-                    containerCard.innerHTML = '<p>Nenhum projeto encontrado.</p>';
+                    const mensagem = document.createElement('p');
+                    mensagem.textContent = 'Nenhum projeto encontrado.';
+                    mensagem.classList.add('mensagem-aba');
+                    containerCard.appendChild(mensagem);
+                    contadorProjetos.textContent = '0';
                 }
             })
             .catch(err => {
@@ -118,6 +125,7 @@ onAuthStateChanged(auth, (user) => {
         }
     } else {
         containerCard.innerHTML = '<p>Faça login para ver projetos.</p>';
+        contadorProjetos.textContent = '0';
     }
 });
 
