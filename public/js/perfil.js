@@ -140,6 +140,11 @@ onAuthStateChanged(auth, async (user) => {
         itensDoUsuario = [];
 
         tipoUsuario = await detectarTipoUsuario(perfilUserId);
+        if (tipoUsuario === 'Contratante') {
+    const labelProjetos = document.querySelector('.projetos-realizados p');
+    if (labelProjetos) labelProjetos.textContent = 'Propostas realizadas';
+}
+
 
 tabButtons.forEach(btn => {
     if (btn.dataset.tab === 'projetos') {
