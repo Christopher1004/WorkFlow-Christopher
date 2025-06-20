@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/css/freelancers/freelancers.css" />
 </head>
 <body>
-
 <section class="section-1">
   <div class="freelancers-grid"></div>
 </section>
@@ -31,10 +30,9 @@
   const db = getDatabase(app);
 
   const grid = document.querySelector('.freelancers-grid');
-
   const anonymousAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
-  function criarCard({ nome, bio, foto_perfil, banner }) {
+  function criarCard({ nome, bio, foto_perfil, banner }, id) {
     const foto = foto_perfil && foto_perfil.trim() !== '' ? foto_perfil : anonymousAvatar;
     const card = document.createElement('div');
     card.className = 'freelancer-card';
@@ -49,10 +47,14 @@
         </div>
       </div>
     `;
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      window.location.href = `/perfil?id=${id}`;
+    });
     return card;
   }
 
-  async function carregarFreelancers() {
+  async function carregarFreelancers(filtroNome = "") {
     try {
       const snapshot = await get(child(ref(db), 'Freelancer'));
       if (!snapshot.exists()) {
@@ -64,13 +66,16 @@
       grid.innerHTML = '';
 
       Object.entries(data).forEach(([id, freelancer]) => {
-        const card = criarCard(freelancer);
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', () => {
-          window.location.href = `/perfil?id=${id}`;
-        });
-        grid.appendChild(card);
+        const nome = (freelancer.nome || "").toLowerCase();
+        if (!filtroNome || nome.includes(filtroNome.toLowerCase())) {
+          const card = criarCard(freelancer, id);
+          grid.appendChild(card);
+        }
       });
+
+      if (!grid.hasChildNodes()) {
+        grid.innerHTML = '<p>Nenhum freelancer encontrado com esse nome.</p>';
+      }
 
     } catch (error) {
       console.error('Erro ao carregar freelancers:', error);
@@ -78,8 +83,21 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', carregarFreelancers);
-</script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const inputBusca = document.querySelector('.searchbar-input');
+    const params = new URLSearchParams(window.location.search);
+    const busca = params.get('busca');
+    if (inputBusca && busca) inputBusca.value = busca;
 
+    if (inputBusca) {
+      inputBusca.addEventListener('input', () => {
+        const termo = inputBusca.value.trim().toLowerCase();
+        carregarFreelancers(termo);
+      });
+    }
+
+    carregarFreelancers(busca);
+  });
+</script>
 </body>
 </html>

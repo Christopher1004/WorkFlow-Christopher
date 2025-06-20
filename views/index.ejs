@@ -1,7 +1,12 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <link rel="stylesheet" href="/css/index/index.css">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projetos</title>
+    <link rel="stylesheet" href="/css/index/index.css" />
 </head>
+<body>
 
 <section class="section-1">
     <div class="title">
@@ -37,42 +42,16 @@
 </section>
 
 <section class="section-2">
-    <!--
-    <div class="card_projeto">
-            <div class="capa">
-                <figure>
-                    <img src="" alt="" class="thumbnail">
-                </figure>
-                <div class="thumbnail-overlay">
-                    <div class="project-overlay-content">
-                        <div class="like">
-                            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                                    fill="none" stroke="black" />
-                            </svg>
-                        </div>
-                        <div class="project-title">
-                            <h1>Project 1</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="autor">
-                <img src="" alt="Profile pic">
-                <h2 class="username">User</h2>
-            </div>
-        </div>
-    -->
     <main class="card-zone" id="card-zone">
-
     </main>
 </section>
+
 <script>
     document.querySelectorAll('.card_projeto').forEach(el => {
         el.style.display = 'none';
     });
 </script>
+
 <div class="modal-overlay" id="modal">
     <div class="modal">
         <div class="modal-header">
@@ -86,7 +65,6 @@
 
         <div id="modal-componentes" style="padding: 10px; margin-top: 20px;">
         </div>
-
 
         <div class="section-infos">
             <div class="titulo-container">
@@ -126,9 +104,7 @@
                             delectus saepe minus, ut quis?
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="footer-right">
@@ -164,6 +140,7 @@
 
     </div>
 </div>
+
 <style>
     .containerComentarios {
         background-color: #1a1a1a;
@@ -222,7 +199,6 @@
         white-space: pre-wrap;
         margin-left: 10px;
         margin-right: 2px;
-
     }
 
     .message-actions {
@@ -274,6 +250,55 @@
         background-color: #3c38a6;
     }
 </style>
+
 <script type="module" src="/js/projects/mostrarProjeto.js"></script>
 <script type="module" src="/js/projects/modalsProjects.js"></script>
 <script type="module" src="/js/projects/comentarioProjeto.js"></script>
+
+<script>
+  window.onload = () => {
+    const searchInput = document.querySelector('.searchbar-input');
+    if (!searchInput) return;
+
+    function filtrarCards(textoBusca) {
+      const busca = textoBusca.toLowerCase().trim();
+      const cards = document.querySelectorAll('.card_projeto');
+
+      cards.forEach(card => {
+        const titulo = card.querySelector('h1')?.textContent.toLowerCase() || '';
+        card.style.display = titulo.includes(busca) ? '' : 'none';
+      });
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const buscaUrl = urlParams.get('busca');
+
+    if (buscaUrl) {
+      searchInput.value = buscaUrl;
+
+      const cardZone = document.getElementById('card-zone');
+
+      const observer = new MutationObserver((mutations, obs) => {
+        const cards = cardZone.querySelectorAll('.card_projeto');
+        if (cards.length > 0) {
+          filtrarCards(buscaUrl);
+          obs.disconnect();
+        }
+      });
+
+      observer.observe(cardZone, { childList: true, subtree: true });
+      const initialCards = cardZone.querySelectorAll('.card_projeto');
+      if (initialCards.length > 0) {
+        filtrarCards(buscaUrl);
+        observer.disconnect();
+      }
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      filtrarCards(e.target.value);
+    });
+  };
+</script>
+
+</body>
+</html>

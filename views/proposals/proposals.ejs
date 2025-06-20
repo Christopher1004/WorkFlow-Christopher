@@ -46,7 +46,6 @@
     </div>
 
     <div class="propostas">
-      <!-- Cards serão inseridos aqui via JS -->
     </div>
   </section>
 
@@ -163,19 +162,58 @@
       renderizarPropostas(propostasFiltradas);
     }
 
-    onValue(ref(db, 'Propostas'), (snapshot) => {
-      propostas = [];
-      snapshot.forEach(childSnap => {
-        propostas.push(childSnap.val());
-      });
-      renderizarPropostas(propostas);
-    });
-
     document.addEventListener('DOMContentLoaded', () => {
       btnFiltrar.addEventListener('click', (e) => {
         e.preventDefault();
         filtrarPropostas();
       });
+
+      const searchInput = document.querySelector('.searchbar-input');
+      const aplicarFiltroPorTitulo = (busca) => {
+        if (!busca) {
+          renderizarPropostas(propostas);
+          return;
+        }
+        const filtradas = propostas.filter(p => 
+          p.titulo?.toLowerCase().includes(busca.toLowerCase())
+        );
+        renderizarPropostas(filtradas);
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const busca = params.get('busca') || '';
+      if (searchInput) {
+        searchInput.value = busca;
+        if (busca) aplicarFiltroPorTitulo(busca);
+
+        searchInput.addEventListener('input', (e) => {
+          aplicarFiltroPorTitulo(e.target.value.trim());
+        });
+      }
+    });
+
+    onValue(ref(db, 'Propostas'), (snapshot) => {
+      propostas = [];
+      snapshot.forEach(childSnap => {
+        propostas.push(childSnap.val());
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const busca = params.get('busca') || '';
+      if (busca) {
+        const searchInput = document.querySelector('.searchbar-input');
+        if (searchInput) {
+          searchInput.value = busca;
+          const filtradas = propostas.filter(p => 
+            p.titulo?.toLowerCase().includes(busca.toLowerCase())
+          );
+          renderizarPropostas(filtradas);
+        } else {
+          renderizarPropostas(propostas);
+        }
+      } else {
+        renderizarPropostas(propostas);
+      }
     });
   </script>
 </body>

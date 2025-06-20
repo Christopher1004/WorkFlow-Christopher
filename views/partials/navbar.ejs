@@ -31,12 +31,12 @@
                 class="links freelancers <%= currentRoute === '/freelancers' ? 'active' : '' %>">Freelancers</a>
             <a href="/desafios" class="links desafios <%= currentRoute === '/desafios' ? 'active' : '' %>">Desafios</a>
         </div>
-        <div class="searchbarContainer">
-            <div class="searchbar">
-                <img src="/assets/image/search-icon.svg" alt="searchIcon" class="icon">
-                <input type="text" class="searchbar-input" placeholder="Buscar">
-            </div>
-        </div>
+       <div class="searchbarContainer">
+  <div class="searchbar">
+    <img src="/assets/image/search-icon.svg" alt="searchIcon" class="icon">
+    <input type="text" class="searchbar-input" id="searchInput" placeholder="Buscar projeto...">
+  </div>
+</div>
         <div class="buttonsContainer">
             <a href="/login">
                 <button class="buttonNav entrar" id="btnEntrar">Entrar</button>
@@ -191,8 +191,6 @@
         justify-content: center;
         align-items: center;
     }
-
-    /* Caixa do popup */
     .popup {
         background: white;
         padding: 30px;
@@ -227,3 +225,36 @@
     }
 </style>
 <script type="module" src="/js/navBar-auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.querySelector('.searchbar-input');
+  if (!input) return;
+
+  input.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      const valor = input.value.trim();
+      const path = window.location.pathname;
+
+      if (valor.startsWith('#projetos')) {
+        const termo = valor.replace('#projetos', '').trim();
+        window.location.href = `/?busca=${encodeURIComponent(termo)}`;
+      } else if (valor.startsWith('#freelancers')) {
+        const termo = valor.replace('#freelancers', '').trim();
+        window.location.href = `/freelancers?busca=${encodeURIComponent(termo)}`;
+      } else if (valor.startsWith('#propostas')) {
+        const termo = valor.replace('#propostas', '').trim();
+        window.location.href = `/propostas?busca=${encodeURIComponent(termo)}`;
+      } else {
+        const termoBusca = encodeURIComponent(valor);
+        if (path.includes('/freelancers')) {
+          window.location.href = `/freelancers?busca=${termoBusca}`;
+        } else if (path.includes('/propostas')) {
+          window.location.href = `/propostas?busca=${termoBusca}`;
+        } else if (path.includes('/projetos')) {
+          window.location.href = `/?busca=${termoBusca}`;
+        }
+      }
+    }
+  });
+});
+</script>
