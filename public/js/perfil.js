@@ -19,11 +19,13 @@ const abas = {
 
 let tipoUsuario = null;
 
-function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }, aba = 'projetos') {
+function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao, userId }, aba = 'projetos') {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
     card.style.display = 'none';
+
+    const autorTexto = userId === perfilUserId ? 'você' : 'outra pessoa';
 
     card.innerHTML = `
         <div class="capa">
@@ -46,7 +48,7 @@ function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }, aba =
             </div>
         </div>
         <div class="autor">
-            <h2 class="username">Criado por ${perfilUserId === auth.currentUser?.uid ? 'você' : 'outra pessoa'}</h2>
+            <h2 class="username">Criado por ${autorTexto}</h2>
         </div>
     `;
     containerCard.appendChild(card);
