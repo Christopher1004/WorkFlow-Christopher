@@ -232,7 +232,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
 
 function carregarProjetos(tagFiltro = "tudo") {
     const dbRef = ref(db);
-
+    container.innerHTML = ''
     get(child(dbRef, `Projetos`))
         .then((snapshot) => {
             if (snapshot.exists()) {
