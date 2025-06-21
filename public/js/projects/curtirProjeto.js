@@ -18,6 +18,11 @@ export function iconeCurtida(projetoId, svg) {
         } else {
           set(curtidaRef, true);
           path.classList.add('curtido');
+          svg.classList.add('animar-curtida')
+
+          setTimeout(() => {
+            svg.classList.remove('animar-curtida')
+          }, 400)
         }
       });
     } else {
