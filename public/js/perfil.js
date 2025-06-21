@@ -11,10 +11,15 @@ const containerCard = document.querySelector('.card-zone');
 const contadorProjetos = document.getElementById('quantidadeProjetos');
 const tabButtons = document.querySelectorAll('.tab-button');
 
-let itensDoUsuario = []; 
-let tipoUsuario = null; 
+const abas = {
+    projetos: [],
+    curtidos: [],
+    favoritos: []
+};
 
-function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
+let tipoUsuario = null;
+
+function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }, aba = 'projetos') {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
@@ -45,46 +50,44 @@ function criarCardProjeto(id, { titulo, descricao, capaUrl, dataCriacao }) {
         </div>
     `;
     containerCard.appendChild(card);
-    itensDoUsuario.push(card);
+    abas[aba].push(card);
 }
 
-function criarCardProposta(p) {
+function criarCardProposta(p, aba = 'projetos') {
     const tagsHtml = Array.isArray(p.tags) ? p.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
-
     const fotoUrl = p.fotoAutorUrl || 'https://via.placeholder.com/40';
     const nomeAutor = p.nomeAutor || 'Nome não informado';
+    const isDonoDoPerfil = perfilUserId === auth.currentUser?.uid;
 
     const card = document.createElement('div');
     card.className = 'proposta-card';
     card.style.display = 'none';
 
-    const isDonoDoPerfil = perfilUserId === auth.currentUser?.uid;
-
-card.innerHTML = `
-  <div class="head">
-    <h3>${p.titulo || 'Sem título'}</h3>
-    <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
-  </div>
-  <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
-  <div class="tags">${tagsHtml}</div>
-  <p class="description">${p.descricao || ''}</p>
-  <div class="client-footer">
-    <div class="client">
-      <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
-      <span class="client-name">${nomeAutor}</span>
-    </div>
-    <div class="buttons">
-      ${
-        isDonoDoPerfil
-          ? `<button class="candidatos">Candidatos</button>`
-          : `<button class="enviar">Se candidatar</button>`
-      }
-    </div>
-  </div>
-`;
+    card.innerHTML = `
+      <div class="head">
+        <h3>${p.titulo || 'Sem título'}</h3>
+        <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
+      </div>
+      <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
+      <div class="tags">${tagsHtml}</div>
+      <p class="description">${p.descricao || ''}</p>
+      <div class="client-footer">
+        <div class="client">
+          <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
+          <span class="client-name">${nomeAutor}</span>
+        </div>
+        <div class="buttons">
+          ${
+            isDonoDoPerfil
+              ? `<button class="candidatos">Candidatos</button>`
+              : `<button class="enviar">Se candidatar</button>`
+          }
+        </div>
+      </div>
+    `;
 
     containerCard.appendChild(card);
-    itensDoUsuario.push(card);
+    abas[aba].push(card);
 }
 
 function formatarData(isoString) {
@@ -94,117 +97,113 @@ function formatarData(isoString) {
 
 function mostrarCards(tipo) {
     tabButtons.forEach(btn => btn.classList.remove('active'));
-
-    const botaoAtivo = [...tabButtons].find(btn =>
-        btn.textContent.trim().includes(
-            tipo === 'projetos' ? (tipoUsuario === 'Contratante' ? 'Propostas' : 'Projetos') :
-            tipo === 'curtidos' ? 'Curtidos' :
-            'Favoritos'
-        )
-    );
+    const botaoAtivo = [...tabButtons].find(btn => btn.dataset.tab === tipo);
     if (botaoAtivo) botaoAtivo.classList.add('active');
 
-    itensDoUsuario.forEach(card => card.style.display = 'none');
+    containerCard.querySelectorAll('.card_projeto, .proposta-card').forEach(card => card.style.display = 'none');
+    containerCard.querySelectorAll('.mensagem-aba').forEach(el => el.remove());
 
-    const mensagens = containerCard.querySelectorAll('.mensagem-aba');
-    mensagens.forEach(el => el.remove());
-
-    if (tipo === 'projetos') {
-        if (itensDoUsuario.length === 0) {
-            const mensagem = document.createElement('p');
-            mensagem.textContent = tipoUsuario === 'Contratante'
-                ? 'Esse contratante ainda não criou nenhuma proposta.'
-                : 'Esse usuário ainda não criou nenhum projeto.';
-            mensagem.classList.add('mensagem-aba');
-            containerCard.appendChild(mensagem);
-        } else {
-            itensDoUsuario.forEach(card => card.style.display = 'block');
-        }
+    const cards = abas[tipo];
+    if (!cards || cards.length === 0) {
+        const msg = document.createElement('p');
+        msg.className = 'mensagem-aba';
+        msg.textContent = 'Ainda não há conteúdo nesta aba.';
+        containerCard.appendChild(msg);
     } else {
-        const mensagem = document.createElement('p');
-        mensagem.textContent = 'Ainda não há conteúdo nesta aba.';
-        mensagem.classList.add('mensagem-aba');
-        containerCard.appendChild(mensagem);
+        cards.forEach(card => card.style.display = 'block');
     }
-    contadorProjetos.textContent = itensDoUsuario.length;
+
+    contadorProjetos.textContent = cards.length;
 }
 
 async function detectarTipoUsuario(uid) {
     if (!uid) return null;
     const freelancerSnap = await get(ref(db, `Freelancer/${uid}`));
     if (freelancerSnap.exists()) return 'Freelancer';
-
     const contratanteSnap = await get(ref(db, `Contratante/${uid}`));
     if (contratanteSnap.exists()) return 'Contratante';
-
     return null;
 }
 
 onAuthStateChanged(auth, async (user) => {
-    if (user && perfilUserId) {
-        containerCard.innerHTML = '';
-        itensDoUsuario = [];
+    if (!perfilUserId) return;
 
-        tipoUsuario = await detectarTipoUsuario(perfilUserId);
-        if (tipoUsuario === 'Contratante') {
-    const labelProjetos = document.querySelector('.projetos-realizados p');
-    if (labelProjetos) labelProjetos.textContent = 'Propostas realizadas';
-}
+    const currentUserId = user?.uid || null;
+    containerCard.innerHTML = '';
+    abas.projetos = [];
+    abas.curtidos = [];
+    abas.favoritos = [];
 
-
-tabButtons.forEach(btn => {
-    if (btn.dataset.tab === 'projetos') {
-        const span = btn.querySelector('span');
-        if (span) {
-            span.textContent = tipoUsuario === 'Contratante' ? 'Propostas' : 'Projetos';
-        }
-    }
-});
-
-
-       if (tipoUsuario === 'Contratante') {
-   
-    const snapshot = await get(ref(db, 'Propostas'));
-    if (snapshot.exists()) {
-        const propostas = snapshot.val();
-        let count = 0;
-        Object.values(propostas).forEach(p => {
-            if (p.autorId === perfilUserId) {
-                criarCardProposta(p);
-                count++;
-            }
-        });
-        mostrarCards('projetos');
-        contadorProjetos.textContent = count;
-    } else {
-        mostrarCards('projetos');
-    }
-}
- else if (tipoUsuario === 'Freelancer') {
-        
-            const snapshot = await get(ref(db, 'Projetos'));
-            if (snapshot.exists()) {
-                const projetos = snapshot.val();
-                let count = 0;
-                Object.entries(projetos).forEach(([id, dados]) => {
-                    if (dados.userId === perfilUserId) {
-                        criarCardProjeto(id, dados);
-                        count++;
-                    }
-                });
-                mostrarCards('projetos');
-                contadorProjetos.textContent = count;
-            } else {
-                mostrarCards('projetos'); 
-            }
-        } else {
-            containerCard.innerHTML = '<p>Tipo de usuário não encontrado.</p>';
-            contadorProjetos.textContent = '0';
-        }
-    } else {
-        containerCard.innerHTML = '<p>Faça login para ver projetos ou propostas.</p>';
+    tipoUsuario = await detectarTipoUsuario(perfilUserId);
+    if (!tipoUsuario) {
+        containerCard.innerHTML = '<p>Tipo de usuário não encontrado.</p>';
         contadorProjetos.textContent = '0';
+        return;
     }
+
+    if (tipoUsuario === 'Contratante') {
+        const labelProjetos = document.querySelector('.projetos-realizados p');
+        if (labelProjetos) labelProjetos.textContent = 'Propostas realizadas';
+    }
+
+    tabButtons.forEach(btn => {
+        if (btn.dataset.tab === 'projetos') {
+            const span = btn.querySelector('span');
+            if (span) span.textContent = tipoUsuario === 'Contratante' ? 'Propostas' : 'Projetos';
+        }
+    });
+
+    const propostasSnap = await get(ref(db, 'Propostas'));
+    const projetosSnap = await get(ref(db, 'Projetos'));
+    const curtidasSnap = await get(ref(db, 'Curtidas'));
+
+    if (tipoUsuario === 'Contratante') {
+        if (propostasSnap.exists()) {
+            const propostas = propostasSnap.val();
+            Object.values(propostas).forEach(p => {
+                if (p.autorId === perfilUserId) {
+                    criarCardProposta(p);
+                }
+            });
+        }
+
+        if (curtidasSnap.exists() && projetosSnap.exists()) {
+            const curtidas = curtidasSnap.val();
+            const projetos = projetosSnap.val();
+            Object.entries(curtidas).forEach(([projetoId, usuarios]) => {
+                if (usuarios[perfilUserId]) {
+                    const projeto = projetos[projetoId];
+                    if (projeto) {
+                        criarCardProjeto(projetoId, projeto, 'curtidos');
+                    }
+                }
+            });
+        }
+    } else if (tipoUsuario === 'Freelancer') {
+        if (projetosSnap.exists()) {
+            const projetos = projetosSnap.val();
+            Object.entries(projetos).forEach(([id, dados]) => {
+                if (dados.userId === perfilUserId) {
+                    criarCardProjeto(id, dados);
+                }
+            });
+        }
+
+        if (curtidasSnap.exists() && projetosSnap.exists()) {
+            const curtidas = curtidasSnap.val();
+            const projetos = projetosSnap.val();
+            Object.entries(curtidas).forEach(([projetoId, usuarios]) => {
+                if (usuarios[perfilUserId]) {
+                    const projeto = projetos[projetoId];
+                    if (projeto) {
+                        criarCardProjeto(projetoId, projeto, 'curtidos');
+                    }
+                }
+            });
+        }
+    }
+
+    mostrarCards('projetos');
 });
 
 window.mostrarCards = mostrarCards;
