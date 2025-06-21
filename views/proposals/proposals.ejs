@@ -101,25 +101,29 @@
         const card = document.createElement('div');
         card.classList.add('proposta-card');
 
-        card.innerHTML = `
-          <div class="head">
-            <h3>${p.titulo || 'Sem título'}</h3>
-            <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
-          </div>
-          <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
-          <div class="tags">${tagsHtml}</div>
-          <p class="description">${p.descricao || ''}</p>
-          <div class="client-footer">
-            <div class="client">
-              <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
-              <span class="client-name">${nomeAutor}</span>
-            </div>
-            <div class="buttons">
-              <button class="verMais">Ver mais</button>
-              <button class="enviar">se candidatar</button>
-            </div>
-          </div>
-        `;
+      card.innerHTML = `
+  <div class="head">
+    <h3>${p.titulo || 'Sem título'}</h3>
+    <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
+  </div>
+  <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
+  <div class="tags">${tagsHtml}</div>
+  <p class="description">${p.descricao || ''}</p>
+  <div class="client-footer">
+    <div class="client">
+      <a href="/perfil?id=${p.autorId}" class="profile-link">
+        <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
+        <span class="client-name">${nomeAutor}</span>
+      </a>
+    </div>
+    <div class="buttons">
+      <button class="verMais">Ver mais</button>
+      <button class="enviar">se candidatar</button>
+    </div>
+  </div>
+`;
+
+
 
         wrapper.appendChild(card);
         propostasContainer.appendChild(wrapper);

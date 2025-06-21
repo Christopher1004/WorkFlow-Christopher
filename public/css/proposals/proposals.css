@@ -5,3 +5,18 @@
 @import "partials/filters.css";
 @import "partials/background.css";
 @import "partials/proposal-cards.css";
+.profile-link .client-name {
+  color: white;
+}
+.profile-link {
+  display: flex;
+  align-items: center;  
+  gap: 8px;            
+  color: white;
+  text-decoration: none;
+}
+
+.profile-link .client-name {
+  color: white;
+  font-size: 1rem;      
+}
