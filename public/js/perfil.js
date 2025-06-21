@@ -58,24 +58,31 @@ function criarCardProposta(p) {
     card.className = 'proposta-card';
     card.style.display = 'none';
 
-    card.innerHTML = `
-      <div class="head">
-        <h3>${p.titulo || 'Sem título'}</h3>
-        <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
-      </div>
-      <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
-      <div class="tags">${tagsHtml}</div>
-      <p class="description">${p.descricao || ''}</p>
-      <div class="client-footer">
-        <div class="client">
-          <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
-          <span class="client-name">${nomeAutor}</span>
-        </div>
-        <div class="buttons">
-        <button class="candidatos">Candidatos</button>
-        </div>
-      </div>
-    `;
+    const isDonoDoPerfil = perfilUserId === auth.currentUser?.uid;
+
+card.innerHTML = `
+  <div class="head">
+    <h3>${p.titulo || 'Sem título'}</h3>
+    <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
+  </div>
+  <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
+  <div class="tags">${tagsHtml}</div>
+  <p class="description">${p.descricao || ''}</p>
+  <div class="client-footer">
+    <div class="client">
+      <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
+      <span class="client-name">${nomeAutor}</span>
+    </div>
+    <div class="buttons">
+      ${
+        isDonoDoPerfil
+          ? `<button class="candidatos">Candidatos</button>`
+          : `<button class="enviar">Se candidatar</button>`
+      }
+    </div>
+  </div>
+`;
+
     containerCard.appendChild(card);
     itensDoUsuario.push(card);
 }
