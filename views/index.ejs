@@ -1,304 +1,334 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Projetos</title>
     <link rel="stylesheet" href="/css/index/index.css" />
 </head>
+
 <body>
 
-<section class="section-1">
-    <div class="title">
-        <h1>Explore e <span>Inspire-se</span></h1>
-    </div>
-
-    <div class="categorias-wrapper">
-        <button class="scroll-arrow prev">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="-6 0 24 24">
-                <path fill="currentColor" fill-rule="evenodd"
-                    d="M10.157 12.711L4.5 18.368l-1.414-1.414l4.95-4.95l-4.95-4.95L4.5 5.64l5.657 5.657a1 1 0 0 1 0 1.414" />
-            </svg>
-        </button>
-        <div class="categorias">
-            <button type="button" class="button_categoria active">Tudo</button>
-            <button type="button" class="button_categoria">Design</button>
-            <button type="button" class="button_categoria">UI design</button>
-            <button type="button" class="button_categoria">3D Design</button>
-            <button type="button" class="button_categoria">Canva design</button>
-            <button type="button" class="button_categoria">UX</button>
-            <button type="button" class="button_categoria">Web design</button>
-            <button type="button" class="button_categoria">Interior design</button>
-            <button type="button" class="button_categoria">Poster design</button>
-            <button type="button" class="button_categoria">Design gráfico</button>
-        </div>
-        <button class="scroll-arrow next">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="-6 0 24 24">
-                <path fill="currentColor" fill-rule="evenodd"
-                    d="M10.157 12.711L4.5 18.368l-1.414-1.414l4.95-4.95l-4.95-4.95L4.5 5.64l5.657 5.657a1 1 0 0 1 0 1.414" />
-            </svg>
-        </button>
-    </div>
-</section>
-
-<section class="section-2">
-    <main class="card-zone" id="card-zone">
-    </main>
-</section>
-
-<script>
-    document.querySelectorAll('.card_projeto').forEach(el => {
-        el.style.display = 'none';
-    });
-</script>
-
-<div class="modal-overlay" id="modal">
-    <div class="modal">
-        <div class="modal-header">
-            <div class="modal-titulo">
-                <h1>Lorem Ipsum</h1>
-            </div>
-            <div class="modal-creator">
-                <p>Projeto criado por <a href="" class="user-name-modal">User</a>.</p>
-            </div>
+    <section class="section-1">
+        <div class="title">
+            <h1>Explore e <span>Inspire-se</span></h1>
         </div>
 
-        <div id="modal-componentes" style="padding: 10px; margin-top: 20px;">
+        <div class="categorias-wrapper">
+            <button class="scroll-arrow prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="-6 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M10.157 12.711L4.5 18.368l-1.414-1.414l4.95-4.95l-4.95-4.95L4.5 5.64l5.657 5.657a1 1 0 0 1 0 1.414" />
+                </svg>
+            </button>
+            <div class="categorias">
+                <button type="button" class="button_categoria active">Tudo</button>
+                <button type="button" class="button_categoria">Design</button>
+                <button type="button" class="button_categoria">UI design</button>
+                <button type="button" class="button_categoria">3D Design</button>
+                <button type="button" class="button_categoria">Canva design</button>
+                <button type="button" class="button_categoria">UX</button>
+                <button type="button" class="button_categoria">Web design</button>
+                <button type="button" class="button_categoria">Interior design</button>
+                <button type="button" class="button_categoria">Poster design</button>
+                <button type="button" class="button_categoria">Design gráfico</button>
+            </div>
+            <button class="scroll-arrow next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="-6 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M10.157 12.711L4.5 18.368l-1.414-1.414l4.95-4.95l-4.95-4.95L4.5 5.64l5.657 5.657a1 1 0 0 1 0 1.414" />
+                </svg>
+            </button>
         </div>
+    </section>
 
-        <div class="section-infos">
-            <div class="titulo-container">
-                <h1 id="txtTituloTag">Lorem Ipsun</h1>
-            </div>
-            <div id="modalTagsContainer" class="tags-container">
-                <span class="tag-span">UI Design</span>
-                <span class="tag-span">Design WEB</span>
-                <span class="tag-span">UX</span>
-            </div>
-            <div class="data-container">
-                <p id="data-criado" class="data-criado">criado em 23 de maio de 2023</p>
-            </div>
-        </div>
-
-        <div class="footer-section">
-            <div class="footer-left">
-                <div class="input-box">
-                    <input type="text" id="commentInput" placeholder="Escreva um comentário...">
-                    <button id="btnEnviarComentario">Enviar</button>
-                </div>
-                <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
-                    <div class="containerComentarios" id="containerComentarios">
-                        <div class="user-info">
-                            <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
-                                alt="Usuário">
-                            <div class="user-details">
-                                <span class="user-name">Christopher</span>
-                                <span class="message-time">Há 1 mês</span>
+    <section class="section-2">
+        <main class="card-zone" id="card-zone">
+            <div class="card_projeto">
+                <div class="capa">
+                    <figure>
+                        <img src="" alt="" class="thumbnail">
+                    </figure>
+                    <div class="thumbnail-overlay">
+                        <div class="project-overlay-content">
+                            <div class="like">
+                                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                        fill="none" stroke="black" />
+                                </svg>
+                            </div>
+                            <div class="project-title">
+                                <h1>Project 1</h1>
                             </div>
                         </div>
-                        <div class="message-text">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus rem
-                            vero,
-                            adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit
-                            nihil
-                            delectus saepe minus, ut quis?
+                    </div>
+                </div>
+                <div class="autor">
+                    <img src="" alt="Profile pic">
+                    <h2 class="username">User</h2>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <script>
+        document.querySelectorAll('.card_projeto').forEach(el => {
+            el.style.display = 'none';
+        })
+    </script>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-titulo">
+                    <h1>Lorem Ipsum</h1>
+                </div>
+                <div class="modal-creator">
+                    <p>Projeto criado por <a href="" class="user-name-modal">User</a>.</p>
+                </div>
+            </div>
+
+            <div id="modal-componentes" style="padding: 10px; margin-top: 20px;">
+            </div>
+
+            <div class="section-infos">
+                <div class="titulo-container">
+                    <h1 id="txtTituloTag">Lorem Ipsun</h1>
+                </div>
+                <div id="modalTagsContainer" class="tags-container">
+                    <span class="tag-span">UI Design</span>
+                    <span class="tag-span">Design WEB</span>
+                    <span class="tag-span">UX</span>
+                </div>
+                <div class="data-container">
+                    <p id="data-criado" class="data-criado">criado em 23 de maio de 2023</p>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-left">
+                    <div class="input-box">
+                        <input type="text" id="commentInput" placeholder="Escreva um comentário...">
+                        <button id="btnEnviarComentario">Enviar</button>
+                    </div>
+                    <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
+                        <div class="containerComentarios" id="containerComentarios">
+                            <div class="user-info">
+                                <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
+                                    alt="Usuário">
+                                <div class="user-details">
+                                    <span class="user-name">Christopher</span>
+                                    <span class="message-time">Há 1 mês</span>
+                                </div>
+                            </div>
+                            <div class="message-text">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus
+                                rem
+                                vero,
+                                adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit
+                                nihil
+                                delectus saepe minus, ut quis?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="card-autor">
+                        <div class="header-card-autor">
+                            <div class="container-1">
+                                <div class="header-card-autor-image">
+                                    <img src="" id="modalUserPhoto" alt="Profile pic">
+                                </div>
+                                <div class="header-card-autor-title">
+                                    <h1 id="modalAutor">Autor</h1>
+                                    <p id="modalTag">Designer Web</p>
+                                </div>
+                            </div>
+                            <div class="container-2">
+                                <button class="button-container contactar" id="contactar">Contatar</button>
+                                <a id="btnVerPerfil"><button class="button-container">Ver Perfil</button></a>
+                            </div>
+                        </div>
+                        <div class="outros-projetos">
+                            <div class="grid-projetos">
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="footer-right">
-                <div class="card-autor">
-                    <div class="header-card-autor">
-                        <div class="container-1">
-                            <div class="header-card-autor-image">
-                                <img src="" id="modalUserPhoto" alt="Profile pic">
-                            </div>
-                            <div class="header-card-autor-title">
-                                <h1 id="modalAutor">Autor</h1>
-                                <p id="modalTag">Designer Web</p>
-                            </div>
-                        </div>
-                        <div class="container-2">
-                            <button class="button-container contactar" id="contactar">Contatar</button>
-                            <a id="btnVerPerfil"><button class="button-container">Ver Perfil</button></a>
-                        </div>
-                    </div>
-                    <div class="outros-projetos">
-                        <div class="grid-projetos">
-                            <div class="card-projeto"></div>
-                            <div class="card-projeto"></div>
-                            <div class="card-projeto"></div>
-                            <div class="card-projeto"></div>
-                            <div class="card-projeto"></div>
-                            <div class="card-projeto"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
     </div>
-</div>
 
-<style>
-    .containerComentarios {
-        background-color: #1a1a1a;
-        padding: 1px;
-    }
-
-    .message-card {
-        border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-        width: 100%;
-        color: white;
-        max-width: 500px;
-        background-color: #2a2a2a;
-        margin-top: 10px;
-        padding-bottom: 1px;
-    }
-
-    .user-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-    }
-
-    .user-info img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 10px;
-    }
-
-    .user-details {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .user-name {
-        font-weight: bold;
-        font-size: 15px;
-        color: white;
-        letter-spacing: 1px;
-    }
-
-    .message-time {
-        font-size: 12px;
-        color: rgb(221, 221, 221);
-    }
-
-    .message-text {
-        font-size: 14px;
-        color: white;
-        margin-bottom: 12px;
-        text-indent: 10px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: pre-wrap;
-        margin-left: 10px;
-        margin-right: 2px;
-    }
-
-    .message-actions {
-        font-size: 14px;
-    }
-
-    .message-actions a {
-        color: #6c63ff;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .message-actions a:hover {
-        text-decoration: underline;
-    }
-
-    .input-box {
-        width: 100%;
-        max-width: 500px;
-        display: flex;
-        gap: 10px;
-    }
-
-    .input-box input {
-        flex: 1;
-        padding: 10px 14px;
-        border-radius: 20px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        outline: none;
-    }
-
-    .input-box button {
-        padding: 10px 18px;
-        border: none;
-        background: #3c38a6;
-        color: white;
-        font-weight: bold;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    .input-box button:hover {
-        background: #574fd9;
-    }
-
-    .button_categoria.active {
-        background-color: #3c38a6;
-    }
-</style>
-
-<script type="module" src="/js/projects/mostrarProjeto.js"></script>
-<script type="module" src="/js/projects/modalsProjects.js"></script>
-<script type="module" src="/js/projects/comentarioProjeto.js"></script>
-
-<script>
-  window.onload = () => {
-    const searchInput = document.querySelector('.searchbar-input');
-    if (!searchInput) return;
-
-    function filtrarCards(textoBusca) {
-      const busca = textoBusca.toLowerCase().trim();
-      const cards = document.querySelectorAll('.card_projeto');
-
-      cards.forEach(card => {
-        const titulo = card.querySelector('h1')?.textContent.toLowerCase() || '';
-        card.style.display = titulo.includes(busca) ? '' : 'none';
-      });
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const buscaUrl = urlParams.get('busca');
-
-    if (buscaUrl) {
-      searchInput.value = buscaUrl;
-
-      const cardZone = document.getElementById('card-zone');
-
-      const observer = new MutationObserver((mutations, obs) => {
-        const cards = cardZone.querySelectorAll('.card_projeto');
-        if (cards.length > 0) {
-          filtrarCards(buscaUrl);
-          obs.disconnect();
+    <style>
+        .containerComentarios {
+            background-color: #1a1a1a;
+            padding: 1px;
         }
-      });
 
-      observer.observe(cardZone, { childList: true, subtree: true });
-      const initialCards = cardZone.querySelectorAll('.card_projeto');
-      if (initialCards.length > 0) {
-        filtrarCards(buscaUrl);
-        observer.disconnect();
-      }
-    }
+        .message-card {
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            color: white;
+            max-width: 500px;
+            background-color: #2a2a2a;
+            margin-top: 10px;
+            padding-bottom: 1px;
+        }
 
-    searchInput.addEventListener('input', (e) => {
-      filtrarCards(e.target.value);
-    });
-  };
-</script>
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 15px;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: rgb(221, 221, 221);
+        }
+
+        .message-text {
+            font-size: 14px;
+            color: white;
+            margin-bottom: 12px;
+            text-indent: 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            margin-left: 10px;
+            margin-right: 2px;
+        }
+
+        .message-actions {
+            font-size: 14px;
+        }
+
+        .message-actions a {
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .message-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .input-box {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-box button {
+            padding: 10px 18px;
+            border: none;
+            background: #3c38a6;
+            color: white;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .input-box button:hover {
+            background: #574fd9;
+        }
+
+        .button_categoria.active {
+            background-color: #3c38a6;
+        }
+    </style>
+
+    <script type="module" src="/js/projects/mostrarProjeto.js"></script>
+    <script type="module" src="/js/projects/modalsProjects.js"></script>
+    <script type="module" src="/js/projects/comentarioProjeto.js"></script>
+    <script type="module" src="/js/projects/curtirProjeto.js"></script>
+
+    <script>
+    window.onload = () => {
+        const searchInput = document.querySelector('.searchbar-input');
+        if (!searchInput) return;
+
+        function filtrarCards(textoBusca) {
+            const busca = textoBusca.toLowerCase().trim();
+            const cards = document.querySelectorAll('.card_projeto');
+
+            cards.forEach(card => {
+                const titulo = card.querySelector('h1')?.textContent.toLowerCase() || '';
+                card.style.display = titulo.includes(busca) ? '' : 'none';
+            });
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const buscaUrl = urlParams.get('busca');
+
+        if (buscaUrl) {
+            searchInput.value = buscaUrl;
+
+            const cardZone = document.getElementById('card-zone');
+
+            const observer = new MutationObserver((mutations, obs) => {
+                const cards = cardZone.querySelectorAll('.card_projeto');
+                if (cards.length > 0) {
+                    filtrarCards(buscaUrl);
+                    obs.disconnect();
+                }
+            });
+
+            observer.observe(cardZone, { childList: true, subtree: true });
+            const initialCards = cardZone.querySelectorAll('.card_projeto');
+            if (initialCards.length > 0) {
+                filtrarCards(buscaUrl);
+                observer.disconnect();
+            }
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            filtrarCards(e.target.value);
+        });
+    };
+    </script>
 
 </body>
+
 </html>

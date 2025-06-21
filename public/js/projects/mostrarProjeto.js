@@ -1,5 +1,7 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { iconeCurtida } from "/js/projects/curtirProjeto.js"
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // Config do Firebase
 const firebaseConfig = {
@@ -20,6 +22,8 @@ try {
 }
 
 const db = getDatabase(app);
+const auth = getAuth();
+
 
 const container = document.querySelector("#card-zone");
 const modal = document.getElementById("modal");
@@ -41,7 +45,7 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
             <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                 d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                fill="none" stroke="black" />
+                fill="none" stroke="#5274D9" />
             </svg>
           </div>
           <div class="project-title">
@@ -55,6 +59,23 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
       <h2 class="username">User</h2>
     </div>
   `;
+  const svgCurtida = card.querySelector('.like svg')
+  svgCurtida.addEventListener('click', (event) => {
+    event.stopPropagation()
+    iconeCurtida(id, svgCurtida)
+  })
+  onAuthStateChanged(auth, (user) => {
+    if(user){
+        const userId = user.uid
+        const curtidaRef = ref(db, `Curtidas/${id}/${userId}`)
+
+        get(curtidaRef).then((snapshot) => {
+            if(snapshot.exists()){
+                svgCurtida.classList.add('curtido')
+            }
+        }).catch(err => console.error('Erro ao verificar curtida'))
+    }
+  })
 
     if (userId) {
         const autorRef = ref(db, `Freelancer/${userId}`);
@@ -211,7 +232,6 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
 
 function carregarProjetos(tagFiltro = "tudo") {
     const dbRef = ref(db);
-    container.innerHTML = "";
 
     get(child(dbRef, `Projetos`))
         .then((snapshot) => {

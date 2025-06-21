@@ -124,6 +124,15 @@
     height: 32px;
     transform: scale(1.1);
 }
+path.curtido {
+  fill: #5274D9;
+  stroke: #5274D9;
+}
+svg.curtido path {
+  fill: #5274D9;
+  stroke: #5274D9;
+}
+
 
 .project-title {
     font-size: 1.2rem;
