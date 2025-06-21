@@ -72,8 +72,7 @@ function criarCardProposta(p) {
           <span class="client-name">${nomeAutor}</span>
         </div>
         <div class="buttons">
-          <button class="verMais">Ver mais</button>
-          <button class="enviar">Se candidatar</button>
+        <button class="candidatos">Candidatos</button>
         </div>
       </div>
     `;

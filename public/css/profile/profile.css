@@ -553,3 +553,7 @@
   transform: scale(0.95);
   transition-duration: 0.1s;
 }
+.proposta-card .buttons button.candidatos {
+  min-width: 250px;
+  text-align: center;
+}
