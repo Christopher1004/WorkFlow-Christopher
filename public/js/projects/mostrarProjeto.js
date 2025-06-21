@@ -73,6 +73,9 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
             if(snapshot.exists()){
                 svgCurtida.classList.add('curtido')
             }
+            else{
+                svgCurtida.classList.remove('curtido')
+            }
         }).catch(err => console.error('Erro ao verificar curtida'))
     }
   })
