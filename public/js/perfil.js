@@ -127,6 +127,90 @@ async function detectarTipoUsuario(uid) {
     return null;
 }
 
+const modalHTML = `
+<div id="modalProjeto" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="modalClose" class="modal-close">&times;</span>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<style>
+  .modal {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    color: white;
+  }
+  .modal-close {
+    cursor: pointer;
+    font-size: 24px;
+    float: right;
+  }
+</style>
+`;
+document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+const modal = document.getElementById('modalProjeto');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+containerCard.addEventListener('click', async (event) => {
+    const cardProjeto = event.target.closest('.card_projeto');
+    if (!cardProjeto) return;
+
+    const projetoId = cardProjeto.dataset.projetoId;
+    if (!projetoId) return;
+
+    modalBody.innerHTML = '<p>Carregando componentes...</p>';
+    modal.style.display = 'flex';
+
+    try {
+        const compRef = ref(db, `componentesProjeto/${projetoId}`);
+        const snapshot = await get(compRef);
+
+        if (!snapshot.exists()) {
+            modalBody.innerHTML = '<p>Sem componentes para este projeto.</p>';
+            return;
+        }
+
+        const componentes = snapshot.val();
+        componentes.sort((a,b) => a.ordem - b.ordem);
+
+        let html = '';
+        for (const comp of componentes) {
+            if (comp.tipo === 'imagem') {
+                html += `<img src="${comp.conteudo}" alt="Imagem do projeto" style="max-width:100%; margin-bottom: 15px; border-radius: 6px;">`;
+            } else if (comp.tipo === 'texto') {
+                html += `<div style="margin-bottom: 15px; color:#ddd;">${comp.conteudo}</div>`;
+            }
+        }
+        modalBody.innerHTML = html;
+    } catch (error) {
+        modalBody.innerHTML = `<p>Erro ao carregar componentes: ${error.message}</p>`;
+    }
+});
+
+modalClose.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
 onAuthStateChanged(auth, async (user) => {
     if (!perfilUserId) return;
 
@@ -209,3 +293,13 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 window.mostrarCards = mostrarCards;
+document.addEventListener('DOMContentLoaded', () => {
+  const modalEditar = document.getElementById('modal-editar');
+  if (modalEditar) {
+    modalEditar.style.display = 'none';
+
+    if (modalEditar.classList.contains('open') || modalEditar.classList.contains('active')) {
+      modalEditar.classList.remove('open', 'active');
+    }
+  }
+});
