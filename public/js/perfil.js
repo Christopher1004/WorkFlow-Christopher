@@ -143,6 +143,8 @@ const modalHTML = `
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    border-radius: 10px;
+    
   }
   .modal-content {
     background: #222;
@@ -158,6 +160,341 @@ const modalHTML = `
     font-size: 24px;
     float: right;
   }
+  modal-header {
+    margin-bottom: 1rem;
+    padding: 10px;
+}
+
+.modal-header .modal-titulo h1 {
+    font-size: var(--f8);
+    font-weight: bold;
+    color: var(--white);
+}
+
+.modal-header .modal-titulo {
+    border-bottom: 1px solid var(--gray);
+}
+
+.modal-header .modal-creator {
+    font-size: var(--f2);
+    color: var(--gray);
+    margin-block: 5px;
+}
+
+.modal-header .modal-creator a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.modal-image {
+    background-color: #ccc;
+    width: 100%;
+    aspect-ratio: 16/9;
+    margin-bottom: 1rem;
+}
+
+.modal-description {
+    font-size: var(--f3);
+    color: var(--white);
+    width: 100%;
+    padding: 50px;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.section-infos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+    flex-direction: column;
+    padding-block: 1rem;
+    border-block: 1px solid var(--gray);
+}
+
+.titulo-container h1 {
+    font-size: var(--f5);
+    font-weight: bold;
+    color: var(--white);
+}
+
+.tags-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag-span {
+    background-color: var(--darkgray);
+    color: var(--white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: var(--f2);
+}
+
+.data-container .data-criado {
+    font-size: var(--f2);
+    color: var(--gray);
+}
+
+.footer-section {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-description {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.footer-right {
+    flex: 1;
+    min-width: 250px;
+    background-color: #2a2a2a;
+    border-radius: 15px;
+}
+
+.card-autor {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 15px;
+    align-items: center;
+    background-color: black;
+    padding: 10px;
+}
+
+.header-card-autor {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+}
+
+.container-1, .container-2 {
+    flex: 1;
+    flex-direction: row;
+}
+
+.container-1 {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.header-card-autor-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+}
+
+.header-card-autor-image img {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.header-card-autor-title {
+    font-size: var(--f2);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-card-autor-title p {
+    font-size: var(--f1);
+    color: var(--gray);
+}
+
+.container-2 {
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.container-2 .button-container {
+    border: none;
+    width: 100%;
+    display: flex;
+    height: 100%;
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 10px 20px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: var(--f2);
+}
+
+.container-2 a {
+    width: 100%;
+    height: 100%;
+}
+
+.outros-projetos {
+    width: 100%;
+    padding-block: 10px;
+}
+
+.grid-projetos {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+}
+
+.card-projeto {
+    aspect-ratio: 4/3;
+    width: 100%;
+    padding: 1px;
+    border-radius: 3px;
+    background-color: var(--primary);
+}
+ .containerComentarios {
+            background-color: #1a1a1a;
+            padding: 1px;
+        }
+
+        .message-card {
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            color: white;
+            max-width: 500px;
+            background-color: #2a2a2a;
+            margin-top: 10px;
+            padding-bottom: 1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 15px;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: rgb(221, 221, 221);
+        }
+
+        .message-text {
+            font-size: 14px;
+            color: white;
+            margin-bottom: 12px;
+            text-indent: 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            margin-left: 10px;
+            margin-right: 2px;
+        }
+
+        .message-actions {
+            font-size: 14px;
+        }
+
+        .message-actions a {
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .message-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .input-box {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-box button {
+            padding: 10px 18px;
+            border: none;
+            background: #3c38a6;
+            color: white;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .input-box button:hover {
+            background: #574fd9;
+        }
+
+        .button_categoria.active {
+            background-color: #3c38a6;
+        }
 </style>
 `;
 document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -177,26 +514,114 @@ containerCard.addEventListener('click', async (event) => {
     modal.style.display = 'flex';
 
     try {
+
+        const cabecalhoHTML = `
+          <div class="modal-header">
+            <div class="modal-titulo">
+              <h1>Lorem Ipsum</h1>
+            </div>
+            <div class="modal-creator">
+              <p>Projeto criado por <a href="" class="user-name-modal">User</a>.</p>
+            </div>
+          </div>
+        `;
+
         const compRef = ref(db, `componentesProjeto/${projetoId}`);
         const snapshot = await get(compRef);
 
+        let componentesHTML = '';
         if (!snapshot.exists()) {
-            modalBody.innerHTML = '<p>Sem componentes para este projeto.</p>';
-            return;
-        }
+            componentesHTML = '<p>Sem componentes para este projeto.</p>';
+        } else {
+            const componentes = Object.values(snapshot.val());
+            componentes.sort((a,b) => a.ordem - b.ordem);
 
-        const componentes = snapshot.val();
-        componentes.sort((a,b) => a.ordem - b.ordem);
-
-        let html = '';
-        for (const comp of componentes) {
-            if (comp.tipo === 'imagem') {
-                html += `<img src="${comp.conteudo}" alt="Imagem do projeto" style="max-width:100%; margin-bottom: 15px; border-radius: 6px;">`;
-            } else if (comp.tipo === 'texto') {
-                html += `<div style="margin-bottom: 15px; color:#ddd;">${comp.conteudo}</div>`;
+            for (const comp of componentes) {
+                if (comp.tipo === 'imagem') {
+                    componentesHTML += `<img src="${comp.conteudo}" alt="Imagem do projeto" style="max-width:100%; margin-bottom: 15px; border-radius: 6px;">`;
+                } else if (comp.tipo === 'texto') {
+                    componentesHTML += `<div style="margin-bottom: 15px; color:#ddd;">${comp.conteudo}</div>`;
+                }
             }
         }
-        modalBody.innerHTML = html;
+
+        
+        const blocoExtraHTML = `
+            <div class="section-infos">
+                <div class="titulo-container">
+                    <h1 id="txtTituloTag">Lorem Ipsun</h1>
+                </div>
+                <div id="modalTagsContainer" class="tags-container">
+                    <span class="tag-span">UI Design</span>
+                    <span class="tag-span">Design WEB</span>
+                    <span class="tag-span">UX</span>
+                </div>
+                <div class="data-container">
+                    <p id="data-criado" class="data-criado">criado em 23 de maio de 2023</p>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-left">
+                    <div class="input-box">
+                        <input type="text" id="commentInput" placeholder="Escreva um comentário...">
+                        <button id="btnEnviarComentario">Enviar</button>
+                    </div>
+                    <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
+                        <div class="containerComentarios" id="containerComentarios">
+                            <div class="user-info">
+                                <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
+                                    alt="Usuário">
+                                <div class="user-details">
+                                    <span class="user-name">Christopher</span>
+                                    <span class="message-time">Há 1 mês</span>
+                                </div>
+                            </div>
+                            <div class="message-text">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus
+                                rem
+                                vero,
+                                adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit
+                                nihil
+                                delectus saepe minus, ut quis?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="card-autor">
+                        <div class="header-card-autor">
+                            <div class="container-1">
+                                <div class="header-card-autor-image">
+                                    <img src="" id="modalUserPhoto" alt="Profile pic">
+                                </div>
+                                <div class="header-card-autor-title">
+                                    <h1 id="modalAutor">Autor</h1>
+                                    <p id="modalTag">Designer Web</p>
+                                </div>
+                            </div>
+                            <div class="container-2">
+                                <button class="button-container contactar" id="contactar">Contatar</button>
+                                <a id="btnVerPerfil"><button class="button-container">Ver Perfil</button></a>
+                            </div>
+                        </div>
+                        <div class="outros-projetos">
+                            <div class="grid-projetos">
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                                <div class="card-projeto"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        modalBody.innerHTML = cabecalhoHTML + componentesHTML + blocoExtraHTML;
     } catch (error) {
         modalBody.innerHTML = `<p>Erro ao carregar componentes: ${error.message}</p>`;
     }
