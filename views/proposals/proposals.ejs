@@ -101,7 +101,7 @@
         const card = document.createElement('div');
         card.classList.add('proposta-card');
 
-      card.innerHTML = `
+        card.innerHTML = `
   <div class="head">
     <h3>${p.titulo || 'Sem título'}</h3>
     <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
@@ -127,8 +127,33 @@
 
         wrapper.appendChild(card);
         propostasContainer.appendChild(wrapper);
+        adicionarEventoBotaoCandidatarse();
+
       });
     }
+    function adicionarEventoBotaoCandidatarse() {
+      document.querySelectorAll('.enviar').forEach(botao => {
+        botao.addEventListener('click', () => {
+          if (botao.classList.contains('enviado')) return;
+
+          botao.classList.add('enviado');
+
+          const check = document.createElement('span');
+          check.classList.add('checkmark');
+          botao.appendChild(check);
+
+          setTimeout(() => {
+            botao.classList.remove('enviado');
+            check.remove();
+          }, 2000);
+        });
+      });
+    }
+
+
+
+
+
 
     function filtrarPropostas() {
       const area = document.getElementById('area').value;
@@ -178,7 +203,7 @@
           renderizarPropostas(propostas);
           return;
         }
-        const filtradas = propostas.filter(p => 
+        const filtradas = propostas.filter(p =>
           p.titulo?.toLowerCase().includes(busca.toLowerCase())
         );
         renderizarPropostas(filtradas);
@@ -208,7 +233,7 @@
         const searchInput = document.querySelector('.searchbar-input');
         if (searchInput) {
           searchInput.value = busca;
-          const filtradas = propostas.filter(p => 
+          const filtradas = propostas.filter(p =>
             p.titulo?.toLowerCase().includes(busca.toLowerCase())
           );
           renderizarPropostas(filtradas);
@@ -219,5 +244,23 @@
         renderizarPropostas(propostas);
       }
     });
+    document.querySelectorAll('.enviar').forEach(botao => {
+      botao.addEventListener('click', () => {
+        // Se já tiver check, não adiciona de novo
+        if (botao.querySelector('.checkmark')) return;
+
+        // Criar o elemento da checkmark
+        const check = document.createElement('span');
+        check.classList.add('checkmark');
+        botao.textContent = 'Enviado'; // Muda texto do botão (opcional)
+        botao.appendChild(check);
+
+        // Depois de 2 segundos, volta ao texto original e remove checkmark
+        setTimeout(() => {
+          botao.textContent = 'se candidatar';
+        }, 2000);
+      });
+    });
+
   </script>
 </body>
