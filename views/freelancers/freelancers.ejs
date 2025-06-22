@@ -7,7 +7,16 @@
   <link rel="stylesheet" href="/css/freelancers/freelancers.css" />
 </head>
 <body>
-  <section class="section-1">
+  <section class="section-1" style="padding: 1rem;">
+    <div style="margin-bottom: 1rem; text-align: center;">
+      <label for="filtro-ordenacao" style="font-weight: bold; margin-right: 0.5rem;">Ordenar por:</label>
+      <select id="filtro-ordenacao" style="padding: 0.3rem 0.6rem; font-size: 1rem; background-color: #1a1a1a; color: #eee; border: 1px solid #444; border-radius: 4px;">
+        <option value="" selected>Nenhuma</option>
+        <option value="curtidas">Mais Curtidas</option>
+        <option value="projetos">Mais Projetos</option>
+        <option value="propostas">Mais Propostas</option>
+      </select>
+    </div>
     <div class="freelancers-grid"></div>
   </section>
 
@@ -31,6 +40,7 @@
 
     const grid = document.querySelector('.freelancers-grid');
     const anonymousAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+    const selectOrdenacao = document.getElementById('filtro-ordenacao');
 
     function criarCard({ nome, bio, foto_perfil, banner, curtidas = 0, projetos = 0, propostas = 0 }, id, temCoroa = false) {
       const foto = foto_perfil && foto_perfil.trim() !== '' ? foto_perfil : anonymousAvatar;
@@ -80,7 +90,7 @@
       return card;
     }
 
-    async function carregarFreelancers(filtroNome = "") {
+    async function carregarFreelancers(filtroNome = "", ordenacao = "") {
       try {
         const dbRef = ref(db);
         const [freelancersSnap, projetosSnap, propostasSnap, curtidasSnap] = await Promise.all([
@@ -126,12 +136,34 @@
             propostas: propostasDoFreelancer.length
           });
         });
-        
-        const maisCurtido = listaFreelancers.reduce((max, f) => {
+
+        if (ordenacao) {
+          listaFreelancers.sort((a, b) => {
+            if (ordenacao === "curtidas") {
+              if (b.curtidas !== a.curtidas) return b.curtidas - a.curtidas;
+              if (b.projetos !== a.projetos) return b.projetos - a.projetos;
+              return b.propostas - a.propostas;
+            }
+            if (ordenacao === "projetos") {
+              if (b.projetos !== a.projetos) return b.projetos - a.projetos;
+              if (b.curtidas !== a.curtidas) return b.curtidas - a.curtidas;
+              return b.propostas - a.propostas;
+            }
+            if (ordenacao === "propostas") {
+              if (b.propostas !== a.propostas) return b.propostas - a.propostas;
+              if (b.curtidas !== a.curtidas) return b.curtidas - a.curtidas;
+              return b.projetos - a.projetos;
+            }
+            return 0;
+          });
+        }
+
+        const maisDestacado = listaFreelancers.reduce((max, f) => {
+          if (!max) return f;
           if (f.curtidas > max.curtidas) return f;
           if (f.curtidas === max.curtidas && f.projetos > max.projetos) return f;
           return max;
-        }, { curtidas: -1, projetos: -1 });
+        }, null);
 
         listaFreelancers.forEach(f => {
           const card = criarCard(
@@ -142,7 +174,7 @@
               propostas: f.propostas
             },
             f.id,
-            f.id === maisCurtido.id
+            f.id === (maisDestacado ? maisDestacado.id : null)
           );
           grid.appendChild(card);
         });
@@ -163,14 +195,19 @@
       const busca = params.get('busca');
       if (inputBusca && busca) inputBusca.value = busca;
 
-      if (inputBusca) {
-        inputBusca.addEventListener('input', () => {
-          const termo = inputBusca.value.trim().toLowerCase();
-          carregarFreelancers(termo);
-        });
+      function recarregar() {
+        const ordenacao = selectOrdenacao.value;
+        const filtroNome = inputBusca ? inputBusca.value.trim().toLowerCase() : "";
+        carregarFreelancers(filtroNome, ordenacao);
       }
 
-      carregarFreelancers(busca);
+      selectOrdenacao.addEventListener('change', recarregar);
+
+      if (inputBusca) {
+        inputBusca.addEventListener('input', recarregar);
+      }
+
+      recarregar();
     });
   </script>
 </body>
