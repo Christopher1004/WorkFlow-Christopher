@@ -370,7 +370,7 @@ containerCard.addEventListener('click', async (event) => {
 
             for (const comp of componentes) {
                 if (comp.tipo === 'imagem') {
-                    componentesHTML += `<img src="${comp.conteudo}" alt="Imagem do projeto" style="max-width:100%; margin-bottom: 15px; border-radius: 6px;">`;
+                    componentesHTML += `<img src="${comp.conteudo}" alt="Imagem do projeto" class="componente-img" style="margin-bottom: 15px; border-radius: 6px;">`;
                 } else if (comp.tipo === 'texto') {
                     componentesHTML += `<div style="margin-bottom: 15px; color:#ddd;">${comp.conteudo}</div>`;
                 }

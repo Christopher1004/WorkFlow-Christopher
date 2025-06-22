@@ -945,3 +945,11 @@
 .button_categoria.active {
   background-color: #3c38a6;
 }
+.modal .componente-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  display: block;
+}
