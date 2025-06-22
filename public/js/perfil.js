@@ -1,12 +1,19 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, update, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, update, get, child, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+let firebaseApp;
+try {
+    firebaseApp = getApp();
+} catch (e) {
+    firebaseApp = initializeApp(firebaseConfig); 
+}
 
 const params = new URLSearchParams(window.location.search);
 const perfilUserId = params.get('id');
 
-const auth = getAuth();
-const db = getDatabase();
+const auth = getAuth(firebaseApp);
+const db = getDatabase(firebaseApp);
 const containerCard = document.querySelector('.card-zone');
 const contadorProjetos = document.getElementById('quantidadeProjetos');
 const tabButtons = document.querySelectorAll('.tab-button');
@@ -79,11 +86,10 @@ function criarCardProposta(p, aba = 'projetos') {
           <span class="client-name">${nomeAutor}</span>
         </div>
         <div class="buttons">
-          ${
-            isDonoDoPerfil
-              ? `<button class="candidatos">Candidatos</button>`
-              : `<button class="enviar">Se candidatar</button>`
-          }
+          ${isDonoDoPerfil
+            ? `<button class="candidatos">Candidatos</button>`
+            : `<button class="enviar">Se candidatar</button>`
+        }
         </div>
       </div>
     `;
@@ -119,382 +125,384 @@ function mostrarCards(tipo) {
 }
 
 async function detectarTipoUsuario(uid) {
+    console.log("Detectando tipo para UID:", uid); 
     if (!uid) return null;
     const freelancerSnap = await get(ref(db, `Freelancer/${uid}`));
+    console.log("Existe Freelancer?", freelancerSnap.exists()); 
     if (freelancerSnap.exists()) return 'Freelancer';
     const contratanteSnap = await get(ref(db, `Contratante/${uid}`));
+    console.log("Existe Contratante?", contratanteSnap.exists()); 
     if (contratanteSnap.exists()) return 'Contratante';
     return null;
 }
 
 const modalHTML = `
 <div id="modalProjeto" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span id="modalClose" class="modal-close">&times;</span>
-    <div id="modalBody"></div>
-  </div>
+    <div class="modal-content">
+        <span id="modalClose" class="modal-close">&times;</span>
+        <div id="modalBody"></div>
+    </div>
 </div>
 <style>
-  .modal {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    border-radius: 10px;
-    
-  }
-  .modal-content {
-    background: #222;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow-y: auto;
-    color: white;
-  }
-  .modal-close {
-    cursor: pointer;
-    font-size: 24px;
-    float: right;
-  }
-  modal-header {
-    margin-bottom: 1rem;
-    padding: 10px;
-}
+    .modal {
+        position: fixed;
+        top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        border-radius: 10px;
+    }
+    .modal-content {
+        background: #222;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        color: white;
+    }
+    .modal-close {
+        cursor: pointer;
+        font-size: 24px;
+        float: right;
+    }
+    .modal-header {
+        margin-bottom: 1rem;
+        padding: 10px;
+    }
 
-.modal-header .modal-titulo h1 {
-    font-size: var(--f8);
-    font-weight: bold;
-    color: var(--white);
-}
+    .modal-header .modal-titulo h1 {
+        font-size: 2.5rem; 
+        font-weight: bold;
+        color: white; 
+    }
 
-.modal-header .modal-titulo {
-    border-bottom: 1px solid var(--gray);
-}
+    .modal-header .modal-titulo {
+        border-bottom: 1px solid gray; 
+    }
 
-.modal-header .modal-creator {
-    font-size: var(--f2);
-    color: var(--gray);
-    margin-block: 5px;
-}
+    .modal-header .modal-creator {
+        font-size: 1rem; 
+        color: gray; 
+        margin-block: 5px;
+    }
 
-.modal-header .modal-creator a {
-    color: var(--primary);
-    text-decoration: none;
-}
+    .modal-header .modal-creator a {
+        color: #6c63ff; 
+        text-decoration: none;
+    }
 
-.modal-image {
-    background-color: #ccc;
-    width: 100%;
-    aspect-ratio: 16/9;
-    margin-bottom: 1rem;
-}
+    .modal-image {
+        background-color: #ccc;
+        width: 100%;
+        aspect-ratio: 16/9;
+        margin-bottom: 1rem;
+    }
 
-.modal-description {
-    font-size: var(--f3);
-    color: var(--white);
-    width: 100%;
-    padding: 50px;
-}
+    .modal-description {
+        font-size: 1.2rem; 
+        color: white; 
+        width: 100%;
+        padding: 50px;
+    }
 
-.center {
-    text-align: center;
-}
+    .center {
+        text-align: center;
+    }
 
-.left {
-    text-align: left;
-}
+    .left {
+        text-align: left;
+    }
 
-.right {
-    text-align: right;
-}
+    .right {
+        text-align: right;
+    }
 
-.section-infos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 1rem;
-    flex-direction: column;
-    padding-block: 1rem;
-    border-block: 1px solid var(--gray);
-}
+    .section-infos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 1rem;
+        flex-direction: column;
+        padding-block: 1rem;
+        border-block: 1px solid gray; 
+    }
 
-.titulo-container h1 {
-    font-size: var(--f5);
-    font-weight: bold;
-    color: var(--white);
-}
+    .titulo-container h1 {
+        font-size: 1.8rem; 
+        font-weight: bold;
+        color: white; 
+    }
 
-.tags-container {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
+    .tags-container {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
 
-.tag-span {
-    background-color: var(--darkgray);
-    color: var(--white);
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: var(--f2);
-}
+    .tag-span {
+        background-color: #333; 
+        color: white; 
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 1rem; 
+    }
 
-.data-container .data-criado {
-    font-size: var(--f2);
-    color: var(--gray);
-}
+    .data-container .data-criado {
+        font-size: 1rem; 
+        color: gray; 
+    }
 
-.footer-section {
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
+    .footer-section {
+        margin: 10px;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
 
-.footer-left {
-    flex: 1;
-    min-width: 250px;
-}
+    .footer-left {
+        flex: 1;
+        min-width: 250px;
+    }
 
-.footer-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
+    .footer-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
 
-.footer-description {
-    color: #aaa;
-    font-size: 0.9rem;
-}
+    .footer-description {
+        color: #aaa;
+        font-size: 0.9rem;
+    }
 
-.footer-right {
-    flex: 1;
-    min-width: 250px;
-    background-color: #2a2a2a;
-    border-radius: 15px;
-}
+    .footer-right {
+        flex: 1;
+        min-width: 250px;
+        background-color: #2a2a2a;
+        border-radius: 15px;
+    }
 
-.card-autor {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    border-radius: 15px;
-    align-items: center;
-    background-color: black;
-    padding: 10px;
-}
+    .card-autor {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        border-radius: 15px;
+        align-items: center;
+        background-color: black;
+        padding: 10px;
+    }
 
-.header-card-autor {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
-}
+    .header-card-autor {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+        align-items: center;
+    }
 
-.container-1, .container-2 {
-    flex: 1;
-    flex-direction: row;
-}
+    .container-1, .container-2 {
+        flex: 1;
+        flex-direction: row;
+    }
 
-.container-1 {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-}
+    .container-1 {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
 
-.header-card-autor-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-}
+    .header-card-autor-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+    }
 
-.header-card-autor-image img {
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border-radius: 50%;
-}
+    .header-card-autor-image img {
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50%;
+    }
 
-.header-card-autor-title {
-    font-size: var(--f2);
-    color: var(--white);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+    .header-card-autor-title {
+        font-size: 1rem; 
+        color: white; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
-.header-card-autor-title p {
-    font-size: var(--f1);
-    color: var(--gray);
-}
+    .header-card-autor-title p {
+        font-size: 0.8rem; 
+        color: gray; 
+    }
 
-.container-2 {
-    width: 100%;
-    display: flex;
-    height: 100%;
-    flex-direction: row;
-    gap: 5px;
-}
+    .container-2 {
+        width: 100%;
+        display: flex;
+        height: 100%;
+        flex-direction: row;
+        gap: 5px;
+    }
 
-.container-2 .button-container {
-    border: none;
-    width: 100%;
-    display: flex;
-    height: 100%;
-    background-color: var(--primary);
-    color: var(--white);
-    padding: 10px 20px;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    font-size: var(--f2);
-}
+    .container-2 .button-container {
+        border: none;
+        width: 100%;
+        display: flex;
+        height: 100%;
+        background-color: 
+        color: white; 
+        padding: 10px 20px;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 1rem; 
+    }
 
-.container-2 a {
-    width: 100%;
-    height: 100%;
-}
+    .container-2 a {
+        width: 100%;
+        height: 100%;
+    }
 
-.outros-projetos {
-    width: 100%;
-    padding-block: 10px;
-}
+    .outros-projetos {
+        width: 100%;
+        padding-block: 10px;
+    }
 
-.grid-projetos {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
-}
+    .grid-projetos {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+    }
 
-.card-projeto {
-    aspect-ratio: 4/3;
-    width: 100%;
-    padding: 1px;
-    border-radius: 3px;
-    background-color: var(--primary);
-}
- .containerComentarios {
-            background-color: #1a1a1a;
-            padding: 1px;
-        }
+    .card-projeto {
+        aspect-ratio: 4/3;
+        width: 100%;
+        padding: 1px;
+        border-radius: 3px;
+        background-color: #6c63ff; 
+    }
+    .containerComentarios {
+        background-color: #1a1a1a;
+        padding: 1px;
+    }
 
-        .message-card {
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-            width: 100%;
-            color: white;
-            max-width: 500px;
-            background-color: #2a2a2a;
-            margin-top: 10px;
-            padding-bottom: 1px;
-        }
+    .message-card {
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        color: white;
+        max-width: 500px;
+        background-color: #2a2a2a;
+        margin-top: 10px;
+        padding-bottom: 1px;
+    }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
 
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
+    .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
 
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
+    .user-details {
+        display: flex;
+        flex-direction: column;
+    }
 
-        .user-name {
-            font-weight: bold;
-            font-size: 15px;
-            color: white;
-            letter-spacing: 1px;
-        }
+    .user-name {
+        font-weight: bold;
+        font-size: 15px;
+        color: white;
+        letter-spacing: 1px;
+    }
 
-        .message-time {
-            font-size: 12px;
-            color: rgb(221, 221, 221);
-        }
+    .message-time {
+        font-size: 12px;
+        color: rgb(221, 221, 221);
+    }
 
-        .message-text {
-            font-size: 14px;
-            color: white;
-            margin-bottom: 12px;
-            text-indent: 10px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: pre-wrap;
-            margin-left: 10px;
-            margin-right: 2px;
-        }
+    .message-text {
+        font-size: 14px;
+        color: white;
+        margin-bottom: 12px;
+        text-indent: 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        margin-left: 10px;
+        margin-right: 2px;
+    }
 
-        .message-actions {
-            font-size: 14px;
-        }
+    .message-actions {
+        font-size: 14px;
+    }
 
-        .message-actions a {
-            color: #6c63ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .message-actions a {
+        color: #6c63ff;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        .message-actions a:hover {
-            text-decoration: underline;
-        }
+    .message-actions a:hover {
+        text-decoration: underline;
+    }
 
-        .input-box {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            gap: 10px;
-        }
+    .input-box {
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        gap: 10px;
+    }
 
-        .input-box input {
-            flex: 1;
-            padding: 10px 14px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            outline: none;
-        }
+    .input-box input {
+        flex: 1;
+        padding: 10px 14px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        outline: none;
+    }
 
-        .input-box button {
-            padding: 10px 18px;
-            border: none;
-            background: #3c38a6;
-            color: white;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    .input-box button {
+        padding: 10px 18px;
+        border: none;
+        background: #3c38a6;
+        color: white;
+        font-weight: bold;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
 
-        .input-box button:hover {
-            background: #574fd9;
-        }
+    .input-box button:hover {
+        background: #574fd9;
+    }
 
-        .button_categoria.active {
-            background-color: #3c38a6;
-        }
+    .button_categoria.active {
+        background-color: #3c38a6;
+    }
 </style>
 `;
 document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -502,6 +510,173 @@ document.body.insertAdjacentHTML('beforeend', modalHTML);
 const modal = document.getElementById('modalProjeto');
 const modalBody = document.getElementById('modalBody');
 const modalClose = document.getElementById('modalClose');
+
+function criarCabecalhoProjetoHTML(projeto, autorNome, autorId) {
+    return `
+        <div class="modal-header">
+            <div class="modal-titulo">
+                <h1>${projeto.titulo || 'Sem Título'}</h1>
+            </div>
+            <div class="modal-creator">
+                <p>Projeto criado por <a href="/perfil?id=${autorId}" class="user-name-modal">${autorNome || 'Desconhecido'}</a>.</p>
+            </div>
+        </div>
+    `;
+}
+
+function criarComentarioHTML(comentario) {
+    return `
+        <div class="containerComentarios">
+            <div class="user-info">
+                <img src="${comentario.foto || 'https://via.placeholder.com/50'}" alt="Usuário">
+                <div class="user-details">
+                    <span class="user-name">${comentario.nome || 'Anônimo'}</span>
+                    <span class="message-time">${comentario.tempo || 'há pouco'}</span>
+                </div>
+            </div>
+            <div class="message-text">${comentario.texto || ''}</div>
+        </div>
+    `;
+}
+
+async function obterComentariosDoProjeto(projetoId) {
+    const comentariosSnap = await get(ref(db, `Comentarios/${projetoId}`));
+    const comentariosData = comentariosSnap.exists() ? comentariosSnap.val() : {};
+
+    const comentariosArray = [];
+    for (const comentarioId in comentariosData) {
+        const comentario = comentariosData[comentarioId];
+        let userSnap;
+        let userData = {};
+
+
+        userSnap = await get(ref(db, `Freelancer/${comentario.userId}`));
+        if (userSnap.exists()) {
+            userData = userSnap.val();
+        } else {
+
+            userSnap = await get(ref(db, `Contratante/${comentario.userId}`));
+            if (userSnap.exists()) {
+                userData = userSnap.val();
+            }
+        }
+
+        comentariosArray.push({
+            nome: userData.nome || 'Anônimo',
+            foto: userData.foto_perfil || 'https://via.placeholder.com/50',
+            texto: comentario.texto,
+            tempo: formatarTempoComentario(comentario.timestamp)
+        });
+    }
+    return comentariosArray;
+}
+
+function formatarTempoComentario(timestamp) {
+    const now = new Date();
+    const commentDate = new Date(timestamp);
+    const diffMs = now - commentDate;
+    const diffSeconds = Math.round(diffMs / 1000);
+    const diffMinutes = Math.round(diffSeconds / 60);
+    const diffHours = Math.round(diffMinutes / 60);
+    const diffDays = Math.round(diffHours / 24);
+    const diffMonths = Math.round(diffDays / 30);
+    const diffYears = Math.round(diffDays / 365);
+
+    if (diffSeconds < 60) {
+        return `há ${diffSeconds} segundos`;
+    } else if (diffMinutes < 60) {
+        return `há ${diffMinutes} minutos`;
+    } else if (diffHours < 24) {
+        return `há ${diffHours} horas`;
+    } else if (diffDays < 30) {
+        return `há ${diffDays} dias`;
+    } else if (diffMonths < 12) {
+        return `há ${diffMonths} meses`;
+    } else {
+        return `há ${diffYears} anos`;
+    }
+}
+
+
+async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
+    const dataCriacao = new Date(projeto.dataCriacao).toLocaleDateString('pt-BR', {
+        day: '2-digit', month: 'long', year: 'numeric'
+    });
+
+    const tagsHTML = (projeto.tags && Array.isArray(projeto.tags))
+        ? projeto.tags.map(tag => `<span class="tag-span">${tag}</span>`).join('')
+        : '';
+
+    const comentariosHTML = comentarios.map(com => criarComentarioHTML(com)).join('');
+
+
+    let outrosProjetosHTML = '';
+    const autorProjetosSnap = await get(ref(db, `Projetos`));
+    if (autorProjetosSnap.exists()) {
+        const todosProjetos = autorProjetosSnap.val();
+        const projetosDoAutor = Object.entries(todosProjetos)
+            .filter(([id, proj]) => proj.userId === autorData.id && id !== projeto.id)
+            .slice(0, 6);
+
+        outrosProjetosHTML = projetosDoAutor.map(([id, proj]) => `
+            <div class="card-projeto">
+                <img src="${proj.capaUrl || 'https://via.placeholder.com/150'}" alt="${proj.titulo}" style="width:100%; height:100%; object-fit:cover; border-radius:3px;">
+            </div>
+        `).join('');
+    }
+
+    return `
+        <div class="section-infos">
+            <div class="titulo-container">
+                <h1 id="txtTituloTag">${projeto.titulo || 'Sem Título'}</h1>
+            </div>
+            <div id="modalTagsContainer" class="tags-container">
+                ${tagsHTML}
+            </div>
+            <div class="data-container">
+                <p id="data-criado" class="data-criado">criado em ${dataCriacao}</p>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-left">
+                <div class="input-box">
+                    <input type="text" id="commentInput" placeholder="Escreva um comentário...">
+                    <button id="btnEnviarComentario">Enviar</button>
+                </div>
+                <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
+                    ${comentariosHTML}
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <div class="card-autor">
+                    <div class="header-card-autor">
+                        <div class="container-1">
+                            <div class="header-card-autor-image">
+                                <img src="${autorData.foto_perfil || 'https://via.placeholder.com/50'}" id="modalUserPhoto" alt="Profile pic">
+                            </div>
+                            <div class="header-card-autor-title">
+                                <h1 id="modalAutor">${autorData.nome || 'Autor Desconhecido'}</h1>
+                                <p id="modalTag">${autorData.tag || 'Não informado'}</p>
+                            </div>
+                        </div>
+                        <div class="container-2">
+                            <button class="button-container contactar" id="contactar">Contatar</button>
+                            <a id="btnVerPerfil" href="/perfil?id=${autorData.id}"><button class="button-container">Ver Perfil</button></a>
+                        </div>
+                    </div>
+                    <div class="outros-projetos">
+                        <h3>Outros projetos de ${autorData.nome || 'Autor'}</h3>
+                        <div class="grid-projetos">
+                            ${outrosProjetosHTML}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
 containerCard.addEventListener('click', async (event) => {
     const cardProjeto = event.target.closest('.card_projeto');
@@ -514,17 +689,35 @@ containerCard.addEventListener('click', async (event) => {
     modal.style.display = 'flex';
 
     try {
+        const projetoRef = ref(db, `Projetos/${projetoId}`);
+        const projetoSnap = await get(projetoRef);
 
-        const cabecalhoHTML = `
-          <div class="modal-header">
-            <div class="modal-titulo">
-              <h1>Lorem Ipsum</h1>
-            </div>
-            <div class="modal-creator">
-              <p>Projeto criado por <a href="" class="user-name-modal">User</a>.</p>
-            </div>
-          </div>
-        `;
+        if (!projetoSnap.exists()) {
+            modalBody.innerHTML = '<p>Projeto não encontrado.</p>';
+            return;
+        }
+
+        const projetoData = { id: projetoId, ...projetoSnap.val() };
+        const autorId = projetoData.userId;
+
+        let autorData = {};
+        let autorTipo = await detectarTipoUsuario(autorId);
+
+        if (autorTipo === 'Freelancer') {
+            const freelancerSnap = await get(ref(db, `Freelancer/${autorId}`));
+            if (freelancerSnap.exists()) {
+                autorData = { id: autorId, ...freelancerSnap.val(), tag: freelancerSnap.val().tag || 'Freelancer' };
+            }
+        } else if (autorTipo === 'Contratante') {
+            const contratanteSnap = await get(ref(db, `Contratante/${autorId}`));
+            if (contratanteSnap.exists()) {
+                autorData = { id: autorId, ...contratanteSnap.val(), tag: contratanteSnap.val().tag || 'Contratante' };
+            }
+        }
+
+        const comentarios = await obterComentariosDoProjeto(projetoId);
+
+        const cabecalhoHTML = criarCabecalhoProjetoHTML(projetoData, autorData.nome, autorData.id);
 
         const compRef = ref(db, `componentesProjeto/${projetoId}`);
         const snapshot = await get(compRef);
@@ -534,7 +727,7 @@ containerCard.addEventListener('click', async (event) => {
             componentesHTML = '<p>Sem componentes para este projeto.</p>';
         } else {
             const componentes = Object.values(snapshot.val());
-            componentes.sort((a,b) => a.ordem - b.ordem);
+            componentes.sort((a, b) => a.ordem - b.ordem);
 
             for (const comp of componentes) {
                 if (comp.tipo === 'imagem') {
@@ -545,85 +738,36 @@ containerCard.addEventListener('click', async (event) => {
             }
         }
 
-        
-        const blocoExtraHTML = `
-            <div class="section-infos">
-                <div class="titulo-container">
-                    <h1 id="txtTituloTag">Lorem Ipsun</h1>
-                </div>
-                <div id="modalTagsContainer" class="tags-container">
-                    <span class="tag-span">UI Design</span>
-                    <span class="tag-span">Design WEB</span>
-                    <span class="tag-span">UX</span>
-                </div>
-                <div class="data-container">
-                    <p id="data-criado" class="data-criado">criado em 23 de maio de 2023</p>
-                </div>
-            </div>
-
-            <div class="footer-section">
-                <div class="footer-left">
-                    <div class="input-box">
-                        <input type="text" id="commentInput" placeholder="Escreva um comentário...">
-                        <button id="btnEnviarComentario">Enviar</button>
-                    </div>
-                    <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
-                        <div class="containerComentarios" id="containerComentarios">
-                            <div class="user-info">
-                                <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
-                                    alt="Usuário">
-                                <div class="user-details">
-                                    <span class="user-name">Christopher</span>
-                                    <span class="message-time">Há 1 mês</span>
-                                </div>
-                            </div>
-                            <div class="message-text">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus
-                                rem
-                                vero,
-                                adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit
-                                nihil
-                                delectus saepe minus, ut quis?
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-right">
-                    <div class="card-autor">
-                        <div class="header-card-autor">
-                            <div class="container-1">
-                                <div class="header-card-autor-image">
-                                    <img src="" id="modalUserPhoto" alt="Profile pic">
-                                </div>
-                                <div class="header-card-autor-title">
-                                    <h1 id="modalAutor">Autor</h1>
-                                    <p id="modalTag">Designer Web</p>
-                                </div>
-                            </div>
-                            <div class="container-2">
-                                <button class="button-container contactar" id="contactar">Contatar</button>
-                                <a id="btnVerPerfil"><button class="button-container">Ver Perfil</button></a>
-                            </div>
-                        </div>
-                        <div class="outros-projetos">
-                            <div class="grid-projetos">
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        const blocoExtraHTML = await criarBlocoExtraProjetoHTML(projetoData, autorData, comentarios);
 
         modalBody.innerHTML = cabecalhoHTML + componentesHTML + blocoExtraHTML;
+
+        const btnEnviarComentario = document.getElementById('btnEnviarComentario');
+        if (btnEnviarComentario) {
+            btnEnviarComentario.addEventListener('click', async () => {
+                const commentInput = document.getElementById('commentInput');
+                const commentText = commentInput.value.trim();
+
+                if (commentText && auth.currentUser) {
+                    const newCommentRef = push(ref(db, `Comentarios/${projetoId}`));
+                    await set(newCommentRef, {
+                        userId: auth.currentUser.uid,
+                        texto: commentText,
+                        timestamp: Date.now()
+                    });
+                    commentInput.value = '';
+
+                    const updatedComentarios = await obterComentariosDoProjeto(projetoId);
+                    document.getElementById('comentariosProjeto').innerHTML = updatedComentarios.map(com => criarComentarioHTML(com)).join('');
+                } else {
+                    alert('Por favor, escreva um comentário e esteja logado para comentar.');
+                }
+            });
+        }
+
     } catch (error) {
-        modalBody.innerHTML = `<p>Erro ao carregar componentes: ${error.message}</p>`;
+        console.error("Erro ao carregar dados do projeto:", error);
+        modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
     }
 });
 
@@ -637,7 +781,14 @@ modal.addEventListener('click', (e) => {
 });
 
 onAuthStateChanged(auth, async (user) => {
-    if (!perfilUserId) return;
+    console.log("ID do Perfil na URL (onAuthStateChanged):", perfilUserId);
+
+    if (!perfilUserId) {
+        console.error("ID do perfil não encontrado na URL. Redirecionando ou exibindo mensagem...");
+        containerCard.innerHTML = '<p>Nenhum perfil especificado na URL. Por favor, retorne à página inicial ou use um link válido.</p>';
+        contadorProjetos.textContent = '0';
+        return;
+    }
 
     const currentUserId = user?.uid || null;
     containerCard.innerHTML = '';
@@ -647,7 +798,7 @@ onAuthStateChanged(auth, async (user) => {
 
     tipoUsuario = await detectarTipoUsuario(perfilUserId);
     if (!tipoUsuario) {
-        containerCard.innerHTML = '<p>Tipo de usuário não encontrado.</p>';
+        containerCard.innerHTML = '<p>Tipo de usuário não encontrado para este ID.</p>';
         contadorProjetos.textContent = '0';
         return;
     }
@@ -719,12 +870,12 @@ onAuthStateChanged(auth, async (user) => {
 
 window.mostrarCards = mostrarCards;
 document.addEventListener('DOMContentLoaded', () => {
-  const modalEditar = document.getElementById('modal-editar');
-  if (modalEditar) {
-    modalEditar.style.display = 'none';
+    const modalEditar = document.getElementById('modal-editar');
+    if (modalEditar) {
+        modalEditar.style.display = 'none';
 
-    if (modalEditar.classList.contains('open') || modalEditar.classList.contains('active')) {
-      modalEditar.classList.remove('open', 'active');
+        if (modalEditar.classList.contains('open') || modalEditar.classList.contains('active')) {
+            modalEditar.classList.remove('open', 'active');
+        }
     }
-  }
 });
