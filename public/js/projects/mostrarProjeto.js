@@ -93,7 +93,6 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
     }
 
     card.addEventListener("click", () => {
-        // Busca o projeto completo para pegar as tags
         const dbRef = ref(db);
         get(child(dbRef, `Projetos/${id}`))
             .then((snapshot) => {
@@ -215,6 +214,29 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
                     const userPhoto = autor.foto_perfil;
                     const tagAutor = autor.tag;
 
+                    const gridProjetos = modal.querySelector('.grid-projetos')
+                    if(gridProjetos){
+                        gridProjetos.innerHTML = ''
+
+                        get(child(dbRef, 'Projetos')).then((snapshot) => {
+                            if(snapshot.exists()){
+                                const projetos = snapshot.val()
+
+                                Object.entries(projetos).forEach(([id, projeto]) => {
+                                    if(projeto.userId === userId && id !== idProjeto){
+                                        const card = criarCardProjetoMiniatura({
+                                            ...projeto,
+                                            id
+                                        })
+                                        gridProjetos.appendChild(card)
+                                    }
+                                })
+                            }
+                        }).catch((error) => {
+                            console.error('Erro ao buscar projeto autor')
+                        })
+                    }
+
                     modalCreator.innerHTML = `Projeto criado por <a href="/perfil?id=${userId}" class="user-name-modal">${nomeAutor}</a>.`;
                     modalAutor.textContent = nomeAutor;
                     modalUserPhoto.src = userPhoto;
@@ -233,6 +255,33 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
     }));
 }
 
+function criarCardProjetoMiniatura(projeto){
+    const card = document.createElement('div')
+    card.classList.add('card-projeto')
+
+    card.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+    card.style.cursor = 'pointer';
+    card.style.position = 'relative';
+    card.style.borderRadius = '5px'
+
+    const capa = document.createElement('img')
+    capa.style.width = '100%';
+    capa.style.height = '100%';
+    capa.style.objectFit = 'cover';
+    capa.style.display = 'block';
+    capa.style.borderRadius = '5px'
+
+
+    capa.src = projeto.capaUrl || ''
+    capa.alt = 'Capa Outros Projetos do Autor'
+    card.appendChild(capa)
+
+    card.addEventListener('click', () => {
+        abrirModalProjeto(projeto.id, projeto.titulo, projeto.descricao, projeto.dataCriacao, projeto.userId, projeto.tags)
+    })
+
+    return card
+}
 function carregarProjetos(tagFiltro = "tudo") {
     const dbRef = ref(db);
     container.innerHTML = ''

@@ -32,9 +32,9 @@ function formatarTempo(dataISO) {
     const agora = new Date()
     const diff = agora - data
 
-    const minutos = Math.floor(diff / 60000)
-    const horas = Math.floor(diff / 60)
-    const dias = Math.floor(horas / 24)
+    const minutos = Math.floor(diff / (1000 * 60))
+    const horas = Math.floor(diff / (1000 * 60 * 60))
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24))
 
     if (dias > 0) return `Há ${dias} dia${dias > 1 ? 's' : ''}`;
     if (horas > 0) return `Há ${horas} hora${horas > 1 ? 's' : ''}`;
