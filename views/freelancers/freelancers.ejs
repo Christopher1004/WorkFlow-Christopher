@@ -5,150 +5,173 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Freelancers</title>
   <link rel="stylesheet" href="/css/freelancers/freelancers.css" />
- 
 </head>
 <body>
-<section class="section-1">
-  <div class="freelancers-grid"></div>
-</section>
+  <section class="section-1">
+    <div class="freelancers-grid"></div>
+  </section>
 
-<script type="module">
-  import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
-    authDomain: "workflow-da28d.firebaseapp.com",
-    databaseURL: "https://workflow-da28d-default-rtdb.firebaseio.com",
-    projectId: "workflow-da28d",
-    storageBucket: "workflow-da28d.appspot.com",
-    messagingSenderId: "939828605253",
-    appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
-    measurementId: "G-3LXB7BR5M1"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
+      authDomain: "workflow-da28d.firebaseapp.com",
+      databaseURL: "https://workflow-da28d-default-rtdb.firebaseio.com",
+      projectId: "workflow-da28d",
+      storageBucket: "workflow-da28d.appspot.com",
+      messagingSenderId: "939828605253",
+      appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
+      measurementId: "G-3LXB7BR5M1"
+    };
 
-  const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
-  const db = getDatabase(app);
+    const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+    const db = getDatabase(app);
 
-  const grid = document.querySelector('.freelancers-grid');
-  const anonymousAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+    const grid = document.querySelector('.freelancers-grid');
+    const anonymousAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
-  function criarCard({ nome, bio, foto_perfil, banner, curtidas = 0, projetos = 0, propostas = 0 }, id) {
-    const foto = foto_perfil && foto_perfil.trim() !== '' ? foto_perfil : anonymousAvatar;
-    const card = document.createElement('div');
-    card.className = 'freelancer-card';
-    card.innerHTML = `
-      <div class="card-content" style="background-image: url('${banner || ''}')">
-        <div class="profile-pic">
-          <img src="${foto}" alt="Foto de perfil" onerror="this.src='${anonymousAvatar}'">
-        </div>
-        <div class="info">
-          <div class="name">${nome || 'Sem nome'}</div>
-          <div class="bio">${bio || 'Sem biografia disponível.'}</div>
-          <div class="stats">
-            <div class="stat-item">
-              <span>${curtidas}</span>
-              CURTIDAS
+    function criarCard({ nome, bio, foto_perfil, banner, curtidas = 0, projetos = 0, propostas = 0 }, id, temCoroa = false) {
+      const foto = foto_perfil && foto_perfil.trim() !== '' ? foto_perfil : anonymousAvatar;
+      const card = document.createElement('div');
+      card.className = 'freelancer-card';
+      card.innerHTML = `
+        <div class="card-content" style="background-image: url('${banner || ''}'); position: relative; padding-top: 50px;">
+          <div style="position: relative; width: 100px; margin: 0 auto;">
+            ${temCoroa ? `
+              <div style="
+                position: absolute;
+                top: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 28px;
+                z-index: 10;
+                filter: drop-shadow(0 0 3px rgba(0,0,0,0.7));
+              ">👑</div>` : ''}
+            <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; border: 3px solid #fff; position: relative; z-index: 5;">
+              <img src="${foto}" alt="Foto de perfil" onerror="this.src='${anonymousAvatar}'" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
-            <div class="stat-item">
-              <span>${projetos}</span>
-              PROJETOS
-            </div>
-            <div class="stat-item">
-              <span>${propostas}</span>
-             PROPOSTAS
+          </div>
+          <div class="info" style="margin-top: 12px;">
+            <div class="name">${nome || 'Sem nome'}</div>
+            <div class="bio">${bio || 'Sem biografia disponível.'}</div>
+            <div class="stats">
+              <div class="stat-item">
+                <span>${curtidas}</span>
+                CURTIDAS
+              </div>
+              <div class="stat-item">
+                <span>${projetos}</span>
+                PROJETOS
+              </div>
+              <div class="stat-item">
+                <span>${propostas}</span>
+                PROPOSTAS
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    `;
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', () => {
-      window.location.href = `/perfil?id=${id}`;
-    });
-    return card;
-  }
+      `;
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        window.location.href = `/perfil?id=${id}`;
+      });
+      return card;
+    }
 
-  async function carregarFreelancers(filtroNome = "") {
-    try {
-      const dbRef = ref(db);
+    async function carregarFreelancers(filtroNome = "") {
+      try {
+        const dbRef = ref(db);
+        const [freelancersSnap, projetosSnap, propostasSnap, curtidasSnap] = await Promise.all([
+          get(child(dbRef, 'Freelancer')),
+          get(child(dbRef, 'Projetos')),
+          get(child(dbRef, 'Propostas')),
+          get(child(dbRef, 'Curtidas'))
+        ]);
 
-      const [freelancersSnap, projetosSnap, propostasSnap, curtidasSnap] = await Promise.all([
-        get(child(dbRef, 'Freelancer')),
-        get(child(dbRef, 'Projetos')),
-        get(child(dbRef, 'Propostas')),
-        get(child(dbRef, 'Curtidas'))
-      ]);
-
-      if (!freelancersSnap.exists()) {
-        grid.innerHTML = '<p>Nenhum freelancer encontrado.</p>';
-        return;
-      }
-
-      const freelancers = freelancersSnap.val();
-      const projetos = projetosSnap.exists() ? projetosSnap.val() : {};
-      const propostas = propostasSnap.exists() ? propostasSnap.val() : {};
-      const curtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
-
-      grid.innerHTML = '';
-
-      Object.entries(freelancers).forEach(([freelancerId, freelancer]) => {
-        const nome = (freelancer.nome || "").toLowerCase();
-        if (filtroNome && !nome.includes(filtroNome.toLowerCase())) {
-          return; 
+        if (!freelancersSnap.exists()) {
+          grid.innerHTML = '<p>Nenhum freelancer encontrado.</p>';
+          return;
         }
 
-        const projetosDoFreelancer = Object.entries(projetos)
-          .filter(([projId, proj]) => proj.userId === freelancerId);
+        const freelancers = freelancersSnap.val();
+        const projetos = projetosSnap.exists() ? projetosSnap.val() : {};
+        const propostas = propostasSnap.exists() ? propostasSnap.val() : {};
+        const curtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
 
-        const propostasDoFreelancer = Object.values(propostas)
-          .filter(p => p.autorId === freelancerId);
+        grid.innerHTML = '';
 
-        let totalCurtidasCount = 0;
-        projetosDoFreelancer.forEach(([projId]) => {
-          if (curtidas[projId]) {
-            totalCurtidasCount += Object.keys(curtidas[projId]).length;
-          }
-        });
+        const listaFreelancers = [];
 
-        const card = criarCard(
-          {
-            ...freelancer,
+        Object.entries(freelancers).forEach(([freelancerId, freelancer]) => {
+          const nome = (freelancer.nome || "").toLowerCase();
+          if (filtroNome && !nome.includes(filtroNome.toLowerCase())) return;
+
+          const projetosDoFreelancer = Object.entries(projetos).filter(([_, p]) => p.userId === freelancerId);
+          const propostasDoFreelancer = Object.values(propostas).filter(p => p.autorId === freelancerId);
+
+          let totalCurtidasCount = 0;
+          projetosDoFreelancer.forEach(([projId]) => {
+            if (curtidas[projId]) {
+              totalCurtidasCount += Object.keys(curtidas[projId]).length;
+            }
+          });
+
+          listaFreelancers.push({
+            id: freelancerId,
+            dados: freelancer,
             curtidas: totalCurtidasCount,
             projetos: projetosDoFreelancer.length,
             propostas: propostasDoFreelancer.length
-          },
-          freelancerId
-        );
+          });
+        });
+        
+        const maisCurtido = listaFreelancers.reduce((max, f) => {
+          if (f.curtidas > max.curtidas) return f;
+          if (f.curtidas === max.curtidas && f.projetos > max.projetos) return f;
+          return max;
+        }, { curtidas: -1, projetos: -1 });
 
-        grid.appendChild(card);
-      });
+        listaFreelancers.forEach(f => {
+          const card = criarCard(
+            {
+              ...f.dados,
+              curtidas: f.curtidas,
+              projetos: f.projetos,
+              propostas: f.propostas
+            },
+            f.id,
+            f.id === maisCurtido.id
+          );
+          grid.appendChild(card);
+        });
 
-      if (!grid.hasChildNodes()) {
-        grid.innerHTML = '<p>Nenhum freelancer encontrado com esse nome.</p>';
+        if (!grid.hasChildNodes()) {
+          grid.innerHTML = '<p>Nenhum freelancer encontrado com esse nome.</p>';
+        }
+
+      } catch (error) {
+        console.error('Erro ao carregar freelancers:', error);
+        grid.innerHTML = '<p>Erro ao carregar freelancers.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputBusca = document.querySelector('.searchbar-input');
+      const params = new URLSearchParams(window.location.search);
+      const busca = params.get('busca');
+      if (inputBusca && busca) inputBusca.value = busca;
+
+      if (inputBusca) {
+        inputBusca.addEventListener('input', () => {
+          const termo = inputBusca.value.trim().toLowerCase();
+          carregarFreelancers(termo);
+        });
       }
 
-    } catch (error) {
-      console.error('Erro ao carregar freelancers:', error);
-      grid.innerHTML = '<p>Erro ao carregar freelancers.</p>';
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const inputBusca = document.querySelector('.searchbar-input');
-    const params = new URLSearchParams(window.location.search);
-    const busca = params.get('busca');
-    if (inputBusca && busca) inputBusca.value = busca;
-
-    if (inputBusca) {
-      inputBusca.addEventListener('input', () => {
-        const termo = inputBusca.value.trim().toLowerCase();
-        carregarFreelancers(termo);
-      });
-    }
-
-    carregarFreelancers(busca);
-  });
-</script>
+      carregarFreelancers(busca);
+    });
+  </script>
 </body>
 </html>
