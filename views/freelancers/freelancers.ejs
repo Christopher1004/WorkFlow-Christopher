@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Freelancers</title>
   <link rel="stylesheet" href="/css/freelancers/freelancers.css" />
+ 
 </head>
 <body>
 <section class="section-1">
@@ -32,7 +33,7 @@
   const grid = document.querySelector('.freelancers-grid');
   const anonymousAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
-  function criarCard({ nome, bio, foto_perfil, banner }, id) {
+  function criarCard({ nome, bio, foto_perfil, banner, curtidas = 0, projetos = 0, propostas = 0 }, id) {
     const foto = foto_perfil && foto_perfil.trim() !== '' ? foto_perfil : anonymousAvatar;
     const card = document.createElement('div');
     card.className = 'freelancer-card';
@@ -44,6 +45,20 @@
         <div class="info">
           <div class="name">${nome || 'Sem nome'}</div>
           <div class="bio">${bio || 'Sem biografia disponível.'}</div>
+          <div class="stats">
+            <div class="stat-item">
+              <span>${curtidas}</span>
+              CURTIDAS
+            </div>
+            <div class="stat-item">
+              <span>${projetos}</span>
+              PROJETOS
+            </div>
+            <div class="stat-item">
+              <span>${propostas}</span>
+             PROPOSTAS
+            </div>
+          </div>
         </div>
       </div>
     `;
@@ -56,21 +71,57 @@
 
   async function carregarFreelancers(filtroNome = "") {
     try {
-      const snapshot = await get(child(ref(db), 'Freelancer'));
-      if (!snapshot.exists()) {
+      const dbRef = ref(db);
+
+      const [freelancersSnap, projetosSnap, propostasSnap, curtidasSnap] = await Promise.all([
+        get(child(dbRef, 'Freelancer')),
+        get(child(dbRef, 'Projetos')),
+        get(child(dbRef, 'Propostas')),
+        get(child(dbRef, 'Curtidas'))
+      ]);
+
+      if (!freelancersSnap.exists()) {
         grid.innerHTML = '<p>Nenhum freelancer encontrado.</p>';
         return;
       }
 
-      const data = snapshot.val();
+      const freelancers = freelancersSnap.val();
+      const projetos = projetosSnap.exists() ? projetosSnap.val() : {};
+      const propostas = propostasSnap.exists() ? propostasSnap.val() : {};
+      const curtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
+
       grid.innerHTML = '';
 
-      Object.entries(data).forEach(([id, freelancer]) => {
+      Object.entries(freelancers).forEach(([freelancerId, freelancer]) => {
         const nome = (freelancer.nome || "").toLowerCase();
-        if (!filtroNome || nome.includes(filtroNome.toLowerCase())) {
-          const card = criarCard(freelancer, id);
-          grid.appendChild(card);
+        if (filtroNome && !nome.includes(filtroNome.toLowerCase())) {
+          return; 
         }
+
+        const projetosDoFreelancer = Object.entries(projetos)
+          .filter(([projId, proj]) => proj.userId === freelancerId);
+
+        const propostasDoFreelancer = Object.values(propostas)
+          .filter(p => p.autorId === freelancerId);
+
+        let totalCurtidasCount = 0;
+        projetosDoFreelancer.forEach(([projId]) => {
+          if (curtidas[projId]) {
+            totalCurtidasCount += Object.keys(curtidas[projId]).length;
+          }
+        });
+
+        const card = criarCard(
+          {
+            ...freelancer,
+            curtidas: totalCurtidasCount,
+            projetos: projetosDoFreelancer.length,
+            propostas: propostasDoFreelancer.length
+          },
+          freelancerId
+        );
+
+        grid.appendChild(card);
       });
 
       if (!grid.hasChildNodes()) {
