@@ -7,7 +7,7 @@
     <img id="imgBanner" src="default-banner.jpg" alt="banner" style="cursor:pointer;">
     <div class="alterar-texto">CLIQUE PARA ALTERAR</div>
   </div>
-   <input type="file" id="inputBanner" accept="image/*" style="display:none" />
+  <input type="file" id="inputBanner" accept="image/*" style="display:none" />
 </section>
 
 <section class="section-2">
@@ -25,12 +25,12 @@
           </div>
         </div>
         <div class="avaliacao-estrelas">
-  <span class="estrela">&#9733;</span>
-  <span class="estrela">&#9733;</span>
-  <span class="estrela">&#9733;</span>
-  <span class="estrela">&#9733;</span>
-  <span class="estrela">&#9734;</span> 
-</div>
+          <span class="estrela">&#9733;</span>
+          <span class="estrela">&#9733;</span>
+          <span class="estrela">&#9733;</span>
+          <span class="estrela">&#9733;</span>
+          <span class="estrela">&#9734;</span>
+        </div>
 
         <div class="experiencia">
           <span>Profissional</span>
@@ -52,7 +52,7 @@
         <div class="container-card-3-3">
           <div class="container-infos projetos-realizados">
             <span class="quantidade" id="quantidadeProjetos">10</span>
-            <p>Projetos realizados</p>
+            <p id="textoProjetos">Projetos realizados</p>
           </div>
           <div class="container-infos propostas-finalizadas">
             <span class="quantidade">10</span>
@@ -90,168 +90,171 @@
       </div>
     </div>
   </div>
-    <div class="projetos-wrapper">
-<div class="profile-tabs">
-    <button class="tab-button active" data-tab="projetos" onclick="mostrarCards('projetos')">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
+  <div class="projetos-wrapper">
+    <div class="profile-tabs">
+      <button class="tab-button active" data-tab="projetos" onclick="mostrarCards('projetos', event)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor"
+          stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
         </svg>
         <span>Projetos</span>
-    </button>
-    <button class="tab-button"  onclick="mostrarCards('curtidos')">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                     2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01
-                     4.5 2.09C13.09 4.01 14.76 3 16.5 3
-                     19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </button>
+      <button class="tab-button" onclick="mostrarCards('curtidos', event)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor"
+          stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                 2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01
+                 4.5 2.09C13.09 4.01 14.76 3 16.5 3
+                 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
         </svg>
         <span>Curtidos</span>
-    </button>
-    <button class="tab-button"  onclick="mostrarCards('favoritos')">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 17.27L18.18 21 16.54 13.97
-                     22 9.24l-7.19-.61L12 2 9.19 8.63
-                     2 9.24l5.46 4.73L5.82 21z"/>
+      </button>
+      <button class="tab-button" onclick="mostrarCards('favoritos', event)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" stroke="currentColor"
+          stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21 16.54 13.97
+                 22 9.24l-7.19-.61L12 2 9.19 8.63
+                 2 9.24l5.46 4.73L5.82 21z" />
         </svg>
         <span>Favoritos</span>
-    </button>
-</div>
+      </button>
+    </div>
 
-<div class="container-2">
-    <main class="card-zone">
+    <div class="container-2">
+      <main class="card-zone">
         <div class="card_projeto">
-            <div class="capa">
-                <figure>
-                    <img src="" alt="" class="thumbnail">
-                </figure>
-                <div class="thumbnail-overlay">
-                    <div class="project-overlay-content">
-                        <div class="like">
-                        
-                        </div>
-                        <div class="project-title">
-                            <h1>Project 1</h1>
-                        </div>
-                    </div>
+          <div class="capa">
+            <figure>
+              <img src="" alt="" class="thumbnail">
+            </figure>
+            <div class="thumbnail-overlay">
+              <div class="project-overlay-content">
+                <div class="like">
+
                 </div>
+                <div class="project-title">
+                  <h1>Project 1</h1>
+                </div>
+              </div>
             </div>
-            <div class="autor">
-                <img src="" alt="Profile pic">
-                <h2 class="username">User</h2>
-            </div>
+          </div>
+          <div class="autor">
+            <img src="" alt="Profile pic">
+            <h2 class="username">User</h2>
+          </div>
         </div>
-    </main>
-</div>
-</div>
+      </main>
+    </div>
+  </div>
 
 </section>
 <script>
-    document.querySelectorAll('.card_projeto').forEach(el => {
-        el.style.display = 'none';
-    });
+  document.querySelectorAll('.card_projeto').forEach(el => {
+    el.style.display = 'none';
+  });
 </script>
 <script type="module" src="/js/perfil.js"></script>
 <script>
-    function abrirModal() {
-        document.getElementById('modal-editar').style.display = 'block';
-        const h1Nome = document.querySelector('.nome h1');
-        const pTag = document.querySelector('.tag p');
-        const pBio = document.querySelector('.descricao p');
-        document.getElementById('nome').value = h1Nome.textContent || '';
-        document.getElementById('tag').value = pTag.textContent || '';
-        document.getElementById('bio').value = pBio.textContent || '';
-    }
+  function abrirModal() {
+    document.getElementById('modal-editar').style.display = 'block';
+    const h1Nome = document.querySelector('.nome h1');
+    const pTag = document.querySelector('.tag p');
+    const pBio = document.querySelector('.descricao p');
+    document.getElementById('nome').value = h1Nome.textContent || '';
+    document.getElementById('tag').value = pTag.textContent || '';
+    document.getElementById('bio').value = pBio.textContent || '';
+  }
 
-    function fecharModal() {
-        document.getElementById('modal-editar').style.display = 'none';
-    }
+  function fecharModal() {
+    document.getElementById('modal-editar').style.display = 'none';
+  }
 
-    window.onclick = function (event) {
-        const modal = document.getElementById('modal-editar');
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
+  window.onclick = function (event) {
+    const modal = document.getElementById('modal-editar');
+    if (event.target === modal) {
+      modal.style.display = "none";
     }
+  }
 
-    document.getElementById('fotoPerfil').addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const imgPerfil = document.querySelector('.profile-pic img');
-            imgPerfil.src = URL.createObjectURL(file);
-        }
-    });
-    
-    document.getElementById('fotoPerfil').addEventListener('change', (e) => {
-        const label = document.getElementById('labelFotoPerfil');
-        const file = e.target.files[0];
-        label.textContent = file ? file.name : 'Selecionar imagem';
-    });
+  document.getElementById('fotoPerfil').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imgPerfil = document.querySelector('.profile-pic img');
+      imgPerfil.src = URL.createObjectURL(file);
+    }
+  });
+
+  document.getElementById('fotoPerfil').addEventListener('change', (e) => {
+    const label = document.getElementById('labelFotoPerfil');
+    const file = e.target.files[0];
+    label.textContent = file ? file.name : 'Selecionar imagem';
+  });
 
 
 </script>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getDatabase, ref, get, update, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-    import { createClient } from "https://esm.sh/@supabase/supabase-js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, get, update, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
-        authDomain: "workflow-da28d.firebaseapp.com",
-        projectId: "workflow-da28d",
-        storageBucket: "workflow-da28d.firebasestorage.app",
-        messagingSenderId: "939828605253",
-        appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
-        measurementId: "G-3LXB7BR5M1"
-    };
-    initializeApp(firebaseConfig);
+  const firebaseConfig = {
+    apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
+    authDomain: "workflow-da28d.firebaseapp.com",
+    projectId: "workflow-da28d",
+    storageBucket: "workflow-da28d.firebasestorage.app",
+    messagingSenderId: "939828605253",
+    appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
+    measurementId: "G-3LXB7BR5M1"
+  };
+  initializeApp(firebaseConfig);
 
-    const supabase = createClient(
-        "https://uvvquwlgbkdcnchiyqzs.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
-    );
+  const supabase = createClient(
+    "https://uvvquwlgbkdcnchiyqzs.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
+  );
 
-    const auth = getAuth();
-    const db = getDatabase();
+  const auth = getAuth();
+  const db = getDatabase();
 
-    const imgPerfil = document.querySelector('.profile-pic img');
-    const h1Nome = document.querySelector('.nome h1');
-    const pTag = document.querySelector('.tag p');
-    const pBio = document.querySelector('.descricao p');
-    const imgBanner = document.getElementById('imgBanner');
-    const inputBanner = document.getElementById('inputBanner');
-    const botaoEditar = document.querySelector('.editarinfos');
+  const imgPerfil = document.querySelector('.profile-pic img');
+  const h1Nome = document.querySelector('.nome h1');
+  const pTag = document.querySelector('.tag p');
+  const pBio = document.querySelector('.descricao p');
+  const imgBanner = document.getElementById('imgBanner');
+  const inputBanner = document.getElementById('inputBanner');
+  const botaoEditar = document.querySelector('.editarinfos');
 
-    let currentUserUid = null;
-    let currentTipoUsuario = null;
+  let currentUserUid = null;
+  let currentTipoUsuario = null;
 
-    function getUidFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('id');
-    }
+  function getUidFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+  }
 
-    const uidFromURL = getUidFromURL();
+  const uidFromURL = getUidFromURL();
 
-    async function detectarTipoUsuario(uid) {
-        const dbRef = ref(db);
-        if ((await get(child(dbRef, `Freelancer/${uid}`))).exists()) return 'Freelancer';
-        if ((await get(child(dbRef, `Contratante/${uid}`))).exists()) return 'Contratante';
-        return null;
-    }
+  async function detectarTipoUsuario(uid) {
+    const dbRef = ref(db);
+    if ((await get(child(dbRef, `Freelancer/${uid}`))).exists()) return 'Freelancer';
+    if ((await get(child(dbRef, `Contratante/${uid}`))).exists()) return 'Contratante';
+    return null;
+  }
 
-    async function uploadImageToSupabase(file, folder, bucketName) {
-        const path = `${folder}/${Date.now()}_${file.name}`;
-        const { error } = await supabase.storage.from(bucketName).upload(path, file);
-        if (error) throw error;
-        const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(path);
-        return publicUrlData.publicUrl;
-    }
+  async function uploadImageToSupabase(file, folder, bucketName) {
+    const path = `${folder}/${Date.now()}_${file.name}`;
+    const { error } = await supabase.storage.from(bucketName).upload(path, file);
+    if (error) throw error;
+    const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(path);
+    return publicUrlData.publicUrl;
+  }
 
-    onAuthStateChanged(auth, async (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (!user) return;
 
     const loggedInUid = user.uid;
@@ -262,32 +265,32 @@
 
     const snap = await get(ref(db, `${currentTipoUsuario}/${currentUserUid}`));
     if (snap.exists()) {
-        const data = snap.val();
-        if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
-        if (data.nome) h1Nome.textContent = data.nome;
-        if (data.tag) pTag.textContent = data.tag;
-        if (data.bio) pBio.textContent = data.bio;
-        if (data.banner) imgBanner.src = data.banner;
+      const data = snap.val();
+      if (data.foto_perfil) imgPerfil.src = data.foto_perfil;
+      if (data.nome) h1Nome.textContent = data.nome;
+      if (data.tag) pTag.textContent = data.tag;
+      if (data.bio) pBio.textContent = data.bio;
+      if (data.banner) imgBanner.src = data.banner;
     }
 
     if (currentUserUid === loggedInUid) {
-  botaoEditar.style.display = 'block';
-  imgBanner.style.cursor = 'pointer';
-  document.getElementById('banner').classList.add('editable');
+      botaoEditar.style.display = 'block';
+      imgBanner.style.cursor = 'pointer';
+      document.getElementById('banner').classList.add('editable');
 
-  document.getElementById('banner').addEventListener('click', () => {
-    inputBanner.click();
+      document.getElementById('banner').addEventListener('click', () => {
+        inputBanner.click();
+      });
+    } else {
+      botaoEditar.style.display = 'none';
+      imgBanner.style.cursor = 'default';
+      document.getElementById('banner').classList.remove('editable');
+    }
+
   });
-} else {
-  botaoEditar.style.display = 'none';
-  imgBanner.style.cursor = 'default';
-  document.getElementById('banner').classList.remove('editable'); 
-}
-
-});
 
 
-    document.getElementById('form-editar').addEventListener('submit', async (e) => {
+  document.getElementById('form-editar').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nome = document.getElementById('nome').value.trim();
     const tag = document.getElementById('tag').value.trim();
@@ -296,55 +299,55 @@
 
     const updates = { nome, tag, bio };
     try {
-        const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
+      const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
 
-        if (fotoFile) {
-            updates.foto_perfil = await uploadImageToSupabase(fotoFile, currentUserUid, bucket);
-        }
+      if (fotoFile) {
+        updates.foto_perfil = await uploadImageToSupabase(fotoFile, currentUserUid, bucket);
+      }
 
-        await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), updates);
+      await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), updates);
 
-        h1Nome.textContent = nome;
-        pTag.textContent = tag;
-        pBio.textContent = bio;
+      h1Nome.textContent = nome;
+      pTag.textContent = tag;
+      pBio.textContent = bio;
 
-        fecharModal();
+      fecharModal();
 
-        location.reload();
+      location.reload();
 
     } catch (err) {
-        console.error("Erro ao salvar:", err);
+      console.error("Erro ao salvar:", err);
     }
-});
+  });
 
 
-   inputBanner.addEventListener('change', async () => {
+  inputBanner.addEventListener('change', async () => {
     const file = inputBanner.files[0];
     if (!file || !currentUserUid || !currentTipoUsuario) return;
 
     try {
-        const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
-        const bannerUrl = await uploadImageToSupabase(file, currentUserUid, bucket);
-        imgBanner.src = bannerUrl;
-        await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), { banner: bannerUrl });
+      const bucket = currentTipoUsuario === 'Freelancer' ? 'freelancer-photos' : 'contratante-photos';
+      const bannerUrl = await uploadImageToSupabase(file, currentUserUid, bucket);
+      imgBanner.src = bannerUrl;
+      await update(ref(db, `${currentTipoUsuario}/${currentUserUid}`), { banner: bannerUrl });
 
-        location.reload();
+      location.reload();
 
     } catch (error) {
-        console.error("Erro ao atualizar banner:", error);
+      console.error("Erro ao atualizar banner:", error);
     }
-});
+  });
 
 </script>
 <script>
-    function mostrarCards(tipo) {
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+  function mostrarCards(tipo) {
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
 
-        console.log("Selecionado:", tipo);
+    console.log("Selecionado:", tipo);
 
-        document.querySelectorAll('.card_projeto').forEach(el => {
-            el.style.display = 'block';
-        });
-    }
+    document.querySelectorAll('.card_projeto').forEach(el => {
+      el.style.display = 'block';
+    });
+  }
 </script>

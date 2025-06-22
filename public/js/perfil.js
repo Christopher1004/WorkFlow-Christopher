@@ -105,24 +105,42 @@ function formatarData(isoString) {
 
 function mostrarCards(tipo) {
     tabButtons.forEach(btn => btn.classList.remove('active'));
+
     const botaoAtivo = [...tabButtons].find(btn => btn.dataset.tab === tipo);
     if (botaoAtivo) botaoAtivo.classList.add('active');
 
     containerCard.querySelectorAll('.card_projeto, .proposta-card').forEach(card => card.style.display = 'none');
+
     containerCard.querySelectorAll('.mensagem-aba').forEach(el => el.remove());
 
     const cards = abas[tipo];
+
+    switch (tipo) {
+        case 'projetos':
+            textoProjetos.textContent = 'Projetos realizados';
+            break;
+        case 'curtidos':
+            textoProjetos.textContent = 'Projetos curtidos';
+            break;
+        case 'favoritos':
+            textoProjetos.textContent = 'Projetos favoritados';
+            break;
+        default:
+            textoProjetos.textContent = 'Projetos realizados';
+    }
+
     if (!cards || cards.length === 0) {
         const msg = document.createElement('p');
         msg.className = 'mensagem-aba';
         msg.textContent = 'Ainda não há conteúdo nesta aba.';
         containerCard.appendChild(msg);
+        contadorProjetos.textContent = '0';
     } else {
         cards.forEach(card => card.style.display = 'block');
+        contadorProjetos.textContent = cards.length;
     }
-
-    contadorProjetos.textContent = cards.length;
 }
+
 
 async function detectarTipoUsuario(uid) {
     console.log("Detectando tipo para UID:", uid); 
