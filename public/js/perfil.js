@@ -299,13 +299,14 @@ const modalHTML = `
     }
 
     .header-card-autor {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        justify-content: center;
-        gap: 1rem;
-        align-items: center;
-    }
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between; 
+    gap: 1rem;
+    align-items: center;
+    padding-left: 10px;
+}
 
     .container-1, .container-2 {
         flex: 1;
@@ -313,34 +314,38 @@ const modalHTML = `
     }
 
     .container-1 {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-    }
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center; 
+    flex: none; 
+}
 
     .header-card-autor-image {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;  
+    height: 60px;  
+}
 
-    .header-card-autor-image img {
-        width: 50px;
-        height: 50px;
-        background-color: white;
-        border-radius: 50%;
-    }
+.header-card-autor-image img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 50%; 
+    display: block;
+}
 
-    .header-card-autor-title {
-        font-size: 1rem; 
-        color: white; 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+.header-card-autor-title {
+    font-size: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left; 
+}
 
     .header-card-autor-title p {
         font-size: 0.8rem; 
@@ -348,19 +353,21 @@ const modalHTML = `
     }
 
     .container-2 {
-        width: 100%;
-        display: flex;
-        height: 100%;
-        flex-direction: row;
-        gap: 5px;
-    }
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: flex-end; 
+    align-items: center; 
+}
 
     .container-2 .button-container {
         border: none;
         width: 100%;
         display: flex;
         height: 100%;
-        background-color: 
+        background-color: #3c38a6;
         color: white; 
         padding: 10px 20px;
         height: 50px;
@@ -391,9 +398,9 @@ const modalHTML = `
 
     .card-projeto {
         aspect-ratio: 4/3;
-        width: 100%;
+        width: 98%;
         padding: 1px;
-        border-radius: 3px;
+        border-radius: 5px;
         background-color: #6c63ff; 
     }
     .containerComentarios {
