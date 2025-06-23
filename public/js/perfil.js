@@ -109,6 +109,12 @@ function mostrarCards(tipo) {
     const botaoAtivo = [...tabButtons].find(btn => btn.dataset.tab === tipo);
     if (botaoAtivo) botaoAtivo.classList.add('active');
 
+    containerCard.classList.remove('grid-propostas');
+
+    if (tipo === 'projetos' && tipoUsuario === 'Contratante') {
+        containerCard.classList.add('grid-propostas');
+    }
+
     containerCard.querySelectorAll('.card_projeto, .proposta-card').forEach(card => card.style.display = 'none');
 
     containerCard.querySelectorAll('.mensagem-aba').forEach(el => el.remove());
@@ -117,7 +123,7 @@ function mostrarCards(tipo) {
 
     switch (tipo) {
         case 'projetos':
-            textoProjetos.textContent = 'Projetos realizados';
+            textoProjetos.textContent = tipoUsuario === 'Contratante' ? 'Propostas realizadas' : 'Projetos realizados';
             break;
         case 'curtidos':
             textoProjetos.textContent = 'Projetos curtidos';
@@ -140,6 +146,7 @@ function mostrarCards(tipo) {
         contadorProjetos.textContent = cards.length;
     }
 }
+
 
 
 async function detectarTipoUsuario(uid) {
