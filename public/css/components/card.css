@@ -96,7 +96,7 @@
     margin-left: 20px;
 }
 
-.project-overlay-content .like {
+.project-overlay-content .like{
     display: block;
     flex-grow: 0;
     flex-shrink: 1;

@@ -41,14 +41,30 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
       </figure>
       <div class="thumbnail-overlay">
         <div class="project-overlay-content">
-          <div class="like">
-            <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                fill="none" stroke="#5274D9" />
-            </svg>
-          </div>
-          <div class="project-title">
+          <div class="containerFavCurtir" style="display: flex; justify-content: space-between; width: 100%;">
+                <div class="favoritar" style="padding: 5px; margin: 5px;">
+                    <svg width="25" height="25" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                            </g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path
+                                                    d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z"
+                                                    stroke="#426AB2" stroke-width="4" stroke-linecap="round"
+                                                    stroke-linejoin="round"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="like">
+                                        <svg width="25" height="25" viewBox="-2 -2 28 28"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                                fill="none" stroke="#5274D9" />
+                                        </svg>
+                                </div>
+                            </div>                     
+          <div class="project-title" style="position: absolute; left: 0;">
             <h1>${titulo}</h1>
           </div>
         </div>
@@ -59,26 +75,26 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
       <h2 class="username">User</h2>
     </div>
   `;
-  const svgCurtida = card.querySelector('.like svg')
-  svgCurtida.addEventListener('click', (event) => {
-    event.stopPropagation()
-    iconeCurtida(id, svgCurtida)
-  })
-  onAuthStateChanged(auth, (user) => {
-    if(user){
-        const userId = user.uid
-        const curtidaRef = ref(db, `Curtidas/${id}/${userId}`)
+    const svgCurtida = card.querySelector('.like svg')
+    svgCurtida.addEventListener('click', (event) => {
+        event.stopPropagation()
+        iconeCurtida(id, svgCurtida)
+    })
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const userId = user.uid
+            const curtidaRef = ref(db, `Curtidas/${id}/${userId}`)
 
-        get(curtidaRef).then((snapshot) => {
-            if(snapshot.exists()){
-                svgCurtida.classList.add('curtido')
-            }
-            else{
-                svgCurtida.classList.remove('curtido')
-            }
-        }).catch(err => console.error('Erro ao verificar curtida'))
-    }
-  })
+            get(curtidaRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    svgCurtida.classList.add('curtido')
+                }
+                else {
+                    svgCurtida.classList.remove('curtido')
+                }
+            }).catch(err => console.error('Erro ao verificar curtida'))
+        }
+    })
 
     if (userId) {
         const autorRef = ref(db, `Freelancer/${userId}`);
@@ -215,15 +231,15 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
                     const tagAutor = autor.tag;
 
                     const gridProjetos = modal.querySelector('.grid-projetos')
-                    if(gridProjetos){
+                    if (gridProjetos) {
                         gridProjetos.innerHTML = ''
 
                         get(child(dbRef, 'Projetos')).then((snapshot) => {
-                            if(snapshot.exists()){
+                            if (snapshot.exists()) {
                                 const projetos = snapshot.val()
 
                                 Object.entries(projetos).forEach(([id, projeto]) => {
-                                    if(projeto.userId === userId && id !== idProjeto){
+                                    if (projeto.userId === userId && id !== idProjeto) {
                                         const card = criarCardProjetoMiniatura({
                                             ...projeto,
                                             id
@@ -255,7 +271,7 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
     }));
 }
 
-function criarCardProjetoMiniatura(projeto){
+function criarCardProjetoMiniatura(projeto) {
     const card = document.createElement('div')
     card.classList.add('card-projeto')
 
