@@ -70,10 +70,56 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
         </div>
       </div>
     </div>
-    <div class="autor">
-      <img class='autor-img' src="" alt="Profile pic">
-      <h2 class="username">User</h2>
+    <div class="project-right" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+
+  <div class="autor" style="display: flex; align-items: center; gap: 10px;">
+    <img class='autor-img' src="https://via.placeholder.com/32" alt="Profile pic" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+    <h2 class="username" title="@Christopher" style="
+      margin: 0;
+      font-size: 14px;
+      color: white;
+      max-width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    ">
+      @Christopher
+    </h2>
+  </div>
+
+  <div class="project-stats" style="display: flex; gap: 10px; font-size: 14px; color: #fff;">
+    <div class="likes" style="display: flex; align-items: center; gap: 3px;">
+      <svg width="14" height="14" viewBox="-2 -2 28 28"
+            xmlns="http://www.w3.org/2000/svg" >
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                                fill="#5274D9" stroke="#5274D9" />
+                </svg>
+ <span >124</span>
     </div>
+    <div class="views" style="display: flex; align-items: center; gap: 3px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" class="size-6">
+        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="#5274D9" stroke="#5274D9"/>
+         <path fill="#5274D9" stroke="#5274D9" fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
+    </svg>
+
+       <span>980</span>
+    </div>
+    <div class="comments" style="display: flex; align-items: center; gap: 3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path fill="#5274D9" stroke="#5274D9" fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z" clip-rule="evenodd" />
+        </svg>
+
+       <span>16</span>
+    </div>
+  </div>
+
+</div>
+
+
+</div>
+
+    
   `;
     const svgCurtida = card.querySelector('.like svg')
     svgCurtida.addEventListener('click', (event) => {
