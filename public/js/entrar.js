@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+import { get, child } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -47,10 +48,31 @@ form.addEventListener('submit', async (event) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, senha);
     const user = userCredential.user;
-    console.log('Usuário autenticado:', user);
 
-    // Redirecionar para a página principal ou dashboard
-    window.location.href = '/';
+    const dbRef = ref(database)
+    const userId = user.uid;
+
+    const freelancerSnap = await get(child(dbRef, `Freelancer/${userId}`))
+    const contratanteSnap = await get(child(dbRef, `Contratante/${userId}`))
+
+    if (freelancerSnap.exists()) {
+      const data = freelancerSnap.val();
+      if (data.nome && data.bio && data.tag && data.foto_perfil) {
+        window.location.href = '/'; 
+      } else {
+        window.location.href = '/freeInfo'; 
+      }
+    } else if (contratanteSnap.exists()) {
+      const data = contratanteSnap.val();
+      if (data.nome && data.bio && data.tag && data.foto_perfil) {
+        window.location.href = '/'; 
+      } else {
+        window.location.href = '/freeInfo'; 
+      }
+    } else {
+      window.location.href = '/freeInfo';
+    }
+
   } catch (error) {
     let errorMessage = 'Erro no login: ';
     switch (error.code) {
