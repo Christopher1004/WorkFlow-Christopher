@@ -119,7 +119,7 @@
     <div class="profile-pic" id="profilePic" onclick="document.getElementById('inputFoto').click()">
       <div id="placeholder" class="placeholder-text">Foto de Perfil</div>
     </div>
-    <input type="file" accept="image/*" id="inputFoto" onchange="previewImagem(event)" style="display: none;">
+    <input type="file" accept="image/*" id="inputFoto" style="display: none;">
 
     <div class="input-group">
       <label for="nome">Nome</label>
@@ -136,23 +136,8 @@
       <input type="text" id="profissao" placeholder="Sua área de atuação (ex: Desenvolvedor)">
     </div>
 
-    <button class="btn">Finalizar</button>
+    <button class="btn" id="btnSalvar">Finalizar</button>
   </div>
 
-  <script>
-    function previewImagem(event) {
-      const reader = new FileReader();
-      const profileDiv = document.getElementById("profilePic");
-      const placeholder = document.getElementById("placeholder");
-
-      reader.onload = function () {
-        profileDiv.style.backgroundImage = `url('${reader.result}')`;
-        placeholder.classList.add("hidden");
-      };
-
-      if (event.target.files[0]) {
-        reader.readAsDataURL(event.target.files[0]);
-      }
-    }
-  </script>
+  <script type="module" src="/js/primeirosPassos.js"></script>
 </body>

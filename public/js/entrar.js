@@ -55,22 +55,22 @@ form.addEventListener('submit', async (event) => {
     const freelancerSnap = await get(child(dbRef, `Freelancer/${userId}`))
     const contratanteSnap = await get(child(dbRef, `Contratante/${userId}`))
 
+
+
     if (freelancerSnap.exists()) {
       const data = freelancerSnap.val();
       if (data.nome && data.bio && data.tag && data.foto_perfil) {
         window.location.href = '/'; 
       } else {
-        window.location.href = '/freeInfo'; 
+        window.location.href = `freeInfo?userId=${userId}`; 
       }
     } else if (contratanteSnap.exists()) {
       const data = contratanteSnap.val();
       if (data.nome && data.bio && data.tag && data.foto_perfil) {
         window.location.href = '/'; 
       } else {
-        window.location.href = '/freeInfo'; 
+        window.location.href = `freeInfo?userId=${userId}`; 
       }
-    } else {
-      window.location.href = '/freeInfo';
     }
 
   } catch (error) {
