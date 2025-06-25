@@ -1,6 +1,6 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, update, get, child, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, update, get, child, push, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 let firebaseApp;
 try {
@@ -70,10 +70,10 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
                                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
                                 </svg>
                             </div>
-                            <div class="delete" title="Excluir" style="cursor:pointer;">
+                            <div class="delete" title="Excluir" style="cursor:pointer;" data-projeto-id="${id}">
                                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 0 0 1-2-2L5 6"></path>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
                                     <path d="M10 11v6"></path>
                                     <path d="M14 11v6"></path>
                                     <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
@@ -122,9 +122,9 @@ function criarCardProposta(p, aba = 'projetos') {
             </div>
             <div class="buttons">
                 ${isDonoDoPerfil
-                    ? `<button class="candidatos">Candidatos</button>`
-                    : `<button class="enviar">Se candidatar</button>`
-                }
+            ? `<button class="candidatos">Candidatos</button>`
+            : `<button class="enviar">Se candidatar</button>`
+        }
             </div>
         </div>
     `;
@@ -370,6 +370,48 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
     `;
 }
 
+/**
+
+ * @param {string} projectId 
+ */
+async function deletarProjeto(projectId) {
+    if (!auth.currentUser || auth.currentUser.uid !== perfilUserId) {
+        alert('Você não tem permissão para deletar este projeto.');
+        return;
+    }
+
+    const confirmacao = confirm('Tem certeza que deseja excluir este projeto? Esta ação é irreversível.');
+
+    if (confirmacao) {
+        try {
+
+            await remove(ref(db, `Projetos/${projectId}`));
+
+            await remove(ref(db, `componentesProjeto/${projectId}`));
+
+            await remove(ref(db, `Curtidas/${projectId}`));
+
+            await remove(ref(db, `Comentarios/${projectId}`));
+
+
+            const cardParaRemover = document.querySelector(`.card_projeto[data-projeto-id="${projectId}"]`);
+            if (cardParaRemover) {
+                cardParaRemover.remove();
+            }
+
+            abas.projetos = abas.projetos.filter(card => card.dataset.projetoId !== projectId);
+
+            mostrarCards('projetos');
+
+            alert('Projeto excluído com sucesso!');
+        } catch (error) {
+            console.error('Erro ao deletar o projeto:', error);
+            alert('Ocorreu um erro ao excluir o projeto. Por favor, tente novamente.');
+        }
+    }
+}
+
+
 containerCard.addEventListener('click', async (event) => {
     const likeButton = event.target.closest('.like');
     if (likeButton) {
@@ -429,6 +471,15 @@ containerCard.addEventListener('click', async (event) => {
             }
         } catch (error) {
             alert("Ocorreu um erro ao processar sua curtida. Por favor, tente novamente.");
+        }
+        return;
+    }
+
+    const deleteButton = event.target.closest('.delete');
+    if (deleteButton) {
+        const projectIdToDelete = deleteButton.dataset.projetoId;
+        if (projectIdToDelete) {
+            await deletarProjeto(projectIdToDelete);
         }
         return;
     }
