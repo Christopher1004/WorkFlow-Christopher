@@ -244,3 +244,13 @@ h2 {
 .project-overlay-content .delete:hover svg {
   animation: like-pop 0.4s ease;
 }
+.project-overlay-content .like.curtido svg path {
+    fill: #5274D9;
+    stroke: #5274D9;
+}
+
+.project-overlay-content .like:hover svg path {
+    fill: #5274D9; 
+    stroke: #5274D9; 
+    transform: scale(1.1);
+}

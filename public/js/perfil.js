@@ -6,7 +6,7 @@ let firebaseApp;
 try {
     firebaseApp = getApp();
 } catch (e) {
-    firebaseApp = initializeApp(firebaseConfig); 
+    firebaseApp = initializeApp(firebaseConfig);
 }
 
 const params = new URLSearchParams(window.location.search);
@@ -17,6 +17,7 @@ const db = getDatabase(firebaseApp);
 const containerCard = document.querySelector('.card-zone');
 const contadorProjetos = document.getElementById('quantidadeProjetos');
 const tabButtons = document.querySelectorAll('.tab-button');
+const textoProjetos = document.querySelector('.projetos-realizados p');
 
 const abas = {
     projetos: [],
@@ -26,63 +27,77 @@ const abas = {
 
 let tipoUsuario = null;
 
-function criarCardProjeto(id, projeto, aba = 'projetos') {
-  const card = document.createElement('div');
-  card.className = 'card_projeto';
-  card.dataset.projetoId = id;
-  card.style.display = 'none';
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null) {
+    const card = document.createElement('div');
+    card.className = 'card_projeto';
+    card.dataset.projetoId = id;
+    card.style.display = 'none';
 
-  const autorTexto = projeto.userId === perfilUserId ? 'você' : 'outra pessoa';
+    const autorTexto = projeto.userId === perfilUserId ? 'você' : 'outra pessoa';
+    const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
 
-  const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
+    let isLiked = false;
+    if (aba === 'curtidos' && currentUserId === perfilUserId) {
+        isLiked = true;
+    } else if (currentUserId) {
+        const likedProjectInAba = abas.curtidos.find(c => c.dataset.projetoId === id);
+        if (likedProjectInAba) {
+            isLiked = true;
+        }
+    }
 
-
-  card.innerHTML = `
-    <div class="capa">
-      <figure>
-        <img src="${projeto.capaUrl}" alt="" class="thumbnail">
-      </figure>
-      <div class="thumbnail-overlay">
-        <div class="project-overlay-content">
-          <div class="icons-column">
-            <div class="like" title="Curtir" style="cursor:pointer;">
-              <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731Z"
-                  fill="none" stroke="black" />
-              </svg>
+    card.innerHTML = `
+        <div class="capa">
+            <figure>
+                <img src="${projeto.capaUrl}" alt="" class="thumbnail">
+            </figure>
+            <div class="thumbnail-overlay">
+                <div class="project-overlay-content">
+                    <div class="icons-column">
+                        <div class="like ${isLiked ? 'curtido' : ''}" title="${isLiked ? 'Descurtir' : 'Curtir'}" style="cursor:pointer;" data-projeto-id="${id}" data-liked="${isLiked ? 'true' : 'false'}">
+                            ${isLiked ? `
+                                <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            ` : `
+                                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731Z"
+                                        fill="none" stroke="black" />
+                                </svg>
+                            `}
+                        </div>
+                        ${mostrarEdit ? `
+                            <div class="edit" title="Editar" style="cursor:pointer;">
+                                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+                                    <path d="M12 20h9" />
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                                </svg>
+                            </div>
+                            <div class="delete" title="Excluir" style="cursor:pointer;">
+                                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 0 0 1-2-2L5 6"></path>
+                                    <path d="M10 11v6"></path>
+                                    <path d="M14 11v6"></path>
+                                    <path d="M9 6V4a1 0 0 1 1-1h4a1 0 0 1 1 1v2"></path>
+                                </svg>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="project-title">
+                        <h1>${projeto.titulo}</h1>
+                    </div>
+                </div>
             </div>
-            ${mostrarEdit ? `
-              <div class="edit" title="Editar" style="cursor:pointer;">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
-                  <path d="M12 20h9" />
-                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-                </svg>
-              </div>
-              <div class="delete" title="Excluir" style="cursor:pointer;">
-    <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="3 6 5 6 21 6"></polyline>
-      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-      <path d="M10 11v6"></path>
-      <path d="M14 11v6"></path>
-      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
-    </svg>
-  </div>
-            ` : ''}
-          </div>
-          <div class="project-title">
-            <h1>${projeto.titulo}</h1>
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="autor">
-      <h2 class="username">Criado por ${autorTexto}</h2>
-    </div>
-  `;
+        <div class="autor">
+            <h2 class="username">Criado por ${autorTexto}</h2>
+        </div>
+    `;
 
-  containerCard.appendChild(card);
-  abas[aba].push(card);
+    containerCard.appendChild(card);
+    abas[aba].push(card);
 }
 
 
@@ -97,25 +112,25 @@ function criarCardProposta(p, aba = 'projetos') {
     card.style.display = 'none';
 
     card.innerHTML = `
-      <div class="head">
-        <h3>${p.titulo || 'Sem título'}</h3>
-        <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
-      </div>
-      <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
-      <div class="tags">${tagsHtml}</div>
-      <p class="description">${p.descricao || ''}</p>
-      <div class="client-footer">
-        <div class="client">
-          <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
-          <span class="client-name">${nomeAutor}</span>
+        <div class="head">
+            <h3>${p.titulo || 'Sem título'}</h3>
+            <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
         </div>
-        <div class="buttons">
-          ${isDonoDoPerfil
-            ? `<button class="candidatos">Candidatos</button>`
-            : `<button class="enviar">Se candidatar</button>`
-        }
+        <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
+        <div class="tags">${tagsHtml}</div>
+        <p class="description">${p.descricao || ''}</p>
+        <div class="client-footer">
+            <div class="client">
+                <img class="profilePic" src="${fotoUrl}" alt="${nomeAutor}">
+                <span class="client-name">${nomeAutor}</span>
+            </div>
+            <div class="buttons">
+                ${isDonoDoPerfil
+                    ? `<button class="candidatos">Candidatos</button>`
+                    : `<button class="enviar">Se candidatar</button>`
+                }
+            </div>
         </div>
-      </div>
     `;
 
     containerCard.appendChild(card);
@@ -172,15 +187,11 @@ function mostrarCards(tipo) {
 }
 
 
-
 async function detectarTipoUsuario(uid) {
-    console.log("Detectando tipo para UID:", uid); 
     if (!uid) return null;
     const freelancerSnap = await get(ref(db, `Freelancer/${uid}`));
-    console.log("Existe Freelancer?", freelancerSnap.exists()); 
     if (freelancerSnap.exists()) return 'Freelancer';
     const contratanteSnap = await get(ref(db, `Contratante/${uid}`));
-    console.log("Existe Contratante?", contratanteSnap.exists()); 
     if (contratanteSnap.exists()) return 'Contratante';
     return null;
 }
@@ -237,12 +248,10 @@ async function obterComentariosDoProjeto(projetoId) {
         let userSnap;
         let userData = {};
 
-
         userSnap = await get(ref(db, `Freelancer/${comentario.userId}`));
         if (userSnap.exists()) {
             userData = userSnap.val();
         } else {
-
             userSnap = await get(ref(db, `Contratante/${comentario.userId}`));
             if (userSnap.exists()) {
                 userData = userSnap.val();
@@ -296,7 +305,6 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
         : '';
 
     const comentariosHTML = comentarios.map(com => criarComentarioHTML(com)).join('');
-
 
     let outrosProjetosHTML = '';
     const autorProjetosSnap = await get(ref(db, `Projetos`));
@@ -367,6 +375,69 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
 }
 
 containerCard.addEventListener('click', async (event) => {
+    const likeButton = event.target.closest('.like');
+    if (likeButton) {
+        if (!auth.currentUser) {
+            alert('Você precisa estar logado para curtir projetos!');
+            return;
+        }
+
+        const projectId = likeButton.dataset.projetoId;
+        const userId = auth.currentUser.uid;
+        let isCurrentlyLiked = likeButton.dataset.liked === 'true';
+        const curtidasRef = ref(db, `Curtidas/${projectId}/${userId}`);
+
+        try {
+            if (isCurrentlyLiked) {
+                await set(curtidasRef, null);
+                likeButton.dataset.liked = 'false';
+                likeButton.classList.remove('curtido');
+                likeButton.innerHTML = `
+                    <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731Z"
+                            fill="none" stroke="black" />
+                    </svg>
+                `;
+                likeButton.title = 'Curtir';
+
+                const index = abas.curtidos.findIndex(card => card.dataset.projetoId === projectId);
+                if (index > -1) {
+                    abas.curtidos.splice(index, 1);
+                }
+
+            } else {
+                await set(curtidasRef, true);
+                likeButton.dataset.liked = 'true';
+                likeButton.classList.add('curtido');
+                likeButton.innerHTML = `
+                    <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                `;
+                likeButton.title = 'Descurtir';
+
+                const existingCardInLiked = abas.curtidos.find(card => card.dataset.projetoId === projectId);
+                if (!existingCardInLiked) {
+                    const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
+                    if (projetoSnap.exists()) {
+                        const projetoData = projetoSnap.val();
+                        const tempCard = document.createElement('div');
+                        tempCard.dataset.projetoId = projectId;
+                        abas.curtidos.push(tempCard);
+                    }
+                }
+            }
+            if (document.querySelector('.tab-button.active')?.dataset.tab === 'curtidos' && perfilUserId === userId) {
+                mostrarCards('curtidos');
+            }
+        } catch (error) {
+            console.error("Erro ao curtir/descurtir projeto:", error);
+            alert("Ocorreu um erro ao processar sua curtida. Por favor, tente novamente.");
+        }
+        return;
+    }
+
     const cardProjeto = event.target.closest('.card_projeto');
     if (!cardProjeto) return;
 
@@ -469,10 +540,7 @@ modal.addEventListener('click', (e) => {
 });
 
 onAuthStateChanged(auth, async (user) => {
-    console.log("ID do Perfil na URL (onAuthStateChanged):", perfilUserId);
-
     if (!perfilUserId) {
-        console.error("ID do perfil não encontrado na URL. Redirecionando ou exibindo mensagem...");
         containerCard.innerHTML = '<p>Nenhum perfil especificado na URL. Por favor, retorne à página inicial ou use um link válido.</p>';
         contadorProjetos.textContent = '0';
         return;
@@ -507,6 +575,18 @@ onAuthStateChanged(auth, async (user) => {
     const projetosSnap = await get(ref(db, 'Projetos'));
     const curtidasSnap = await get(ref(db, 'Curtidas'));
 
+    const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
+    const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
+
+    Object.entries(todasCurtidas).forEach(([projetoId, usuarios]) => {
+        if (usuarios[perfilUserId]) {
+            const projeto = todosProjetos[projetoId];
+            if (projeto) {
+                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId);
+            }
+        }
+    });
+
     if (tipoUsuario === 'Contratante') {
         if (propostasSnap.exists()) {
             const propostas = propostasSnap.val();
@@ -516,38 +596,11 @@ onAuthStateChanged(auth, async (user) => {
                 }
             });
         }
-
-        if (curtidasSnap.exists() && projetosSnap.exists()) {
-            const curtidas = curtidasSnap.val();
-            const projetos = projetosSnap.val();
-            Object.entries(curtidas).forEach(([projetoId, usuarios]) => {
-                if (usuarios[perfilUserId]) {
-                    const projeto = projetos[projetoId];
-                    if (projeto) {
-                        criarCardProjeto(projetoId, projeto, 'curtidos');
-                    }
-                }
-            });
-        }
     } else if (tipoUsuario === 'Freelancer') {
         if (projetosSnap.exists()) {
-            const projetos = projetosSnap.val();
-            Object.entries(projetos).forEach(([id, dados]) => {
+            Object.entries(todosProjetos).forEach(([id, dados]) => {
                 if (dados.userId === perfilUserId) {
-                    criarCardProjeto(id, dados);
-                }
-            });
-        }
-
-        if (curtidasSnap.exists() && projetosSnap.exists()) {
-            const curtidas = curtidasSnap.val();
-            const projetos = projetosSnap.val();
-            Object.entries(curtidas).forEach(([projetoId, usuarios]) => {
-                if (usuarios[perfilUserId]) {
-                    const projeto = projetos[projetoId];
-                    if (projeto) {
-                        criarCardProjeto(projetoId, projeto, 'curtidos');
-                    }
+                    criarCardProjeto(id, dados, 'projetos', currentUserId);
                 }
             });
         }
