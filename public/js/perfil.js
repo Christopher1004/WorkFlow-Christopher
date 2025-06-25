@@ -27,7 +27,7 @@ const abas = {
 
 let tipoUsuario = null;
 
-function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null) {
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false) {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
@@ -36,14 +36,10 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null) {
     const autorTexto = projeto.userId === perfilUserId ? 'você' : 'outra pessoa';
     const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
 
-    let isLiked = false;
+    let isLikedForDisplay = isProjectLikedByViewer;
+
     if (aba === 'curtidos' && currentUserId === perfilUserId) {
-        isLiked = true;
-    } else if (currentUserId) {
-        const likedProjectInAba = abas.curtidos.find(c => c.dataset.projetoId === id);
-        if (likedProjectInAba) {
-            isLiked = true;
-        }
+        isLikedForDisplay = true;
     }
 
     card.innerHTML = `
@@ -54,8 +50,8 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null) {
             <div class="thumbnail-overlay">
                 <div class="project-overlay-content">
                     <div class="icons-column">
-                        <div class="like ${isLiked ? 'curtido' : ''}" title="${isLiked ? 'Descurtir' : 'Curtir'}" style="cursor:pointer;" data-projeto-id="${id}" data-liked="${isLiked ? 'true' : 'false'}">
-                            ${isLiked ? `
+                        <div class="like ${isLikedForDisplay ? 'curtido' : ''}" title="${isLikedForDisplay ? 'Descurtir' : 'Curtir'}" style="cursor:pointer;" data-projeto-id="${id}" data-liked="${isLikedForDisplay ? 'true' : 'false'}">
+                            ${isLikedForDisplay ? `
                                 <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
                                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                 </svg>
@@ -80,7 +76,7 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null) {
                                     <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 0 0 1-2-2L5 6"></path>
                                     <path d="M10 11v6"></path>
                                     <path d="M14 11v6"></path>
-                                    <path d="M9 6V4a1 0 0 1 1-1h4a1 0 0 1 1 1v2"></path>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
                                 </svg>
                             </div>
                         ` : ''}
@@ -432,7 +428,6 @@ containerCard.addEventListener('click', async (event) => {
                 mostrarCards('curtidos');
             }
         } catch (error) {
-            console.error("Erro ao curtir/descurtir projeto:", error);
             alert("Ocorreu um erro ao processar sua curtida. Por favor, tente novamente.");
         }
         return;
@@ -525,7 +520,6 @@ containerCard.addEventListener('click', async (event) => {
         }
 
     } catch (error) {
-        console.error("Erro ao carregar dados do projeto:", error);
         modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
     }
 });
@@ -578,11 +572,12 @@ onAuthStateChanged(auth, async (user) => {
     const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
 
-    Object.entries(todasCurtidas).forEach(([projetoId, usuarios]) => {
-        if (usuarios[perfilUserId]) {
+    Object.entries(todasCurtidas).forEach(([projetoId, usuariosQueCurtiram]) => {
+        if (usuariosQueCurtiram[perfilUserId]) {
             const projeto = todosProjetos[projetoId];
             if (projeto) {
-                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId);
+                const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
+                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer);
             }
         }
     });
@@ -600,7 +595,8 @@ onAuthStateChanged(auth, async (user) => {
         if (projetosSnap.exists()) {
             Object.entries(todosProjetos).forEach(([id, dados]) => {
                 if (dados.userId === perfilUserId) {
-                    criarCardProjeto(id, dados, 'projetos', currentUserId);
+                    const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
+                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer);
                 }
             });
         }
