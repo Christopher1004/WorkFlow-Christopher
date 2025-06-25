@@ -34,8 +34,8 @@ function criarCardProjeto(id, projeto, aba = 'projetos') {
 
   const autorTexto = projeto.userId === perfilUserId ? 'você' : 'outra pessoa';
 
-  // Mostrar ícone de editar só se for dono do projeto E aba projetos
-  const mostrarEdit = projeto.userId === perfilUserId && aba === 'projetos';
+  const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
+
 
   card.innerHTML = `
     <div class="capa">
