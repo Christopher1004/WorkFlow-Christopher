@@ -45,14 +45,14 @@ async function obterDadosUsuario(userId) {
     return { data: userData, type: userType };
 }
 
-function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50') {
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0) {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
     card.style.display = 'none';
     const isAutorDoPerfil = auth.currentUser && projeto.userId === auth.currentUser.uid;
     const autorDisplayTexto = isAutorDoPerfil ? 'Criado por você' : autorNome;
-    const autorDisplayFoto = autorFotoUrl; 
+    const autorDisplayFoto = autorFotoUrl;
     const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
     let isLikedForDisplay = isProjectLikedByViewer;
 
@@ -76,7 +76,7 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
                             ` : `
                                 <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731Z"
+                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
                                         fill="none" stroke="black" />
                                 </svg>
                             `}
@@ -106,17 +106,37 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
             </div>
         </div>
         <a href="/perfil?id=${projeto.userId}" class="autor-link" style="text-decoration: none; color: inherit;">
-    <div class="autor" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
-        <img src="${autorDisplayFoto}" alt="Foto do Autor" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
-        <h2 class="username">${autorDisplayTexto}</h2>
-    </div>
-</a>
+            <div class="autor" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
+                <img src="${autorDisplayFoto}" alt="Foto do Autor" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                <h2 class="username">${autorDisplayTexto}</h2>
+            </div>
+        </a>
+        <div class="project-stats" style="display: flex; gap: 10px; font-size: 14px; color: #fff; justify-content: flex-end; padding-right: 10px; padding-bottom: 10px;">
+            <div class="likes" style="display: flex; align-items: center; gap: 3px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#5274D9" stroke="#5274D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span class="like-count">${curtidas}</span>
+            </div>
+            <div class="views" style="display: flex; align-items: center; gap: 3px;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" class="size-6">
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="#5274D9" stroke="#5274D9"/>
+                    <path fill="#5274D9" stroke="#5274D9" fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
+                </svg>
+                <span class="view-count">${visualizacoes}</span>
+            </div>
+            <div class="comments" style="display: flex; align-items: center; gap: 3px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill="#5274D9" stroke="#5274D9" fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z" clip-rule="evenodd" />
+                </svg>
+                <span class="comment-count">${comentarios}</span>
+            </div>
+        </div>
     `;
 
     containerCard.appendChild(card);
     abas[aba].push(card);
 }
-
 
 function criarCardProposta(p, aba = 'projetos') {
     const tagsHtml = Array.isArray(p.tags) ? p.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
@@ -202,7 +222,6 @@ function mostrarCards(tipo) {
         contadorProjetos.textContent = cards.length;
     }
 }
-
 
 async function detectarTipoUsuario(uid) {
     if (!uid) return null;
@@ -311,7 +330,6 @@ function formatarTempoComentario(timestamp) {
     }
 }
 
-
 async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
     const dataCriacao = new Date(projeto.dataCriacao).toLocaleDateString('pt-BR', {
         day: '2-digit', month: 'long', year: 'numeric'
@@ -332,7 +350,7 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
             .slice(0, 6);
 
         outrosProjetosHTML = projetosDoAutor.map(([id, proj]) => `
-            <div class="card-projeto">
+            <div class="card-projeto" data-projeto-id="${id}" style="cursor: pointer;">
                 <img src="${proj.capaUrl || 'https://via.placeholder.com/150'}" alt="${proj.titulo}" style="width:100%; height:100%; object-fit:cover; border-radius:3px;">
             </div>
         `).join('');
@@ -391,10 +409,6 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
     `;
 }
 
-/**
-
- * @param {string} projectId 
- */
 async function deletarProjeto(projectId) {
     if (!auth.currentUser || auth.currentUser.uid !== perfilUserId) {
         alert('Você não tem permissão para deletar este projeto.');
@@ -405,15 +419,10 @@ async function deletarProjeto(projectId) {
 
     if (confirmacao) {
         try {
-
             await remove(ref(db, `Projetos/${projectId}`));
-
             await remove(ref(db, `componentesProjeto/${projectId}`));
-
             await remove(ref(db, `Curtidas/${projectId}`));
-
             await remove(ref(db, `Comentarios/${projectId}`));
-
 
             const cardParaRemover = document.querySelector(`.card_projeto[data-projeto-id="${projectId}"]`);
             if (cardParaRemover) {
@@ -432,92 +441,7 @@ async function deletarProjeto(projectId) {
     }
 }
 
-
-containerCard.addEventListener('click', async (event) => {
-    const likeButton = event.target.closest('.like');
-    if (likeButton) {
-        if (!auth.currentUser) {
-            alert('Você precisa estar logado para curtir projetos!');
-            return;
-        }
-
-        const projectId = likeButton.dataset.projetoId;
-        const userId = auth.currentUser.uid;
-        let isCurrentlyLiked = likeButton.dataset.liked === 'true';
-        const curtidasRef = ref(db, `Curtidas/${projectId}/${userId}`);
-
-        try {
-            if (isCurrentlyLiked) {
-                await set(curtidasRef, null);
-                likeButton.dataset.liked = 'false';
-                likeButton.classList.remove('curtido');
-                likeButton.innerHTML = `
-                    <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731Z"
-                            fill="none" stroke="black" />
-                    </svg>
-                `;
-                likeButton.title = 'Curtir';
-
-                const index = abas.curtidos.findIndex(card => card.dataset.projetoId === projectId);
-                if (index > -1) {
-                    abas.curtidos.splice(index, 1);
-                }
-
-            } else {
-                await set(curtidasRef, true);
-                likeButton.dataset.liked = 'true';
-                likeButton.classList.add('curtido');
-                likeButton.innerHTML = `
-                    <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                `;
-                likeButton.title = 'Descurtir';
-
-                const existingCardInLiked = abas.curtidos.find(card => card.dataset.projetoId === projectId);
-                if (!existingCardInLiked) {
-                    const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
-                    if (projetoSnap.exists()) {
-                        const projetoData = projetoSnap.val();
-                        const autorData = (await obterDadosUsuario(projetoData.userId)).data || {};
-                        criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil);
-                    }
-                }
-            }
-            if (document.querySelector('.tab-button.active')?.dataset.tab === 'curtidos' && perfilUserId === userId) {
-                mostrarCards('curtidos');
-            }
-        } catch (error) {
-            alert("Ocorreu um erro ao processar sua curtida. Por favor, tente novamente.");
-        }
-        return;
-    }
-    const editButton = event.target.closest('.edit');
-    if (editButton) {
-        const cardProjeto = editButton.closest('.card_projeto');
-        const projectIdToEdit = cardProjeto ? cardProjeto.dataset.projetoId : null;
-        if (projectIdToEdit) {
-            window.location.href = `/criarProjeto?editId=${projectIdToEdit}`;
-        }
-        return;
-    }
-    const deleteButton = event.target.closest('.delete');
-    if (deleteButton) {
-        const projectIdToDelete = deleteButton.dataset.projetoId;
-        if (projectIdToDelete) {
-            await deletarProjeto(projectIdToDelete);
-        }
-        return;
-    }
-
-    const cardProjeto = event.target.closest('.card_projeto');
-    if (!cardProjeto) return;
-
-    const projetoId = cardProjeto.dataset.projetoId;
-    if (!projetoId) return;
-
+async function abrirModalProjeto(projetoId) {
     modalBody.innerHTML = '<p>Carregando componentes...</p>';
     modal.style.display = 'flex';
 
@@ -575,6 +499,16 @@ containerCard.addEventListener('click', async (event) => {
 
         modalBody.innerHTML = cabecalhoHTML + componentesHTML + blocoExtraHTML;
 
+       
+        modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
+            otherProjectCard.addEventListener('click', async (e) => {
+                const otherProjectId = e.currentTarget.dataset.projetoId;
+                if (otherProjectId) {
+                    await abrirModalProjeto(otherProjectId);
+                }
+            });
+        });
+
         const btnEnviarComentario = document.getElementById('btnEnviarComentario');
         if (btnEnviarComentario) {
             btnEnviarComentario.addEventListener('click', async () => {
@@ -592,15 +526,118 @@ containerCard.addEventListener('click', async (event) => {
 
                     const updatedComentarios = await obterComentariosDoProjeto(projetoId);
                     document.getElementById('comentariosProjeto').innerHTML = updatedComentarios.map(com => criarComentarioHTML(com)).join('');
+                    atualizarContadoresNoCard(projetoId);
                 } else {
                     alert('Por favor, escreva um comentário e esteja logado para comentar.');
                 }
             });
         }
 
+        
+        await incrementarVisualizacao(projetoId);
+        atualizarContadoresNoCard(projetoId); 
     } catch (error) {
         modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
     }
+}
+
+
+containerCard.addEventListener('click', async (event) => {
+    const likeButton = event.target.closest('.like');
+    if (likeButton) {
+        if (!auth.currentUser) {
+            alert('Você precisa estar logado para curtir projetos!');
+            return;
+        }
+
+        const projectId = likeButton.dataset.projetoId;
+        const userId = auth.currentUser.uid;
+        let isCurrentlyLiked = likeButton.dataset.liked === 'true';
+        const curtidasRef = ref(db, `Curtidas/${projectId}/${userId}`);
+
+        try {
+            if (isCurrentlyLiked) {
+                await set(curtidasRef, null);
+                likeButton.dataset.liked = 'false';
+                likeButton.classList.remove('curtido');
+                likeButton.innerHTML = `
+                    <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                            fill="none" stroke="black" />
+                    </svg>
+                `;
+                likeButton.title = 'Curtir';
+
+                const index = abas.curtidos.findIndex(card => card.dataset.projetoId === projectId);
+                if (index > -1) {
+                    abas.curtidos.splice(index, 1);
+                }
+
+            } else {
+                await set(curtidasRef, true);
+                likeButton.dataset.liked = 'true';
+                likeButton.classList.add('curtido');
+                likeButton.innerHTML = `
+                    <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                `;
+                likeButton.title = 'Descurtir';
+
+                const existingCardInLiked = abas.curtidos.find(card => card.dataset.projetoId === projectId);
+                if (!existingCardInLiked) {
+                    const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
+                    if (projetoSnap.exists()) {
+                        const projetoData = projetoSnap.val();
+                        const autorData = (await obterDadosUsuario(projetoData.userId)).data || {};
+                        const visualizacoesSnap = await get(ref(db, `Projetos/${projectId}/visualizacoes`));
+                        const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
+                        const curtidasCountSnap = await get(ref(db, `Curtidas/${projectId}`));
+                        const curtidas = curtidasCountSnap.exists() ? Object.keys(curtidasCountSnap.val()).length : 0;
+                        const comentariosCountSnap = await get(ref(db, `Comentarios/${projectId}`));
+                        const comentarios = comentariosCountSnap.exists() ? Object.keys(comentariosCountSnap.val()).length : 0;
+
+                        criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
+                    }
+                }
+            }
+            if (document.querySelector('.tab-button.active')?.dataset.tab === 'curtidos' && perfilUserId === userId) {
+                mostrarCards('curtidos');
+            }
+           
+            atualizarContadoresNoCard(projectId);
+
+        } catch (error) {
+            alert("Ocorreu um erro ao processar sua curtida. Por favor, tente novamente.");
+        }
+        return;
+    }
+    const editButton = event.target.closest('.edit');
+    if (editButton) {
+        const cardProjeto = editButton.closest('.card_projeto');
+        const projectIdToEdit = cardProjeto ? cardProjeto.dataset.projetoId : null;
+        if (projectIdToEdit) {
+            window.location.href = `/criarProjeto?editId=${projectIdToEdit}`;
+        }
+        return;
+    }
+    const deleteButton = event.target.closest('.delete');
+    if (deleteButton) {
+        const projectIdToDelete = deleteButton.dataset.projetoId;
+        if (projectIdToDelete) {
+            await deletarProjeto(projectIdToDelete);
+        }
+        return;
+    }
+
+    const cardProjeto = event.target.closest('.card_projeto');
+    if (!cardProjeto) return;
+
+    const projetoId = cardProjeto.dataset.projetoId;
+    if (!projetoId) return;
+
+    await abrirModalProjeto(projetoId);
 });
 
 modalClose.addEventListener('click', () => {
@@ -611,6 +648,30 @@ modal.addEventListener('click', (e) => {
         modal.style.display = 'none';
     }
 });
+
+async function incrementarVisualizacao(projetoId) {
+    const visualizacoesRef = ref(db, `Projetos/${projetoId}/visualizacoes`);
+    const visualizacoesSnap = await get(visualizacoesRef);
+    const visualizacoesAtuais = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
+    await set(visualizacoesRef, visualizacoesAtuais + 1);
+}
+
+async function atualizarContadoresNoCard(projetoId) {
+    const card = document.querySelector(`.card_projeto[data-projeto-id="${projetoId}"]`);
+    if (!card) return;
+
+    const visualizacoesSnap = await get(ref(db, `Projetos/${projetoId}/visualizacoes`));
+    const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
+    card.querySelector('.view-count').textContent = visualizacoes;
+
+    const curtidasSnap = await get(ref(db, `Curtidas/${projetoId}`));
+    const curtidas = curtidasSnap.exists() ? Object.keys(curtidasSnap.val()).length : 0;
+    card.querySelector('.like-count').textContent = curtidas;
+
+    const comentariosSnap = await get(ref(db, `Comentarios/${projetoId}`));
+    const comentarios = comentariosSnap.exists() ? Object.keys(comentariosSnap.val()).length : 0;
+    card.querySelector('.comment-count').textContent = comentarios;
+}
 
 onAuthStateChanged(auth, async (user) => {
     if (!perfilUserId) {
@@ -647,9 +708,11 @@ onAuthStateChanged(auth, async (user) => {
     const propostasSnap = await get(ref(db, 'Propostas'));
     const projetosSnap = await get(ref(db, 'Projetos'));
     const curtidasSnap = await get(ref(db, 'Curtidas'));
+    const comentariosGlobaisSnap = await get(ref(db, 'Comentarios'));
 
     const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
+    const todosComentarios = comentariosGlobaisSnap.exists() ? comentariosGlobaisSnap.val() : {};
 
     const userIdsToFetch = new Set();
     Object.values(todosProjetos).forEach(proj => userIdsToFetch.add(proj.userId));
@@ -675,7 +738,11 @@ onAuthStateChanged(auth, async (user) => {
             if (projeto) {
                 const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
                 const autorData = usersData[projeto.userId] || {};
-                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil);
+                const visualizacoes = projeto.visualizacoes || 0;
+                const curtidas = Object.keys(usuariosQueCurtiram).length;
+                const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
+
+                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
             }
         }
     });
@@ -695,7 +762,11 @@ onAuthStateChanged(auth, async (user) => {
                 if (dados.userId === perfilUserId) {
                     const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
                     const autorData = usersData[dados.userId] || {};
-                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil);
+                    const visualizacoes = dados.visualizacoes || 0;
+                    const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
+                    const comentarios = todosComentarios[id] ? Object.keys(todosComentarios[id]).length : 0;
+
+                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
                 }
             });
         }
