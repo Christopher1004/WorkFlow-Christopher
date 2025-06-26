@@ -494,7 +494,15 @@ containerCard.addEventListener('click', async (event) => {
         }
         return;
     }
-
+    const editButton = event.target.closest('.edit');
+    if (editButton) {
+        const cardProjeto = editButton.closest('.card_projeto');
+        const projectIdToEdit = cardProjeto ? cardProjeto.dataset.projetoId : null;
+        if (projectIdToEdit) {
+            window.location.href = `/criarProjeto?editId=${projectIdToEdit}`;
+        }
+        return;
+    }
     const deleteButton = event.target.closest('.delete');
     if (deleteButton) {
         const projectIdToDelete = deleteButton.dataset.projetoId;
