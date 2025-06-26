@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
+import { get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
@@ -23,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app)
 
-import { getEstadoElementos } from "./componentesProjeto.js";
+import { getEstadoElementos, renderizarComponente, renderizarComponenteComCamada } from "./componentesProjeto.js";
 
 const divCapaPreview = document.getElementById('capaPreview');
 
@@ -60,51 +60,98 @@ tagButtons.forEach(btn => {
     })
 })
 
+const urlParams = new URLSearchParams(window.location.search);
+const idProjeto = urlParams.get("editId");
 
+async function carregarProjeto(id) {
+    if (!id) return;
+
+    try {
+        const projetoRef = ref(db, `Projetos/${id}`);
+        const componenteRef = ref(db, `componentesProjeto/${id}`);
+
+        const snapshotProjeto = await get(projetoRef);
+        if (snapshotProjeto.exists()) {
+            const dados = snapshotProjeto.val();
+            document.getElementById('titulo').value = dados.titulo || '';
+
+            if (dados.capaUrl) {
+                divCapaPreview.style.backgroundImage = `url(${dados.capaUrl})`;
+                divCapaPreview.dataset.imgUrl = dados.capaUrl;
+            }
+
+            tags = dados.tags || [];
+            tagButtons.forEach(btn => {
+                const tagText = pegarPrimeiraLetra(btn.textContent.trim());
+                if (tags.includes(tagText)) btn.classList.add('selected');
+            });
+        }
+
+        const snapshotComponentes = await get(componenteRef);
+        if (snapshotComponentes.exists()) {
+            const dadosComponentes = snapshotComponentes.val();
+
+            document.querySelector('.content').innerHTML = '';
+            document.querySelector('.camadaArea').innerHTML = '';
+
+            dadosComponentes.forEach(comp => {
+                renderizarComponenteComCamada(comp);
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao carregar projeto:", error);
+    }
+}
 
 export async function salvarProjetoBanco() {
     try {
-        const user = auth.currentUser
+        const user = auth.currentUser;
+        if (!user) throw new Error('Usuário não autenticado');
 
-        if (!user) {
-            throw new Error('Usuário não autenticado')
-        }
         const titulo = document.getElementById('titulo').value;
-        const dataCriacao = new Date().toISOString();
-
         const capaUrl = divCapaPreview.dataset.imgUrl || null;
 
-        const dadosProjetos = {
+        const dadosProjeto = {
             titulo,
-            dataCriacao,
             capaUrl,
             userId: user.uid,
             tags
         };
 
-        const projetoRef = push(ref(db, 'Projetos/'));
-        const projetoID = projetoRef.key;
+        let projetoID = idProjeto;
 
-        await set(projetoRef, dadosProjetos);
-        console.log('Projeto salvo com sucesso');
+        if (!projetoID) {
+            // Criar novo projeto
+            dadosProjeto.dataCriacao = new Date().toISOString();
+            const projetoRef = push(ref(db, 'Projetos/'));
+            projetoID = projetoRef.key;
+            await set(projetoRef, dadosProjeto);
+            console.log('Projeto criado com sucesso:', projetoID);
+        } else {
+            // Atualizar projeto existente
+            await update(ref(db, `Projetos/${projetoID}`), dadosProjeto);
+            console.log('Projeto atualizado com sucesso:', projetoID);
+        }
 
-        document.querySelectorAll('.content > div').forEach(componente => {
-            componente.dataset.projectId = projetoID;
-        });
-
-        const estado = getEstadoElementos();
-        const componentesComIDProjeto = estado.map((c, index) => ({
+        // Atualizar projectId em cada componente antes de salvar
+        const estado = getEstadoElementos().map((c, index) => ({
             ...c,
-            ordem: index
+            ordem: index,
+            projectId: projetoID
         }));
 
-        await set(ref(db, `componentesProjeto/${projetoID}`), componentesComIDProjeto);
+        await set(ref(db, `componentesProjeto/${projetoID}`), estado);
         console.log('Componentes salvos com sucesso');
         return true;
+
     } catch (error) {
         console.error('Erro ao salvar projeto ou componentes:', error);
-        return false
+        return false;
     }
+}
+
+if (idProjeto) {
+    carregarProjeto(idProjeto);
 }
 
 const btnCancelar = document.getElementById('btnCancelar')
@@ -171,4 +218,3 @@ document.getElementById('btn-sim').addEventListener('click', async () => {
 document.getElementById('btn-nao').addEventListener('click', () => {
     document.getElementById('modal-confirmacao').classList.add('hidden')
 })
-
