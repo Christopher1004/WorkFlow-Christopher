@@ -193,16 +193,22 @@ document.addEventListener('DOMContentLoaded', () => {
     new Sortable(areaCamada, {
         animation: 150,
         onEnd: () => {
-            const novaOrdem = [...areaCamada.children].map(div => div.dataset.id);
+            const novaOrdemIds = Array.from(areaCamada.children).map(el => el.dataset.id);
 
-            // Para cada id na nova ordem, movemos o componente correspondente para o final da área
-            novaOrdem.forEach(id => {
+            // Reorganiza componentes conforme a nova ordem das camadas
+            novaOrdemIds.forEach(id => {
                 const comp = areaComponentes.querySelector(`[data-id="${id}"]`);
                 if (comp) {
                     areaComponentes.appendChild(comp);
-                } else {
-                    console.warn(`Componente com id ${id} não encontrado.`);
                 }
+            });
+
+            // Atualiza dataset.ordem nas camadas e componentes conforme ordem atual no DOM
+            areaCamada.querySelectorAll('.camada').forEach((camada, index) => {
+                camada.dataset.ordem = index;
+            });
+            areaComponentes.querySelectorAll('.content > div').forEach((comp, index) => {
+                comp.dataset.ordem = index;
             });
         }
     });
@@ -210,18 +216,24 @@ document.addEventListener('DOMContentLoaded', () => {
     new Sortable(areaComponentes, {
         animation: 150,
         onEnd: () => {
-            const novaOrdem = [...areaComponentes.children].map(div => div.dataset.id);
+            const novaOrdemIds = Array.from(areaComponentes.children).map(el => el.dataset.id);
 
-            novaOrdem.forEach(id => {
+            novaOrdemIds.forEach(id => {
                 const camada = areaCamada.querySelector(`[data-id="${id}"]`);
                 if (camada) {
                     areaCamada.appendChild(camada);
-                } else {
-                    console.warn(`Camada com id ${id} não encontrada.`);
                 }
+            });
+
+            areaCamada.querySelectorAll('.camada').forEach((camada, index) => {
+                camada.dataset.ordem = index;
+            });
+            areaComponentes.querySelectorAll('.content > div').forEach((comp, index) => {
+                comp.dataset.ordem = index;
             });
         }
     });
+
 
 });
 
@@ -229,7 +241,7 @@ export function getEstadoElementos() {
     const componentes = document.querySelectorAll('.content > div');
     const estado = [];
 
-    componentes.forEach((elemento, index) => {
+    componentes.forEach((elemento) => {
         const tipo = elemento.dataset.tipo;
 
         let conteudo = null;
@@ -238,7 +250,7 @@ export function getEstadoElementos() {
             conteudo = elemento.innerHTML || "";
         }
         else if (tipo === 'imagem') {
-            conteudo = elemento.dataset.imgUrl || null
+            conteudo = elemento.dataset.imgUrl || null;
         }
         else {
             conteudo = elemento.textContent || "";
@@ -248,13 +260,17 @@ export function getEstadoElementos() {
             id: elemento.dataset.id,
             tipo,
             conteudo,
-            ordem: index,
+            ordem: Number(elemento.dataset.ordem) ?? 0, // usa o dataset.ordem atualizado
             projectId: elemento.dataset.projectId || null,
         });
     });
 
+    // Opcional: ordenar array pelo campo ordem, caso não confie na ordem do querySelectorAll
+    estado.sort((a, b) => a.ordem - b.ordem);
+
     return estado;
 }
+
 export function renderizarComponente({ id, tipo, conteudo }) {
     const componente = document.createElement('div');
     componente.dataset.id = id;
