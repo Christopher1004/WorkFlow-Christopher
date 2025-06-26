@@ -27,18 +27,36 @@ const abas = {
 
 let tipoUsuario = null;
 
-function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false) {
+async function obterDadosUsuario(userId) {
+    let userData = null;
+    let userType = null;
+
+    const freelancerSnap = await get(ref(db, `Freelancer/${userId}`));
+    if (freelancerSnap.exists()) {
+        userData = freelancerSnap.val();
+        userType = 'Freelancer';
+    } else {
+        const contratanteSnap = await get(ref(db, `Contratante/${userId}`));
+        if (contratanteSnap.exists()) {
+            userData = contratanteSnap.val();
+            userType = 'Contratante';
+        }
+    }
+    return { data: userData, type: userType };
+}
+
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50') {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
     card.style.display = 'none';
-
-    const autorTexto = projeto.userId === perfilUserId ? 'você' : 'outra pessoa';
+    const isAutorDoPerfil = auth.currentUser && projeto.userId === auth.currentUser.uid;
+    const autorDisplayTexto = isAutorDoPerfil ? 'Criado por você' : autorNome;
+    const autorDisplayFoto = autorFotoUrl; 
     const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
-
     let isLikedForDisplay = isProjectLikedByViewer;
 
-    if (aba === 'curtidos' && currentUserId === perfilUserId) {
+    if (aba === 'curtidos' && perfilUserId === currentUserId) {
         isLikedForDisplay = true;
     }
 
@@ -76,7 +94,7 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
                                     <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
                                     <path d="M10 11v6"></path>
                                     <path d="M14 11v6"></path>
-                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 0 0 1 1 1v2"></path>
                                 </svg>
                             </div>
                         ` : ''}
@@ -87,9 +105,12 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
                 </div>
             </div>
         </div>
-        <div class="autor">
-            <h2 class="username">Criado por ${autorTexto}</h2>
-        </div>
+        <a href="/perfil?id=${projeto.userId}" class="autor-link" style="text-decoration: none; color: inherit;">
+    <div class="autor" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
+        <img src="${autorDisplayFoto}" alt="Foto do Autor" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+        <h2 class="username">${autorDisplayTexto}</h2>
+    </div>
+</a>
     `;
 
     containerCard.appendChild(card);
@@ -250,7 +271,7 @@ async function obterComentariosDoProjeto(projetoId) {
         } else {
             userSnap = await get(ref(db, `Contratante/${comentario.userId}`));
             if (userSnap.exists()) {
-                userData = userSnap.val();
+                userData = contratanteSnap.val();
             }
         }
 
@@ -460,9 +481,8 @@ containerCard.addEventListener('click', async (event) => {
                     const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
                     if (projetoSnap.exists()) {
                         const projetoData = projetoSnap.val();
-                        const tempCard = document.createElement('div');
-                        tempCard.dataset.projetoId = projectId;
-                        abas.curtidos.push(tempCard);
+                        const autorData = (await obterDadosUsuario(projetoData.userId)).data || {};
+                        criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil);
                     }
                 }
             }
@@ -623,12 +643,31 @@ onAuthStateChanged(auth, async (user) => {
     const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
 
+    const userIdsToFetch = new Set();
+    Object.values(todosProjetos).forEach(proj => userIdsToFetch.add(proj.userId));
+    if (perfilUserId) userIdsToFetch.add(perfilUserId);
+    if (currentUserId) userIdsToFetch.add(currentUserId);
+
+
+    const usersData = {};
+    for (const userId of userIdsToFetch) {
+        const { data, type } = await obterDadosUsuario(userId);
+        if (data) {
+            usersData[userId] = {
+                nome: data.nome || 'Desconhecido',
+                foto_perfil: data.foto_perfil || 'https://via.placeholder.com/50',
+                tipo: type
+            };
+        }
+    }
+
     Object.entries(todasCurtidas).forEach(([projetoId, usuariosQueCurtiram]) => {
         if (usuariosQueCurtiram[perfilUserId]) {
             const projeto = todosProjetos[projetoId];
             if (projeto) {
                 const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
-                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer);
+                const autorData = usersData[projeto.userId] || {};
+                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil);
             }
         }
     });
@@ -647,7 +686,8 @@ onAuthStateChanged(auth, async (user) => {
             Object.entries(todosProjetos).forEach(([id, dados]) => {
                 if (dados.userId === perfilUserId) {
                     const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
-                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer);
+                    const autorData = usersData[dados.userId] || {};
+                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil);
                 }
             });
         }
