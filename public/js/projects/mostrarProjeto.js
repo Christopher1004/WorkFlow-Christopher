@@ -1,7 +1,8 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, set, update, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { iconeCurtida } from "/js/projects/curtirProjeto.js"
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 // Config do Firebase
 const firebaseConfig = {
@@ -28,7 +29,7 @@ const auth = getAuth();
 const container = document.querySelector("#card-zone");
 const modal = document.getElementById("modal");
 
-function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId }) {
+async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId }) {
     console.log("Criando card para projeto:", id, titulo);
     const card = document.createElement("div");
     card.className = "card_projeto";
@@ -103,7 +104,7 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
          <path fill="#5274D9" stroke="#5274D9" fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
     </svg>
 
-       <span>980</span>
+       <span></span>
     </div>
     <div class="comments" style="display: flex; align-items: center; gap: 3px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -115,11 +116,8 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
   </div>
 
 </div>
-
-
 </div>
 
-    
   `;
     const svgCurtida = card.querySelector('.like svg')
     svgCurtida.addEventListener('click', (event) => {
@@ -178,10 +176,36 @@ function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId 
     });
 
     container.appendChild(card);
+
+    await atualizarViewsCard(id)
+}
+
+async function registrarVisualizacao(idProjeto, userId) {
+    if (!userId) return
+
+    const visualizaçãoRef = ref(db, `Visualizacoes/${idProjeto}/${userId}`)
+    const projetoRef = ref(db, `Projetos/${idProjeto}`);
+
+    try {
+        const snapshot = await get(visualizaçãoRef)
+        if (!snapshot.exists()) {
+            await set(visualizaçãoRef, true)
+            const projetoSnap = await get(projetoRef)
+
+            if (projetoSnap.exists()) {
+                const projetosDados = projetoSnap.val()
+                const contagemAtual = projetosDados.visualizacoes || 0
+                await update(projetoRef, { visualizacoes: contagemAtual + 1 })
+            }
+        }
+    }
+    catch (error) {
+        console.error('Erro ao registrar visualização: ', error)
+    }
 }
 
 window.idProjetoAtual = null
-function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, tags = []) {
+async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, tags = []) {
     const modal = document.getElementById("modal");
     const containerComponentes = document.getElementById('modal-componentes');
     const modalTitulo = modal.querySelector(".modal-titulo h1");
@@ -315,8 +339,44 @@ function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, userId, ta
     document.dispatchEvent(new CustomEvent("modalProjetoAberto", {
         detail: { idProjeto }
     }));
-}
 
+    const user = auth.currentUser
+    if (user) {
+        await registrarVisualizacao(idProjeto, user.uid)
+    }
+}
+async function atualizarViewsCard(idProjeto) {
+    const card = document.querySelector(`.card_projeto[data-projeto-id="${idProjeto}"]`);
+    if (!card) return;
+
+    const spanViews = card.querySelector('.views span');
+    const spanLikes = card.querySelector('.likes span');
+    const spanComentarios = card.querySelector('.comments span');
+
+    const projetoRef = ref(db, `Projetos/${idProjeto}`);
+    onValue(projetoRef, (snapshot) => {
+        const dados = snapshot.val();
+        if (spanViews) {
+            spanViews.textContent = dados?.visualizacoes || 0;
+        }
+    });
+
+    const curtidasRef = ref(db, `Curtidas/${idProjeto}`);
+    onValue(curtidasRef, (snapshot) => {
+        const likes = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        if (spanLikes) {
+            spanLikes.textContent = likes;
+        }
+    });
+
+    const comentariosRef = ref(db, `Comentarios/${idProjeto}`);
+    onValue(comentariosRef, (snapshot) => {
+        const comentarios = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        if (spanComentarios) {
+            spanComentarios.textContent = comentarios;
+        }
+    });
+}
 function criarCardProjetoMiniatura(projeto) {
     const card = document.createElement('div')
     card.classList.add('card-projeto')
