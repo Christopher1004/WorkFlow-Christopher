@@ -499,7 +499,7 @@ async function abrirModalProjeto(projetoId) {
 
         modalBody.innerHTML = cabecalhoHTML + componentesHTML + blocoExtraHTML;
 
-       
+
         modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
             otherProjectCard.addEventListener('click', async (e) => {
                 const otherProjectId = e.currentTarget.dataset.projetoId;
@@ -533,9 +533,9 @@ async function abrirModalProjeto(projetoId) {
             });
         }
 
-        
+
         await incrementarVisualizacao(projetoId);
-        atualizarContadoresNoCard(projetoId); 
+        atualizarContadoresNoCard(projetoId);
     } catch (error) {
         modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
     }
@@ -555,62 +555,58 @@ containerCard.addEventListener('click', async (event) => {
         let isCurrentlyLiked = likeButton.dataset.liked === 'true';
         const curtidasRef = ref(db, `Curtidas/${projectId}/${userId}`);
 
-        try {
-            if (isCurrentlyLiked) {
-                await set(curtidasRef, null);
-                likeButton.dataset.liked = 'false';
-                likeButton.classList.remove('curtido');
-                likeButton.innerHTML = `
-                    <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                            fill="none" stroke="black" />
-                    </svg>
-                `;
-                likeButton.title = 'Curtir';
+        if (isCurrentlyLiked) {
+            await set(curtidasRef, null);
+            likeButton.dataset.liked = 'false';
+            likeButton.classList.remove('curtido');
+            likeButton.innerHTML = `
+                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                        fill="none" stroke="black" />
+                </svg>
+            `;
+            likeButton.title = 'Curtir';
 
-                const index = abas.curtidos.findIndex(card => card.dataset.projetoId === projectId);
-                if (index > -1) {
-                    abas.curtidos.splice(index, 1);
-                }
+            const index = abas.curtidos.findIndex(card => card.dataset.projetoId === projectId);
+            if (index > -1) {
+                abas.curtidos.splice(index, 1);
+            }
 
-            } else {
-                await set(curtidasRef, true);
-                likeButton.dataset.liked = 'true';
-                likeButton.classList.add('curtido');
-                likeButton.innerHTML = `
-                    <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                `;
-                likeButton.title = 'Descurtir';
+        } else {
+            await set(curtidasRef, true);
+            likeButton.dataset.liked = 'true';
+            likeButton.classList.add('curtido');
+            likeButton.innerHTML = `
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            `;
+            likeButton.title = 'Descurtir';
 
-                const existingCardInLiked = abas.curtidos.find(card => card.dataset.projetoId === projectId);
-                if (!existingCardInLiked) {
-                    const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
-                    if (projetoSnap.exists()) {
-                        const projetoData = projetoSnap.val();
-                        const autorData = (await obterDadosUsuario(projetoData.userId)).data || {};
-                        const visualizacoesSnap = await get(ref(db, `Projetos/${projectId}/visualizacoes`));
-                        const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
-                        const curtidasCountSnap = await get(ref(db, `Curtidas/${projectId}`));
-                        const curtidas = curtidasCountSnap.exists() ? Object.keys(curtidasCountSnap.val()).length : 0;
-                        const comentariosCountSnap = await get(ref(db, `Comentarios/${projectId}`));
-                        const comentarios = comentariosCountSnap.exists() ? Object.keys(comentariosCountSnap.val()).length : 0;
+            const existingCardInLiked = abas.curtidos.find(card => card.dataset.projetoId === projectId);
+            if (!existingCardInLiked) {
+                const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
+                if (projetoSnap.exists()) {
+                    const projetoData = projetoSnap.val();
+                    const autorData = (await obterDadosUsuario(projetoData.userId)).data || {};
+                    const visualizacoesSnap = await get(ref(db, `Projetos/${projectId}/visualizacoes`));
+                    const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
+                    const curtidasCountSnap = await get(ref(db, `Curtidas/${projectId}`));
+                    const curtidas = curtidasCountSnap.exists() ? Object.keys(curtidasCountSnap.val()).length : 0;
+                    const comentariosCountSnap = await get(ref(db, `Comentarios/${projectId}`));
+                    const comentarios = comentariosCountSnap.exists() ? Object.keys(comentariosCountSnap.val()).length : 0;
 
-                        criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
-                    }
+                    criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
                 }
             }
-            if (document.querySelector('.tab-button.active')?.dataset.tab === 'curtidos' && perfilUserId === userId) {
-                mostrarCards('curtidos');
-            }
-           
-            atualizarContadoresNoCard(projectId);
-
-        } catch (error) {
-            alert("Ocorreu um erro ao processar sua curtida. Por favor, tente novamente.");
         }
+        if (document.querySelector('.tab-button.active')?.dataset.tab === 'curtidos' && perfilUserId === userId) {
+            mostrarCards('curtidos');
+        }
+
+        atualizarContadoresNoCard(projectId);
+
         return;
     }
     const editButton = event.target.closest('.edit');
