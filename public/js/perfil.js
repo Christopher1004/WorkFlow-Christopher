@@ -1,6 +1,6 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, update, get, child, push, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, update, get, child, push, set, remove, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 let firebaseApp;
 try {
@@ -44,6 +44,32 @@ async function obterDadosUsuario(userId) {
     }
     return { data: userData, type: userType };
 }
+
+async function incrementarVisualizacaoUnica(projetoId) {
+    if (!auth.currentUser) {
+        return;
+    }
+
+    const userId = auth.currentUser.uid;
+    const visualizacaoUnicaRef = ref(db, `VisualizacoesUnicas/${projetoId}/${userId}`);
+    const visualizacoesTotaisRef = ref(db, `Projetos/${projetoId}/visualizacoes`);
+
+    try {
+        const uniqueViewSnap = await get(visualizacaoUnicaRef);
+
+        if (!uniqueViewSnap.exists()) {
+            await set(visualizacaoUnicaRef, true);
+
+            await runTransaction(visualizacoesTotaisRef, (currentVisualizacoes) => {
+                const newVisualizacoes = (currentVisualizacoes || 0) + 1;
+                return newVisualizacoes;
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao registrar ou incrementar visualização única:", error);
+    }
+}
+
 
 function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0) {
     const card = document.createElement('div');
@@ -163,9 +189,9 @@ function criarCardProposta(p, aba = 'projetos') {
             </div>
             <div class="buttons">
                 ${isDonoDoPerfil
-            ? `<button class="candidatos">Candidatos</button>`
-            : `<button class="enviar">Se candidatar</button>`
-        }
+                ? `<button class="candidatos">Candidatos</button>`
+                : `<button class="enviar">Se candidatar</button>`
+            }
             </div>
         </div>
     `;
@@ -290,7 +316,7 @@ async function obterComentariosDoProjeto(projetoId) {
         } else {
             userSnap = await get(ref(db, `Contratante/${comentario.userId}`));
             if (userSnap.exists()) {
-                userData = contratanteSnap.val();
+                userData = userSnap.val();
             }
         }
 
@@ -423,6 +449,7 @@ async function deletarProjeto(projectId) {
             await remove(ref(db, `componentesProjeto/${projectId}`));
             await remove(ref(db, `Curtidas/${projectId}`));
             await remove(ref(db, `Comentarios/${projectId}`));
+            await remove(ref(db, `VisualizacoesUnicas/${projectId}`));
 
             const cardParaRemover = document.querySelector(`.card_projeto[data-projeto-id="${projectId}"]`);
             if (cardParaRemover) {
@@ -499,7 +526,6 @@ async function abrirModalProjeto(projetoId) {
 
         modalBody.innerHTML = cabecalhoHTML + componentesHTML + blocoExtraHTML;
 
-
         modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
             otherProjectCard.addEventListener('click', async (e) => {
                 const otherProjectId = e.currentTarget.dataset.projetoId;
@@ -532,10 +558,10 @@ async function abrirModalProjeto(projetoId) {
                 }
             });
         }
-
-
-        await incrementarVisualizacao(projetoId);
+        
+        await incrementarVisualizacaoUnica(projetoId);
         atualizarContadoresNoCard(projetoId);
+
     } catch (error) {
         modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
     }
@@ -645,38 +671,56 @@ modal.addEventListener('click', (e) => {
     }
 });
 
-async function incrementarVisualizacao(projetoId) {
-    const visualizacoesRef = ref(db, `Projetos/${projetoId}/visualizacoes`);
-    const visualizacoesSnap = await get(visualizacoesRef);
-    const visualizacoesAtuais = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
-    await set(visualizacoesRef, visualizacoesAtuais + 1);
-}
-
 async function atualizarContadoresNoCard(projetoId) {
     const card = document.querySelector(`.card_projeto[data-projeto-id="${projetoId}"]`);
-    if (!card) return;
 
     const visualizacoesSnap = await get(ref(db, `Projetos/${projetoId}/visualizacoes`));
     const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
-    card.querySelector('.view-count').textContent = visualizacoes;
+    if (card) {
+        card.querySelector('.view-count').textContent = visualizacoes;
+    }
+    if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
+        const modalViewCount = modalBody.querySelector('.view-count');
+        if (modalViewCount) {
+            modalViewCount.textContent = visualizacoes;
+        }
+    }
+
 
     const curtidasSnap = await get(ref(db, `Curtidas/${projetoId}`));
     const curtidas = curtidasSnap.exists() ? Object.keys(curtidasSnap.val()).length : 0;
-    card.querySelector('.like-count').textContent = curtidas;
+    if (card) {
+        card.querySelector('.like-count').textContent = curtidas;
+    }
+    if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
+        const modalLikeCount = modalBody.querySelector('.like-count');
+        if (modalLikeCount) {
+            modalLikeCount.textContent = curtidas;
+        }
+    }
 
     const comentariosSnap = await get(ref(db, `Comentarios/${projetoId}`));
     const comentarios = comentariosSnap.exists() ? Object.keys(comentariosSnap.val()).length : 0;
-    card.querySelector('.comment-count').textContent = comentarios;
+    if (card) {
+        card.querySelector('.comment-count').textContent = comentarios;
+    }
+    if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
+        const modalCommentCount = modalBody.querySelector('.comment-count');
+        if (modalCommentCount) {
+            modalCommentCount.textContent = comentarios;
+        }
+    }
 }
 
 onAuthStateChanged(auth, async (user) => {
+    const currentUserId = user?.uid || null;
+
     if (!perfilUserId) {
         containerCard.innerHTML = '<p>Nenhum perfil especificado na URL. Por favor, retorne à página inicial ou use um link válido.</p>';
         contadorProjetos.textContent = '0';
         return;
     }
 
-    const currentUserId = user?.uid || null;
     containerCard.innerHTML = '';
     abas.projetos = [];
     abas.curtidos = [];
@@ -772,6 +816,8 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 window.mostrarCards = mostrarCards;
+window.abrirModalProjeto = abrirModalProjeto;
+
 document.addEventListener('DOMContentLoaded', () => {
     const modalEditar = document.getElementById('modal-editar');
     if (modalEditar) {
