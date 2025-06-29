@@ -249,15 +249,24 @@ function criarCardProposta(p, aba = 'projetos') {
             </div>
             <div class="buttons">
                 ${isDonoDoPerfil
-                ? `<button class="candidatos">Candidatos</button>`
-                : `<button class="enviar">Se candidatar</button>`
-            }
+                    ? `<button class="candidatos" data-proposta-id="${p.id}">Candidatos</button>`
+                    : `<button class="enviar">Se candidatar</button>`
+                }
             </div>
         </div>
     `;
 
     containerCard.appendChild(card);
     abas[aba].push(card);
+
+    if (isDonoDoPerfil) {
+        const candidatosButton = card.querySelector('.candidatos');
+        if (candidatosButton) {
+            candidatosButton.addEventListener('click', () => {
+                abrirModalCandidatos(p.id);
+            });
+        }
+    }
 }
 
 function formatarData(isoString) {
@@ -331,6 +340,92 @@ document.body.insertAdjacentHTML('beforeend', modalHTML);
 const modal = document.getElementById('modalProjeto');
 const modalBody = document.getElementById('modalBody');
 const modalClose = document.getElementById('modalClose');
+
+
+const modalCandidatosHTML = `
+<div id="modalCandidatos" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span id="modalCandidatosClose" class="modal-close">&times;</span>
+        <h2 id="modalCandidatosTitulo">Candidatos para a Proposta</h2>
+        <div id="listaCandidatos">
+            </div>
+    </div>
+</div>
+`;
+document.body.insertAdjacentHTML('beforeend', modalCandidatosHTML);
+
+const modalCandidatos = document.getElementById('modalCandidatos');
+const modalCandidatosClose = document.getElementById('modalCandidatosClose');
+const listaCandidatosDiv = document.getElementById('listaCandidatos');
+
+modalCandidatosClose.addEventListener('click', () => {
+    modalCandidatos.style.display = 'none';
+    listaCandidatosDiv.innerHTML = '';
+});
+
+modalCandidatos.addEventListener('click', (e) => {
+    if (e.target === modalCandidatos) {
+        modalCandidatos.style.display = 'none';
+        listaCandidatosDiv.innerHTML = '';
+    }
+});
+
+async function abrirModalCandidatos(propostaId) {
+    listaCandidatosDiv.innerHTML = '<p>Carregando candidatos...</p>';
+    modalCandidatos.style.display = 'flex';
+
+    // LISTA FALSA 
+    const candidatosFalsos = [
+        {
+            nome: "Ana Paula Silva",
+            foto_perfil: "",
+            tag: "Web Developer",
+            mensagem: "Olá! Tenho 5 anos de experiência em desenvolvimento web e adorei a sua proposta. Tenho grande interesse em projetos na área de e-commerce e estou disponível para iniciar imediatamente. Posso compartilhar meu portfólio completo.",
+            id: "fakeUserId1" 
+        },
+        {
+            nome: "Bruno Costa",
+            foto_perfil: "",
+            tag: "Designer Gráfico",
+            mensagem: "Fiquei muito interessado no seu projeto de design. Minha especialidade é UI/UX e branding. Anexei alguns dos meus trabalhos mais recentes. Acredito que posso trazer uma perspectiva fresca e criativa para o que você procura.",
+            id: "fakeUserId2"
+        },
+        {
+            nome: "Carla Oliveira",
+            foto_perfil: "",
+            tag: "Redatora Freelancer",
+            mensagem: "Com mais de 3 anos de experiência em criação de conteúdo para blogs e mídias sociais, estou pronta para impulsionar a comunicação do seu projeto. Sou especialista em SEO e redação persuasiva.",
+            id: "fakeUserId3"
+        },
+        {
+            nome: "Diego Fernandes",
+            foto_perfil: "",
+            tag: "Desenvolvedor Mobile",
+            mensagem: "Sou desenvolvedor mobile (iOS e Android) com foco em performance e experiência do usuário. Tenho um projeto similar ao seu no meu portfólio que talvez possa te interessar. Adoraria discutir os detalhes.",
+            id: "fakeUserId4"
+        }
+    ];
+
+    let candidatosHtml = '';
+    candidatosFalsos.forEach(candidato => {
+        candidatosHtml += `
+            <div class="candidato-item" style="background-color: #3a3a3a; padding: 15px; border-radius: 8px; border: 1px solid #444; display: flex; flex-direction: column; gap: 10px;">
+                <div class="candidato-header" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="${candidato.foto_perfil}" alt="${candidato.nome}" class="candidato-foto" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #5274D9;">
+                    <div class="candidato-info">
+                        <h3 style="margin: 0; color: #fff; font-size: 1.1em;">${candidato.nome}</h3>
+                        <p style="margin: 0; color: #bbb; font-size: 0.9em;">${candidato.tag}</p>
+                    </div>
+                </div>
+                <p class="candidato-mensagem" style="color: #ccc; font-style: italic; margin-left: 60px;">"${candidato.mensagem}"</p>
+                <a href="/perfil?id=${candidato.id}" target="_blank" class="ver-perfil-candidato" style="display: inline-block; background-color: #5274D9; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; align-self: flex-end; font-size: 0.9em; transition: background-color 0.3s ease;">Ver Perfil</a>
+            </div>
+        `;
+    });
+    listaCandidatosDiv.innerHTML = candidatosHtml;
+    
+}
+
 
 function criarCabecalhoProjetoHTML(projeto, autorNome, autorId) {
     return `
