@@ -1,6 +1,6 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, update, get, child, push, set, remove, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, update, get, child, push, set, remove, runTransaction, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 let firebaseApp;
 try {
@@ -26,6 +26,7 @@ const abas = {
 };
 
 let tipoUsuario = null;
+const activeListeners = {};
 
 async function obterDadosUsuario(userId) {
     let userData = null;
@@ -70,6 +71,63 @@ async function incrementarVisualizacaoUnica(projetoId) {
     }
 }
 
+function setupProjectListeners(projectId, cardElement) {
+    if (activeListeners[projectId]) {
+        activeListeners[projectId].forEach(listener => off(listener.ref, listener.eventType, listener.callback));
+    }
+    activeListeners[projectId] = [];
+
+    const curtidasRef = ref(db, `Curtidas/${projectId}`);
+    const comentariosRef = ref(db, `Comentarios/${projectId}`);
+    const visualizacoesRef = ref(db, `Projetos/${projectId}/visualizacoes`);
+
+    const curtidasCallback = onValue(curtidasRef, (snapshot) => {
+        const curtidas = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        const likeCountSpan = cardElement.querySelector('.like-count');
+        if (likeCountSpan) {
+            likeCountSpan.textContent = curtidas;
+        }
+        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
+            const modalLikeCount = modalBody.querySelector('.like-count');
+            if (modalLikeCount) {
+                modalLikeCount.textContent = curtidas;
+            }
+        }
+    });
+    activeListeners[projectId].push({ ref: curtidasRef, eventType: 'value', callback: curtidasCallback });
+
+    const comentariosCallback = onValue(comentariosRef, async (snapshot) => {
+        const comentarios = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        const commentCountSpan = cardElement.querySelector('.comment-count');
+        if (commentCountSpan) {
+            commentCountSpan.textContent = comentarios;
+        }
+        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
+            const modalCommentCount = modalBody.querySelector('.comment-count');
+            if (modalCommentCount) {
+                modalCommentCount.textContent = comentarios;
+            }
+            const updatedComentarios = await obterComentariosDoProjeto(projectId);
+            document.getElementById('comentariosProjeto').innerHTML = updatedComentarios.map(com => criarComentarioHTML(com)).join('');
+        }
+    });
+    activeListeners[projectId].push({ ref: comentariosRef, eventType: 'value', callback: comentariosCallback });
+
+    const visualizacoesCallback = onValue(visualizacoesRef, (snapshot) => {
+        const visualizacoes = snapshot.exists() ? snapshot.val() : 0;
+        const viewCountSpan = cardElement.querySelector('.view-count');
+        if (viewCountSpan) {
+            viewCountSpan.textContent = visualizacoes;
+        }
+        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
+            const modalViewCount = modalBody.querySelector('.view-count');
+            if (modalViewCount) {
+                modalViewCount.textContent = visualizacoes;
+            }
+        }
+    });
+    activeListeners[projectId].push({ ref: visualizacoesRef, eventType: 'value', callback: visualizacoesCallback });
+}
 
 function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0) {
     const card = document.createElement('div');
@@ -162,6 +220,8 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
 
     containerCard.appendChild(card);
     abas[aba].push(card);
+
+    setupProjectListeners(id, card);
 }
 
 function criarCardProposta(p, aba = 'projetos') {
@@ -324,9 +384,12 @@ async function obterComentariosDoProjeto(projetoId) {
             nome: userData.nome || 'Anônimo',
             foto: userData.foto_perfil || 'https://via.placeholder.com/50',
             texto: comentario.texto,
+            timestamp: comentario.timestamp, // Adicionado para ordenação
             tempo: formatarTempoComentario(comentario.timestamp)
         });
     }
+    // Ordenar comentários do mais novo para o mais antigo
+    comentariosArray.sort((a, b) => b.timestamp - a.timestamp);
     return comentariosArray;
 }
 
@@ -455,6 +518,11 @@ async function deletarProjeto(projectId) {
             if (cardParaRemover) {
                 cardParaRemover.remove();
             }
+            
+            if (activeListeners[projectId]) {
+                activeListeners[projectId].forEach(listener => off(listener.ref, listener.eventType, listener.callback));
+                delete activeListeners[projectId];
+            }
 
             abas.projetos = abas.projetos.filter(card => card.dataset.projetoId !== projectId);
 
@@ -471,6 +539,7 @@ async function deletarProjeto(projectId) {
 async function abrirModalProjeto(projetoId) {
     modalBody.innerHTML = '<p>Carregando componentes...</p>';
     modal.style.display = 'flex';
+    modal.dataset.currentProjectId = projetoId;
 
     try {
         const projetoRef = ref(db, `Projetos/${projetoId}`);
@@ -549,10 +618,6 @@ async function abrirModalProjeto(projetoId) {
                         timestamp: Date.now()
                     });
                     commentInput.value = '';
-
-                    const updatedComentarios = await obterComentariosDoProjeto(projetoId);
-                    document.getElementById('comentariosProjeto').innerHTML = updatedComentarios.map(com => criarComentarioHTML(com)).join('');
-                    atualizarContadoresNoCard(projetoId);
                 } else {
                     alert('Por favor, escreva um comentário e esteja logado para comentar.');
                 }
@@ -560,8 +625,11 @@ async function abrirModalProjeto(projetoId) {
         }
         
         await incrementarVisualizacaoUnica(projetoId);
-        atualizarContadoresNoCard(projetoId);
-
+        const cardElement = document.querySelector(`.card_projeto[data-projeto-id="${projetoId}"]`);
+        if(cardElement) {
+            setupProjectListeners(projetoId, cardElement);
+        }
+        
     } catch (error) {
         modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
     }
@@ -631,8 +699,6 @@ containerCard.addEventListener('click', async (event) => {
             mostrarCards('curtidos');
         }
 
-        atualizarContadoresNoCard(projectId);
-
         return;
     }
     const editButton = event.target.closest('.edit');
@@ -664,55 +730,29 @@ containerCard.addEventListener('click', async (event) => {
 
 modalClose.addEventListener('click', () => {
     modal.style.display = 'none';
+    modal.dataset.currentProjectId = '';
 });
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
         modal.style.display = 'none';
+        modal.dataset.currentProjectId = '';
     }
 });
 
-async function atualizarContadoresNoCard(projetoId) {
-    const card = document.querySelector(`.card_projeto[data-projeto-id="${projetoId}"]`);
-
-    const visualizacoesSnap = await get(ref(db, `Projetos/${projetoId}/visualizacoes`));
-    const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
-    if (card) {
-        card.querySelector('.view-count').textContent = visualizacoes;
-    }
-    if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
-        const modalViewCount = modalBody.querySelector('.view-count');
-        if (modalViewCount) {
-            modalViewCount.textContent = visualizacoes;
-        }
-    }
-
-
-    const curtidasSnap = await get(ref(db, `Curtidas/${projetoId}`));
-    const curtidas = curtidasSnap.exists() ? Object.keys(curtidasSnap.val()).length : 0;
-    if (card) {
-        card.querySelector('.like-count').textContent = curtidas;
-    }
-    if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
-        const modalLikeCount = modalBody.querySelector('.like-count');
-        if (modalLikeCount) {
-            modalLikeCount.textContent = curtidas;
-        }
-    }
-
-    const comentariosSnap = await get(ref(db, `Comentarios/${projetoId}`));
-    const comentarios = comentariosSnap.exists() ? Object.keys(comentariosSnap.val()).length : 0;
-    if (card) {
-        card.querySelector('.comment-count').textContent = comentarios;
-    }
-    if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
-        const modalCommentCount = modalBody.querySelector('.comment-count');
-        if (modalCommentCount) {
-            modalCommentCount.textContent = comentarios;
+function detachAllListeners() {
+    for (const projectId in activeListeners) {
+        if (activeListeners.hasOwnProperty(projectId)) {
+            activeListeners[projectId].forEach(listener => {
+                off(listener.ref, listener.eventType, listener.callback);
+            });
+            delete activeListeners[projectId];
         }
     }
 }
 
 onAuthStateChanged(auth, async (user) => {
+    detachAllListeners(); 
+
     const currentUserId = user?.uid || null;
 
     if (!perfilUserId) {
@@ -828,3 +868,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+window.addEventListener('beforeunload', detachAllListeners);
