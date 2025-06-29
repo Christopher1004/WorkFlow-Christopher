@@ -28,6 +28,117 @@ const abas = {
 let tipoUsuario = null;
 const activeListeners = {};
 
+const modalHTML = `
+<div id="modalProjeto" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span id="modalClose" class="modal-close">&times;</span>
+        <div id="modalBody"></div>
+    </div>
+</div>
+`;
+if (!document.getElementById('modalProjeto')) {
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+const modal = document.getElementById('modalProjeto');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+modalClose.addEventListener('click', () => {
+    modal.style.display = 'none';
+    modal.dataset.currentProjectId = '';
+});
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+        modal.dataset.currentProjectId = '';
+    }
+});
+
+const modalCandidatosHTML = `
+<div id="modalCandidatos" class="modal" style="display:none; align-items: center; justify-content: center;">
+    <div class="modal-content" style="background-color: #2c2c2c; padding: 25px; border-radius: 10px; max-width: 600px; width: 90%; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative;">
+        <span id="modalCandidatosClose" class="modal-close" style="position: absolute; top: 10px; right: 20px; font-size: 30px; color: #bbb; cursor: pointer;">&times;</span>
+        <h2 id="modalCandidatosTitulo" style="color: #fff; text-align: center; margin-bottom: 20px; font-size: 1.8em;">Candidatos para a Proposta</h2>
+        <div id="listaCandidatos" style="display: flex; flex-direction: column; gap: 15px; max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+            </div>
+    </div>
+</div>
+`;
+if (!document.getElementById('modalCandidatos')) {
+    document.body.insertAdjacentHTML('beforeend', modalCandidatosHTML);
+}
+
+const modalCandidatos = document.getElementById('modalCandidatos');
+const modalCandidatosClose = document.getElementById('modalCandidatosClose');
+const listaCandidatosDiv = document.getElementById('listaCandidatos');
+
+modalCandidatosClose.addEventListener('click', () => {
+    modalCandidatos.style.display = 'none';
+    listaCandidatosDiv.innerHTML = '';
+});
+modalCandidatos.addEventListener('click', (e) => {
+    if (e.target === modalCandidatos) {
+        modalCandidatos.style.display = 'none';
+        listaCandidatosDiv.innerHTML = '';
+    }
+});
+
+async function abrirModalCandidatos(propostaId) {
+    listaCandidatosDiv.innerHTML = '<p style="color: #ccc; text-align: center;">Carregando candidatos...</p>';
+    modalCandidatos.style.display = 'flex';
+
+    try {
+        const candidaturasRef = ref(db, `Candidaturas/${propostaId}`);
+        const snapshot = await get(candidaturasRef);
+
+        let candidatosHtml = '';
+        if (snapshot.exists()) {
+            const candidaturas = snapshot.val();
+            const candidatosArray = Object.values(candidaturas);
+
+            if (candidatosArray.length > 0) {
+                const candidatosComDetalhes = await Promise.all(candidatosArray.map(async (candidatoBruto) => {
+                    const userId = candidatoBruto.userId;
+                    const { data: userData } = await obterDadosUsuario(userId);
+                    return {
+                        userId: userId,
+                        nome: userData?.nome || 'Nome Indisponível',
+                        foto_perfil: userData?.foto_perfil || 'https://via.placeholder.com/50',
+                        tag: userData?.tag || 'Tag Indisponível',
+                        mensagem: candidatoBruto.mensagem || 'Sem mensagem'
+                    };
+                }));
+
+                candidatosComDetalhes.forEach(candidato => {
+                    candidatosHtml += `
+                        <div class="candidato-item" style="background-color: #3a3a3a; padding: 15px; border-radius: 8px; border: 1px solid #444; display: flex; flex-direction: column; gap: 10px;">
+                            <div class="candidato-header" style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${candidato.foto_perfil}" alt="${candidato.nome}" class="candidato-foto" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #5274D9;">
+                                <div class="candidato-info">
+                                    <h3 style="margin: 0; color: #fff; font-size: 1.1em;">${candidato.nome}</h3>
+                                    <p style="margin: 0; color: #bbb; font-size: 0.9em;">${candidato.tag}</p>
+                                </div>
+                            </div>
+                            <p class="candidato-mensagem" style="color: #ccc; font-style: italic; margin-left: 60px;">"${candidato.mensagem}"</p>
+                            <a href="/perfil?id=${candidato.userId}" target="_blank" class="ver-perfil-candidato" style="display: inline-block; background-color: #5274D9; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; align-self: flex-end; font-size: 0.9em; transition: background-color 0.3s ease;">Ver Perfil</a>
+                        </div>
+                    `;
+                });
+            } else {
+                candidatosHtml = '<p style="color: #ccc; text-align: center;">Nenhum candidato encontrado para esta proposta.</p>';
+            }
+        } else {
+            candidatosHtml = '<p style="color: #ccc; text-align: center;">Nenhum candidato encontrado para esta proposta.</p>';
+        }
+
+        listaCandidatosDiv.innerHTML = candidatosHtml;
+
+    } catch (error) {
+        console.error("Erro ao carregar candidatos:", error);
+        listaCandidatosDiv.innerHTML = `<p style="color: red; text-align: center;">Erro ao carregar candidatos: ${error.message}</p>`;
+    }
+}
+
 async function obterDadosUsuario(userId) {
     let userData = null;
     let userType = null;
@@ -46,87 +157,35 @@ async function obterDadosUsuario(userId) {
     return { data: userData, type: userType };
 }
 
-async function incrementarVisualizacaoUnica(projetoId) {
-    if (!auth.currentUser) {
-        return;
-    }
-
-    const userId = auth.currentUser.uid;
-    const visualizacaoUnicaRef = ref(db, `VisualizacoesUnicas/${projetoId}/${userId}`);
-    const visualizacoesTotaisRef = ref(db, `Projetos/${projetoId}/visualizacoes`);
-
-    try {
-        const uniqueViewSnap = await get(visualizacaoUnicaRef);
-
-        if (!uniqueViewSnap.exists()) {
-            await set(visualizacaoUnicaRef, true);
-
-            await runTransaction(visualizacoesTotaisRef, (currentVisualizacoes) => {
-                const newVisualizacoes = (currentVisualizacoes || 0) + 1;
-                return newVisualizacoes;
-            });
-        }
-    } catch (error) {
-        console.error("Erro ao registrar ou incrementar visualização única:", error);
-    }
+function formatarData(isoString) {
+    const data = new Date(isoString);
+    return isNaN(data) ? "Data inválida" : data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
-function setupProjectListeners(projectId, cardElement) {
-    if (activeListeners[projectId]) {
-        activeListeners[projectId].forEach(listener => off(listener.ref, listener.eventType, listener.callback));
+function formatarTempoComentario(timestamp) {
+    const now = new Date();
+    const commentDate = new Date(timestamp);
+    const diffMs = now - commentDate;
+    const diffSeconds = Math.round(diffMs / 1000);
+    const diffMinutes = Math.round(diffSeconds / 60);
+    const diffHours = Math.round(diffMinutes / 60);
+    const diffDays = Math.round(diffHours / 24);
+    const diffMonths = Math.round(diffDays / 30);
+    const diffYears = Math.round(diffDays / 365);
+
+    if (diffSeconds < 60) {
+        return `há ${diffSeconds} segundos`;
+    } else if (diffMinutes < 60) {
+        return `há ${diffMinutes} minutos`;
+    } else if (diffHours < 24) {
+        return `há ${diffHours} horas`;
+    } else if (diffDays < 30) {
+        return `há ${diffDays} dias`;
+    } else if (diffMonths < 12) {
+        return `há ${diffMonths} meses`;
+    } else {
+        return `há ${diffYears} anos`;
     }
-    activeListeners[projectId] = [];
-
-    const curtidasRef = ref(db, `Curtidas/${projectId}`);
-    const comentariosRef = ref(db, `Comentarios/${projectId}`);
-    const visualizacoesRef = ref(db, `Projetos/${projectId}/visualizacoes`);
-
-    const curtidasCallback = onValue(curtidasRef, (snapshot) => {
-        const curtidas = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-        const likeCountSpan = cardElement.querySelector('.like-count');
-        if (likeCountSpan) {
-            likeCountSpan.textContent = curtidas;
-        }
-        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
-            const modalLikeCount = modalBody.querySelector('.like-count');
-            if (modalLikeCount) {
-                modalLikeCount.textContent = curtidas;
-            }
-        }
-    });
-    activeListeners[projectId].push({ ref: curtidasRef, eventType: 'value', callback: curtidasCallback });
-
-    const comentariosCallback = onValue(comentariosRef, async (snapshot) => {
-        const comentarios = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-        const commentCountSpan = cardElement.querySelector('.comment-count');
-        if (commentCountSpan) {
-            commentCountSpan.textContent = comentarios;
-        }
-        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
-            const modalCommentCount = modalBody.querySelector('.comment-count');
-            if (modalCommentCount) {
-                modalCommentCount.textContent = comentarios;
-            }
-            const updatedComentarios = await obterComentariosDoProjeto(projectId);
-            document.getElementById('comentariosProjeto').innerHTML = updatedComentarios.map(com => criarComentarioHTML(com)).join('');
-        }
-    });
-    activeListeners[projectId].push({ ref: comentariosRef, eventType: 'value', callback: comentariosCallback });
-
-    const visualizacoesCallback = onValue(visualizacoesRef, (snapshot) => {
-        const visualizacoes = snapshot.exists() ? snapshot.val() : 0;
-        const viewCountSpan = cardElement.querySelector('.view-count');
-        if (viewCountSpan) {
-            viewCountSpan.textContent = visualizacoes;
-        }
-        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
-            const modalViewCount = modalBody.querySelector('.view-count');
-            if (modalViewCount) {
-                modalViewCount.textContent = visualizacoes;
-            }
-        }
-    });
-    activeListeners[projectId].push({ ref: visualizacoesRef, eventType: 'value', callback: visualizacoesCallback });
 }
 
 function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0) {
@@ -222,6 +281,7 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
     abas[aba].push(card);
 
     setupProjectListeners(id, card);
+    return card;
 }
 
 function criarCardProposta(p, aba = 'projetos') {
@@ -233,6 +293,7 @@ function criarCardProposta(p, aba = 'projetos') {
     const card = document.createElement('div');
     card.className = 'proposta-card';
     card.style.display = 'none';
+    card.dataset.propostaId = p.id;
 
     card.innerHTML = `
         <div class="head">
@@ -267,11 +328,65 @@ function criarCardProposta(p, aba = 'projetos') {
             });
         }
     }
+    return card;
 }
 
-function formatarData(isoString) {
-    const data = new Date(isoString);
-    return isNaN(data) ? "Data inválida" : data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+function setupProjectListeners(projectId, cardElement) {
+    if (activeListeners[projectId]) {
+        activeListeners[projectId].forEach(listener => off(listener.ref, listener.eventType, listener.callback));
+    }
+    activeListeners[projectId] = [];
+
+    const curtidasRef = ref(db, `Curtidas/${projectId}`);
+    const comentariosRef = ref(db, `Comentarios/${projectId}`);
+    const visualizacoesRef = ref(db, `Projetos/${projectId}/visualizacoes`);
+
+    const curtidasCallback = onValue(curtidasRef, (snapshot) => {
+        const curtidas = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        const likeCountSpan = cardElement.querySelector('.like-count');
+        if (likeCountSpan) {
+            likeCountSpan.textContent = curtidas;
+        }
+        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
+            const modalLikeCount = modalBody.querySelector('.like-count');
+            if (modalLikeCount) {
+                modalLikeCount.textContent = curtidas;
+            }
+        }
+    });
+    activeListeners[projectId].push({ ref: curtidasRef, eventType: 'value', callback: curtidasCallback });
+
+    const comentariosCallback = onValue(comentariosRef, async (snapshot) => {
+        const comentarios = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        const commentCountSpan = cardElement.querySelector('.comment-count');
+        if (commentCountSpan) {
+            commentCountSpan.textContent = comentarios;
+        }
+        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
+            const modalCommentCount = modalBody.querySelector('.comment-count');
+            if (modalCommentCount) {
+                modalCommentCount.textContent = comentarios;
+            }
+            const updatedComentarios = await obterComentariosDoProjeto(projectId);
+            document.getElementById('comentariosProjeto').innerHTML = updatedComentarios.map(com => criarComentarioHTML(com)).join('');
+        }
+    });
+    activeListeners[projectId].push({ ref: comentariosRef, eventType: 'value', callback: comentariosCallback });
+
+    const visualizacoesCallback = onValue(visualizacoesRef, (snapshot) => {
+        const visualizacoes = snapshot.exists() ? snapshot.val() : 0;
+        const viewCountSpan = cardElement.querySelector('.view-count');
+        if (viewCountSpan) {
+            viewCountSpan.textContent = visualizacoes;
+        }
+        if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projectId) {
+            const modalViewCount = modalBody.querySelector('.view-count');
+            if (modalViewCount) {
+                modalViewCount.textContent = visualizacoes;
+            }
+        }
+    });
+    activeListeners[projectId].push({ ref: visualizacoesRef, eventType: 'value', callback: visualizacoesCallback });
 }
 
 function mostrarCards(tipo) {
@@ -327,105 +442,30 @@ async function detectarTipoUsuario(uid) {
     return null;
 }
 
-const modalHTML = `
-<div id="modalProjeto" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span id="modalClose" class="modal-close">&times;</span>
-        <div id="modalBody"></div>
-    </div>
-</div>
-`;
-document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-const modal = document.getElementById('modalProjeto');
-const modalBody = document.getElementById('modalBody');
-const modalClose = document.getElementById('modalClose');
-
-
-const modalCandidatosHTML = `
-<div id="modalCandidatos" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span id="modalCandidatosClose" class="modal-close">&times;</span>
-        <h2 id="modalCandidatosTitulo">Candidatos para a Proposta</h2>
-        <div id="listaCandidatos">
-            </div>
-    </div>
-</div>
-`;
-document.body.insertAdjacentHTML('beforeend', modalCandidatosHTML);
-
-const modalCandidatos = document.getElementById('modalCandidatos');
-const modalCandidatosClose = document.getElementById('modalCandidatosClose');
-const listaCandidatosDiv = document.getElementById('listaCandidatos');
-
-modalCandidatosClose.addEventListener('click', () => {
-    modalCandidatos.style.display = 'none';
-    listaCandidatosDiv.innerHTML = '';
-});
-
-modalCandidatos.addEventListener('click', (e) => {
-    if (e.target === modalCandidatos) {
-        modalCandidatos.style.display = 'none';
-        listaCandidatosDiv.innerHTML = '';
+async function incrementarVisualizacaoUnica(projetoId) {
+    if (!auth.currentUser) {
+        return;
     }
-});
 
-async function abrirModalCandidatos(propostaId) {
-    listaCandidatosDiv.innerHTML = '<p>Carregando candidatos...</p>';
-    modalCandidatos.style.display = 'flex';
+    const userId = auth.currentUser.uid;
+    const visualizacaoUnicaRef = ref(db, `VisualizacoesUnicas/${projetoId}/${userId}`);
+    const visualizacoesTotaisRef = ref(db, `Projetos/${projetoId}/visualizacoes`);
 
-    // LISTA FALSA 
-    const candidatosFalsos = [
-        {
-            nome: "Ana Paula Silva",
-            foto_perfil: "",
-            tag: "Web Developer",
-            mensagem: "Olá! Tenho 5 anos de experiência em desenvolvimento web e adorei a sua proposta. Tenho grande interesse em projetos na área de e-commerce e estou disponível para iniciar imediatamente. Posso compartilhar meu portfólio completo.",
-            id: "fakeUserId1" 
-        },
-        {
-            nome: "Bruno Costa",
-            foto_perfil: "",
-            tag: "Designer Gráfico",
-            mensagem: "Fiquei muito interessado no seu projeto de design. Minha especialidade é UI/UX e branding. Anexei alguns dos meus trabalhos mais recentes. Acredito que posso trazer uma perspectiva fresca e criativa para o que você procura.",
-            id: "fakeUserId2"
-        },
-        {
-            nome: "Carla Oliveira",
-            foto_perfil: "",
-            tag: "Redatora Freelancer",
-            mensagem: "Com mais de 3 anos de experiência em criação de conteúdo para blogs e mídias sociais, estou pronta para impulsionar a comunicação do seu projeto. Sou especialista em SEO e redação persuasiva.",
-            id: "fakeUserId3"
-        },
-        {
-            nome: "Diego Fernandes",
-            foto_perfil: "",
-            tag: "Desenvolvedor Mobile",
-            mensagem: "Sou desenvolvedor mobile (iOS e Android) com foco em performance e experiência do usuário. Tenho um projeto similar ao seu no meu portfólio que talvez possa te interessar. Adoraria discutir os detalhes.",
-            id: "fakeUserId4"
+    try {
+        const uniqueViewSnap = await get(visualizacaoUnicaRef);
+
+        if (!uniqueViewSnap.exists()) {
+            await set(visualizacaoUnicaRef, true);
+
+            await runTransaction(visualizacoesTotaisRef, (currentVisualizacoes) => {
+                const newVisualizacoes = (currentVisualizacoes || 0) + 1;
+                return newVisualizacoes;
+            });
         }
-    ];
-
-    let candidatosHtml = '';
-    candidatosFalsos.forEach(candidato => {
-        candidatosHtml += `
-            <div class="candidato-item" style="background-color: #3a3a3a; padding: 15px; border-radius: 8px; border: 1px solid #444; display: flex; flex-direction: column; gap: 10px;">
-                <div class="candidato-header" style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${candidato.foto_perfil}" alt="${candidato.nome}" class="candidato-foto" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #5274D9;">
-                    <div class="candidato-info">
-                        <h3 style="margin: 0; color: #fff; font-size: 1.1em;">${candidato.nome}</h3>
-                        <p style="margin: 0; color: #bbb; font-size: 0.9em;">${candidato.tag}</p>
-                    </div>
-                </div>
-                <p class="candidato-mensagem" style="color: #ccc; font-style: italic; margin-left: 60px;">"${candidato.mensagem}"</p>
-                <a href="/perfil?id=${candidato.id}" target="_blank" class="ver-perfil-candidato" style="display: inline-block; background-color: #5274D9; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; align-self: flex-end; font-size: 0.9em; transition: background-color 0.3s ease;">Ver Perfil</a>
-            </div>
-        `;
-    });
-    listaCandidatosDiv.innerHTML = candidatosHtml;
-    
+    } catch (error) {
+        console.error("Erro ao registrar ou incrementar visualização única:", error);
+    }
 }
-
 
 function criarCabecalhoProjetoHTML(projeto, autorNome, autorId) {
     return `
@@ -479,39 +519,12 @@ async function obterComentariosDoProjeto(projetoId) {
             nome: userData.nome || 'Anônimo',
             foto: userData.foto_perfil || 'https://via.placeholder.com/50',
             texto: comentario.texto,
-            timestamp: comentario.timestamp, // Adicionado para ordenação
+            timestamp: comentario.timestamp,
             tempo: formatarTempoComentario(comentario.timestamp)
         });
     }
-    // Ordenar comentários do mais novo para o mais antigo
     comentariosArray.sort((a, b) => b.timestamp - a.timestamp);
     return comentariosArray;
-}
-
-function formatarTempoComentario(timestamp) {
-    const now = new Date();
-    const commentDate = new Date(timestamp);
-    const diffMs = now - commentDate;
-    const diffSeconds = Math.round(diffMs / 1000);
-    const diffMinutes = Math.round(diffSeconds / 60);
-    const diffHours = Math.round(diffMinutes / 60);
-    const diffDays = Math.round(diffHours / 24);
-    const diffMonths = Math.round(diffDays / 30);
-    const diffYears = Math.round(diffDays / 365);
-
-    if (diffSeconds < 60) {
-        return `há ${diffSeconds} segundos`;
-    } else if (diffMinutes < 60) {
-        return `há ${diffMinutes} minutos`;
-    } else if (diffHours < 24) {
-        return `há ${diffHours} horas`;
-    } else if (diffDays < 30) {
-        return `há ${diffDays} dias`;
-    } else if (diffMonths < 12) {
-        return `há ${diffMonths} meses`;
-    } else {
-        return `há ${diffYears} anos`;
-    }
 }
 
 async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
@@ -608,18 +621,22 @@ async function deletarProjeto(projectId) {
             await remove(ref(db, `Curtidas/${projectId}`));
             await remove(ref(db, `Comentarios/${projectId}`));
             await remove(ref(db, `VisualizacoesUnicas/${projectId}`));
+            await remove(ref(db, `Favoritos/${projectId}`));
 
             const cardParaRemover = document.querySelector(`.card_projeto[data-projeto-id="${projectId}"]`);
             if (cardParaRemover) {
                 cardParaRemover.remove();
             }
-            
+
             if (activeListeners[projectId]) {
                 activeListeners[projectId].forEach(listener => off(listener.ref, listener.eventType, listener.callback));
                 delete activeListeners[projectId];
             }
 
             abas.projetos = abas.projetos.filter(card => card.dataset.projetoId !== projectId);
+            abas.curtidos = abas.curtidos.filter(card => card.dataset.projetoId !== projectId);
+            abas.favoritos = abas.favoritos.filter(card => card.dataset.projetoId !== projectId);
+
 
             mostrarCards('projetos');
 
@@ -632,7 +649,7 @@ async function deletarProjeto(projectId) {
 }
 
 async function abrirModalProjeto(projetoId) {
-    modalBody.innerHTML = '<p>Carregando componentes...</p>';
+    modalBody.innerHTML = '<p style="color: #ccc; text-align: center;">Carregando componentes...</p>';
     modal.style.display = 'flex';
     modal.dataset.currentProjectId = projetoId;
 
@@ -641,7 +658,7 @@ async function abrirModalProjeto(projetoId) {
         const projetoSnap = await get(projetoRef);
 
         if (!projetoSnap.exists()) {
-            modalBody.innerHTML = '<p>Projeto não encontrado.</p>';
+            modalBody.innerHTML = '<p style="color: #ccc; text-align: center;">Projeto não encontrado.</p>';
             return;
         }
 
@@ -649,18 +666,10 @@ async function abrirModalProjeto(projetoId) {
         const autorId = projetoData.userId;
 
         let autorData = {};
-        let autorTipo = await detectarTipoUsuario(autorId);
+        const { data: fetchedAutorData, type: autorTipo } = await obterDadosUsuario(autorId);
 
-        if (autorTipo === 'Freelancer') {
-            const freelancerSnap = await get(ref(db, `Freelancer/${autorId}`));
-            if (freelancerSnap.exists()) {
-                autorData = { id: autorId, ...freelancerSnap.val(), tag: freelancerSnap.val().tag || 'Freelancer' };
-            }
-        } else if (autorTipo === 'Contratante') {
-            const contratanteSnap = await get(ref(db, `Contratante/${autorId}`));
-            if (contratanteSnap.exists()) {
-                autorData = { id: autorId, ...contratanteSnap.val(), tag: contratanteSnap.val().tag || 'Contratante' };
-            }
+        if (fetchedAutorData) {
+            autorData = { id: autorId, ...fetchedAutorData, tag: fetchedAutorData.tag || (autorTipo === 'Freelancer' ? 'Freelancer' : 'Contratante') };
         }
 
         const comentarios = await obterComentariosDoProjeto(projetoId);
@@ -672,16 +681,16 @@ async function abrirModalProjeto(projetoId) {
 
         let componentesHTML = '';
         if (!snapshot.exists()) {
-            componentesHTML = '<p>Sem componentes para este projeto.</p>';
+            componentesHTML = '<p style="color: #ccc; text-align: center;">Sem componentes para este projeto.</p>';
         } else {
             const componentes = Object.values(snapshot.val());
             componentes.sort((a, b) => a.ordem - b.ordem);
 
             for (const comp of componentes) {
                 if (comp.tipo === 'imagem') {
-                    componentesHTML += `<img src="${comp.conteudo}" alt="Imagem do projeto" class="componente-img" style="margin-bottom: 15px; border-radius: 6px;">`;
+                    componentesHTML += `<img src="${comp.conteudo}" alt="Imagem do projeto" class="componente-img" style="margin-bottom: 15px; border-radius: 6px; width: 100%; height: auto; display: block;">`;
                 } else if (comp.tipo === 'texto') {
-                    componentesHTML += `<div style="margin-bottom: 15px; color:#ddd;">${comp.conteudo}</div>`;
+                    componentesHTML += `<div style="margin-bottom: 15px; color:#ddd; line-height: 1.6;">${comp.conteudo}</div>`;
                 }
             }
         }
@@ -704,7 +713,6 @@ async function abrirModalProjeto(projetoId) {
             btnEnviarComentario.addEventListener('click', async () => {
                 const commentInput = document.getElementById('commentInput');
                 const commentText = commentInput.value.trim();
-
                 if (commentText && auth.currentUser) {
                     const newCommentRef = push(ref(db, `Comentarios/${projetoId}`));
                     await set(newCommentRef, {
@@ -718,18 +726,18 @@ async function abrirModalProjeto(projetoId) {
                 }
             });
         }
-        
+
         await incrementarVisualizacaoUnica(projetoId);
         const cardElement = document.querySelector(`.card_projeto[data-projeto-id="${projetoId}"]`);
-        if(cardElement) {
+        if (cardElement) {
             setupProjectListeners(projetoId, cardElement);
         }
-        
+
     } catch (error) {
-        modalBody.innerHTML = `<p>Erro ao carregar o projeto: ${error.message}</p>`;
+        console.error("Erro ao carregar o projeto:", error);
+        modalBody.innerHTML = `<p style="color: red; text-align: center;">Erro ao carregar o projeto: ${error.message}</p>`;
     }
 }
-
 
 containerCard.addEventListener('click', async (event) => {
     const likeButton = event.target.closest('.like');
@@ -815,24 +823,31 @@ containerCard.addEventListener('click', async (event) => {
     }
 
     const cardProjeto = event.target.closest('.card_projeto');
-    if (!cardProjeto) return;
+    if (cardProjeto) {
+        const clickedElement = event.target;
+        const isInteractiveElement = clickedElement.closest('.like') || clickedElement.closest('.edit') || clickedElement.closest('.delete') || clickedElement.closest('.autor-link');
+        
+        if (!isInteractiveElement) {
+            const projetoId = cardProjeto.dataset.projetoId;
+            if (projetoId) {
+                await abrirModalProjeto(projetoId);
+            }
+        }
+        return;
+    }
 
-    const projetoId = cardProjeto.dataset.projetoId;
-    if (!projetoId) return;
+    const propostaCard = event.target.closest('.proposta-card');
+    if (propostaCard) {
+        const clickedElement = event.target;
+        const isInteractiveElement = clickedElement.closest('.candidatos') || clickedElement.closest('.enviar') || clickedElement.closest('.client');
 
-    await abrirModalProjeto(projetoId);
-});
-
-modalClose.addEventListener('click', () => {
-    modal.style.display = 'none';
-    modal.dataset.currentProjectId = '';
-});
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.style.display = 'none';
-        modal.dataset.currentProjectId = '';
+        if (!isInteractiveElement) {
+            // Lógica para abrir modal de proposta ou redirecionar
+        }
+        return;
     }
 });
+
 
 function detachAllListeners() {
     for (const projectId in activeListeners) {
@@ -846,7 +861,7 @@ function detachAllListeners() {
 }
 
 onAuthStateChanged(auth, async (user) => {
-    detachAllListeners(); 
+    detachAllListeners();
 
     const currentUserId = user?.uid || null;
 
@@ -884,10 +899,12 @@ onAuthStateChanged(auth, async (user) => {
     const projetosSnap = await get(ref(db, 'Projetos'));
     const curtidasSnap = await get(ref(db, 'Curtidas'));
     const comentariosGlobaisSnap = await get(ref(db, 'Comentarios'));
+    const favoritosSnap = await get(ref(db, `Favoritos/${perfilUserId}`));
 
     const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
     const todosComentarios = comentariosGlobaisSnap.exists() ? comentariosGlobaisSnap.val() : {};
+    const todosFavoritosDoPerfil = favoritosSnap.exists() ? favoritosSnap.val() : {};
 
     const userIdsToFetch = new Set();
     Object.values(todosProjetos).forEach(proj => userIdsToFetch.add(proj.userId));
@@ -902,6 +919,7 @@ onAuthStateChanged(auth, async (user) => {
             usersData[userId] = {
                 nome: data.nome || 'Desconhecido',
                 foto_perfil: data.foto_perfil || 'https://via.placeholder.com/50',
+                tag: data.tag || (type === 'Freelancer' ? 'Freelancer' : 'Contratante'),
                 tipo: type
             };
         }
@@ -922,12 +940,28 @@ onAuthStateChanged(auth, async (user) => {
         }
     });
 
+    Object.entries(todosFavoritosDoPerfil).forEach(([projetoId, isFavorited]) => {
+        if (isFavorited) {
+            const projeto = todosProjetos[projetoId];
+            if (projeto) {
+                const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
+                const autorData = usersData[projeto.userId] || {};
+                const visualizacoes = projeto.visualizacoes || 0;
+                const curtidas = todasCurtidas[projetoId] ? Object.keys(todasCurtidas[projetoId]).length : 0;
+                const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
+                
+                criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
+            }
+        }
+    });
+
+
     if (tipoUsuario === 'Contratante') {
         if (propostasSnap.exists()) {
             const propostas = propostasSnap.val();
-            Object.values(propostas).forEach(p => {
+            Object.entries(propostas).forEach(([propostaId, p]) => {
                 if (p.autorId === perfilUserId) {
-                    criarCardProposta(p);
+                    criarCardProposta({ ...p, id: propostaId }, 'projetos');
                 }
             });
         }
@@ -952,6 +986,7 @@ onAuthStateChanged(auth, async (user) => {
 
 window.mostrarCards = mostrarCards;
 window.abrirModalProjeto = abrirModalProjeto;
+window.abrirModalCandidatos = abrirModalCandidatos;
 
 document.addEventListener('DOMContentLoaded', () => {
     const modalEditar = document.getElementById('modal-editar');
