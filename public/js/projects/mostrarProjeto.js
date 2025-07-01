@@ -3,7 +3,7 @@ import { getDatabase, ref, get, set, update, child } from "https://www.gstatic.c
 import { iconeCurtida } from "/js/projects/curtirProjeto.js"
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
+import { iconeFavorito } from "/js/projects/favoritarProjeto.js";
 // Config do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -146,6 +146,29 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
         }
     })
 
+    const svgFavorito = card.querySelector('.favoritar svg')
+    svgFavorito.addEventListener('click', (event) => {
+        event.stopPropagation()
+        iconeFavorito(id, svgFavorito)
+    })
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const userId = user.uid
+            const favoritarRef = ref(db, `Favoritos/${id}/${userId}`)
+            const path = svgFavorito.querySelector('path')
+
+
+            onValue(favoritarRef, (snapshot) => {
+                if(snapshot.exists()){
+                    path.classList.add('favoritado')
+                }
+                else{
+                    path.classList.remove('favoritado')
+                }
+            })
+        }
+    })
     if (userId) {
         const autorRef = ref(db, `Freelancer/${userId}`);
         get(autorRef)

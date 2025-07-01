@@ -11,7 +11,7 @@ export function iconeCurtida(projetoId, svg) {
             const curtidaRef = ref(db, `Curtidas/${projetoId}/${userId}`);
 
             get(curtidaRef).then(snapshot => {
-                const path = svg.querySelector('path'); // <- aqui está o alvo real
+                const path = svg.querySelector('path');
                 if (snapshot.exists()) {
                     remove(curtidaRef);
                     path.classList.remove('curtido');
