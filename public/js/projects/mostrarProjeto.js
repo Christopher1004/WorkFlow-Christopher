@@ -160,10 +160,10 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
 
 
             onValue(favoritarRef, (snapshot) => {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     path.classList.add('favoritado')
                 }
-                else{
+                else {
                     path.classList.remove('favoritado')
                 }
             })
@@ -328,6 +328,40 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                     const nomeAutor = autor.nome;
                     const userPhoto = autor.foto_perfil;
                     const tagAutor = autor.tag;
+
+                    const btnContatar = document.getElementById('contactar')
+                    btnContatar.dataset.userId = userId
+                    btnContatar.dataset.nome = nomeAutor
+                    btnContatar.dataset.avatar = userPhoto
+
+                    btnContatar.addEventListener('click', async () => {
+                        const authUser = auth.currentUser;
+                        if (!authUser) return;
+
+                        const userIdLogado = authUser.uid;
+                        const userIdContato = btnContatar.dataset.userId;
+                        const nomeContato = btnContatar.dataset.nome;
+                        const avatarContato = btnContatar.dataset.avatar;
+
+                        const db = getDatabase();
+
+                        await set(ref(db, `Conversas/${userIdLogado}/${userIdContato}`), {
+                            nome: nomeContato,
+                            avatar: avatarContato,
+                            timestamp: Date.now()
+                        });
+                        const snapshot = await get(child(ref(db), `Freelancer/${userIdLogado}`));
+                        if (snapshot.exists()) {
+                            const dadosUserLogado = snapshot.val();
+                            await set(ref(db, `Conversas/${userIdContato}/${userIdLogado}`), {
+                                nome: dadosUserLogado.nome,
+                                avatar: dadosUserLogado.foto_perfil,
+                                timestamp: Date.now()
+                            });
+                        }
+
+                        alert("Contato salvo! Agora vá até o chat.");
+                    });
 
                     const gridProjetos = modal.querySelector('.grid-projetos')
                     if (gridProjetos) {
