@@ -50,6 +50,8 @@ app.use('/contraPasso', contraPasso)
 const confirmarEmail = require('./routes/confirmacaoEmail')
 app.use('/confirmarEmail', confirmarEmail)
 
+const chat = require('./routes/chat')
+app.use('/Chat', chat)
 
 
 app.listen(3000, () => {
