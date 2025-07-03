@@ -47,7 +47,7 @@
     transition: 200ms linear;
 } 
 
-.container {
+.containerConfig {
     height: 100%;
     width: 50%;
     padding-left: 10vh;

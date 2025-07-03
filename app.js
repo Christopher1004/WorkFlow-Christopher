@@ -53,6 +53,8 @@ app.use('/confirmarEmail', confirmarEmail)
 const chat = require('./routes/chat')
 app.use('/Chat', chat)
 
+const config = require('./routes/settings')
+app.use('/configuracoes', config)
 
 app.listen(3000, () => {
     console.log("Servidor em execução na porta 3000")
