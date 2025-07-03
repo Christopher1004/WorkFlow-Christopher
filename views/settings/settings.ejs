@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkFlow</title>
+    <link rel="stylesheet" href="../../src/css/settings/settings.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="../../src/assets/icons/icon.ico">
+    
+</head>
+
+<body>
+   <div class="menu-lateral">
+        <h2>Configurações</h2>
+    <div class="menuitem">    
+     <a href="#conta" class="active">
+      <span class="material-symbols-outlined">
+          account_circle
+      </span>Conta</a>
+    </div>
+    <div class="menuitem">
+        <a href="#personalizar">
+          <span class="material-symbols-outlined">
+          edit
+      </span>Personalizar</a>
+    </div>
+    <div class="menuitem">
+        <a href="#dados"><span class="material-symbols-outlined">
+        encrypted
+      </span>Privacidade e Dados</a>
+        </div>
+    <div class="menuitem">
+        <a href="#notifications">
+          <span class="material-symbols-outlined">
+        notifications_active
+        </span>Notificações</a>
+    </div>
+    </div>
+ <section class="section-1">
+   
+
+
+    <div class="container">
+<h2 id="conta">Conta</h2>
+           
+        <div class="form-group">
+     
+            <p>E-mail : *aqui mostra o email do usuario</p>
+           <label for="senha">Senha</label>
+           <input type="password" placeholder="*******" id="senhaid" value="senha do usuario">
+           <span class="material-icons toggle-visibility" role="button" title="Mostrar senha"></span>
+        </div>
+             <div class="btnsenha">
+           <button class="btnsenha" id="mudarsenha">Alterar senha</button>
+           </div>
+            
+    
+        <h2>Informações pessoais</h2>
+        <div class="form-group">
+            <p>Data de nascimento</p>
+            <input type="date" id="dataid" value="2008-01-26">
+        </div>
+
+        <div class="form-group">
+            <p>Idiomas</p>
+            <div class="idiomas-tags">
+                <span class="tag">Inglês</span>
+                <span class="tag">Português</span>
+                <button id="add-language-btn" class="btnlingua" type="button" aria-label="Adicionar idioma">
+                +
+            </button>
+            </div>
+        </div>
+
+        <div class="form-group" >
+          <p>Tempo de experiência</p>
+          <input type="text" id="tempo-exp" placeholder="2 anos e 6 meses" />
+        </div>
+
+        <div class="form-group">
+          <p>Trabalha com</p>
+          <div id="work-tags" class="work-tags" >
+            <span class="tag">Front-end</span>
+            <span class="tag">Design UI </span>
+             <button id="adicionar-trabalho" class="adicionar-trabalho" type="button">
+            +
+          </button>
+          </div>
+         
+        </div>
+        <h2>Autentificação com</h2>
+        <div class="form-group">
+          <div id="autenticar" class="work-tags" >
+            
+          </div>
+         
+        </div>
+        <div class="btnsenha">
+        <button class="btnsenha" id="mudarsenha">Google</button>
+            <button class="btnsenha" id="mudarsenha">Git</button>
+        </div>
+
+        <h2 id="personalizar">Temas</h2>
+        <div class="form-temas">
+                <div class="temas">
+                  <button id="btncolor1">
+                    <span>Padrão</span>
+                    <div class="cores">
+                      <div style="background-color: #251D59; border-radius: 8px 0 0 8px;"></div>
+                      <div style="background-color: #3C38A6"></div>
+                      <div style="background-color: #5274D9; border-radius: 0 8px 8px 0;"></div>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="temas">
+                   <button id="btncolor2">
+                    <span>Vermelho</span>
+                    <div class="cores">
+                      <div style="background-color: #510707; border-radius: 8px 0 0 8px;"></div>
+                      <div style="background-color: #A50B0B"></div>
+                      <div style="background-color: #A22626; border-radius: 0 8px 8px 0;"></div>
+                    </div>
+                  </button>
+                </div>
+
+               
+</div>
+      <div class="form-temas">
+         <div class="temas">
+                    <button id="btncolor3">
+                    <span>Azul</span>
+                    <div class="cores">
+                      <div style="background-color: #000661; border-radius: 8px 0 0 8px;"></div>
+                      <div style="background-color: #000AAF"></div>
+                      <div style="background-color: #1736EA; border-radius: 0 8px 8px 0;"></div>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="temas">
+                  <button id="btncolor4">
+                    <span>Verde</span>
+                    <div class="cores">
+                      <div style="background-color: #001900; border-radius: 8px 0 0 8px;"></div>
+                      <div style="background-color: #00270B"></div>
+                      <div style="background-color: #003C17; border-radius: 0 8px 8px 0;"></div>
+                    </div>
+                  </button>
+                </div>
+      </div>
+    
+      <div class="form-message">
+        <h2 id="dados">Solicitações de mensagens</h2>
+         <label class="option">
+        <input type="radio" name="message" checked>
+          Qualquer um pode enviar
+        </label>
+
+        <label class="option">
+          <input type="radio" name="message">
+          Caixa de solicitação
+        </label>
+
+        <label class="option">
+          <input type="radio" name="message">
+          Não receber
+        </label>
+      
+      </div>
+
+      <div class="form-message">
+        <h2>Quem pode comentar nas minhas publicações</h2>
+         <label class="option">
+        <input type="radio" name="comment" >
+          Qualquer um pode comentar
+        </label>
+
+        <label class="option">
+          <input type="radio" name="comment">
+          Somente freelancers
+        </label>
+      
+      </div>
+
+       <div class="form-message">
+        <h2 id="notifications">Notificações</h2>
+        <label class="option">
+        <input type="radio" name="contact">
+          Solicitação de contato      
+        </label>
+
+        <label class="option">
+        <input type="radio" name="challenge">
+          Novos desafios
+        </label>
+
+         <label class="option">
+        <input type="radio" name="review">
+          Avaliações     
+        </label>
+
+         <label class="option">
+        <input type="radio" name="comment2">
+          Comentários     
+        </label>
+
+      
+      </div>
+
+ </section>
+</body>
+</html>

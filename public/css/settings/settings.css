@@ -1,0 +1,5 @@
+@import "../globals/globals.css";
+
+@import "./partials/background.css";
+@import "./partials/sidenav.css";
+@import "./partials/section-1.css"
