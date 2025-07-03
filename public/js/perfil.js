@@ -899,18 +899,24 @@ onAuthStateChanged(auth, async (user) => {
     const projetosSnap = await get(ref(db, 'Projetos'));
     const curtidasSnap = await get(ref(db, 'Curtidas'));
     const comentariosGlobaisSnap = await get(ref(db, 'Comentarios'));
-    const favoritosSnap = await get(ref(db, `Favoritos/${perfilUserId}`));
+    const favoritosSnap = await get(ref(db, 'Favoritos'));
 
     const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
     const todosComentarios = comentariosGlobaisSnap.exists() ? comentariosGlobaisSnap.val() : {};
-    const todosFavoritosDoPerfil = favoritosSnap.exists() ? favoritosSnap.val() : {};
+    const todosFavoritos = favoritosSnap.exists() ? favoritosSnap.val() : {};
+
+    const todosFavoritosDoPerfil = {};
+    Object.entries(todosFavoritos).forEach(([projetoId, usersFavoritaram]) => {
+        if (usersFavoritaram[perfilUserId]) {
+            todosFavoritosDoPerfil[projetoId] = true;
+        }
+    });
 
     const userIdsToFetch = new Set();
     Object.values(todosProjetos).forEach(proj => userIdsToFetch.add(proj.userId));
     if (perfilUserId) userIdsToFetch.add(perfilUserId);
     if (currentUserId) userIdsToFetch.add(currentUserId);
-
 
     const usersData = {};
     for (const userId of userIdsToFetch) {
@@ -949,12 +955,11 @@ onAuthStateChanged(auth, async (user) => {
                 const visualizacoes = projeto.visualizacoes || 0;
                 const curtidas = todasCurtidas[projetoId] ? Object.keys(todasCurtidas[projetoId]).length : 0;
                 const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
-                
+
                 criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
             }
         }
     });
-
 
     if (tipoUsuario === 'Contratante') {
         if (propostasSnap.exists()) {
@@ -983,6 +988,7 @@ onAuthStateChanged(auth, async (user) => {
 
     mostrarCards('projetos');
 });
+
 
 window.mostrarCards = mostrarCards;
 window.abrirModalProjeto = abrirModalProjeto;
