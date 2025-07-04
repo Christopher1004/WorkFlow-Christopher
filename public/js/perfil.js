@@ -987,6 +987,39 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     mostrarCards('projetos');
+
+const quantidadePropostasFinalizadas = 10; // aqui a quantidade de propostas Finalizads que depois vou fazer ser carregada do perfil
+
+let nivel = 0;
+let titulo = 'Desenvolvedor iniciante';
+
+if (quantidadePropostasFinalizadas >= 20) {
+  nivel = 4;
+  titulo = 'Profissional experiente';
+} else if (quantidadePropostasFinalizadas >= 10) {
+  nivel = 3;
+  titulo = 'Profissional em ascensão';
+} else if (quantidadePropostasFinalizadas >= 5) {
+  nivel = 2;
+  titulo = 'Aprendiz ativo';
+} else {
+  nivel = 1;
+  titulo = 'Desenvolvedor iniciante';
+}
+
+const blocos = document.querySelectorAll('.exp-blocks .exp');
+blocos.forEach(bloco => bloco.classList.remove('ativo'));
+
+for (let i = 0; i < nivel; i++) {
+  setTimeout(() => {
+    blocos[i].classList.add('ativo');
+  }, i * 300);
+}
+
+const spanNivel = document.querySelector('.experiencia > span');
+if (spanNivel) {
+  spanNivel.textContent = titulo;
+}
 });
 
 

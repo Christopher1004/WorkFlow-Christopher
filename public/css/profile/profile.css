@@ -1143,3 +1143,20 @@
         margin-left: 55px;
     }
 }
+.exp {
+  width: 20px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+  transform: scale(1);
+  transition: background-color 0.4s ease, transform 0.3s ease;
+}
+
+.exp.ativo {
+  background-color: #4caf50;
+  transform: scale(1.0); 
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+
