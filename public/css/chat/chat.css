@@ -164,6 +164,13 @@ body {
     word-break: break-word;
 }
 
+.message small {
+    font-size: 10px;
+    color: #777;
+    align-self: flex-end;
+    margin-top: 5px;
+}
+
 @keyframes fadeIn {
     to {
         opacity: 1;

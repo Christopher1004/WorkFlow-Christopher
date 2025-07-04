@@ -72,9 +72,26 @@ onAuthStateChanged(auth, (user) => {
                             const msg = msgSnap.val()
                             const div = document.createElement('div')
                             div.className = 'message ' + (msg.autor === user.uid ? "user" : 'other')
-                            div.textContent = msg.texto
+                            const textoMsg = document.createElement('span')
+                            textoMsg.textContent = msg.texto
+
+                            const horario = document.createElement('small')
+                            if (msg.timestamp) {
+                                const hora = new Date(msg.timestamp).toLocaleDateString('pt-BR', {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })
+                                horario.textContent = hora
+                            }
+                            else {
+                                horario.textContent = '--:--'
+                            }
+
+                            div.appendChild(textoMsg)
+                            div.appendChild(horario)
                             messages.appendChild(div)
                         })
+
                         messages.scrollTop = messages.scrollHeight
                     })
                 });
