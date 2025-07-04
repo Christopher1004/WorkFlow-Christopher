@@ -1,8 +1,12 @@
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const db = getDatabase()
 const auth = getAuth()
+
+let destinatarioId = null;
+
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -18,6 +22,7 @@ onAuthStateChanged(auth, (user) => {
                 const dados = childSnapshot.val()
 
                 const chatUser = document.createElement('div')
+                chatUser.dataset.id = childSnapshot.key
                 chatUser.className = 'chat-user'
                 chatUser.innerHTML = `
                     <img src ="${dados.avatar}" alt='avatar' />
@@ -54,11 +59,55 @@ onAuthStateChanged(auth, (user) => {
                         header.classList.add("show");
                         messages.classList.add("show");
                         input.classList.add("show");
-                    }, 100); 
+                    }, 100);
+
+                    destinatarioId = chatUser.dataset.id
+
+                    const mensagemRef = ref(db, `Conversas/${user.uid}/${destinatarioId}/mensagens`)
+                    onValue(mensagemRef, (snapshot) => {
+                        const messages = document.querySelector('.messages')
+                        messages.innerHTML = ''
+
+                        snapshot.forEach((msgSnap) => {
+                            const msg = msgSnap.val()
+                            const div = document.createElement('div')
+                            div.className = 'message ' + (msg.autor === user.uid ? "user" : 'other')
+                            div.textContent = msg.texto
+                            messages.appendChild(div)
+                        })
+                        messages.scrollTop = messages.scrollHeight
+                    })
                 });
 
                 sidebar.appendChild(chatUser)
             })
         })
     }
+})
+
+document.querySelector(".input-area button:last-child").addEventListener("click", () => {
+    const input = document.querySelector('.input-area input')
+    const texto = input.value.trim()
+
+    if (!texto || !destinatarioId) return
+
+    const user = auth.currentUser;
+    if (!user) return
+
+    const remetenteId = user.uid
+
+    const novaMsgRef1 = push(ref(db, `Conversas/${remetenteId}/${destinatarioId}/mensagens`))
+    const novaMsgRef2 = push(ref(db, `Conversas/${destinatarioId}/${remetenteId}/mensagens`));
+
+
+    const mensagem = {
+        texto,
+        autor: remetenteId,
+        timestamp: serverTimestamp()
+    }
+
+    set(novaMsgRef1, mensagem)
+    set(novaMsgRef2, mensagem)
+
+    input.value = ''
 })
