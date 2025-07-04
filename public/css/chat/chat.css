@@ -302,3 +302,7 @@ body {
     margin-bottom: 1rem;
     scroll-behavior: smooth;
 }
+
+.chat-user.selected {
+    background-color: #414141;
+}
