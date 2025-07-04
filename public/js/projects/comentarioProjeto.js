@@ -1,8 +1,7 @@
 import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const db = getDatabase();
-
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+import { contemPalavrao } from "/js/chat/censurarPalavroes.js";
 const auth = getAuth();
 
 window.usuarioLogado = null
@@ -95,6 +94,11 @@ document.getElementById('btnEnviarComentario').addEventListener('click', async()
     const texto = input.value.trim()
 
     if(texto === '' || !window.idProjetoAtual) return
+
+    if(contemPalavrao(texto)){
+        alert('Seu comentario contem palavras ofensivas e não pode ser enviado')
+        return
+    }
 
     const userId = window.usuarioLogado.id
     await salvarComentario(

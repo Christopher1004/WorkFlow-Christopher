@@ -1,6 +1,7 @@
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { censurarTexto } from "/js/chat/censurarPalavroes.js"
 
 const db = getDatabase()
 const auth = getAuth()
@@ -104,8 +105,8 @@ onAuthStateChanged(auth, (user) => {
 
 document.querySelector(".input-area button:last-child").addEventListener("click", () => {
     const input = document.querySelector('.input-area input')
-    const texto = input.value.trim()
-
+    const textoOriginal = input.value.trim()
+    const texto = censurarTexto(textoOriginal)
     if (!texto || !destinatarioId) return
 
     const user = auth.currentUser;
