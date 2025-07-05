@@ -131,13 +131,6 @@ body {
     border: none;
 }
 
-a {
-    height: 100%;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-}
-
 .entrar {
     background-color: var(--background);
     color: var(--white);

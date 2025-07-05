@@ -34,8 +34,6 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
     const card = document.createElement("div");
     card.className = "card_projeto";
     card.dataset.projetoId = id;
-    card.style.position = 'relative'
-    card.style.overflow = 'hidden'
     card.style.setProperty('--card-index', cardIndex);
 
     card.innerHTML = `
@@ -45,7 +43,7 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
     </figure>
     <div class="thumbnail-overlay">
         <div class="project-overlay-content">
-            <div class="containerFavCurtir" style="display: flex; justify-content: space-between; width: 100%;">
+            <div class="containerFavCurtir flex justify-between" style="width: 100%;">
                 <div class="favoritar">
                     <svg width="25" height="25" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -62,7 +60,7 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
                     <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                            fill="none" stroke="#414141" />
+                            fill="none" stroke="#fff" />
                     </svg>
                 </div>
             </div>
@@ -72,26 +70,18 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
         </div>
     </div>
 </div>
-<div class="project-right" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+<div class="project-right flex justify-between items-center" style="width: 100%;">
 
-    <div class="autor" style="display: flex; align-items: center; gap: 10px;">
-        <img class='autor-img' src="https://via.placeholder.com/32" alt="Profile pic"
-            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-        <h2 class="username" title="@Christopher" style="
-      margin: 0;
-      font-size: 14px;
-      color: white;
-      max-width: 100px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    ">
+    <div class="autor pd-x-1 pd-y-2 flex items-center gap-2">
+        <img class='autor-img rounded-full' src="https://via.placeholder.com/32" alt="Profile pic"
+            style="width: 32px; height: 32px; object-fit: cover;">
+        <h2 class="username text-sm text-white truncate" title="@Christopher" style="max-width: 100px;">
             @Christopher
         </h2>
     </div>
 
-    <div class="project-stats" style="display: flex; gap: 10px; font-size: 14px; color: #fff;">
-        <div class="likes" style="display: flex; align-items: center; gap: 3px;">
+    <div class="project-stats flex gap-2 text-sm text-white">
+        <div class="likes flex items-center gap-1">
             <svg width="14" height="14" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
@@ -99,7 +89,7 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
             </svg>
             <span class="text-xs text-white">124</span>
         </div>
-        <div class="views" style="display: flex; align-items: center; gap: 3px;">
+        <div class="views flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"
                 class="size-6">
                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="#414141" stroke="#414141" />
@@ -110,7 +100,7 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
 
             <span class="text-xs text-white"></span>
         </div>
-        <div class="comments" style="display: flex; align-items: center; gap: 3px;">
+        <div class="comments flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
                 class="size-6">
                 <path fill="#414141" stroke="#414141" fill-rule="evenodd"
@@ -289,7 +279,7 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
 
         tagsArray.forEach(tag => {
             const span = document.createElement('span');
-            span.classList.add('tag-span');
+            span.classList.add('tag-span', 'bg-gray-25', 'text-white', 'pd-2', 'pd-x-4', 'rounded-full', 'text-sm', 'font-medium', 'border', 'border-gray-50', 'transition-colors');
             span.textContent = tag;
             tagsContainer.appendChild(span);
         });
@@ -313,6 +303,7 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                         img.alt = 'Imagem do projeto';
                         img.style.width = '100%';
                         img.style.maxWidth = '100%';
+                        img.style.borderRadius = '10px';
                         compDiv.appendChild(img);
                     } else if (comp.tipo === 'texto') {
                         const p = document.createElement('p');
@@ -399,10 +390,19 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                         })
                     }
 
-                    modalCreator.innerHTML = `Projeto criado por <a href="/perfil?id=${userId}" class="user-name-modal">${nomeAutor}</a>.`;
+                    modalCreator.innerHTML = `Projeto criado por <a href="/perfil?id=${userId}" class="user-name-modal text-white no-underline font-bold link">${nomeAutor}</a>.`;
                     modalAutor.textContent = nomeAutor;
                     modalUserPhoto.src = userPhoto;
                     modalTag.textContent = tagAutor;
+
+                    // Atualizar informações da floating island
+                    if (window.updateIslandInfo) {
+                        window.updateIslandInfo({
+                            title: titulo,
+                            creatorName: nomeAutor,
+                            userPhoto: userPhoto
+                        });
+                    }
 
                     btnVerperfil.addEventListener('click', () => {
                         window.location.href = `/perfil?id=${userId}`;
@@ -415,6 +415,13 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
     document.dispatchEvent(new CustomEvent("modalProjetoAberto", {
         detail: { idProjeto }
     }));
+
+    // Configurar listener de scroll para a island
+    if (window.setupIslandScrollListener) {
+        setTimeout(() => {
+            window.setupIslandScrollListener();
+        }, 100);
+    }
 
     const user = auth.currentUser
     if (user) {
@@ -455,20 +462,18 @@ async function atualizarViewsCard(idProjeto) {
 }
 function criarCardProjetoMiniatura(projeto) {
     const card = document.createElement('div')
-    card.classList.add('card-projeto')
+    card.classList.add('card-projeto', 'rounded-lg')
 
     card.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
     card.style.cursor = 'pointer';
     card.style.position = 'relative';
-    card.style.borderRadius = '5px'
 
     const capa = document.createElement('img')
+    capa.classList.add('rounded-lg')
     capa.style.width = '100%';
     capa.style.height = '100%';
     capa.style.objectFit = 'cover';
     capa.style.display = 'block';
-    capa.style.borderRadius = '5px'
-
 
     capa.src = projeto.capaUrl || ''
     capa.alt = 'Capa Outros Projetos do Autor'

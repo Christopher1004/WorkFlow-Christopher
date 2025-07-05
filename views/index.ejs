@@ -82,91 +82,114 @@
 
 
     <div class="modal-overlay" id="modal">
+        <!-- Island flutuante -->
+        <div class="floating-island" id="floatingIsland">
+            <div class="island-content">
+                <div class="island-left">
+                    <img src="" alt="Profile pic" id="islandUserPhoto" class="island-user-photo">
+                    <div class="island-info">
+                        <h3 id="islandProjectTitle">Nome do Projeto</h3>
+                        <p id="islandCreatorName">Criado por <span id="islandCreatorSpan"></span></p>
+                    </div>
+                </div>
+                <div class="island-right">
+                    <button class="island-btn comment-btn" id="commentBtn" title="Comentar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="island-btn like-btn" id="likeBtn" title="Curtir">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="island-btn close-btn" id="modalCloseBtn" title="Fechar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
         <div class="modal">
-            <div class="modal-header">
+            <div class="modal-header flex flex-col justify-center items-center pd-y-16">
                 <div class="modal-titulo">
-                    <h1>Lorem Ipsum</h1>
+                    <h1 class="text-5xl mg-0">Lorem Ipsum</h1>
                 </div>
-                <div class="modal-creator">
-                    <p>Projeto criado por <a href="" class="user-name-modal">User</a>.</p>
-                </div>
-            </div>
-
-            <div id="modal-componentes" style="padding: 10px; margin-top: 20px;">
-            </div>
-
-            <div class="section-infos">
-                <div class="titulo-container">
-                    <h1 id="txtTituloTag">Lorem Ipsun</h1>
-                </div>
-                <div id="modalTagsContainer" class="tags-container">
-                    <span class="tag-span">UI Design</span>
-                    <span class="tag-span">Design WEB</span>
-                    <span class="tag-span">UX</span>
-                </div>
-                <div class="data-container">
-                    <p id="data-criado" class="data-criado">criado em 23 de maio de 2023</p>
+                <div class="modal-creator mg-0">
+                    <p>Projeto criado por <a href="" class="user-name-modal"></a></p>
                 </div>
             </div>
 
-            <div class="footer-section">
-                <div class="footer-left">
-                    <div class="input-box">
-                        <input type="text" id="commentInput" placeholder="Escreva um comentário...">
-                        <button id="btnEnviarComentario">Enviar</button>
+            <div class="conteudoProjeto pd-x-10" id="modal-componentes">
+            </div>
+
+            <div class="section-infos flex justify-between items-start gap-8 pd-4 mg-4 rounded-2xl bg-gradient-primary border border-gray-50">
+                <div class="project-info-container flex flex-col gap-6 flex-1">
+                    <div class="titulo-container">
+                        <h1 id="txtTituloTag" class="text-2xl font-bold text-white mg-0 mg-b-4">Lorem Ipsun</h1>
                     </div>
-                    <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
-                        <div class="containerComentarios" id="containerComentarios">
-                            <div class="user-info">
-                                <img src="https://uvvquwlgbkdcnchiyqzs.supabase.co/storage/v1/object/public/freelancer-photos/avatars/image.jfif"
-                                    alt="Usuário">
-                                <div class="user-details">
-                                    <span class="user-name">Christopher</span>
-                                    <span class="message-time">Há 1 mês</span>
-                                </div>
-                            </div>
-                            <div class="message-text">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus quaerat possimus
-                                rem
-                                vero,
-                                adipisci excepturi cumque ad, ea blanditiis soluta accusantium consequuntur ipsa impedit
-                                nihil
-                                delectus saepe minus, ut quis?
-                            </div>
-                        </div>
+                    <div id="modalTagsContainer" class="tags-container flex flex-wrap gap-2 mg-b-4">
+                        <span class="tag-span bg-gray-25 text-white pd-2 pd-x-4 rounded-full text-sm font-medium border border-gray-50">UI Design</span>
+                        <span class="tag-span bg-gray-25 text-white pd-2 pd-x-4 rounded-full text-sm font-medium border border-gray-50">Design WEB</span>
+                        <span class="tag-span bg-gray-25 text-white pd-2 pd-x-4 rounded-full text-sm font-medium border border-gray-50">UX</span>
+                    </div>
+                    <div class="data-container border-t border-gray-50 pd-t-4">
+                        <p id="data-criado" class="data-criado text-sm text-gray mg-0">criado em 23 de maio de 2023</p>
                     </div>
                 </div>
 
-                <div class="footer-right">
+                <div class="author-profile-container bg-gray-75 flex flex-1 flex-col max-w-full" style="width: 400px;">
                     <div class="card-autor">
-                        <div class="header-card-autor">
-                            <div class="container-1">
-                                <div class="header-card-autor-image">
-                                    <img src="" id="modalUserPhoto" alt="Profile pic">
+                        <div class="card-autor-header">
+                            <div class="autor-info">
+                                <div class="autor-avatar">
+                                    <img src="" id="modalUserPhoto" alt="Foto do perfil">
                                 </div>
-                                <div class="header-card-autor-title">
-                                    <h1 id="modalAutor">Autor</h1>
+                                <div class="autor-details">
+                                    <h3 id="modalAutor">Nome do Autor</h3>
                                     <p id="modalTag">Designer Web</p>
+                                    <div class="autor-stats">
+                                        <span class="stat">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            24 projetos
+                                        </span>
+                                        <span class="stat">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 20.94C11.5 20.94 11.05 20.79 10.65 20.49C10.25 20.19 9.95 19.79 9.75 19.29C9.55 18.79 9.5 18.25 9.6 17.67C9.7 17.09 9.95 16.57 10.35 16.11C10.75 15.65 11.25 15.3 11.85 15.06C12.45 14.82 13.1 14.7 13.8 14.7C14.5 14.7 15.15 14.82 15.75 15.06C16.35 15.3 16.85 15.65 17.25 16.11C17.65 16.57 17.9 17.09 18 17.67C18.1 18.25 18.05 18.79 17.85 19.29C17.65 19.79 17.35 20.19 16.95 20.49C16.55 20.79 16.1 20.94 15.6 20.94H12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M12 2C13.1 2 14.1 2.4 14.9 3.2C15.7 4 16.1 5 16.1 6.1C16.1 7.2 15.7 8.2 14.9 9C14.1 9.8 13.1 10.2 12 10.2C10.9 10.2 9.9 9.8 9.1 9C8.3 8.2 7.9 7.2 7.9 6.1C7.9 5 8.3 4 9.1 3.2C9.9 2.4 10.9 2 12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            4.8 ⭐
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="container-2">
-                                <button class="button-container contactar" id="contactar">Contatar</button>
-                                <a id="btnVerPerfil"><button class="button-container">Ver Perfil</button></a>
-                            </div>
-                        </div>
-                        <div class="outros-projetos">
-                            <div class="grid-projetos">
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
-                                <div class="card-projeto"></div>
+                            <div class="autor-actions">
+                                <button class="btn flex flex-1 gap-3 pd-y-5 btn-success" id="contactar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22 2H2V22L6 18H22V2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Contatar
+                                </button>
+                                <button id="btnVerPerfil" class="btn pd-y-5 gap-3 flex flex-1 btn-purple">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Ver Perfil
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
 
         </div>
     </div>
@@ -377,6 +400,131 @@
                 filtrarCards(e.target.value);
             });
         };
+
+        // Funcionalidades para o card-autor
+        document.addEventListener('DOMContentLoaded', () => {
+            // Adicionar índices aos cards de projeto para animação
+            const projetoCards = document.querySelectorAll('.projeto-card');
+            projetoCards.forEach((card, index) => {
+                card.style.setProperty('--card-index', index);
+            });
+
+            // Adicionar funcionalidade aos cards de projeto
+            projetoCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Adicionar efeito de clique
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 150);
+                    
+                    // Aqui você pode adicionar navegação para o projeto específico
+                    console.log('Projeto clicado:', card.querySelector('h5')?.textContent);
+                });
+
+                // Adicionar tooltip hover
+                card.addEventListener('mouseenter', () => {
+                    const title = card.querySelector('h5')?.textContent;
+                    const category = card.querySelector('p')?.textContent;
+                    if (title && category) {
+                        card.title = `${title} - ${category}`;
+                    }
+                });
+            });
+
+            // Melhorar funcionalidade dos botões
+            const btnContactar = document.getElementById('contactar');
+            const btnVerPerfil = document.getElementById('btnVerPerfil');
+
+            if (btnContactar) {
+                btnContactar.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Adicionar efeito de loading
+                    const originalText = btnContactar.innerHTML;
+                    btnContactar.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-spin">
+                            <path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Enviando...
+                    `;
+                    btnContactar.disabled = true;
+
+                    // Simular envio (substitua por sua lógica real)
+                    setTimeout(() => {
+                        btnContactar.innerHTML = originalText;
+                        btnContactar.disabled = false;
+                        // Mostrar feedback de sucesso
+                        showNotification('Mensagem enviada com sucesso!', 'success');
+                    }, 2000);
+                });
+            }
+
+            if (btnVerPerfil) {
+                btnVerPerfil.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Adicionar efeito de transição
+                    btnVerPerfil.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        btnVerPerfil.style.transform = '';
+                    }, 150);
+                    
+                    // Aqui você pode adicionar navegação para o perfil
+                    console.log('Ver perfil clicado');
+                });
+            }
+
+            // Função para mostrar notificações
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <span>${message}</span>
+                        <button class="notification-close">&times;</button>
+                    </div>
+                `;
+                
+                // Adicionar estilos inline para a notificação
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#30bfa5' : '#3c38a6'};
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+                    z-index: 10000;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    max-width: 300px;
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animar entrada
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                // Auto-remover após 5 segundos
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 5000);
+                
+                // Botão de fechar
+                const closeBtn = notification.querySelector('.notification-close');
+                closeBtn.addEventListener('click', () => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                });
+            }
+        });
     </script>
 
 </body>

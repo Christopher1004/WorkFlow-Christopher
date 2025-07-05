@@ -193,7 +193,6 @@ svg.animar-descurtida {
 .card_projeto .autor {
     display: flex;
     align-items: center;
-    padding: 12px;
     gap: 10px;
     cursor: pointer;
 }
@@ -201,7 +200,6 @@ svg.animar-descurtida {
 .card_projeto .autor img {
     width: 32px;
     height: 32px;
-    background-color: aqua;
     border-radius: 50%;
     object-fit: cover;
 }
