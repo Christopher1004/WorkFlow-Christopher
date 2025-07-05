@@ -136,14 +136,13 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
             const userId = user.uid
             const curtidaRef = ref(db, `Curtidas/${id}/${userId}`)
 
-            get(curtidaRef).then((snapshot) => {
+            onValue(curtidaRef, (snapshot) => {
                 if (snapshot.exists()) {
                     svgCurtida.classList.add('curtido')
-                }
-                else {
+                } else {
                     svgCurtida.classList.remove('curtido')
                 }
-            }).catch(err => console.error('Erro ao verificar curtida'))
+            })
         }
     })
 
@@ -554,13 +553,13 @@ function carregarDoCache() {
     const cache = localStorage.getItem('cacheProjetos');
     const tempoCache = localStorage.getItem('cacheTimestamp');
 
-    const cacheValido = tempoCache && Date.now() - tempoCache < 5 * 60 * 1000; 
+    const cacheValido = tempoCache && Date.now() - tempoCache < 5 * 60 * 1000;
 
     if (cache && cacheValido) {
         try {
             const projetos = JSON.parse(cache);
             projetos.forEach((projeto, i) => {
-                criarCardProjeto(projeto.id, projeto.dados, i); 
+                criarCardProjeto(projeto.id, projeto.dados, i);
             });
         } catch (e) {
             console.warn('Erro ao ler cache localStorage:', e);
