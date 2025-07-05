@@ -1,13 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
 import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-
-//const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
-//const supabaseChave = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2dnF1d2xnYmtkY25jaGl5cXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODA2OTQsImV4cCI6MjA2MjA1NjY5NH0.SnVqdpZa1V_vjJvoupVFAXjg0_2ih7KlfUa1s3vuzhE"
-
-//const supabase = createClient(supabaseURL, supabaseChave)
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -33,6 +26,35 @@ const dropDownLogout = document.getElementById('dropDownLogout');
 const dropDown = document.getElementById('dropDownMenu');
 
 const perfilLink = document.querySelector("#dropDownMenu a[href='/perfil']")
+
+const cacheUsuario = localStorage.getItem('cacheUsuario')
+const tempoCache = localStorage.getItem('cacheUsuarioTempo')
+
+if (cacheUsuario && tempoCache && Date.now() - tempoCache < 5 * 60 * 1000) { 
+    try {
+        const dados = JSON.parse(cacheUsuario);
+
+        if (btnLogin) btnLogin.style.display = 'none';
+        if (btnRegister) btnRegister.style.display = 'none';
+        if (userControls) userControls.style.display = 'flex';
+
+        const nome = dados.nome || 'Usuário';
+        const foto = dados.foto_perfil || DEFAULT_USER_PHOTO;
+
+        const userNameSpan = document.querySelector(".user-name");
+        if (userNameSpan) userNameSpan.textContent = nome;
+
+        if (userPhoto) {
+            userPhoto.style.backgroundImage = `url('${foto}')`;
+            userPhoto.style.display = 'block';
+        }
+        if (userPhotoDrop) userPhotoDrop.src = foto;
+        if (perfilLink) perfilLink.href = `/perfil?id=${dados.uid}`;
+
+    } catch (e) {
+        console.warn('Erro ao carregar cache do usuário:', e);
+    }
+}
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const uid = user.uid
@@ -64,6 +86,14 @@ onAuthStateChanged(auth, async (user) => {
                     userNameSpan.textContent = userData.nome;
                 }
 
+                if(userData){
+                    localStorage.setItem('cacheUsuario', JSON.stringify({
+                        uid,
+                        nome: userData?.nome,
+                        foto_perfil: userData?.foto_perfil
+                    }))
+                    localStorage.setItem('cacheUsuarioTempo', Date.now())
+                }
                 const photoUrl = userData?.foto_perfil || DEFAULT_USER_PHOTO
 
                 userPhoto.style.backgroundImage = `url('${photoUrl}')`
@@ -108,7 +138,7 @@ onAuthStateChanged(auth, async (user) => {
             });
         }
 
-        if(perfilLink){
+        if (perfilLink) {
             perfilLink.href = `/perfil?id=${uid}`
         }
 

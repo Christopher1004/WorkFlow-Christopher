@@ -211,7 +211,7 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
         img.addEventListener('load', () => {
             img.classList.add('loaded');
         });
-        
+
         // Fallback para imagens que já estão em cache
         if (img.complete) {
             img.classList.add('loaded');
@@ -539,12 +539,36 @@ async function carregarProjetos(tagFiltro = "tudo", tipoOrdenacao = "") {
             const projeto = listaProjetos[i];
             await criarCardProjeto(projeto.id, projeto.dados, i);
         }
+        localStorage.setItem('cacheProjetos', JSON.stringify(listaProjetos));
+        localStorage.setItem('cacheTimestamp', Date.now());
 
     } catch (error) {
         console.error("Erro ao carregar projetos:", error);
     }
+
+
 }
 
+
+function carregarDoCache() {
+    const cache = localStorage.getItem('cacheProjetos');
+    const tempoCache = localStorage.getItem('cacheTimestamp');
+
+    const cacheValido = tempoCache && Date.now() - tempoCache < 5 * 60 * 1000; 
+
+    if (cache && cacheValido) {
+        try {
+            const projetos = JSON.parse(cache);
+            projetos.forEach((projeto, i) => {
+                criarCardProjeto(projeto.id, projeto.dados, i); 
+            });
+        } catch (e) {
+            console.warn('Erro ao ler cache localStorage:', e);
+        }
+    }
+}
+
+carregarDoCache()
 carregarProjetos('tudo', 'curtidas');
 
 const filtroOrdenacao = document.getElementById("filtro-ordenacao");
