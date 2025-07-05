@@ -1,0 +1,168 @@
+/* Botão base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--space-5);
+  height: 48px;
+  border-radius: 8px;
+  font-size: var(--f1);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s, opacity 0.2s;
+  outline: none;
+  line-height: 1.1;
+}
+
+/* Botões preenchidos */
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+}
+.btn-danger {
+  background: var(--alert);
+  color: var(--white);
+}
+.btn-warning {
+  background: var(--warning);
+  color: var(--white);
+}
+.btn-gray {
+  background: var(--gray-50);
+  color: var(--white);
+}
+.btn-success {
+  background: var(--quaternary);
+  color: var(--white);
+}
+.btn-purple {
+  background: var(--base-100);
+  color: var(--white);
+}
+
+/* Hover preenchidos */
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--alert-dark);
+}
+.btn-warning:hover:not(:disabled) {
+  background: var(--warning-dark);
+}
+.btn-gray:hover:not(:disabled) {
+  background: var(--gray-100);
+}
+.btn-success:hover:not(:disabled) {
+  background: #059669;
+}
+.btn-purple:hover:not(:disabled) {
+  background: var(--base-50);
+}
+
+/* Botões ghost/outline */
+.btn-ghost, .btn-outline {
+  background: transparent;
+  color: inherit;
+  border: 1px solid;
+}
+.btn-ghost.btn-primary, .btn-outline.btn-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.btn-ghost.btn-danger, .btn-outline.btn-danger {
+  color: var(--alert);
+  border-color: var(--alert);
+}
+.btn-ghost.btn-warning, .btn-outline.btn-warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+.btn-ghost.btn-gray, .btn-outline.btn-gray {
+  color: var(--gray-50);
+  border-color: var(--gray-50);
+}
+.btn-ghost.btn-success, .btn-outline.btn-success {
+  color: var(--quaternary);
+  border-color: var(--quaternary);
+}
+.btn-ghost.btn-purple, .btn-outline.btn-purple {
+  color: var(--base-100);
+  border-color: var(--base-100);
+}
+.btn-ghost.btn-white, .btn-outline.btn-white {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+/* Hover ghost/outline */
+.btn-ghost.btn-primary:hover, .btn-outline.btn-primary:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+.btn-ghost.btn-danger:hover, .btn-outline.btn-danger:hover {
+  background: var(--alert);
+  color: var(--white);
+}
+.btn-ghost.btn-warning:hover, .btn-outline.btn-warning:hover {
+  background: var(--warning);
+  color: var(--white);
+}
+.btn-ghost.btn-gray:hover, .btn-outline.btn-gray:hover {
+  background: var(--gray-50);
+  color: var(--white);
+}
+.btn-ghost.btn-success:hover, .btn-outline.btn-success:hover {
+  background: var(--quaternary);
+  color: var(--white);
+}
+.btn-ghost.btn-purple:hover, .btn-outline.btn-purple:hover {
+  background: var(--base-100);
+  color: var(--white);
+}
+.btn-ghost.btn-white:hover, .btn-outline.btn-white:hover {
+  background: var(--white);
+  color: var(--gray-100);
+}
+
+/* Botão desabilitado */
+.btn:disabled, .btn.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--gray-25) !important;
+  color: var(--gray-50) !important;
+  border-color: var(--gray-25) !important;
+}
+
+/* Botão preenchido desabilitado (cor específica) */
+.btn-primary:disabled, .btn-primary.btn-disabled {
+  background: #7da7fa !important;
+  color: #35436A !important;
+}
+.btn-danger:disabled, .btn-danger.btn-disabled {
+  background: #fca5a5 !important;
+  color: #863534 !important;
+}
+.btn-warning:disabled, .btn-warning.btn-disabled {
+  background: #ffd699 !important;
+  color: #A06420 !important;
+}
+.btn-gray:disabled, .btn-gray.btn-disabled {
+  background: #414141 !important;
+  color: #2C2C2C !important;
+}
+.btn-success:disabled, .btn-success.btn-disabled {
+  background: #6ee7b7 !important;
+  color: #059669 !important;
+}
+.btn-purple:disabled, .btn-purple.btn-disabled {
+  background: #a5b4fc !important;
+  color: #463FC3 !important;
+}
+
+/* Botão full width */
+.btn-block {
+  width: 100%;
+  display: flex;
+}

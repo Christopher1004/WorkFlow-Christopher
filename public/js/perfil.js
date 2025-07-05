@@ -188,11 +188,12 @@ function formatarTempoComentario(timestamp) {
     }
 }
 
-function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0) {
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0, cardIndex = 0) {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
     card.style.display = 'none';
+    card.style.setProperty('--card-index', cardIndex);
     const isAutorDoPerfil = auth.currentUser && projeto.userId === auth.currentUser.uid;
     const autorDisplayTexto = isAutorDoPerfil ? 'Criado por você' : autorNome;
     const autorDisplayFoto = autorFotoUrl;
@@ -276,6 +277,19 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
             </div>
         </div>
     `;
+
+    // Adicionar evento de carregamento da imagem para efeito fade
+    const img = card.querySelector('.thumbnail');
+    if (img) {
+        img.addEventListener('load', () => {
+            img.classList.add('loaded');
+        });
+        
+        // Fallback para imagens que já estão em cache
+        if (img.complete) {
+            img.classList.add('loaded');
+        }
+    }
 
     containerCard.appendChild(card);
     abas[aba].push(card);
@@ -794,7 +808,7 @@ containerCard.addEventListener('click', async (event) => {
                     const comentariosCountSnap = await get(ref(db, `Comentarios/${projectId}`));
                     const comentarios = comentariosCountSnap.exists() ? Object.keys(comentariosCountSnap.val()).length : 0;
 
-                    criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
+                    criarCardProjeto(projectId, projetoData, 'curtidos', currentUserId, true, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, 0);
                 }
             }
         }
@@ -931,6 +945,7 @@ onAuthStateChanged(auth, async (user) => {
         }
     }
 
+    let curtidosIndex = 0;
     Object.entries(todasCurtidas).forEach(([projetoId, usuariosQueCurtiram]) => {
         if (usuariosQueCurtiram[perfilUserId]) {
             const projeto = todosProjetos[projetoId];
@@ -941,11 +956,12 @@ onAuthStateChanged(auth, async (user) => {
                 const curtidas = Object.keys(usuariosQueCurtiram).length;
                 const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
 
-                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
+                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, curtidosIndex++);
             }
         }
     });
 
+    let favoritosIndex = 0;
     Object.entries(todosFavoritosDoPerfil).forEach(([projetoId, isFavorited]) => {
         if (isFavorited) {
             const projeto = todosProjetos[projetoId];
@@ -956,7 +972,7 @@ onAuthStateChanged(auth, async (user) => {
                 const curtidas = todasCurtidas[projetoId] ? Object.keys(todasCurtidas[projetoId]).length : 0;
                 const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
 
-                criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
+                criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, favoritosIndex++);
             }
         }
     });
@@ -970,20 +986,21 @@ onAuthStateChanged(auth, async (user) => {
                 }
             });
         }
-    } else if (tipoUsuario === 'Freelancer') {
-        if (projetosSnap.exists()) {
-            Object.entries(todosProjetos).forEach(([id, dados]) => {
-                if (dados.userId === perfilUserId) {
-                    const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
-                    const autorData = usersData[dados.userId] || {};
-                    const visualizacoes = dados.visualizacoes || 0;
-                    const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
-                    const comentarios = todosComentarios[id] ? Object.keys(todosComentarios[id]).length : 0;
+            } else if (tipoUsuario === 'Freelancer') {
+            if (projetosSnap.exists()) {
+                let projetosIndex = 0;
+                Object.entries(todosProjetos).forEach(([id, dados]) => {
+                    if (dados.userId === perfilUserId) {
+                        const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
+                        const autorData = usersData[dados.userId] || {};
+                        const visualizacoes = dados.visualizacoes || 0;
+                        const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
+                        const comentarios = todosComentarios[id] ? Object.keys(todosComentarios[id]).length : 0;
 
-                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios);
-                }
-            });
-        }
+                        criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, projetosIndex++);
+                    }
+                });
+            }
     }
 
     mostrarCards('projetos');

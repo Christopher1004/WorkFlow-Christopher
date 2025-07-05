@@ -1,14 +1,24 @@
-.section-2 {
+.section-3, .section-2 {
     margin-top: 15px;
     margin: 30px;
     padding: 0px;
 }
 
-.card-zone {
+.card-zone, .card-zone-top {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 10px;
+}
+
+.card_projeto, .card-zone-top {
+    grid-column-end: span 4;
+    width: 100%;
+    background: var(--color-white);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
 }
 
 .card_projeto {
@@ -19,6 +29,10 @@
     overflow: hidden;
     transition: all 0.3s ease 0s;
     cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: calc(var(--card-index, 0) * 0.1s);
 }
 
 .card_projeto .capa {
@@ -42,6 +56,12 @@
     height: 100%;
     aspect-ratio: 4/3;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.card_projeto .capa img.thumbnail.loaded {
+    opacity: 1;
 }
 
 .thumbnail-overlay {
@@ -65,7 +85,7 @@
 
 .card_projeto:hover .thumbnail-overlay {
     opacity: 1;
-    background: linear-gradient(0deg, rgba(45, 45, 45, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%);
 }
 
 .icons-column {
@@ -254,3 +274,15 @@ h2 {
     stroke: #5274D9; 
     transform: scale(1.1);
 }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

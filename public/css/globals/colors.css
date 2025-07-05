@@ -1,0 +1,170 @@
+/* ===== CLASSES DE CORES ===== */
+
+/* Cores Primárias */
+.bg-primary { background-color: var(--primary); }
+.text-primary { color: var(--primary); }
+.border-primary { border-color: var(--primary); }
+
+.bg-primary-dark { background-color: var(--primary-dark); }
+.text-primary-dark { color: var(--primary-dark); }
+.border-primary-dark { border-color: var(--primary-dark); }
+
+/* Cores Secundárias */
+.bg-secundary { background-color: var(--secundary); }
+.text-secundary { color: var(--secundary); }
+.border-secundary { border-color: var(--secundary); }
+
+/* Cores Terciárias */
+.bg-tertiary { background-color: var(--tertiary); }
+.text-tertiary { color: var(--tertiary); }
+.border-tertiary { border-color: var(--tertiary); }
+
+/* Cores Quaternárias */
+.bg-quaternary { background-color: var(--quaternary); }
+.text-quaternary { color: var(--quaternary); }
+.border-quaternary { border-color: var(--quaternary); }
+
+/* Cores Base */
+.bg-base-100 { background-color: var(--base-100); }
+.text-base-100 { color: var(--base-100); }
+.border-base-100 { border-color: var(--base-100); }
+
+.bg-base-70 { background-color: var(--base-70); }
+.text-base-70 { color: var(--base-70); }
+.border-base-70 { border-color: var(--base-70); }
+
+.bg-base-50 { background-color: var(--base-50); }
+.text-base-50 { color: var(--base-50); }
+.border-base-50 { border-color: var(--base-50); }
+
+/* Cores de Status */
+.bg-success { background-color: var(--success); }
+.text-success { color: var(--success); }
+.border-success { border-color: var(--success); }
+
+.bg-success-dark { background-color: var(--success-dark); }
+.text-success-dark { color: var(--success-dark); }
+.border-success-dark { border-color: var(--success-dark); }
+
+.bg-warning { background-color: var(--warning); }
+.text-warning { color: var(--warning); }
+.border-warning { border-color: var(--warning); }
+
+.bg-warning-dark { background-color: var(--warning-dark); }
+.text-warning-dark { color: var(--warning-dark); }
+.border-warning-dark { border-color: var(--warning-dark); }
+
+.bg-alert { background-color: var(--alert); }
+.text-alert { color: var(--alert); }
+.border-alert { border-color: var(--alert); }
+
+.bg-alert-dark { background-color: var(--alert-dark); }
+.text-alert-dark { color: var(--alert-dark); }
+.border-alert-dark { border-color: var(--alert-dark); }
+
+/* Cores de Cinza */
+.bg-gray { background-color: var(--gray); }
+.text-gray { color: var(--gray); }
+.border-gray { border-color: var(--gray); }
+
+.bg-darkgray { background-color: var(--darkgray); }
+.text-darkgray { color: var(--darkgray); }
+.border-darkgray { border-color: var(--darkgray); }
+
+.bg-gray-100 { background-color: var(--gray-100); }
+.text-gray-100 { color: var(--gray-100); }
+.border-gray-100 { border-color: var(--gray-100); }
+
+.bg-gray-75 { background-color: var(--gray-75); }
+.text-gray-75 { color: var(--gray-75); }
+.border-gray-75 { border-color: var(--gray-75); }
+
+.bg-gray-50 { background-color: var(--gray-50); }
+.text-gray-50 { color: var(--gray-50); }
+.border-gray-50 { border-color: var(--gray-50); }
+
+.bg-gray-25 { background-color: var(--gray-25); }
+.text-gray-25 { color: var(--gray-25); }
+.border-gray-25 { border-color: var(--gray-25); }
+
+/* Cores de Fundo e Texto */
+.bg-background { background-color: var(--background); }
+.bg-white { background-color: var(--white); }
+.text-white { color: var(--white); }
+.border-white { border-color: var(--white); }
+
+/* Classes de Hover */
+.hover\:bg-primary:hover { background-color: var(--primary); }
+.hover\:text-primary:hover { color: var(--primary); }
+.hover\:border-primary:hover { border-color: var(--primary); }
+
+.hover\:bg-secundary:hover { background-color: var(--secundary); }
+.hover\:text-secundary:hover { color: var(--secundary); }
+.hover\:border-secundary:hover { border-color: var(--secundary); }
+
+.hover\:bg-tertiary:hover { background-color: var(--tertiary); }
+.hover\:text-tertiary:hover { color: var(--tertiary); }
+.hover\:border-tertiary:hover { border-color: var(--tertiary); }
+
+.hover\:bg-quaternary:hover { background-color: var(--quaternary); }
+.hover\:text-quaternary:hover { color: var(--quaternary); }
+.hover\:border-quaternary:hover { border-color: var(--quaternary); }
+
+.hover\:bg-success:hover { background-color: var(--success); }
+.hover\:text-success:hover { color: var(--success); }
+.hover\:border-success:hover { border-color: var(--success); }
+
+.hover\:bg-warning:hover { background-color: var(--warning); }
+.hover\:text-warning:hover { color: var(--warning); }
+.hover\:border-warning:hover { border-color: var(--warning); }
+
+.hover\:bg-alert:hover { background-color: var(--alert); }
+.hover\:text-alert:hover { color: var(--alert); }
+.hover\:border-alert:hover { border-color: var(--alert); }
+
+/* Classes de Focus */
+.focus\:bg-primary:focus { background-color: var(--primary); }
+.focus\:text-primary:focus { color: var(--primary); }
+.focus\:border-primary:focus { border-color: var(--primary); }
+
+.focus\:bg-secundary:focus { background-color: var(--secundary); }
+.focus\:text-secundary:focus { color: var(--secundary); }
+.focus\:border-secundary:focus { border-color: var(--secundary); }
+
+.focus\:bg-tertiary:focus { background-color: var(--tertiary); }
+.focus\:text-tertiary:focus { color: var(--tertiary); }
+.focus\:border-tertiary:focus { border-color: var(--tertiary); }
+
+.focus\:bg-quaternary:focus { background-color: var(--quaternary); }
+.focus\:text-quaternary:focus { color: var(--quaternary); }
+.focus\:border-quaternary:focus { border-color: var(--quaternary); }
+
+/* Classes de Transição */
+.transition-colors { transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out; }
+
+/* Classes de Opacidade */
+.opacity-10 { opacity: 0.1; }
+.opacity-20 { opacity: 0.2; }
+.opacity-30 { opacity: 0.3; }
+.opacity-40 { opacity: 0.4; }
+.opacity-50 { opacity: 0.5; }
+.opacity-60 { opacity: 0.6; }
+.opacity-70 { opacity: 0.7; }
+.opacity-80 { opacity: 0.8; }
+.opacity-90 { opacity: 0.9; }
+.opacity-100 { opacity: 1; }
+
+/* Classes de Gradientes */
+.gradient-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+.gradient-secundary { background: linear-gradient(135deg, var(--secundary), var(--primary)); }
+.gradient-tertiary { background: linear-gradient(135deg, var(--tertiary), var(--primary)); }
+.gradient-quaternary { background: linear-gradient(135deg, var(--quaternary), var(--tertiary)); }
+
+/* Classes de Sombra com Cores */
+.shadow-primary { box-shadow: 0 4px 6px -1px rgba(60, 56, 166, 0.1), 0 2px 4px -1px rgba(60, 56, 166, 0.06); }
+.shadow-secundary { box-shadow: 0 4px 6px -1px rgba(37, 29, 89, 0.1), 0 2px 4px -1px rgba(37, 29, 89, 0.06); }
+.shadow-tertiary { box-shadow: 0 4px 6px -1px rgba(82, 116, 217, 0.1), 0 2px 4px -1px rgba(82, 116, 217, 0.06); }
+.shadow-quaternary { box-shadow: 0 4px 6px -1px rgba(48, 191, 165, 0.1), 0 2px 4px -1px rgba(48, 191, 165, 0.06); }
+.shadow-success { box-shadow: 0 4px 6px -1px rgba(53, 67, 106, 0.1), 0 2px 4px -1px rgba(53, 67, 106, 0.06); }
+.shadow-warning { box-shadow: 0 4px 6px -1px rgba(255, 142, 12, 0.1), 0 2px 4px -1px rgba(255, 142, 12, 0.06); }
+.shadow-alert { box-shadow: 0 4px 6px -1px rgba(248, 66, 65, 0.1), 0 2px 4px -1px rgba(248, 66, 65, 0.06); } 

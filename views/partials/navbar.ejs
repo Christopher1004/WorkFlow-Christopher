@@ -23,27 +23,27 @@
             </div>
         </div>
         <div class="links">
-            <a href="/" class="links projetos <%= currentRoute === '/' ? 'active' : '' %>">Projetos</a>
+            <a href="/" class="text-xs  projetos <%= currentRoute === '/' ? 'active' : '' %>">Projetos</a>
             <a href="/categorias"
-                class="links desafios <%= currentRoute === '/desafios' ? 'active' : '' %>">Categorias</a>
+                class="text-xs  desafios <%= currentRoute === '/desafios' ? 'active' : '' %>">Categorias</a>
 
             <a href="/propostas"
-                class="links propostas <%= currentRoute === '/propostas' ? 'active' : '' %>">Propostas</a>
+                class="text-xs  propostas <%= currentRoute === '/propostas' ? 'active' : '' %>">Propostas</a>
             <a href="/freelancers"
-                class="links freelancers <%= currentRoute === '/freelancers' ? 'active' : '' %>">Freelancers</a>
+                class="text-xs  freelancers <%= currentRoute === '/freelancers' ? 'active' : '' %>">Freelancers</a>
         </div>
         <div class="searchbarContainer">
             <div class="searchbar">
                 <img src="/assets/image/search-icon.svg" alt="searchIcon" class="icon">
-                <input type="text" class="searchbar-input" id="searchInput" placeholder="Buscar projeto...">
+                <input type="text" class="text-xs searchbar-input" id="searchInput" placeholder="Buscar projeto...">
             </div>
         </div>
         <div class="buttonsContainer">
             <a href="/login">
-                <button class="buttonNav entrar" id="btnEntrar">Entrar</button>
+                <button class="btn btn-ghost btn-white text-base buttonNav entrar" id="btnEntrar">Entrar</button>
             </a>
             <a href="/register">
-                <button class="buttonNav registrar" id="btnCriarConta">Criar Conta</button>
+                <button class="btn btn-purple text-sm registrar buttonNav" id="btnCriarConta">Criar Conta</button>
             </a>
             <div id="userControls" style="display:none; align-items: center; gap: 12px;">
                 <div class="chat">

@@ -1,0 +1,507 @@
+/* Sistema de Flexbox - Design System */
+
+/* Container Flex */
+.flex {
+    display: flex;
+}
+
+.flex-inline {
+    display: inline-flex;
+}
+
+/* Direção do Flex */
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-row-reverse {
+    flex-direction: row-reverse;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-col-reverse {
+    flex-direction: column-reverse;
+}
+
+/* Wrap do Flex */
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-nowrap {
+    flex-wrap: nowrap;
+}
+
+.flex-wrap-reverse {
+    flex-wrap: wrap-reverse;
+}
+
+/* Justificação do conteúdo */
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-around {
+    justify-content: space-around;
+}
+
+.justify-evenly {
+    justify-content: space-evenly;
+}
+
+/* Alinhamento dos itens */
+.items-start {
+    align-items: flex-start;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-baseline {
+    align-items: baseline;
+}
+
+.items-stretch {
+    align-items: stretch;
+}
+
+/* Alinhamento do conteúdo */
+.content-start {
+    align-content: flex-start;
+}
+
+.content-end {
+    align-content: flex-end;
+}
+
+.content-center {
+    align-content: center;
+}
+
+.content-between {
+    align-content: space-between;
+}
+
+.content-around {
+    align-content: space-around;
+}
+
+.content-stretch {
+    align-content: stretch;
+}
+
+/* Propriedades dos itens flex */
+.flex-1 {
+    flex: 1 1 0%;
+}
+
+.flex-auto {
+    flex: 1 1 auto;
+}
+
+.flex-initial {
+    flex: 0 1 auto;
+}
+
+.flex-none {
+    flex: none;
+}
+
+/* Flex grow */
+.flex-grow-0 {
+    flex-grow: 0;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+/* Flex shrink */
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.flex-shrink {
+    flex-shrink: 1;
+}
+
+/* Alinhamento próprio do item */
+.self-auto {
+    align-self: auto;
+}
+
+.self-start {
+    align-self: flex-start;
+}
+
+.self-end {
+    align-self: flex-end;
+}
+
+.self-center {
+    align-self: center;
+}
+
+.self-stretch {
+    align-self: stretch;
+}
+
+.self-baseline {
+    align-self: baseline;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/* Gap entre itens */
+.gap-0 {
+    gap: 0;
+}
+
+.gap-1 {
+    gap: var(--space-1);
+}
+
+.gap-2 {
+    gap: var(--space-2);
+}
+
+.gap-3 {
+    gap: var(--space-3);
+}
+
+.gap-4 {
+    gap: var(--space-4);
+}
+
+.gap-5 {
+    gap: var(--space-5);
+}
+
+.gap-6 {
+    gap: var(--space-6);
+}
+
+.gap-8 {
+    gap: var(--space-8);
+}
+
+.gap-10 {
+    gap: var(--space-10);
+}
+
+.gap-12 {
+    gap: var(--space-12);
+}
+
+.gap-16 {
+    gap: var(--space-16);
+}
+
+.gap-20 {
+    gap: var(--space-20);
+}
+
+.gap-24 {
+    gap: var(--space-24);
+}
+
+.gap-32 {
+    gap: var(--space-32);
+}
+
+/* Gap específico para row e column */
+.gap-x-0 {
+    column-gap: 0;
+}
+
+.gap-x-1 {
+    column-gap: var(--space-1);
+}
+
+.gap-x-2 {
+    column-gap: var(--space-2);
+}
+
+.gap-x-3 {
+    column-gap: var(--space-3);
+}
+
+.gap-x-4 {
+    column-gap: var(--space-4);
+}
+
+.gap-x-5 {
+    column-gap: var(--space-5);
+}
+
+.gap-x-6 {
+    column-gap: var(--space-6);
+}
+
+.gap-x-8 {
+    column-gap: var(--space-8);
+}
+
+.gap-x-10 {
+    column-gap: var(--space-10);
+}
+
+.gap-x-12 {
+    column-gap: var(--space-12);
+}
+
+.gap-x-16 {
+    column-gap: var(--space-16);
+}
+
+.gap-x-20 {
+    column-gap: var(--space-20);
+}
+
+.gap-x-24 {
+    column-gap: var(--space-24);
+}
+
+.gap-x-32 {
+    column-gap: var(--space-32);
+}
+
+.gap-y-0 {
+    row-gap: 0;
+}
+
+.gap-y-1 {
+    row-gap: var(--space-1);
+}
+
+.gap-y-2 {
+    row-gap: var(--space-2);
+}
+
+.gap-y-3 {
+    row-gap: var(--space-3);
+}
+
+.gap-y-4 {
+    row-gap: var(--space-4);
+}
+
+.gap-y-5 {
+    row-gap: var(--space-5);
+}
+
+.gap-y-6 {
+    row-gap: var(--space-6);
+}
+
+.gap-y-8 {
+    row-gap: var(--space-8);
+}
+
+.gap-y-10 {
+    row-gap: var(--space-10);
+}
+
+.gap-y-12 {
+    row-gap: var(--space-12);
+}
+
+.gap-y-16 {
+    row-gap: var(--space-16);
+}
+
+.gap-y-20 {
+    row-gap: var(--space-20);
+}
+
+.gap-y-24 {
+    row-gap: var(--space-24);
+}
+
+.gap-y-32 {
+    row-gap: var(--space-32);
+}
+
+/* Classes combinadas comuns */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-around {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.flex-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.flex-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-col-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.flex-col-between {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .md\:flex-row {
+        flex-direction: row;
+    }
+    
+    .md\:flex-col {
+        flex-direction: column;
+    }
+    
+    .md\:justify-center {
+        justify-content: center;
+    }
+    
+    .md\:justify-between {
+        justify-content: space-between;
+    }
+    
+    .md\:items-center {
+        align-items: center;
+    }
+    
+    .md\:flex-wrap {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .sm\:flex-col {
+        flex-direction: column;
+    }
+    
+    .sm\:justify-center {
+        justify-content: center;
+    }
+    
+    .sm\:items-center {
+        align-items: center;
+    }
+    
+    .sm\:gap-2 {
+        gap: var(--space-2);
+    }
+    
+    .sm\:gap-4 {
+        gap: var(--space-4);
+    }
+}
+
+/* Utilitários para ordem */
+.order-first {
+    order: -9999;
+}
+
+.order-last {
+    order: 9999;
+}
+
+.order-none {
+    order: 0;
+}
+
+.order-1 {
+    order: 1;
+}
+
+.order-2 {
+    order: 2;
+}
+
+.order-3 {
+    order: 3;
+}
+
+.order-4 {
+    order: 4;
+}
+
+.order-5 {
+    order: 5;
+}
+
+.order-6 {
+    order: 6;
+}
+
+.order-7 {
+    order: 7;
+}
+
+.order-8 {
+    order: 8;
+}
+
+.order-9 {
+    order: 9;
+}
+
+.order-10 {
+    order: 10;
+}
+
+.order-11 {
+    order: 11;
+}
+
+.order-12 {
+    order: 12;
+}
