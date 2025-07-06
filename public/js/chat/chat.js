@@ -31,7 +31,6 @@ async function iniciarChat(user) {
             const dados = childSnapshot.val();
             const outroUid = childSnapshot.key;
 
-            // Se não tem nome/avatar, buscar nas outras coleções
             if (!dados.nome || !dados.avatar) {
                 const freelancerSnap = await get(ref(db, `Freelancer/${outroUid}`));
                 const contratanteSnap = await get(ref(db, `Contratante/${outroUid}`));
@@ -50,7 +49,6 @@ async function iniciarChat(user) {
                 }
             }
 
-            // Criar o elemento visual do chat
             const chatUser = document.createElement('div');
             chatUser.dataset.id = outroUid;
             chatUser.className = 'chat-user';
@@ -132,7 +130,7 @@ async function iniciarChat(user) {
         }
     });
 }
-document.querySelector(".input-area button:last-child").addEventListener("click", () => {
+document.querySelector(".input-area button:last-child").addEventListener("click", async () => {
     const input = document.querySelector('.input-area input')
     const textoOriginal = input.value.trim()
     const texto = censurarTexto(textoOriginal)
@@ -143,9 +141,35 @@ document.querySelector(".input-area button:last-child").addEventListener("click"
 
     const remetenteId = user.uid
 
-    const novaMsgRef1 = push(ref(db, `Conversas/${remetenteId}/${destinatarioId}/mensagens`))
-    const novaMsgRef2 = push(ref(db, `Conversas/${destinatarioId}/${remetenteId}/mensagens`));
+    const conversaRemetenteRef = ref(db, `Conversas/${remetenteId}/${destinatarioId}`);
+    const conversaSnapshot = await get(conversaRemetenteRef);
 
+    if (!conversaSnapshot.exists()) {
+        const snapFreelancer = await get(ref(db, `Freelancer/${destinatarioId}`));
+        const snapContratante = await get(ref(db, `Contratante/${destinatarioId}`));
+
+        let nome = "Usuário";
+        let avatar = "https://via.placeholder.com/30";
+
+        if (snapFreelancer.exists()) {
+            const dados = snapFreelancer.val();
+            nome = dados.nome || nome;
+            avatar = dados.foto_perfil || avatar;
+        } else if (snapContratante.exists()) {
+            const dados = snapContratante.val();
+            nome = dados.nome || nome;
+            avatar = dados.foto_perfil || avatar;
+        }
+
+        await set(conversaRemetenteRef, {
+            nome,
+            avatar,
+            ultimoTimestamp: serverTimestamp()
+        });
+    }
+
+    const novaMsgRef1 = push(ref(db, `Conversas/${remetenteId}/${destinatarioId}/mensagens`));
+    const novaMsgRef2 = push(ref(db, `Conversas/${destinatarioId}/${remetenteId}/mensagens`));
 
     const mensagem = {
         texto,

@@ -354,17 +354,8 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                             avatar: avatarContato,
                             timestamp: Date.now()
                         });
-                        const snapshot = await get(child(ref(db), `Freelancer/${userIdLogado}`));
-                        if (snapshot.exists()) {
-                            const dadosUserLogado = snapshot.val();
-                            await set(ref(db, `Conversas/${userIdContato}/${userIdLogado}`), {
-                                nome: dadosUserLogado.nome,
-                                avatar: dadosUserLogado.foto_perfil,
-                                timestamp: Date.now()
-                            });
-                        }
 
-                        alert("Contato salvo! Agora vá até o chat.");
+                        window.location.href = '/chat'
                     });
 
                     const gridProjetos = modal.querySelector('.grid-projetos')
