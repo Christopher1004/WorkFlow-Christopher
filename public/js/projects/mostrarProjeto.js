@@ -1,5 +1,5 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, set, update, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, set, update, child, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { iconeCurtida } from "/js/projects/curtirProjeto.js"
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -349,14 +349,14 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
 
                         const db = getDatabase();
 
+                        // Cria/atualiza o nó da conversa para o usuário logado (remetente)
                         await set(ref(db, `Conversas/${userIdLogado}/${userIdContato}`), {
                             nome: nomeContato,
                             avatar: avatarContato,
-                            timestamp: Date.now()
+                            ultimoTimestamp: serverTimestamp()
                         });
-
                         window.location.href = '/chat'
-                    });
+                    })
 
                     const gridProjetos = modal.querySelector('.grid-projetos')
                     if (gridProjetos) {

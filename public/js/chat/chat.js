@@ -1,150 +1,151 @@
-import { getDatabase, get, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, get, ref, onChildAdded, onValue, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { censurarTexto } from "/js/chat/censurarPalavroes.js"
+import { censurarTexto } from "/js/chat/censurarPalavroes.js";
 
-const db = getDatabase()
-const auth = getAuth()
+const db = getDatabase();
+const auth = getAuth();
 
 let destinatarioId = null;
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        iniciarChat(user)
+        iniciarChat(user);
+    } else {
+        // Limpar sidebar e chat ao deslogar
+        document.querySelector('.sidebar').innerHTML = '';
+        limparChat();
     }
-})
+});
+
 async function iniciarChat(user) {
     const userId = user.uid;
     const conversasRef = ref(db, `Conversas/${userId}`);
+    const sidebar = document.querySelector('.sidebar');
 
-    onValue(conversasRef, async (snapshot) => {
-        const sidebar = document.querySelector('.sidebar');
-        const existentes = sidebar.querySelectorAll('.chat-user');
-        existentes.forEach(e => e.remove());
+    // Escuta novas conversas adicionadas
+    onChildAdded(conversasRef, async (snapshot) => {
+        const outroUid = snapshot.key;
+        const dados = snapshot.val();
 
-        const children = [];
-        snapshot.forEach(childSnap => {
-            children.push(childSnap);
+        // Evita duplicr chat-user
+        if (sidebar.querySelector(`.chat-user[data-id="${outroUid}"]`)) return;
+
+        if (!dados.nome || !dados.avatar) {
+            const snapFreelancer = await get(ref(db, `Freelancer/${outroUid}`));
+            const snapContratante = await get(ref(db, `Contratante/${outroUid}`));
+
+            if (snapFreelancer.exists()) {
+                const info = snapFreelancer.val();
+                dados.nome = info.nome || "Usuário";
+                dados.avatar = info.foto_perfil || "https://via.placeholder.com/30";
+            } else if (snapContratante.exists()) {
+                const info = snapContratante.val();
+                dados.nome = info.nome || "Usuário";
+                dados.avatar = info.foto_perfil || "https://via.placeholder.com/30";
+            } else {
+                dados.nome = "Usuário";
+                dados.avatar = "https://via.placeholder.com/30";
+            }
+        }
+
+        const chatUser = document.createElement('div');
+        chatUser.dataset.id = outroUid;
+        chatUser.className = 'chat-user';
+        chatUser.innerHTML = `
+      <img src="${dados.avatar}" alt="avatar" />
+            <div class="chat-user-info">
+                <div>${dados.nome}</div>
+                <small>Clique para abrir</small>
+            </div>
+    `;
+
+        chatUser.addEventListener("click", () => {
+            selecionarChatUser(chatUser, dados, userId, outroUid);
         });
 
-        for (const childSnapshot of children) {
-            const dados = childSnapshot.val();
-            const outroUid = childSnapshot.key;
-
-            if (!dados.nome || !dados.avatar) {
-                const freelancerSnap = await get(ref(db, `Freelancer/${outroUid}`));
-                const contratanteSnap = await get(ref(db, `Contratante/${outroUid}`));
-
-                if (freelancerSnap.exists()) {
-                    const info = freelancerSnap.val();
-                    dados.nome = info.nome || "Usuário";
-                    dados.avatar = info.foto_perfil || "https://via.placeholder.com/30";
-                } else if (contratanteSnap.exists()) {
-                    const info = contratanteSnap.val();
-                    dados.nome = info.nome || "Usuário";
-                    dados.avatar = info.foto_perfil || "https://via.placeholder.com/30";
-                } else {
-                    dados.nome = "Usuário";
-                    dados.avatar = "https://via.placeholder.com/30";
-                }
-            }
-
-            const chatUser = document.createElement('div');
-            chatUser.dataset.id = outroUid;
-            chatUser.className = 'chat-user';
-            chatUser.innerHTML = `
-                <img src="${dados.avatar}" alt="avatar" />
-                <div class="chat-user-info">
-                    <div>${dados.nome}</div>
-                    <small>Clique para abrir</small>
-                </div>
-            `;
-            chatUser.addEventListener("click", () => {
-
-                document.querySelectorAll('.chat-user').forEach(el => el.classList.remove('selected'))
-
-                chatUser.classList.add('selected')
-                const header = document.querySelector(".chat-header");
-                const messages = document.querySelector(".messages");
-                const input = document.querySelector(".input-area");
-
-                const headerImg = header.querySelector("img");
-                const headerNome = header.querySelector("span");
-
-                header.classList.remove("show");
-                messages.classList.remove("show");
-                input.classList.remove("show");
-
-                setTimeout(() => {
-                    headerImg.src = dados.avatar;
-                    headerNome.textContent = dados.nome;
-
-                    document.querySelector(".nenhum-contato-selecionado").style.display = "none";
-
-                    header.style.display = "flex";
-                    input.style.display = "flex";
-                    messages.style.display = "flex";
-
-                    void header.offsetWidth;
-
-                    header.classList.add("show");
-                    messages.classList.add("show");
-                    input.classList.add("show");
-                }, 100);
-
-                destinatarioId = outroUid;
-
-                const mensagemRef = ref(db, `Conversas/${user.uid}/${destinatarioId}/mensagens`);
-                onValue(mensagemRef, (snapshot) => {
-                    const messages = document.querySelector('.messages');
-                    messages.innerHTML = '';
-
-                    snapshot.forEach((msgSnap) => {
-                        const msg = msgSnap.val();
-                        const div = document.createElement('div');
-                        div.className = 'message ' + (msg.autor === user.uid ? "user" : 'other');
-                        const textoMsg = document.createElement('span');
-                        textoMsg.textContent = msg.texto;
-
-                        const horario = document.createElement('small');
-                        if (msg.timestamp) {
-                            const hora = new Date(msg.timestamp).toLocaleDateString('pt-BR', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            });
-                            horario.textContent = hora;
-                        } else {
-                            horario.textContent = '--:--';
-                        }
-
-                        div.appendChild(textoMsg);
-                        div.appendChild(horario);
-                        messages.appendChild(div);
-                    });
-
-                    messages.scrollTop = messages.scrollHeight;
-                });
-            });
-
-            sidebar.appendChild(chatUser);
-        }
+        sidebar.appendChild(chatUser);
     });
 }
+
+function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogado, destinatario) {
+    document.querySelectorAll('.chat-user').forEach(el => el.classList.remove('selected'));
+    chatUserEl.classList.add('selected');
+
+    const header = document.querySelector(".chat-header");
+    const headerImg = header.querySelector("img");
+    const headerNome = header.querySelector("span");
+    headerImg.src = dadosUsuario.avatar;
+    headerNome.textContent = dadosUsuario.nome;
+
+    document.querySelector(".nenhum-contato-selecionado").style.display = "none";
+    const input = document.querySelector(".input-area");
+    const messages = document.querySelector(".messages");
+    header.style.display = "flex";
+    input.style.display = "flex";
+    messages.style.display = "flex";
+
+    setTimeout(() => {
+        header.classList.add("show");
+        input.classList.add("show");
+        messages.classList.add("show");
+    }, 50);
+
+    destinatarioId = destinatario;
+
+    const messagesContainer = document.querySelector('.messages');
+    messagesContainer.innerHTML = '';
+
+    const mensagemRef = ref(db, `Conversas/${userIdLogado}/${destinatario}/mensagens`);
+
+    if (window._mensagemListener) {
+        window._mensagemListener();
+    }
+
+    const unsubscribe = onChildAdded(mensagemRef, (msgSnap) => {
+        const msg = msgSnap.val();
+        const div = document.createElement('div');
+        div.className = 'message ' + (msg.autor === userIdLogado ? "user" : 'other');
+
+        const textoMsg = document.createElement('span');
+        textoMsg.textContent = msg.texto;
+
+        const horario = document.createElement('small');
+        if (msg.timestamp) {
+            const hora = new Date(msg.timestamp).toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            horario.textContent = hora;
+        } else {
+            horario.textContent = '--:--';
+        }
+
+        div.appendChild(textoMsg);
+        div.appendChild(horario);
+        messagesContainer.appendChild(div);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    window._mensagemListener = unsubscribe;
+}
+
+
 document.querySelector(".input-area button:last-child").addEventListener("click", async () => {
-    const input = document.querySelector('.input-area input')
-    const textoOriginal = input.value.trim()
-    const texto = censurarTexto(textoOriginal)
-    if (!texto || !destinatarioId) return
+    const input = document.querySelector('.input-area input');
+    const textoOriginal = input.value.trim();
+    const texto = censurarTexto(textoOriginal);
+    if (!texto || !destinatarioId) return;
 
     const user = auth.currentUser;
-    if (!user) return
+    if (!user) return;
 
-    const remetenteId = user.uid
+    const remetenteId = user.uid;
 
     const conversaRemetenteRef = ref(db, `Conversas/${remetenteId}/${destinatarioId}`);
     const conversaSnapshot = await get(conversaRemetenteRef);
 
     if (!conversaSnapshot.exists()) {
+        // Buscar dados para salvar meta da conversa
         const snapFreelancer = await get(ref(db, `Freelancer/${destinatarioId}`));
         const snapContratante = await get(ref(db, `Contratante/${destinatarioId}`));
 
@@ -175,10 +176,18 @@ document.querySelector(".input-area button:last-child").addEventListener("click"
         texto,
         autor: remetenteId,
         timestamp: serverTimestamp()
-    }
+    };
 
-    set(novaMsgRef1, mensagem)
-    set(novaMsgRef2, mensagem)
+    await set(novaMsgRef1, mensagem);
+    await set(novaMsgRef2, mensagem);
 
-    input.value = ''
-})
+    input.value = '';
+});
+
+function limparChat() {
+    document.querySelector(".chat-header").style.display = "none";
+    document.querySelector(".input-area").style.display = "none";
+    document.querySelector(".messages").style.display = "none";
+    document.querySelector(".nenhum-contato-selecionado").style.display = "flex";
+    destinatarioId = null;
+}
