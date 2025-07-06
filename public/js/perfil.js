@@ -663,9 +663,8 @@ async function deletarProjeto(projectId) {
 }
 
 async function abrirModalProjeto(projetoId) {
-    modalBody.innerHTML = '<p style="color: #ccc; text-align: center;">Carregando componentes...</p>';
-    modal.style.display = 'flex';
-    modal.dataset.currentProjectId = projetoId;
+    modal.style.display = 'none';
+    modal.dataset.currentProjectId = '';
 
     try {
         const projetoRef = ref(db, `Projetos/${projetoId}`);
@@ -673,33 +672,32 @@ async function abrirModalProjeto(projetoId) {
 
         if (!projetoSnap.exists()) {
             modalBody.innerHTML = '<p style="color: #ccc; text-align: center;">Projeto não encontrado.</p>';
+            modal.style.display = 'flex';
             return;
         }
 
         const projetoData = { id: projetoId, ...projetoSnap.val() };
         const autorId = projetoData.userId;
 
-        let autorData = {};
-        const { data: fetchedAutorData, type: autorTipo } = await obterDadosUsuario(autorId);
+        const [{ data: fetchedAutorData, type: autorTipo }, componentesSnap, comentarios] = await Promise.all([
+            obterDadosUsuario(autorId),
+            get(ref(db, `componentesProjeto/${projetoId}`)),
+            obterComentariosDoProjeto(projetoId)
+        ]);
 
+        let autorData = {};
         if (fetchedAutorData) {
             autorData = { id: autorId, ...fetchedAutorData, tag: fetchedAutorData.tag || (autorTipo === 'Freelancer' ? 'Freelancer' : 'Contratante') };
         }
 
-        const comentarios = await obterComentariosDoProjeto(projetoId);
-
         const cabecalhoHTML = criarCabecalhoProjetoHTML(projetoData, autorData.nome, autorData.id);
 
-        const compRef = ref(db, `componentesProjeto/${projetoId}`);
-        const snapshot = await get(compRef);
-
         let componentesHTML = '';
-        if (!snapshot.exists()) {
+        if (!componentesSnap.exists()) {
             componentesHTML = '<p style="color: #ccc; text-align: center;">Sem componentes para este projeto.</p>';
         } else {
-            const componentes = Object.values(snapshot.val());
+            const componentes = Object.values(componentesSnap.val());
             componentes.sort((a, b) => a.ordem - b.ordem);
-
             for (const comp of componentes) {
                 if (comp.tipo === 'imagem') {
                     componentesHTML += `<img src="${comp.conteudo}" alt="Imagem do projeto" class="componente-img" style="margin-bottom: 15px; border-radius: 6px; width: 100%; height: auto; display: block;">`;
@@ -711,7 +709,18 @@ async function abrirModalProjeto(projetoId) {
 
         const blocoExtraHTML = await criarBlocoExtraProjetoHTML(projetoData, autorData, comentarios);
 
-        modalBody.innerHTML = cabecalhoHTML + componentesHTML + blocoExtraHTML;
+        modalBody.innerHTML = `
+            ${cabecalhoHTML}
+            <div id="conteudoProjeto" style="padding: 20px;">
+                ${componentesHTML}
+            </div>
+            <div id="blocoExtraProjeto" style="padding: 20px;">
+                ${blocoExtraHTML}
+            </div>
+        `;
+
+        modal.style.display = 'flex';
+        modal.dataset.currentProjectId = projetoId;
 
         modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
             otherProjectCard.addEventListener('click', async (e) => {
@@ -750,6 +759,7 @@ async function abrirModalProjeto(projetoId) {
     } catch (error) {
         console.error("Erro ao carregar o projeto:", error);
         modalBody.innerHTML = `<p style="color: red; text-align: center;">Erro ao carregar o projeto: ${error.message}</p>`;
+        modal.style.display = 'flex';
     }
 }
 
