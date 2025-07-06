@@ -900,7 +900,22 @@ onAuthStateChanged(auth, async (user) => {
     abas.curtidos = [];
     abas.favoritos = [];
 
-    tipoUsuario = await detectarTipoUsuario(perfilUserId);
+    const [
+        propostasSnap,
+        projetosSnap,
+        curtidasSnap,
+        comentariosGlobaisSnap,
+        favoritosSnap,
+        tipoUsuario
+    ] = await Promise.all([
+        get(ref(db, 'Propostas')),
+        get(ref(db, 'Projetos')),
+        get(ref(db, 'Curtidas')),
+        get(ref(db, 'Comentarios')),
+        get(ref(db, 'Favoritos')),
+        detectarTipoUsuario(perfilUserId)
+    ]);
+
     if (!tipoUsuario) {
         containerCard.innerHTML = '<p>Tipo de usuário não encontrado para este ID.</p>';
         contadorProjetos.textContent = '0';
@@ -919,12 +934,6 @@ onAuthStateChanged(auth, async (user) => {
         }
     });
 
-    const propostasSnap = await get(ref(db, 'Propostas'));
-    const projetosSnap = await get(ref(db, 'Projetos'));
-    const curtidasSnap = await get(ref(db, 'Curtidas'));
-    const comentariosGlobaisSnap = await get(ref(db, 'Comentarios'));
-    const favoritosSnap = await get(ref(db, 'Favoritos'));
-
     const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
     const todosComentarios = comentariosGlobaisSnap.exists() ? comentariosGlobaisSnap.val() : {};
@@ -942,9 +951,12 @@ onAuthStateChanged(auth, async (user) => {
     if (perfilUserId) userIdsToFetch.add(perfilUserId);
     if (currentUserId) userIdsToFetch.add(currentUserId);
 
+    const userPromises = Array.from(userIdsToFetch).map(userId => obterDadosUsuario(userId));
+    const fetchedUsers = await Promise.all(userPromises);
+
     const usersData = {};
-    for (const userId of userIdsToFetch) {
-        const { data, type } = await obterDadosUsuario(userId);
+    fetchedUsers.forEach(({ data, type }, index) => {
+        const userId = Array.from(userIdsToFetch)[index];
         if (data) {
             usersData[userId] = {
                 nome: data.nome || 'Desconhecido',
@@ -953,7 +965,7 @@ onAuthStateChanged(auth, async (user) => {
                 tipo: type
             };
         }
-    }
+    });
 
     let curtidosIndex = 0;
     Object.entries(todasCurtidas).forEach(([projetoId, usuariosQueCurtiram]) => {
@@ -996,57 +1008,57 @@ onAuthStateChanged(auth, async (user) => {
                 }
             });
         }
-            } else if (tipoUsuario === 'Freelancer') {
-            if (projetosSnap.exists()) {
-                let projetosIndex = 0;
-                Object.entries(todosProjetos).forEach(([id, dados]) => {
-                    if (dados.userId === perfilUserId) {
-                        const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
-                        const autorData = usersData[dados.userId] || {};
-                        const visualizacoes = dados.visualizacoes || 0;
-                        const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
-                        const comentarios = todosComentarios[id] ? Object.keys(todosComentarios[id]).length : 0;
+    } else if (tipoUsuario === 'Freelancer') {
+        if (projetosSnap.exists()) {
+            let projetosIndex = 0;
+            Object.entries(todosProjetos).forEach(([id, dados]) => {
+                if (dados.userId === perfilUserId) {
+                    const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
+                    const autorData = usersData[dados.userId] || {};
+                    const visualizacoes = dados.visualizacoes || 0;
+                    const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
+                    const comentarios = todosComentarios[id] ? Object.keys(todosComentarios[id]).length : 0;
 
-                        criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, projetosIndex++);
-                    }
-                });
-            }
+                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, projetosIndex++);
+                }
+            });
+        }
     }
 
     mostrarCards('projetos');
 
-const quantidadePropostasFinalizadas = 10; // aqui a quantidade de propostas Finalizads que depois vou fazer ser carregada do perfil
+    const quantidadePropostasFinalizadas = 10;
 
-let nivel = 0;
-let titulo = 'Desenvolvedor iniciante';
+    let nivel = 0;
+    let titulo = 'Desenvolvedor iniciante';
 
-if (quantidadePropostasFinalizadas >= 20) {
-  nivel = 4;
-  titulo = 'Profissional experiente';
-} else if (quantidadePropostasFinalizadas >= 10) {
-  nivel = 3;
-  titulo = 'Profissional em ascensão';
-} else if (quantidadePropostasFinalizadas >= 5) {
-  nivel = 2;
-  titulo = 'Aprendiz ativo';
-} else {
-  nivel = 1;
-  titulo = 'Desenvolvedor iniciante';
-}
+    if (quantidadePropostasFinalizadas >= 20) {
+        nivel = 4;
+        titulo = 'Profissional experiente';
+    } else if (quantidadePropostasFinalizadas >= 10) {
+        nivel = 3;
+        titulo = 'Profissional em ascensão';
+    } else if (quantidadePropostasFinalizadas >= 5) {
+        nivel = 2;
+        titulo = 'Aprendiz ativo';
+    } else {
+        nivel = 1;
+        titulo = 'Desenvolvedor iniciante';
+    }
 
-const blocos = document.querySelectorAll('.exp-blocks .exp');
-blocos.forEach(bloco => bloco.classList.remove('ativo'));
+    const blocos = document.querySelectorAll('.exp-blocks .exp');
+    blocos.forEach(bloco => bloco.classList.remove('ativo'));
 
-for (let i = 0; i < nivel; i++) {
-  setTimeout(() => {
-    blocos[i].classList.add('ativo');
-  }, i * 300);
-}
+    for (let i = 0; i < nivel; i++) {
+        setTimeout(() => {
+            blocos[i].classList.add('ativo');
+        }, i * 300);
+    }
 
-const spanNivel = document.querySelector('.experiencia > span');
-if (spanNivel) {
-  spanNivel.textContent = titulo;
-}
+    const spanNivel = document.querySelector('.experiencia > span');
+    if (spanNivel) {
+        spanNivel.textContent = titulo;
+    }
 });
 
 
