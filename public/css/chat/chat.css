@@ -150,6 +150,10 @@ body {
     scroll-behavior: smooth;
 }
 
+.messages::-webkit-scrollbar {
+    display: none;
+}
+
 .message {
     margin-bottom: 1rem;
     max-width: 60%;
@@ -305,4 +309,239 @@ body {
 
 .chat-user.selected {
     background-color: #414141;
+}
+
+.menu-anexos {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: #222;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 10px;
+    display: none;
+    flex-direction: row;
+    gap: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    z-index: 100;
+}
+
+.menu-anexos.show {
+    display: flex;
+}
+
+.menu-anexos button {
+    background: none;
+    border: none;
+    color: #5274D9;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    transition: background 0.2s ease;
+}
+
+.menu-anexos button:hover {
+    background-color: #333;
+    border-radius: 6px;
+}
+
+.menu-anexos svg {
+    width: 24px;
+    height: 24px;
+    fill: #5274D9;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    background: #1e1e1e;
+    padding: 24px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 700px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: -8px;
+}
+
+.modal-header-separator {
+    height: 1px;
+    width: 100%;
+    background-color: #444;
+}
+
+.modal-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.modal input[type="text"] {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    padding: 12px;
+    color: white;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.2s ease;
+}
+
+.modal input[type="text"]:focus {
+    border-color: #5274D9;
+}
+
+.modal button {
+    background-color: #5274D9;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.modal button:hover {
+    background-color: #3e5cc4;
+}
+
+.modal-tabs button {
+    flex: 1;
+    background: #1e1e1e;
+    border: none;
+    color: white;
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.modal-tabs button.active {
+    background: #2a2a2a;
+}
+
+.modal-tabs svg {
+    width: 20px;
+    height: 20px;
+    fill: #5274D9;
+}
+
+.projetos-lista {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.projeto-card {
+    position: relative;
+    background: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+}
+
+.projeto-card:hover {
+    background: #3a3a3a;
+    transform: translateY(-2px);
+}
+
+.projeto-capa {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+}
+
+/* 🔹 Overlay do título do projeto */
+.projeto-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    text-align: center;
+    padding: 8px;
+}
+
+.projeto-card:hover .projeto-overlay {
+    opacity: 1;
+    pointer-events: none;
+}
+
+.projeto-info {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 8px;
+}
+
+.projeto-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.projeto-nome {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@keyframes modalFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-overlay.show .modal {
+    animation: modalFadeIn 0.25s ease-out forwards;
 }
