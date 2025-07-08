@@ -7,7 +7,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import { censurarTexto } from "/js/chat/censurarPalavroes.js";
-import { projetosCarregados } from "./anexosChat.js";
 const db = getDatabase();
 const auth = getAuth();
 
@@ -116,31 +115,15 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
         const div = document.createElement('div');
         div.className = 'message ' + (msg.autor === userIdLogadoParam ? "user" : 'other');
 
-        if (msg.projeto) {
-            const projetoCard = document.createElement("div");
-            projetoCard.className = "mensagem-projeto2";
-            projetoCard.innerHTML = `
-        <div class="projeto-img-wrapper2">
-            <div class="projeto-overlay2">${msg.projeto.titulo}</div>
-            <img src="${msg.projeto.capa}" alt="Capa" class="projeto-capa2">
-        </div>
-        <div class="projeto-info2">
-            <div class="criador-info2">
-                <img src="${msg.projeto.avatar}" alt="Avatar" class="projeto-avatar2">
-                <span class="projeto-nome2">${msg.projeto.autor}</span>
-            </div>
-        </div>
-    `;
-            div.appendChild(projetoCard);
-        } else {
-            const textoMsg = document.createElement('span');
-            textoMsg.textContent = msg.texto;
-            div.appendChild(textoMsg);
-        }
+
+        const textoMsg = document.createElement('span');
+        textoMsg.textContent = msg.texto;
+        div.appendChild(textoMsg);
+
 
         const horario = document.createElement('small');
         horario.className = 'hora-msg';
-        horario.style.marginBottom ='25px'
+        horario.style.marginBottom = '25px'
         if (msg.timestamp) {
             const hora = new Date(msg.timestamp).toLocaleTimeString('pt-BR', {
                 hour: '2-digit',
@@ -222,43 +205,3 @@ function limparChat() {
     document.querySelector(".nenhum-contato-selecionado").style.display = "flex";
     destinatarioId = null;
 }
-
-function enviarProjetoNoChat(projeto) {
-    const user = auth.currentUser;
-    if (!user || !destinatarioId) return;
-
-    const remetenteId = user.uid;
-
-    const mensagemProjeto = {
-        projeto: {
-            id: projeto.idProjeto,
-            titulo: projeto.titulo,
-            capa: projeto.capaUrl,
-            autor: projeto.nomeCriador,
-            avatar: projeto.avatarCriador
-        },
-        autor: remetenteId,
-        timestamp: serverTimestamp()
-    };
-
-    const novaMsgRef1 = push(ref(db, `Conversas/${remetenteId}/${destinatarioId}/mensagens`));
-    const novaMsgRef2 = push(ref(db, `Conversas/${destinatarioId}/${remetenteId}/mensagens`));
-
-    set(novaMsgRef1, mensagemProjeto);
-    set(novaMsgRef2, mensagemProjeto);
-}
-
-window.addEventListener("projetoAnexado", (e) => {
-    const idProjeto = e.detail.idProjeto;
-
-    if (typeof projetosCarregados !== "undefined") {
-        const projetoSelecionado = projetosCarregados.find(p => p.idProjeto === idProjeto);
-        if (projetoSelecionado) {
-            enviarProjetoNoChat(projetoSelecionado);
-            const modalProjeto = document.getElementById("modalProjeto");
-            if (modalProjeto) modalProjeto.classList.remove("show");
-        }
-    } else {
-        console.warn("projetosCarregados não está definido no escopo do chat.js");
-    }
-});

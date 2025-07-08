@@ -13,7 +13,6 @@ body {
     color: #fff;
     display: flex;
     height: 90vh;
-    overflow: hidden;
 }
 
 .sidebar {
@@ -353,108 +352,6 @@ body {
     fill: #5274D9;
 }
 
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.modal-overlay.show {
-    display: flex;
-}
-
-.modal {
-    background: #1e1e1e;
-    padding: 24px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 700px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.modal h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: -8px;
-}
-
-.modal-header-separator {
-    height: 1px;
-    width: 100%;
-    background-color: #444;
-}
-
-.modal-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 4px;
-}
-
-.modal input[type="text"] {
-    background-color: #2a2a2a;
-    border: 1px solid #444;
-    padding: 12px;
-    color: white;
-    border-radius: 6px;
-    font-size: 15px;
-    outline: none;
-    transition: border 0.2s ease;
-}
-
-.modal input[type="text"]:focus {
-    border-color: #5274D9;
-}
-
-.modal button {
-    background-color: #5274D9;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.modal button:hover {
-    background-color: #3e5cc4;
-}
-
-.modal-tabs button {
-    flex: 1;
-    background: #1e1e1e;
-    border: none;
-    color: white;
-    padding: 10px 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background 0.2s ease;
-}
-
-.modal-tabs button.active {
-    background: #2a2a2a;
-}
-
-.modal-tabs svg {
-    width: 20px;
-    height: 20px;
-    fill: #5274D9;
-}
-
 .projetos-lista {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -597,92 +494,61 @@ body {
     margin-left: 4px;
 }
 
-.mensagem-projeto2 {
-    margin-bottom: 0;
-    width: 350px;
-    height: 220px;
-    background-color: #ff0000;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
+#previewImagemContainer {
+    display: none;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    color: white;
-    object-fit: cover;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    width: 97%;
+    text-align: center;
+    position: relative;
+    z-index: 999;
 }
 
-.mensagem-projeto2 .projeto-img-wrapper2 {
-    width: 100%;
-    height: 500px; /* ou altura que você quiser */
-    position: relative;
-    cursor: pointer;
+.messages.no-scroll {
     overflow: hidden;
 }
-.projeto-img-wrapper2{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+
+#previewImagem {
+    max-width: 100%;
+    max-height: 800px;
+    width: 500px;
+    border-radius: 10px;
 }
 
-.mensagem-projeto2 .projeto-capa2 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 10px 10px 0 0;
-}
-
-
-.mensagem-projeto2 .projeto-overlay2 {
+.btn-fechar-preview {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: #444;
     color: white;
+    border: none;
     font-size: 18px;
-    font-weight: 600;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
-
-    opacity: 0;
-    /* começa invisível */
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    /* para clicar na imagem mesmo com overlay */
+    z-index: 1001;
+    transition: background 0.2s ease;
 }
 
-.mensagem-projeto2 .projeto-img-wrapper2:hover .projeto-overlay2 {
-    opacity: 1;
-    /* mostra o título ao passar o mouse */
+.btn-fechar-preview:hover {
+    background: #666;
 }
 
-.mensagem-projeto2 .projeto-info2 {
-    padding: 10px;
-    background-color: #333;
-    border-radius: 0 0 10px 10px;
+.parteSuperiorPreview {
     display: flex;
+    justify-content: end;
+    height: 10px;
     align-items: center;
-    gap: 10px;
-}
-
-.mensagem-projeto2 .criador-info2 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mensagem-projeto2 .projeto-avatar2 {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.mensagem-projeto2 .projeto-nome2 {
-    font-size: 14px;
+    width: 100%;
+    position: relative;
+    
 }

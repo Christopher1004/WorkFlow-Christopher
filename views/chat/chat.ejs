@@ -39,13 +39,22 @@
             </div>
         </div>
 
+        <div id="previewImagemContainer" style="display: none; padding: 10px;">
+            <div class="parteSuperiorPreview" >
+                <button id="fecharPreview"
+                    style="margin-top: 10px; background: #333; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
+                    X
+                </button>
+            </div>
+
+            <img id="previewImagem" src="" alt="Prévia da imagem" />
+
+        </div>
+        <input type="file" id="inputImagemOculto" accept="image/*" style="display: none;" />
+
         <div class="input-area">
-            <button class="btnAnexos" id="btnAnexos">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20px" height="20px" viewBox="0 0 24 24"
-                    stroke="white">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-                </svg>
+            <button class="btnAnexos" id="btnAnexos" style="font-size: 15px;">
+                +
             </button>
             <input type="text" placeholder="Digite uma mensagem..." />
             <button id="btnEnviar">
@@ -56,19 +65,30 @@
             </button>
 
             <div class="menu-anexos" id="menuAnexos">
-                <button id="anexarProjeto">
+                <button id="anexarImagem">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd"
+                            d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                    Imagens
+                </button>
+                <button id="anexarLink">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6"
+                        style="transform: rotate(44deg);">
+                        <path fill-rule="evenodd"
+                            d="M19.902 4.098a3.75 3.75 0 0 0-5.304 0l-4.5 4.5a3.75 3.75 0 0 0 1.035 6.037.75.75 0 0 1-.646 1.353 5.25 5.25 0 0 1-1.449-8.45l4.5-4.5a5.25 5.25 0 1 1 7.424 7.424l-1.757 1.757a.75.75 0 1 1-1.06-1.06l1.757-1.757a3.75 3.75 0 0 0 0-5.304Zm-7.389 4.267a.75.75 0 0 1 1-.353 5.25 5.25 0 0 1 1.449 8.45l-4.5 4.5a5.25 5.25 0 1 1-7.424-7.424l1.757-1.757a.75.75 0 1 1 1.06 1.06l-1.757 1.757a3.75 3.75 0 1 0 5.304 5.304l4.5-4.5a3.75 3.75 0 0 0-1.035-6.037.75.75 0 0 1-.354-1Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Link
+                </button>
+                <button id="anexarDocumento">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path
                             d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
                     </svg>
-                    Projeto
-                </button>
-                <button id="anexarLink">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                            d="M3.9 12a5 5 0 0 0 0 7.1 5 5 0 0 0 7.1 0l3-3a1 1 0 1 0-1.4-1.4l-3 3a3 3 0 1 1-4.2-4.2l3-3a1 1 0 0 0-1.4-1.4l-3 3zm16.2 0a5 5 0 0 0-7.1 0l-3 3a1 1 0 0 0 1.4 1.4l3-3a3 3 0 1 1 4.2 4.2l-3 3a1 1 0 1 0 1.4 1.4l3-3a5 5 0 0 0 0-7.1z" />
-                    </svg>
-                    Link
+                    Documentos
                 </button>
             </div>
         </div>
@@ -78,57 +98,6 @@
         </div>
     </div>
 
-    <div id="modalLink" class="modal-overlay">
-        <div class="modal">
-            <h2>Anexar Link</h2>
-            <div class="modal-header-separator"></div>
-
-            <input type="text" placeholder="Cole o link aqui" id="inputLink" />
-            <button>Anexar</button>
-        </div>
-    </div>
-
-    <div id="modalProjeto" class="modal-overlay">
-        <div class="modal">
-            <h2>Escolha um Projeto para Anexar</h2>
-            <div class="modal-header-separator"></div>
-            <div class="modal-tabs">
-                <button class="active" data-tab="seus">
-                    <!-- 📁 -->
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
-                    </svg>
-                    Seus Projetos
-                </button>
-                <button data-tab="curtidos">
-                    <!-- ❤️ -->
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 
-        4.42 3 7.5 3c1.74 0 3.41 0.81 
-        4.5 2.09C13.09 3.81 14.76 3 
-        16.5 3 19.58 3 22 5.42 22 
-        8.5c0 3.78-3.4 6.86-8.55 
-        11.54L12 21.35z" />
-                    </svg>
-                    Curtidos
-                </button>
-                <button data-tab="favoritos">
-                    <!-- ⭐ -->
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03
-         L22 9.24l-7.19-.61L12 2 9.19
-          8.63 2 9.24l5.46 4.73L5.82 
-          21z" />
-                    </svg>
-                    Favoritos
-                </button>
-            </div>
-            <div id="projetosLista" class="projetos-lista">
-                <!-- Aqui serão renderizados os cards -->
-            </div>
-        </div>
-    </div>
 </body>
 <script type="module" src="/js/chat/chat.js"></script>
 <script type="module" src="/js/chat/anexosChat.js"></script>
