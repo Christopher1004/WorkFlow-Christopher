@@ -1,7 +1,6 @@
 @import "../globals/globals.css";
 @import "../index/partials/nav.css";
 
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -31,7 +30,6 @@ body {
     position: relative;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-
 }
 
 .sidebar::after {
@@ -80,7 +78,6 @@ body {
     transition: background-color 0.3s ease;
     cursor: pointer;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-
 }
 
 .chat-user:hover {
@@ -478,6 +475,10 @@ body {
     transform: translateY(-2px);
 }
 
+.projeto-img-wrapper {
+    position: relative;
+}
+
 .projeto-capa {
     width: 100%;
     height: 140px;
@@ -485,13 +486,12 @@ body {
     display: block;
 }
 
-/* 🔹 Overlay do título do projeto */
 .projeto-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
     font-size: 16px;
@@ -503,17 +503,25 @@ body {
     transition: opacity 0.2s ease;
     text-align: center;
     padding: 8px;
+    pointer-events: none;
+    z-index: 1;
 }
 
-.projeto-card:hover .projeto-overlay {
+.projeto-img-wrapper:hover .projeto-overlay {
     opacity: 1;
-    pointer-events: none;
 }
 
 .projeto-info {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    gap: 8px;
+    padding: 8px;
+}
+
+.criador-info {
+    display: flex;
+    align-items: center;
     gap: 8px;
 }
 
@@ -525,9 +533,8 @@ body {
 }
 
 .projeto-nome {
-    color: white;
+    color: #fff;
     font-size: 14px;
-    font-weight: 500;
 }
 
 @keyframes modalFadeIn {

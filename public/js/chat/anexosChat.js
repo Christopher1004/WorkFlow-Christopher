@@ -7,9 +7,9 @@ const auth = getAuth();
 const btnAnexos = document.getElementById("btnAnexos");
 const menuAnexos = document.getElementById("menuAnexos");
 
-let projetosCarregados = [];
-let cacheCurtidas = {};   // { idProjeto: true }
-let cacheFavoritos = {};  // { idProjeto: true }
+export let projetosCarregados = [];
+let cacheCurtidas = {};
+let cacheFavoritos = {};
 let authUserId = null;
 
 btnAnexos.addEventListener("click", (e) => {
@@ -79,14 +79,32 @@ function renderizarProjetos(tipo) {
         const card = document.createElement("div");
         card.className = "projeto-card";
         card.innerHTML = `
-            <div class='projeto-overlay'>${p.titulo}</div>
-            <img src="${p.capaUrl}" alt="Capa" class="projeto-capa">
+            <div class="projeto-img-wrapper">
+                <div class='projeto-overlay'>${p.titulo}</div>
+                <img src="${p.capaUrl}" alt="Capa" class="projeto-capa">
+            </div>
             <div class="projeto-info">
-                <img src="${p.avatarCriador}" alt="Avatar" class="projeto-avatar">
-                <span class="projeto-nome">${p.nomeCriador}</span>
+                <div class="criador-info">
+                    <img src="${p.avatarCriador}" alt="Avatar" class="projeto-avatar">
+                    <span class="projeto-nome">${p.nomeCriador}</span>
+                </div>
+                <button class="anexar-ao-chat" data-id="${p.idProjeto}">Anexar</button>
             </div>
         `;
         projetosContainer.appendChild(card);
+    });
+
+    // Adiciona event listeners nos botões DEPOIS de renderizar os cards
+    projetosContainer.querySelectorAll(".anexar-ao-chat").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const idProjeto = btn.getAttribute("data-id");
+            const eventoCustomizado = new CustomEvent("projetoAnexado", {
+                detail: { idProjeto }
+            });
+            window.dispatchEvent(eventoCustomizado);
+            modalProjeto.classList.remove("show");
+        });
     });
 }
 
