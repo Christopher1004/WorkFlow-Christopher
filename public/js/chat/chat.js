@@ -109,24 +109,28 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
 
     const unsubscribe = onChildAdded(mensagemRef, (msgSnap) => {
         const msg = msgSnap.val();
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'message-wrapper';
+
         const div = document.createElement('div');
         div.className = 'message ' + (msg.autor === userIdLogadoParam ? "user" : 'other');
 
         if (msg.projeto) {
             const projetoCard = document.createElement("div");
-            projetoCard.className = "mensagem-projeto";
+            projetoCard.className = "mensagem-projeto2";
             projetoCard.innerHTML = `
-                <div class="projeto-img-wrapper">
-                    <div class="projeto-overlay">${msg.projeto.titulo}</div>
-                    <img src="${msg.projeto.capa}" alt="Capa" class="projeto-capa">
-                </div>
-                <div class="projeto-info">
-                    <div class="criador-info">
-                        <img src="${msg.projeto.avatar}" alt="Avatar" class="projeto-avatar">
-                        <span class="projeto-nome">${msg.projeto.autor}</span>
-                    </div>
-                </div>
-            `;
+        <div class="projeto-img-wrapper2">
+            <div class="projeto-overlay2">${msg.projeto.titulo}</div>
+            <img src="${msg.projeto.capa}" alt="Capa" class="projeto-capa2">
+        </div>
+        <div class="projeto-info2">
+            <div class="criador-info2">
+                <img src="${msg.projeto.avatar}" alt="Avatar" class="projeto-avatar2">
+                <span class="projeto-nome2">${msg.projeto.autor}</span>
+            </div>
+        </div>
+    `;
             div.appendChild(projetoCard);
         } else {
             const textoMsg = document.createElement('span');
@@ -135,6 +139,8 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
         }
 
         const horario = document.createElement('small');
+        horario.className = 'hora-msg';
+        horario.style.marginBottom ='25px'
         if (msg.timestamp) {
             const hora = new Date(msg.timestamp).toLocaleTimeString('pt-BR', {
                 hour: '2-digit',
@@ -145,9 +151,12 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
             horario.textContent = '--:--';
         }
 
-        div.appendChild(horario);
-        messagesContainer.appendChild(div);
+        wrapper.appendChild(div);
+        wrapper.appendChild(horario);
+
+        messagesContainer.appendChild(wrapper);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
     });
 
     window._mensagemListener = unsubscribe;
