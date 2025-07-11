@@ -1,16 +1,16 @@
 import {
-    getDatabase, ref, get, onChildAdded, push, set, serverTimestamp
+    getDatabase, ref, get, onChildAdded
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 import {
     getAuth, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import { censurarTexto } from "/js/chat/censurarPalavroes.js";
+
 const db = getDatabase();
 const auth = getAuth();
 
-let destinatarioId = null;
+export let destinatarioId = null;
 let userIdLogado = null;
 
 onAuthStateChanged(auth, (user) => {
@@ -115,15 +115,24 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
         const div = document.createElement('div');
         div.className = 'message ' + (msg.autor === userIdLogadoParam ? "user" : 'other');
 
+        if (msg.imagem) {
+            const imagem = document.createElement("img");
+            imagem.src = msg.imagem;
+            imagem.style.maxWidth = "400px";
+            imagem.style.borderRadius = "8px";
+            imagem.style.marginBottom = "6px";
+            div.appendChild(imagem);
+        }
 
-        const textoMsg = document.createElement('span');
-        textoMsg.textContent = msg.texto;
-        div.appendChild(textoMsg);
-
+        if (msg.texto) {
+            const textoMsg = document.createElement('span');
+            textoMsg.textContent = msg.texto;
+            div.appendChild(textoMsg);
+        }
 
         const horario = document.createElement('small');
         horario.className = 'hora-msg';
-        horario.style.marginBottom = '25px'
+        horario.style.marginBottom = '25px';
         if (msg.timestamp) {
             const hora = new Date(msg.timestamp).toLocaleTimeString('pt-BR', {
                 hour: '2-digit',
@@ -139,64 +148,10 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
 
         messagesContainer.appendChild(wrapper);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
     });
 
     window._mensagemListener = unsubscribe;
 }
-
-document.getElementById("btnEnviar").addEventListener("click", async () => {
-    const input = document.querySelector('.input-area input');
-    const textoOriginal = input.value.trim();
-    const texto = censurarTexto(textoOriginal);
-    if (!texto || !destinatarioId) return;
-
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const remetenteId = user.uid;
-
-    const conversaRemetenteRef = ref(db, `Conversas/${remetenteId}/${destinatarioId}`);
-    const conversaSnapshot = await get(conversaRemetenteRef);
-
-    if (!conversaSnapshot.exists()) {
-        const snapFreelancer = await get(ref(db, `Freelancer/${destinatarioId}`));
-        const snapContratante = await get(ref(db, `Contratante/${destinatarioId}`));
-
-        let nome = "Usuário";
-        let avatar = "https://via.placeholder.com/30";
-
-        if (snapFreelancer.exists()) {
-            const dados = snapFreelancer.val();
-            nome = dados.nome || nome;
-            avatar = dados.foto_perfil || avatar;
-        } else if (snapContratante.exists()) {
-            const dados = snapContratante.val();
-            nome = dados.nome || nome;
-            avatar = dados.foto_perfil || avatar;
-        }
-
-        await set(conversaRemetenteRef, {
-            nome,
-            avatar,
-            ultimoTimestamp: serverTimestamp()
-        });
-    }
-
-    const novaMsgRef1 = push(ref(db, `Conversas/${remetenteId}/${destinatarioId}/mensagens`));
-    const novaMsgRef2 = push(ref(db, `Conversas/${destinatarioId}/${remetenteId}/mensagens`));
-
-    const mensagem = {
-        texto,
-        autor: remetenteId,
-        timestamp: serverTimestamp()
-    };
-
-    await set(novaMsgRef1, mensagem);
-    await set(novaMsgRef2, mensagem);
-
-    input.value = '';
-});
 
 function limparChat() {
     document.querySelector(".chat-header").style.display = "none";
