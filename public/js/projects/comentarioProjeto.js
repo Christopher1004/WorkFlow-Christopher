@@ -66,16 +66,17 @@ async function carregarComentario(idProjeto) {
                 foto = usuario.foto_perfil || foto
             }
             const div = document.createElement('div')
-            div.className = 'message-card'
+            const isOwn = window.usuarioLogado && c.userId === window.usuarioLogado.id;
+            div.className = `message-card w-full mg-0 pd-0 bg-gray-100 rounded-md ${isOwn ? 'own' : ''}`;
             div.innerHTML = `
-                <div class="user-info">
-                    <img src="${foto}" alt="Usuário">
-                    <div class="user-details">
-                        <span class="user-name">${nome}</span>
-                        <span class="message-time">${formatarTempo(c.data)}</span>
+                <div class="user-info flex items-center gap-2 mg-b-1">
+                    <img src="${foto}" alt="Usuário" class="rounded-full border mg-0" style="width:36px;height:36px;object-fit:cover;"/>
+                    <div class="user-details flex flex-col">
+                        <span class="user-name font-semibold text-base text-white mg-0">${nome}</span>
+                        <span class="message-time text-xs text-gray-25 mg-0">${formatarTempo(c.data)}</span>
                     </div>
                 </div>
-                <div class="message-text">${c.texto}</div>
+                <div class="message-text w-full text-sm text-white mg-t-1 pd-2">${c.texto}</div>
             `;
             container.appendChild(div)
         }

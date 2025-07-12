@@ -4,12 +4,12 @@
 
 <body>
   <section class="section2">
-    <div class="container-filter">
-      <div class="filtro">
-        <h2>Filtrar</h2>
-        <div class="container-area">
-          <label for="area">Área</label>
-          <select name="area" id="area">
+    <div class="container-filter h-full  bg-background">
+      <div class="filtro h-full">
+        <h2 class="text-2xl mg-0">Filtrar</h2>
+        <div class="container-area mg-1">
+          <label for="area" class="mg-0">Área</label>
+          <select class="sm" class="mg-0" name="area" id="area">
             <option value="Todos">Todos</option>
             <option value="Design">Design</option>
             <option value="UI design">UI Design</option>
@@ -21,22 +21,22 @@
             <option value="Poster design">Poster Design</option>
           </select>
         </div>
-        <div class="container-periodo">
-          <label for="periodo">Periodo</label>
-          <select name="periodo" id="periodo">
+        <div class="container-periodo mg-1">
+          <label for="periodo" class="mg-0">Periodo</label>
+          <select class="mg-0 sm" name="periodo" id="periodo">
             <option value="hoje">hoje</option>
             <option value="ultimaSemana">Ultima semana</option>
             <option value="ultimoMes">Ultimo mês</option>
           </select>
         </div>
-        <div class="container-preco">
+        <div class="container-preco mg-1">
           <div class="min">
-            <label for="min">Preço Min.</label>
-            <input type="text" name="min" id="precomin">
+            <label for="min" class="mg-0">Preço Min.</label>
+            <input class="form-control sm" type="text" name="min" id="precomin">
           </div>
           <div class="max">
-            <label for="max">Preço Max.</label>
-            <input type="text" name="max" id="precomax">
+            <label for="max" class="mg-0">Preço Max.</label>
+            <input type="text" class="form-control sm" name="max" id="precomax">
           </div>
         </div>
         <div class="container-botao">
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="propostas">
+    <div class="propostas w-full pd-3" style="height: calc(100vh - 80px - 30px); overflow: auto;">
     </div>
   </section>
 
@@ -130,11 +130,11 @@ function renderizarPropostas(propostasFiltradas) {
         card.dataset.propostaId = p.id;
 
         card.innerHTML = `
-            <div class="head">
+            <div class="head mg-0">
                 <h3>${p.titulo || 'Sem título'}</h3>
                 <div class="price">R$${p.precoMin || '-'} - R$${p.precoMax || '-'}</div>
             </div>
-            <p class="criadoEm">Criado em ${formatarData(p.datacriacao)}</p>
+            <p class="criadoEm mg-0">Criado em ${formatarData(p.datacriacao)}</p>
             <div class="tags">${tagsHtml}</div>
             <p class="description">${p.descricao || ''}</p>
             <div class="client-footer">

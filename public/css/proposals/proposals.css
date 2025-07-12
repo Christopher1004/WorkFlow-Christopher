@@ -4,6 +4,11 @@
 @import "partials/filters.css";
 @import "partials/background.css";
 @import "partials/proposal-cards.css";
+
+body {
+  overflow: hidden;
+}
+
 .profile-link .client-name {
   color: white;
 }

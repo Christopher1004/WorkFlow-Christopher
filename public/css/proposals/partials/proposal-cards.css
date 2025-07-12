@@ -1,8 +1,8 @@
 .propostas .proposta-card {
-  background-color: var(--darkgray);
+  background-color: var(--gray-75);
   color: var(--white);
-  padding: 24px;
-  margin-bottom: 20px;
+  padding: var(--space-3);
+  margin-bottom: 5px;
   border-radius: 12px;
   border: 1px solid var(--gray);
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -17,7 +17,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
   flex-wrap: wrap;
 }
 
@@ -36,22 +35,21 @@
 .proposta-card .criadoEm {
   font-size: 0.9rem;
   color: var(--gray);
-  margin-bottom: 10px;
 }
 
 .tags {
-  padding-block: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-block: 5px;
 }
 
 .tags .tag {
   background-color: var(--tertiary);
   color: white;
   border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 0.85rem;
+  padding: 3px 8px;
+  font-size: var(--f1);
 }
 
 .proposta-card .description {
@@ -139,8 +137,8 @@
 
 .client .profilePic {
   background-color: var(--white);
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--gray);

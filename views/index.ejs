@@ -10,7 +10,7 @@
 
 <body>
 
-    <section class="section-1">
+    <section class="section-1 pd-t-5">
         <div class="categorias-container">
             <div class="flex rounded-lg categorias bg-gray-50 gap-1 pd-1 overflow-hidden">
                 <div class="pd-2 noWrap cardCategoria bg-gray-100 rounded-xl">
@@ -189,84 +189,31 @@
                 </div>
             </div>
 
-
+            <!-- Chat do Projeto -->
+            <div id="chat" class="chat-projeto-container flex flex-col gap-4 pd-3 mg-3 rounded-2xl bg-gray-75 border border-gray-50">
+                <div class="chat-header flex items-center gap-2 mg-b-0">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2 class="text-lg font-bold mg-0 text-white">Chat</h2>
+                </div>
+                <form id="chatForm" class="chat-form flex gap-2 items-center" autocomplete="off" onsubmit="return false;">
+                    <input id="commentInput" type="text" class="form-control" placeholder="Digite sua mensagem..." maxlength="300" style="margin-bottom:0;" />
+                    <button id="btnEnviarComentario" class="btn btn-success mg-0" type="submit" title="Enviar">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </form>
+                <div id="containerComentarios" class="chat-mensagens flex flex-col gap-3 pd-2 bg-gray-50 rounded-md" style="max-height: 220px; overflow-y: auto; min-height: 120px;"></div>
+            </div>
+            <!-- Fim do Chat do Projeto -->
 
         </div>
     </div>
 
     <style>
-        .containerComentarios {
-            background-color: #1a1a1a;
-            padding: 1px;
-        }
-
-        .message-card {
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-            width: 100%;
-            color: white;
-            max-width: 500px;
-            background-color: #2a2a2a;
-            margin-top: 10px;
-            padding-bottom: 1px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-weight: bold;
-            font-size: 15px;
-            color: white;
-            letter-spacing: 1px;
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: rgb(221, 221, 221);
-        }
-
-        .message-text {
-            font-size: 14px;
-            color: white;
-            margin-bottom: 12px;
-            text-indent: 10px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: pre-wrap;
-            margin-left: 10px;
-            margin-right: 2px;
-        }
-
-        .message-actions {
-            font-size: 14px;
-        }
-
-        .message-actions a {
-            color: #6c63ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .message-actions a:hover {
-            text-decoration: underline;
-        }
 
         .input-box {
             width: 100%;
@@ -347,6 +294,12 @@
 
             100% {
                 transform: scale(1);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .pd-x-10 {
+                padding-inline: 4px;
             }
         }
     </style>

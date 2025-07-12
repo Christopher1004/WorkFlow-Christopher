@@ -151,15 +151,16 @@ body {
     justify-content: right;
 }
 
-.formcontratante .botao {
-    display: flex;
-    width: 100%;
-    padding: 20px;
-    border-radius: 5px;
-    border: none;
-    background-color: var(--primary);
-    transition: 0.3s;
+@media (max-width: 500px) {
+    .container-button {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+        justify-content: flex-start;
+    }
 }
+
+
 
 .auth .auth-link:hover {
     background-color: var(--secundary);
@@ -196,6 +197,15 @@ body {
     text-decoration: none;
     transition: 0.3s;
     color: var(--white);
+}
+
+.formcontratante .botao {
+    background-color: var(--base-100);
+    border: 0px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {

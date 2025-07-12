@@ -16,10 +16,22 @@
 
 .form-control:focus, input:focus, select:focus, textarea:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(66, 118, 254, 0.1);
 }
 
 .form-control.error, input.error, select.error, textarea.error {
   border-color: var(--alert);
+  box-shadow: 0 0 0 3px rgba(248, 66, 65, 0.1);
+}
+
+.form-control.success, input.success, select.success, textarea.success {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(53, 67, 106, 0.1);
+}
+
+.form-control.warning, input.warning, select.warning, textarea.warning {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 3px rgba(255, 142, 12, 0.1);
 }
 
 .form-control:disabled, input:disabled, select:disabled, textarea:disabled {
@@ -29,6 +41,47 @@
   opacity: 0.7;
 }
 
+/* TAMANHOS DE FORMULÁRIOS */
+/* Extra Small */
+.form-control.xs, input.xs, select.xs, textarea.xs {
+  padding: 0.6rem 1rem;
+  font-size: var(--f1);
+  border-radius: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Small */
+.form-control.sm, input.sm, select.sm, textarea.sm {
+  padding: 0.8rem 1.2rem;
+  font-size: var(--f2);
+  border-radius: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+/* Medium (padrão) */
+.form-control.md, input.md, select.md, textarea.md {
+  padding: 1.2rem 1.6rem;
+  font-size: var(--f3);
+  border-radius: 0.8rem;
+  margin-bottom: 1.6rem;
+}
+
+/* Large */
+.form-control.lg, input.lg, select.lg, textarea.lg {
+  padding: 1.6rem 2rem;
+  font-size: var(--f4);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Extra Large */
+.form-control.xl, input.xl, select.xl, textarea.xl {
+  padding: 2rem 2.4rem;
+  font-size: var(--f5);
+  border-radius: 1.2rem;
+  margin-bottom: 2.4rem;
+}
+
 /* LABEL */
 label {
   color: var(--white);
@@ -36,6 +89,32 @@ label {
   font-weight: 500;
   margin-bottom: 0.5rem;
   display: block;
+}
+
+/* Tamanhos de label */
+label.xs {
+  font-size: var(--f1);
+  margin-bottom: 0.3rem;
+}
+
+label.sm {
+  font-size: var(--f2);
+  margin-bottom: 0.4rem;
+}
+
+label.md {
+  font-size: var(--f2);
+  margin-bottom: 0.5rem;
+}
+
+label.lg {
+  font-size: var(--f3);
+  margin-bottom: 0.6rem;
+}
+
+label.xl {
+  font-size: var(--f4);
+  margin-bottom: 0.8rem;
 }
 
 /* PLACEHOLDER */
@@ -62,6 +141,27 @@ textarea {
   resize: vertical;
 }
 
+/* Tamanhos de textarea */
+textarea.xs {
+  min-height: 4rem;
+}
+
+textarea.sm {
+  min-height: 6rem;
+}
+
+textarea.md {
+  min-height: 8rem;
+}
+
+textarea.lg {
+  min-height: 12rem;
+}
+
+textarea.xl {
+  min-height: 16rem;
+}
+
 /* INPUT FILE */
 input[type="file"] {
   padding: 2.5rem 1.6rem;
@@ -72,8 +172,34 @@ input[type="file"] {
   font-size: var(--f3);
   cursor: pointer;
 }
+
 input[type="file"]:focus {
   border-color: var(--primary);
+}
+
+/* Tamanhos de input file */
+input[type="file"].xs {
+  padding: 1.5rem 1rem;
+  font-size: var(--f1);
+  border-radius: 0.6rem;
+}
+
+input[type="file"].sm {
+  padding: 2rem 1.2rem;
+  font-size: var(--f2);
+  border-radius: 0.8rem;
+}
+
+input[type="file"].lg {
+  padding: 3rem 2rem;
+  font-size: var(--f4);
+  border-radius: 1.2rem;
+}
+
+input[type="file"].xl {
+  padding: 3.5rem 2.4rem;
+  font-size: var(--f5);
+  border-radius: 1.4rem;
 }
 
 /* INPUTS PEQUENOS (ex: data) */
@@ -85,6 +211,31 @@ input[type="file"]:focus {
   padding: 1.2rem 0.5rem;
 }
 
+/* Variações de input small */
+.input-small.xs {
+  width: 6rem;
+  padding: 0.6rem 0.3rem;
+  font-size: var(--f1);
+}
+
+.input-small.sm {
+  width: 6.5rem;
+  padding: 0.8rem 0.4rem;
+  font-size: var(--f2);
+}
+
+.input-small.lg {
+  width: 8.5rem;
+  padding: 1.6rem 0.6rem;
+  font-size: var(--f4);
+}
+
+.input-small.xl {
+  width: 9.5rem;
+  padding: 2rem 0.8rem;
+  font-size: var(--f5);
+}
+
 /* CHECKBOX E RADIO */
 input[type="checkbox"], input[type="radio"] {
   accent-color: var(--primary);
@@ -92,6 +243,31 @@ input[type="checkbox"], input[type="radio"] {
   height: 1.6rem;
   margin-right: 0.8rem;
   vertical-align: middle;
+}
+
+/* Tamanhos de checkbox e radio */
+input[type="checkbox"].xs, input[type="radio"].xs {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.6rem;
+}
+
+input[type="checkbox"].sm, input[type="radio"].sm {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 0.7rem;
+}
+
+input[type="checkbox"].lg, input[type="radio"].lg {
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 0.9rem;
+}
+
+input[type="checkbox"].xl, input[type="radio"].xl {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
 }
 
 /* TAGS */
@@ -107,11 +283,62 @@ input[type="checkbox"], input[type="radio"] {
   margin-bottom: 0.6rem;
   font-weight: 600;
 }
+
 .form-tag .tag-remove {
   margin-left: 0.8rem;
   cursor: pointer;
   color: var(--white);
   font-size: 1.2em;
+}
+
+/* Tamanhos de tags */
+.form-tag.xs {
+  padding: 0.2rem 0.8rem;
+  font-size: var(--f1);
+  border-radius: 0.4rem;
+}
+
+.form-tag.sm {
+  padding: 0.25rem 1rem;
+  font-size: var(--f2);
+  border-radius: 0.6rem;
+}
+
+.form-tag.lg {
+  padding: 0.4rem 1.4rem;
+  font-size: var(--f3);
+  border-radius: 1rem;
+}
+
+.form-tag.xl {
+  padding: 0.5rem 1.6rem;
+  font-size: var(--f4);
+  border-radius: 1.2rem;
+}
+
+/* Variações de cores para tags */
+.form-tag.success {
+  background: var(--success);
+}
+
+.form-tag.warning {
+  background: var(--warning);
+}
+
+.form-tag.alert {
+  background: var(--alert);
+}
+
+.form-tag.secondary {
+  background: var(--secundary);
+}
+
+.form-tag.tertiary {
+  background: var(--tertiary);
+}
+
+.form-tag.quaternary {
+  background: var(--quaternary);
 }
 
 /* ESTADO DE ERRO */
@@ -123,6 +350,31 @@ input[type="checkbox"], input[type="radio"] {
   display: block;
 }
 
+/* Tamanhos de mensagens de erro */
+.form-error.xs {
+  font-size: var(--f1);
+  margin-top: -0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.form-error.sm {
+  font-size: var(--f2);
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.form-error.lg {
+  font-size: var(--f3);
+  margin-top: -1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.form-error.xl {
+  font-size: var(--f4);
+  margin-top: -1.6rem;
+  margin-bottom: 1.6rem;
+}
+
 /* ESTADO DE SUCESSO */
 .form-success {
   color: var(--success);
@@ -132,14 +384,455 @@ input[type="checkbox"], input[type="radio"] {
   display: block;
 }
 
+/* Tamanhos de mensagens de sucesso */
+.form-success.xs {
+  font-size: var(--f1);
+  margin-top: -0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.form-success.sm {
+  font-size: var(--f2);
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.form-success.lg {
+  font-size: var(--f3);
+  margin-top: -1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.form-success.xl {
+  font-size: var(--f4);
+  margin-top: -1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+/* ESTADO DE AVISO */
+.form-warning {
+  color: var(--warning);
+  font-size: var(--f2);
+  margin-top: -1.2rem;
+  margin-bottom: 1.2rem;
+  display: block;
+}
+
+/* Tamanhos de mensagens de aviso */
+.form-warning.xs {
+  font-size: var(--f1);
+  margin-top: -0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.form-warning.sm {
+  font-size: var(--f2);
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.form-warning.lg {
+  font-size: var(--f3);
+  margin-top: -1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.form-warning.xl {
+  font-size: var(--f4);
+  margin-top: -1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+/* INPUT GROUPS */
+.input-group {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 1.6rem;
+}
+
+.input-group .form-control {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.input-group .form-control:first-child {
+  border-top-left-radius: 0.8rem;
+  border-bottom-left-radius: 0.8rem;
+}
+
+.input-group .form-control:last-child {
+  border-top-right-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+}
+
+.input-group-addon {
+  background: var(--gray-50);
+  color: var(--gray-25);
+  border: 2px solid var(--gray-50);
+  border-left: none;
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  align-items: center;
+  font-size: var(--f3);
+}
+
+.input-group-addon:first-child {
+  border-left: 2px solid var(--gray-50);
+  border-top-left-radius: 0.8rem;
+  border-bottom-left-radius: 0.8rem;
+}
+
+.input-group-addon:last-child {
+  border-top-right-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+}
+
+/* Tamanhos de input groups */
+.input-group.xs .form-control,
+.input-group.xs .input-group-addon {
+  padding: 0.6rem 1rem;
+  font-size: var(--f1);
+  border-radius: 0.4rem;
+}
+
+.input-group.sm .form-control,
+.input-group.sm .input-group-addon {
+  padding: 0.8rem 1.2rem;
+  font-size: var(--f2);
+  border-radius: 0.6rem;
+}
+
+.input-group.lg .form-control,
+.input-group.lg .input-group-addon {
+  padding: 1.6rem 2rem;
+  font-size: var(--f4);
+  border-radius: 1rem;
+}
+
+.input-group.xl .form-control,
+.input-group.xl .input-group-addon {
+  padding: 2rem 2.4rem;
+  font-size: var(--f5);
+  border-radius: 1.2rem;
+}
+
+/* FORM ROWS */
+.form-row {
+  display: flex;
+  gap: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.form-row .form-control {
+  margin-bottom: 0;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* Responsividade para form rows */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* FORM GROUPS */
+.form-group {
+  margin-bottom: 1.6rem;
+}
+
+.form-group.inline {
+  display: inline-block;
+  margin-right: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.form-group.required label::after {
+  content: " *";
+  color: var(--alert);
+}
+
+/* SWITCH TOGGLE */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 4.8rem;
+  height: 2.4rem;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--gray-50);
+  transition: 0.2s;
+  border-radius: 2.4rem;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 1.8rem;
+  width: 1.8rem;
+  left: 0.3rem;
+  bottom: 0.3rem;
+  background-color: var(--white);
+  transition: 0.2s;
+  border-radius: 50%;
+}
+
+input:checked + .switch-slider {
+  background-color: var(--primary);
+}
+
+input:checked + .switch-slider:before {
+  transform: translateX(2.4rem);
+}
+
+/* Tamanhos de switch */
+.switch.xs {
+  width: 3.2rem;
+  height: 1.6rem;
+}
+
+.switch.xs .switch-slider:before {
+  height: 1.2rem;
+  width: 1.2rem;
+  left: 0.2rem;
+  bottom: 0.2rem;
+}
+
+.switch.xs input:checked + .switch-slider:before {
+  transform: translateX(1.6rem);
+}
+
+.switch.sm {
+  width: 4rem;
+  height: 2rem;
+}
+
+.switch.sm .switch-slider:before {
+  height: 1.4rem;
+  width: 1.4rem;
+  left: 0.3rem;
+  bottom: 0.3rem;
+}
+
+.switch.sm input:checked + .switch-slider:before {
+  transform: translateX(2rem);
+}
+
+.switch.lg {
+  width: 5.6rem;
+  height: 2.8rem;
+}
+
+.switch.lg .switch-slider:before {
+  height: 2.2rem;
+  width: 2.2rem;
+  left: 0.3rem;
+  bottom: 0.3rem;
+}
+
+.switch.lg input:checked + .switch-slider:before {
+  transform: translateX(2.8rem);
+}
+
+.switch.xl {
+  width: 6.4rem;
+  height: 3.2rem;
+}
+
+.switch.xl .switch-slider:before {
+  height: 2.6rem;
+  width: 2.6rem;
+  left: 0.3rem;
+  bottom: 0.3rem;
+}
+
+.switch.xl input:checked + .switch-slider:before {
+  transform: translateX(3.2rem);
+}
+
+/* RANGE SLIDER */
+input[type="range"] {
+  width: 100%;
+  height: 0.6rem;
+  border-radius: 0.3rem;
+  background: var(--gray-50);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 1.6rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: none;
+}
+
+/* Tamanhos de range */
+input[type="range"].xs {
+  height: 0.4rem;
+}
+
+input[type="range"].xs::-webkit-slider-thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+input[type="range"].xs::-moz-range-thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+input[type="range"].sm {
+  height: 0.5rem;
+}
+
+input[type="range"].sm::-webkit-slider-thumb {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+input[type="range"].sm::-moz-range-thumb {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+input[type="range"].lg {
+  height: 0.8rem;
+}
+
+input[type="range"].lg::-webkit-slider-thumb {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+input[type="range"].lg::-moz-range-thumb {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+input[type="range"].xl {
+  height: 1rem;
+}
+
+input[type="range"].xl::-webkit-slider-thumb {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+input[type="range"].xl::-moz-range-thumb {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
 /* Remover setas do input number */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 input[type=number] {
-    appearance: textfield;
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
+  appearance: textfield;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* FORM VALIDATION STATES */
+.form-control.is-valid {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(53, 67, 106, 0.1);
+}
+
+.form-control.is-invalid {
+  border-color: var(--alert);
+  box-shadow: 0 0 0 3px rgba(248, 66, 65, 0.1);
+}
+
+.form-control.is-warning {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 3px rgba(255, 142, 12, 0.1);
+}
+
+/* FORM LOADING STATE */
+.form-control.loading {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.5rem;
+  padding-right: 3rem;
+}
+
+/* FORM ICONS */
+.form-control.has-icon-left {
+  padding-left: 3.2rem;
+}
+
+.form-control.has-icon-right {
+  padding-right: 3.2rem;
+}
+
+.form-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-25);
+  font-size: 1.6rem;
+  pointer-events: none;
+}
+
+.form-icon-left {
+  left: 1.2rem;
+}
+
+.form-icon-right {
+  right: 1.2rem;
+}
+
+/* Responsividade para ícones */
+@media (max-width: 768px) {
+  .form-control.has-icon-left {
+    padding-left: 2.8rem;
   }
+  
+  .form-control.has-icon-right {
+    padding-right: 2.8rem;
+  }
+  
+  .form-icon-left {
+    left: 1rem;
+  }
+  
+  .form-icon-right {
+    right: 1rem;
+  }
+}
