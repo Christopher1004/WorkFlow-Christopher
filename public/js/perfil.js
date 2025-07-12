@@ -188,7 +188,7 @@ function formatarTempoComentario(timestamp) {
     }
 }
 
-function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0, cardIndex = 0) {
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0, cardIndex = 0, isProjectFavoritedByViewer = false) { 
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
@@ -199,9 +199,13 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
     const autorDisplayFoto = autorFotoUrl;
     const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
     let isLikedForDisplay = isProjectLikedByViewer;
+    let isFavoritedForDisplay = isProjectFavoritedByViewer; 
 
     if (aba === 'curtidos' && perfilUserId === currentUserId) {
         isLikedForDisplay = true;
+    }
+    if (aba === 'favoritos' && perfilUserId === currentUserId) { 
+        isFavoritedForDisplay = true;
     }
 
     card.innerHTML = `
@@ -222,6 +226,20 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
                                     <path fill-rule="evenodd" clip-rule="evenodd"
                                         d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
                                         fill="none" stroke="black" />
+                                </svg>
+                            `}
+                        </div>
+                        <div class="favorite ${isFavoritedForDisplay ? 'favoritado' : ''}" title="${isFavoritedForDisplay ? 'Desfavoritar' : 'Favoritar'}" style="cursor:pointer;" data-projeto-id="${id}" data-favorited="${isFavoritedForDisplay ? 'true' : 'false'}">
+                            ${isFavoritedForDisplay ? `
+                                <svg width="25" height="25" viewBox="0 0 64 64" fill="#426AB2" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z"
+                                        stroke="#426AB2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            ` : `
+                                <svg width="25" height="25" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z"
+                                        stroke="#426AB2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                             `}
                         </div>
@@ -278,14 +296,12 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
         </div>
     `;
 
-    // Adicionar evento de carregamento da imagem para efeito fade
     const img = card.querySelector('.thumbnail');
     if (img) {
         img.addEventListener('load', () => {
             img.classList.add('loaded');
         });
-        
-        // Fallback para imagens que já estão em cache
+
         if (img.complete) {
             img.classList.add('loaded');
         }
@@ -845,6 +861,72 @@ containerCard.addEventListener('click', async (event) => {
         }
         return;
     }
+     const favoriteButton = event.target.closest('.favorite'); 
+    if (favoriteButton) {
+        if (!auth.currentUser) {
+            alert('Você precisa estar logado para favoritar projetos!');
+            return;
+        }
+
+        const projectId = favoriteButton.dataset.projetoId;
+        const userId = auth.currentUser.uid;
+        let isCurrentlyFavorited = favoriteButton.dataset.favorited === 'true';
+        const favoritosRef = ref(db, `Favoritos/${projectId}/${userId}`);
+
+        if (isCurrentlyFavorited) {
+            await set(favoritosRef, null); 
+            favoriteButton.dataset.favorited = 'false';
+            favoriteButton.classList.remove('favoritado');
+            favoriteButton.innerHTML = `
+                <svg width="25" height="25" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z"
+                        stroke="#426AB2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            `;
+            favoriteButton.title = 'Favoritar';
+
+            const index = abas.favoritos.findIndex(card => card.dataset.projetoId === projectId);
+            if (index > -1) {
+                abas.favoritos[index].remove(); 
+                abas.favoritos.splice(index, 1); 
+            }
+
+        } else {
+            await set(favoritosRef, true); 
+            favoriteButton.dataset.favorited = 'true';
+            favoriteButton.classList.add('favoritado');
+            favoriteButton.innerHTML = `
+                <svg width="25" height="25" viewBox="0 0 64 64" fill="#426AB2" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z"
+                                        stroke="#426AB2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            `;
+            favoriteButton.title = 'Desfavoritar';
+
+            const existingCardInFavorited = abas.favoritos.find(card => card.dataset.projetoId === projectId);
+            if (!existingCardInFavorited) {
+                const projetoSnap = await get(ref(db, `Projetos/${projectId}`));
+                if (projetoSnap.exists()) {
+                    const projetoData = projetoSnap.val();
+                    const autorData = (await obterDadosUsuario(projetoData.userId)).data || {};
+                    const visualizacoesSnap = await get(ref(db, `Projetos/${projectId}/visualizacoes`));
+                    const visualizacoes = visualizacoesSnap.exists() ? visualizacoesSnap.val() : 0;
+                    const curtidasCountSnap = await get(ref(db, `Curtidas/${projectId}`));
+                    const curtidas = curtidasCountSnap.exists() ? Object.keys(curtidasCountSnap.val()).length : 0;
+                    const comentariosCountSnap = await get(ref(db, `Comentarios/${projectId}`));
+                    const comentarios = comentariosCountSnap.exists() ? Object.keys(comentariosCountSnap.val()).length : 0;
+                    const isLikedByViewer = todasCurtidas[projectId] && todasCurtidas[projectId][currentUserId]; 
+                    
+                    criarCardProjeto(projectId, projetoData, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, 0, true);
+                }
+            }
+        }
+        if (document.querySelector('.tab-button.active')?.dataset.tab === 'favoritos' && perfilUserId === userId) {
+            mostrarCards('favoritos');
+        }
+        return;
+    }
 
     const cardProjeto = event.target.closest('.card_projeto');
     if (cardProjeto) {
@@ -866,7 +948,7 @@ containerCard.addEventListener('click', async (event) => {
         const isInteractiveElement = clickedElement.closest('.candidatos') || clickedElement.closest('.enviar') || clickedElement.closest('.client');
 
         if (!isInteractiveElement) {
-            // Lógica para abrir modal de proposta ou redirecionar
+
         }
         return;
     }
@@ -905,7 +987,7 @@ onAuthStateChanged(auth, async (user) => {
         projetosSnap,
         curtidasSnap,
         comentariosGlobaisSnap,
-        favoritosSnap,
+        favoritosSnap, 
         tipoUsuario
     ] = await Promise.all([
         get(ref(db, 'Propostas')),
@@ -922,6 +1004,7 @@ onAuthStateChanged(auth, async (user) => {
         return;
     }
 
+
     if (tipoUsuario === 'Contratante') {
         const labelProjetos = document.querySelector('.projetos-realizados p');
         if (labelProjetos) labelProjetos.textContent = 'Propostas realizadas';
@@ -934,17 +1017,10 @@ onAuthStateChanged(auth, async (user) => {
         }
     });
 
-    const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
+   const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
     const todosComentarios = comentariosGlobaisSnap.exists() ? comentariosGlobaisSnap.val() : {};
-    const todosFavoritos = favoritosSnap.exists() ? favoritosSnap.val() : {};
-
-    const todosFavoritosDoPerfil = {};
-    Object.entries(todosFavoritos).forEach(([projetoId, usersFavoritaram]) => {
-        if (usersFavoritaram[perfilUserId]) {
-            todosFavoritosDoPerfil[projetoId] = true;
-        }
-    });
+    const todosFavoritos = favoritosSnap.exists() ? favoritosSnap.val() : {}; 
 
     const userIdsToFetch = new Set();
     Object.values(todosProjetos).forEach(proj => userIdsToFetch.add(proj.userId));
@@ -969,37 +1045,41 @@ onAuthStateChanged(auth, async (user) => {
 
     let curtidosIndex = 0;
     Object.entries(todasCurtidas).forEach(([projetoId, usuariosQueCurtiram]) => {
-        if (usuariosQueCurtiram[perfilUserId]) {
+        if (usuariosQueCurtiram[perfilUserId]) { 
             const projeto = todosProjetos[projetoId];
             if (projeto) {
                 const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
+                const isFavoritedByViewer = todosFavoritos[projetoId] && todosFavoritos[projetoId][currentUserId]; 
                 const autorData = usersData[projeto.userId] || {};
                 const visualizacoes = projeto.visualizacoes || 0;
                 const curtidas = Object.keys(usuariosQueCurtiram).length;
                 const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
 
-                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, curtidosIndex++);
+                criarCardProjeto(projetoId, projeto, 'curtidos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, curtidosIndex++, isFavoritedByViewer);
             }
         }
     });
 
     let favoritosIndex = 0;
-    Object.entries(todosFavoritosDoPerfil).forEach(([projetoId, isFavorited]) => {
-        if (isFavorited) {
-            const projeto = todosProjetos[projetoId];
-            if (projeto) {
-                const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
-                const autorData = usersData[projeto.userId] || {};
-                const visualizacoes = projeto.visualizacoes || 0;
-                const curtidas = todasCurtidas[projetoId] ? Object.keys(todasCurtidas[projetoId]).length : 0;
-                const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
-
-                criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, favoritosIndex++);
+    if (todosFavoritos) {
+        Object.entries(todosFavoritos).forEach(([projetoId, usuariosQueFavoritaram]) => {
+            if (usuariosQueFavoritaram[perfilUserId]) { 
+                const projeto = todosProjetos[projetoId];
+                if (projeto) {
+                    const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
+                    const isFavoritedByViewer = todosFavoritos[projetoId] && todosFavoritos[projetoId][currentUserId]; 
+                    const autorData = usersData[projeto.userId] || {};
+                    const visualizacoes = projeto.visualizacoes || 0;
+                    const curtidas = todasCurtidas[projetoId] ? Object.keys(todasCurtidas[projetoId]).length : 0;
+                    const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
+                    
+                    criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, favoritosIndex++, isFavoritedByViewer);
+                }
             }
-        }
-    });
+        });
+    }
 
-    if (tipoUsuario === 'Contratante') {
+     if (tipoUsuario === 'Contratante') {
         if (propostasSnap.exists()) {
             const propostas = propostasSnap.val();
             Object.entries(propostas).forEach(([propostaId, p]) => {
@@ -1014,18 +1094,19 @@ onAuthStateChanged(auth, async (user) => {
             Object.entries(todosProjetos).forEach(([id, dados]) => {
                 if (dados.userId === perfilUserId) {
                     const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
+                    const isFavoritedByViewer = todosFavoritos[id] && todosFavoritos[id][currentUserId]; 
                     const autorData = usersData[dados.userId] || {};
                     const visualizacoes = dados.visualizacoes || 0;
                     const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
                     const comentarios = todosComentarios[id] ? Object.keys(todosComentarios[id]).length : 0;
 
-                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, projetosIndex++);
+                    criarCardProjeto(id, dados, 'projetos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, projetosIndex++, isFavoritedByViewer);
                 }
             });
         }
     }
 
-    mostrarCards('projetos');
+    mostrarCards('projetos'); 
 
     const quantidadePropostasFinalizadas = 10;
 

@@ -1158,5 +1158,29 @@
   transform: scale(1.0); 
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
 }
+.favorite.favoritado svg path {
+    fill: #5274D9; 
+}
+.favorite svg {
+    transition: transform 0.3s ease; 
+}
 
+.favorite.favoritado svg {
+    animation: pulse-favorite 0.5s ease-in-out; 
+}
 
+@keyframes pulse-favorite {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2); 
+    }
+    100% {
+        transform: scale(1); 
+    }
+}
+
+.favorite:hover svg {
+    transform: scale(1.1); 
+}
