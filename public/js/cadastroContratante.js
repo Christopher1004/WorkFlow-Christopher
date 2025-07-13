@@ -1,6 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    GithubAuthProvider,
+    signInWithPopup,
+    signOut
+} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 //const supabaseURL = "https://uvvquwlgbkdcnchiyqzs.supabase.co"
@@ -133,4 +141,51 @@ form.addEventListener('submit', async (event) => {
         }
         alert(errorMessage);
     }
-})    
+})
+
+
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
+
+const googleBtn = document.querySelector('.auth-link.google');
+const githubBtn = document.querySelector('.auth-link.github');
+
+async function cadastroSocialContratante(provider) {
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const userId = user.uid;
+
+        const dbRef = ref(database);
+        const contratanteSnap = await get(child(dbRef, `Contratante/${userId}`));
+
+        if (contratanteSnap.exists()) {
+            alert("Conta já cadastrada. Por favor, faça login.");
+            await signOut(auth);
+            window.location.href = '/login';
+            return;
+        }
+
+        const userData = {
+            email: user.email,
+            dataCadastro: new Date().toISOString(),
+            emailVerificado: user.emailVerified || false,
+            tipoUsuario: 'contratante',
+            documento: null,
+            Nome_usuario: null,
+            Telefone: null,
+            Biografia: null,
+            Foto_perfil: user.photoURL || null
+        };
+        await set(ref(database, `Contratante/${userId}`), userData);
+
+        window.location.href = '/';
+
+    } catch (error) {
+        console.error("Erro no cadastro social contratante:", error);
+        alert("Erro ao cadastrar com login social. Tente novamente.");
+    }
+}
+
+googleBtn.addEventListener('click', () => cadastroSocialContratante(googleProvider));
+githubBtn.addEventListener('click', () => cadastroSocialContratante(githubProvider));
