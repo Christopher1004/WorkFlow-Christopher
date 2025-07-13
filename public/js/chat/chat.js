@@ -1,75 +1,196 @@
 import {
-    getDatabase, ref, get, onChildAdded
+    getDatabase, ref, get, set, onChildAdded, onValue, onDisconnect, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 import {
     getAuth, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-
 const db = getDatabase();
 const auth = getAuth();
 
 export let destinatarioId = null;
 let userIdLogado = null;
+const conversasMap = new Map();
+const listenersMensagens = new Map();
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
         userIdLogado = user.uid;
+        registrarStatusOnline(user.uid);
         iniciarChat(user);
     } else {
         userIdLogado = null;
-        document.querySelector('.sidebar').innerHTML = '';
+        document.querySelectorAll('.chat-user').forEach(el => el.remove());
         limparChat();
+        atualizarBadgeNavbar(0);
+        listenersMensagens.forEach(unsub => unsub());
+        listenersMensagens.clear();
     }
 });
+
+export function registrarStatusOnline(userId) {
+    const statusRef = ref(db, `/status/${userId}`);
+    const conectadoRef = ref(db, ".info/connected");
+
+    onValue(conectadoRef, (snap) => {
+        if (!snap.val()) return;
+        onDisconnect(statusRef).set({ online: false, last_seen: serverTimestamp() }).then(() => {
+            set(statusRef, { online: true, last_seen: serverTimestamp() });
+        });
+    });
+}
 
 async function iniciarChat(user) {
     const userId = user.uid;
     const conversasRef = ref(db, `Conversas/${userId}`);
-    const sidebar = document.querySelector('.sidebar');
+    const conversasSnap = await get(conversasRef);
+    if (!conversasSnap.exists()) return;
 
-    onChildAdded(conversasRef, async (snapshot) => {
-        const outroUid = snapshot.key;
-        const dados = snapshot.val();
+    const conversaKeys = Object.keys(conversasSnap.val());
+    for (const outroUid of conversaKeys) {
+        escutarUltimaMensagem(userId, outroUid);
+    }
+}
 
-        if (sidebar.querySelector(`.chat-user[data-id="${outroUid}"]`)) return;
+async function escutarUltimaMensagem(userId, outroUid) {
+    const mensagensRef = ref(db, `Conversas/${userId}/${outroUid}/mensagens`);
+    const leituraRef = ref(db, `LeituraMensagens/${userId}/${outroUid}`);
 
-        if (!dados.nome || !dados.avatar) {
-            const snapFreelancer = await get(ref(db, `Freelancer/${outroUid}`));
-            const snapContratante = await get(ref(db, `Contratante/${outroUid}`));
+    let nome = "Usuário";
+    let avatar = "https://via.placeholder.com/30";
 
-            if (snapFreelancer.exists()) {
-                const info = snapFreelancer.val();
-                dados.nome = info.nome || "Usuário";
-                dados.avatar = info.foto_perfil || "https://via.placeholder.com/30";
-            } else if (snapContratante.exists()) {
-                const info = snapContratante.val();
-                dados.nome = info.nome || "Usuário";
-                dados.avatar = info.foto_perfil || "https://via.placeholder.com/30";
-            } else {
-                dados.nome = "Usuário";
-                dados.avatar = "https://via.placeholder.com/30";
-            }
+    const snapFreelancer = await get(ref(db, `Freelancer/${outroUid}`));
+    const snapContratante = await get(ref(db, `Contratante/${outroUid}`));
+
+    if (snapFreelancer.exists()) {
+        const info = snapFreelancer.val();
+        nome = info.nome || nome;
+        avatar = info.foto_perfil || avatar;
+    } else if (snapContratante.exists()) {
+        const info = snapContratante.val();
+        nome = info.nome || nome;
+        avatar = info.foto_perfil || avatar;
+    }
+
+    onValue(leituraRef, (snapLeitura) => {
+        const ultimaMensagemLida = snapLeitura.val()?.timestamp || 0;
+
+        if (listenersMensagens.has(outroUid)) {
+            const unsub = listenersMensagens.get(outroUid);
+            unsub();
+            listenersMensagens.delete(outroUid);
         }
 
+        conversasMap.delete(outroUid);
+
+        const unsubscribeMsg = onChildAdded(mensagensRef, (snapMsg) => {
+            const msg = snapMsg.val();
+            if (!msg.timestamp) return;
+
+            const mensagemNaoLida = msg.autor !== userIdLogado && msg.timestamp > ultimaMensagemLida;
+
+            conversasMap.set(outroUid, {
+                id: outroUid,
+                nome,
+                avatar,
+                ultimaMensagem: msg.timestamp,
+                ultimaMensagemTexto: msg.texto ? msg.texto : (msg.imagem ? "📷 Imagem" : ""),
+                lida: !mensagemNaoLida
+            });
+
+            atualizarSidebarEBadge();
+        });
+
+        listenersMensagens.set(outroUid, unsubscribeMsg);
+    });
+}
+
+function atualizarSidebarEBadge() {
+    renderizarSidebar(userIdLogado);
+    const naoLidasCount = [...conversasMap.values()].filter(c => !c.lida).length;
+    atualizarBadgeNavbar(naoLidasCount);
+}
+
+function atualizarBadgeNavbar(contagem) {
+    const badge = document.querySelector('#badge-mensagens');
+    if (!badge) return;
+
+    if (contagem > 0) {
+        badge.style.display = 'flex';
+        badge.textContent = contagem > 99 ? '99+' : contagem;
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+function renderizarSidebar(userIdLogadoParam) {
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+    sidebar.querySelectorAll('.chat-user').forEach(el => el.remove());
+
+    const conversasOrdenadas = [...conversasMap.values()].sort(
+        (a, b) => b.ultimaMensagem - a.ultimaMensagem
+    );
+
+    for (const conversa of conversasOrdenadas) {
         const chatUser = document.createElement('div');
-        chatUser.dataset.id = outroUid;
+        chatUser.dataset.id = conversa.id;
         chatUser.className = 'chat-user';
+
+        const naoLidaClass = conversa.lida ? '' : 'nao-lida';
+
         chatUser.innerHTML = `
-      <img src="${dados.avatar}" alt="avatar" />
-      <div class="chat-user-info">
-        <div>${dados.nome}</div>
-        <small>Clique para abrir</small>
-      </div>
-    `;
+            <div style="position: relative; margin-right: 10px;">
+                <img src="${conversa.avatar}" alt="avatar" style="width: 30px; height: 30px; border-radius: 50%;" />
+                <span class="status-dot" style="
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    top: 25px;
+                    width: 10px;
+                    height: 10px;
+                    background-color: gray;
+                    border-radius: 50%;
+                    border: 2px solid #111;
+                "></span>
+            </div>
+            <div class="chat-user-info ${naoLidaClass}">
+                <div>${conversa.nome}</div>
+                <small>Clique para abrir</small>
+            </div>
+            ${!conversa.lida ? `<span class="notificacao-nao-lida" style="
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 10px;
+                height: 10px;
+                background: red;
+                border-radius: 50%;
+                border: 1px solid white;
+                z-index: 10;
+            "></span>` : ''}
+        `;
 
         chatUser.addEventListener("click", () => {
-            selecionarChatUser(chatUser, dados, userId, outroUid);
+            selecionarChatUser(chatUser, conversa, userIdLogadoParam, conversa.id);
         });
 
         sidebar.appendChild(chatUser);
-    });
+
+        setTimeout(() => {
+            chatUser.classList.add('animated');
+        }, 10);
+
+        const statusRef = ref(db, `status/${conversa.id}`);
+        const dot = chatUser.querySelector('.status-dot');
+
+        onValue(statusRef, (snap) => {
+            const status = snap.val();
+            dot.style.backgroundColor = (status && status.online) ? 'limegreen' : 'gray';
+        });
+    }
 }
 
 function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destinatario) {
@@ -100,13 +221,22 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
     const messagesContainer = document.querySelector('.messages');
     messagesContainer.innerHTML = '';
 
-    const mensagemRef = ref(db, `Conversas/${userIdLogadoParam}/${destinatario}/mensagens`);
+    const leituraRef = ref(db, `LeituraMensagens/${userIdLogadoParam}/${destinatario}`);
+    const mensagensRef = ref(db, `Conversas/${userIdLogadoParam}/${destinatario}/mensagens`);
 
     if (window._mensagemListener) {
         window._mensagemListener();
     }
 
-    const unsubscribe = onChildAdded(mensagemRef, (msgSnap) => {
+    get(mensagensRef).then(snap => {
+        if (snap.exists()) {
+            const msgs = snap.val();
+            const ultTs = Math.max(...Object.values(msgs).map(m => m.timestamp || 0));
+            set(leituraRef, { timestamp: ultTs });
+        }
+    });
+
+    const unsubscribe = onChildAdded(mensagensRef, (msgSnap) => {
         const msg = msgSnap.val();
 
         const wrapper = document.createElement('div');
@@ -133,10 +263,10 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
         const horario = document.createElement('small');
         horario.className = 'hora-msg';
         horario.style.marginBottom = '25px';
+
         if (msg.timestamp) {
             const hora = new Date(msg.timestamp).toLocaleTimeString('pt-BR', {
-                hour: '2-digit',
-                minute: '2-digit'
+                hour: '2-digit', minute: '2-digit'
             });
             horario.textContent = hora;
         } else {

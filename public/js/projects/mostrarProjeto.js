@@ -1,5 +1,5 @@
 import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, set, update, child, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, set, update, child, serverTimestamp, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { iconeCurtida } from "/js/projects/curtirProjeto.js"
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -349,14 +349,38 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
 
                         const db = getDatabase();
 
-                        // Cria/atualiza o nó da conversa para o usuário logado (remetente)
-                        await set(ref(db, `Conversas/${userIdLogado}/${userIdContato}`), {
-                            nome: nomeContato,
-                            avatar: avatarContato,
-                            ultimoTimestamp: serverTimestamp()
-                        });
-                        window.location.href = '/chat'
-                    })
+                        const timestamp = Date.now();
+
+                        // Cria a mensagem "Você iniciou uma conversa" só para o usuário que clicou
+                        const novaMensagem = {
+                            texto: "Você iniciou uma conversa",
+                            autor: userIdLogado,
+                            timestamp
+                        };
+
+                        // Gera a key para a mensagem (no nó do usuário logado)
+                        const refMensagensUser = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
+                        const novaMsgKey = push(refMensagensUser).key;
+
+                        const updates = {};
+
+                        updates[`Conversas/${userIdLogado}/${userIdContato}/mensagens/${novaMsgKey}`] = novaMensagem;
+
+                        updates[`Conversas/${userIdLogado}/${userIdContato}/nome`] = nomeContato;
+                        updates[`Conversas/${userIdLogado}/${userIdContato}/avatar`] = avatarContato;
+                        updates[`Conversas/${userIdLogado}/${userIdContato}/ultimoTimestamp`] = timestamp;
+
+                        updates[`Conversas/${userIdContato}/${userIdLogado}/nome`] = "Você";
+                        updates[`Conversas/${userIdContato}/${userIdLogado}/avatar`] = "";
+                        updates[`Conversas/${userIdContato}/${userIdLogado}/ultimoTimestamp`] = timestamp;
+
+                        updates[`LeituraMensagens/${userIdLogado}/${userIdContato}/timestamp`] = timestamp;
+                        updates[`LeituraMensagens/${userIdContato}/${userIdLogado}/timestamp`] = 0;
+
+                        await update(ref(db), updates);
+
+                        window.location.href = '/chat';
+                    });
 
                     const gridProjetos = modal.querySelector('.grid-projetos')
                     if (gridProjetos) {

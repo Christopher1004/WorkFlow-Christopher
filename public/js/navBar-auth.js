@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, update, onValue, onChildAdded, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -30,7 +30,7 @@ const perfilLink = document.querySelector("#dropDownMenu a[href='/perfil']")
 const cacheUsuario = localStorage.getItem('cacheUsuario')
 const tempoCache = localStorage.getItem('cacheUsuarioTempo')
 
-if (cacheUsuario && tempoCache && Date.now() - tempoCache < 5 * 60 * 1000) { 
+if (cacheUsuario && tempoCache && Date.now() - tempoCache < 5 * 60 * 1000) {
     try {
         const dados = JSON.parse(cacheUsuario);
 
@@ -58,7 +58,7 @@ if (cacheUsuario && tempoCache && Date.now() - tempoCache < 5 * 60 * 1000) {
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const uid = user.uid
-
+        escutarMensagensNaoLidasNavbar(uid)
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnRegister) btnRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
@@ -86,7 +86,7 @@ onAuthStateChanged(auth, async (user) => {
                     userNameSpan.textContent = userData.nome;
                 }
 
-                if(userData){
+                if (userData) {
                     localStorage.setItem('cacheUsuario', JSON.stringify({
                         uid,
                         nome: userData?.nome,
@@ -179,6 +179,108 @@ userPhoto.addEventListener('click', () => {
     popupOverlay.style.display = 'flex';
 });
 
+async function escutarMensagensNaoLidasNavbar(uid) {
+    const conversasRef = ref(db, `Conversas/${uid}`);
+
+    const snapConversas = await get(conversasRef);
+    if (!snapConversas.exists()) {
+        atualizarBadgeNavbar(0);
+        return;
+    }
+
+    const conversaIds = Object.keys(snapConversas.val());
+    let totalNaoLidas = 0;
+
+    // Contar mensagens não lidas já existentes
+    for (const outroId of conversaIds) {
+        const mensagensRef = ref(db, `Conversas/${uid}/${outroId}/mensagens`);
+        const leituraRef = ref(db, `LeituraMensagens/${uid}/${outroId}`);
+
+        const leituraSnap = await get(leituraRef);
+        const ultimaLeitura = leituraSnap.exists() ? leituraSnap.val().timestamp || 0 : 0;
+
+        const mensagensSnap = await get(mensagensRef);
+        if (mensagensSnap.exists()) {
+            const msgs = mensagensSnap.val();
+            for (const key in msgs) {
+                const msg = msgs[key];
+                if (msg.autor !== uid && msg.timestamp > ultimaLeitura) {
+                    totalNaoLidas++;
+                }
+            }
+        }
+    }
+
+    atualizarBadgeNavbar(totalNaoLidas);
+
+    // Agora ativa os listeners para novas mensagens e atualizações de leitura
+    for (const outroId of conversaIds) {
+        const mensagensRef = ref(db, `Conversas/${uid}/${outroId}/mensagens`);
+        const leituraRef = ref(db, `LeituraMensagens/${uid}/${outroId}`);
+
+        let ultimaLeitura = 0;
+
+        onValue(leituraRef, (snap) => {
+            ultimaLeitura = snap.val()?.timestamp || 0;
+            // Recalcula a contagem toda novamente para refletir atualização da leitura
+            recalcularNaoLidas(uid).then(cont => atualizarBadgeNavbar(cont));
+        });
+
+        onChildAdded(mensagensRef, (msgSnap) => {
+            const msg = msgSnap.val();
+            if (!msg || !msg.timestamp || msg.autor === uid) return;
+
+            if (msg.timestamp > ultimaLeitura) {
+                // Nova mensagem não lida chegou, adiciona 1
+                // Para garantir a contagem correta, recalcula tudo
+                recalcularNaoLidas(uid).then(cont => atualizarBadgeNavbar(cont));
+            }
+        });
+    }
+}
+
+// Função para recalcular todas as mensagens não lidas
+async function recalcularNaoLidas(uid) {
+    const conversasRef = ref(db, `Conversas/${uid}`);
+    const snapConversas = await get(conversasRef);
+    if (!snapConversas.exists()) return 0;
+
+    const conversaIds = Object.keys(snapConversas.val());
+    let totalNaoLidas = 0;
+
+    for (const outroId of conversaIds) {
+        const mensagensRef = ref(db, `Conversas/${uid}/${outroId}/mensagens`);
+        const leituraRef = ref(db, `LeituraMensagens/${uid}/${outroId}`);
+
+        const leituraSnap = await get(leituraRef);
+        const ultimaLeitura = leituraSnap.exists() ? leituraSnap.val().timestamp || 0 : 0;
+
+        const mensagensSnap = await get(mensagensRef);
+        if (mensagensSnap.exists()) {
+            const msgs = mensagensSnap.val();
+            for (const key in msgs) {
+                const msg = msgs[key];
+                if (msg.autor !== uid && msg.timestamp > ultimaLeitura) {
+                    totalNaoLidas++;
+                }
+            }
+        }
+    }
+
+    return totalNaoLidas;
+}
+
+function atualizarBadgeNavbar(contagem) {
+    const badge = document.getElementById('badge-mensagens');
+    if (!badge) return;
+
+    if (contagem > 0) {
+        badge.style.display = 'flex';
+        badge.textContent = contagem > 99 ? '99+' : contagem;
+    } else {
+        badge.style.display = 'none';
+    }
+}
 
 
 
