@@ -46,11 +46,13 @@ const modalClose = document.getElementById('modalClose');
 modalClose.addEventListener('click', () => {
     modal.style.display = 'none';
     modal.dataset.currentProjectId = '';
+    liberarScrollPagina();
 });
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
         modal.style.display = 'none';
         modal.dataset.currentProjectId = '';
+        liberarScrollPagina();
     }
 });
 
@@ -681,6 +683,7 @@ async function deletarProjeto(projectId) {
 async function abrirModalProjeto(projetoId) {
     modal.style.display = 'none';
     modal.dataset.currentProjectId = '';
+    bloquearScrollPagina();
 
     try {
         const projetoRef = ref(db, `Projetos/${projetoId}`);
@@ -1157,5 +1160,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+function bloquearScrollPagina() {
+    document.body.classList.add('modal-open');
+}
+
+function liberarScrollPagina() {
+    document.body.classList.remove('modal-open');
+}
+
 
 window.addEventListener('beforeunload', detachAllListeners);
