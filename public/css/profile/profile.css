@@ -6,1016 +6,1028 @@
 @import "partials/card-infos.css";
 
 .modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
 }
 
 .modal-conteudo {
-    background: #1e1e1e;
-    color: #f0f0f0;
-    margin: 6% auto;
-    padding: 2rem;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 850px; 
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-    animation: slideDown 0.3s ease-out;
-    overflow: visible; 
+  background: #1e1e1e;
+  color: #f0f0f0;
+  margin: 6% auto;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+  animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
-    from {
-        transform: translateY(-30px);
-        opacity: 0;
-    }
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
 
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .fechar {
-    float: right;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.2s;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
 .fechar:hover {
-    color: #f87171;
+  color: #f87171;
 }
 
 .modal-conteudo h2 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-    color: #3c38a6;
-    border-bottom: 1px solid #333;
-    padding-bottom: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: #3c38a6;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
 }
 
 .modal-conteudo label {
-    display: block;
-    margin-top: 1rem;
-    font-size: 0.95rem;
-    color: #ccc;
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #ccc;
 }
 
 .modal-conteudo input,
 .modal-conteudo textarea {
-    width: 100%;
-    margin-top: 0.4rem;
-    padding: 0.7rem;
-    background: #2a2a2a;
-    border: 1px solid #444;
-    border-radius: 8px;
-    color: #eee;
-    font-size: 1rem;
-    transition: border 0.3s ease;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.7rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #eee;
+  font-size: 1rem;
+  transition: border 0.3s ease;
 }
 
 .modal-conteudo input:focus,
 .modal-conteudo textarea:focus {
-    border-color: #7dd3fc;
-    outline: none;
+  border-color: #7dd3fc;
+  outline: none;
 }
 
 .modal-conteudo button[type="submit"] {
-    margin-top: 1.5rem;
-    width: 100%;
-    background: #3c38a6;
-    color: white;
-    border: none;
-    padding: 0.75rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
+  margin-top: 1.5rem;
+  width: 100%;
+  background: #3c38a6;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 .modal-conteudo button[type="submit"]:hover {
-    background: #2563eb;
+  background: #2563eb;
 }
 
 .editarinfos {
-    background-color: #3c38a6;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  background-color: #3c38a6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .editarinfos:hover {
-    background-color: #2e2b82;
+  background-color: #2e2b82;
 }
 
 .hidden-file {
-    display: none;
+  display: none;
 }
 
 .file-label {
-    display: inline-block;
-    background-color: #2a2a2a;
-    color: #eee;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    border: 1px solid #444;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  background-color: #2a2a2a;
+  color: #eee;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border: 1px solid #444;
+  transition: background-color 0.3s ease;
 }
 
 .file-label:hover {
-    background-color: #3a3a3a;
+  background-color: #3a3a3a;
 }
 
 .nome-arquivo {
-    display: block;
-    margin-top: 0.5rem;
-    color: #ccc;
-    font-size: 0.85rem;
+  display: block;
+  margin-top: 0.5rem;
+  color: #ccc;
+  font-size: 0.85rem;
 }
 
+
 .banner.editable {
-    position: relative;
-    cursor: pointer;
+  position: relative;
+  cursor: pointer;
 }
 
 .banner.editable::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 10;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .banner.editable::before {
-    content: "";
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    width: 48px;
-    height: 48px;
-    background-image: url("https://cdn-icons-png.flaticon.com/128/1829/1829552.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 11;
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  background-image: url("https://cdn-icons-png.flaticon.com/128/1829/1829552.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 11;
 }
 
 .banner .alterar-texto {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: black;
-    font-size: 14px;
-    font-weight: 600;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 11;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 11;
 }
 
 .banner.editable:hover::after,
 .banner.editable:hover::before,
 .banner.editable:hover .alterar-texto {
-    opacity: 1;
+  opacity: 1;
 }
 
+
+
 .banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 .projetos-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
 }
 
 .profile-tabs {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 225px;
-    width: 100%;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 225px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .tab-button {
-    background: none;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 14px;
-    cursor: pointer;
-    color: #666;
-    position: relative;
-    padding: 8px 12px;
-    transition: color 0.3s ease, transform 0.2s ease;
-    user-select: none;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+  position: relative;
+  padding: 8px 12px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  user-select: none;
 }
 
 .tab-button svg {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 6px;
-    transition: stroke 0.3s ease;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 6px;
+  transition: stroke 0.3s ease;
 }
 
 .tab-button::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 25%;
-    width: 50%;
-    height: 2.5px;
-    background: #3c38a6;
-    border-radius: 2px;
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.3s ease;
-    pointer-events: none;
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 25%;
+  width: 50%;
+  height: 2.5px;
+  background: #3c38a6;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+  pointer-events: none;
 }
 
 .tab-button:hover {
-    color: #8a84d6;
-    transform: scale(1.05);
+  color: #8a84d6;
+  transform: scale(1.05);
 }
 
 .tab-button:hover::after {
-    transform: scaleX(1);
+  transform: scaleX(1);
 }
 
+
 .tab-button.active {
-    color: #3c38a6;
-    font-weight: 700;
-    transform: scale(1.1);
+  color: #3c38a6;
+  font-weight: 700;
+  transform: scale(1.1);
 }
 
 .tab-button.active::after {
-    transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 .tab-button:active {
-    transform: scale(0.95);
-    transition-duration: 0.1s;
+  transform: scale(0.95);
+  transition-duration: 0.1s;
 }
+
 
 .container-2 {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+
 }
+
 
 .container-1 {
-    position: relative;
-    max-width: 400px;
-    margin: 0;
-    padding: 0 1rem;
+  position: relative;
+  max-width: 400px;
+  margin: 0 ;
+  padding: 0 1rem;
 }
 
+
 .profile-pic {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    border: 5px solid #171616;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-    background-color: #fff;
-    position: absolute;
-    top: -70px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    overflow: hidden;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 5px solid #171616;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+  background-color: #fff;
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  overflow: hidden;
 }
 
 .profile-pic img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .card-infos {
-    padding-top: 90px;
-    background: transparent !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    margin-top: 0 !important;
+  padding-top: 90px;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-top: 0 !important;
 }
 
 .nome h1 {
-    color: #f0f0f0;
-    margin: 0 0 0.2rem 0;
+  color: #f0f0f0;
+  margin: 0 0 0.2rem 0;
 }
 
 .tag p {
-    color: #999;
-    margin: 0;
+  color: #999;
+  margin: 0;
 }
 
 .editarinfos {
-    background-color: #3c38a6;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-top: 1.5rem;
+  background-color: #3c38a6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1.5rem;
 }
 
 .editarinfos:hover {
-    background-color: #2e2b82;
+  background-color: #2e2b82;
 }
 
 .container-infos {
-    background-color: #171616;
-    padding: 0.8rem 1.2rem;
-    border-radius: 12px;
-    text-align: center;
-    color: #f0f0f0;
-    font-weight: 500;
-    box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.05);
-    min-width: 140px;
+  background-color: #171616;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #f0f0f0;
+  font-weight: 500;
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.05);
+  min-width: 140px;
 }
 
 .container-infos .quantidade {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #fff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
 }
 
 .container-card-1 {
-    background-color: #171616;
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    color: #f0f0f0;
+  background-color: #171616;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  color: #f0f0f0;
 }
 
 .avaliacao-estrelas {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 6px;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
 }
 
 .avaliacao-estrelas .estrela {
-    font-size: 24px;
-    color: #facc15;
-    cursor: default;
+  font-size: 24px;
+  color: #facc15;
+  cursor: default;
 }
 
 .proposta-card {
-    background-color: #1e1e1e;
-    border-radius: 16px;
-    padding: 2rem 2.5rem;
-    margin-bottom: 24px;
-    color: #f0f0f0;
-    width: 100%;
-    max-width: 900px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    box-sizing: border-box;
+  background-color: #1e1e1e;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 24px;
+  color: #f0f0f0;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
 }
 
 .proposta-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 .grid-propostas {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    padding: 10px;
-    background-color: transparent;
-    border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 10px;
+  background-color: transparent; 
+  border-radius: 8px;
 }
 
 @media screen and (min-width: 768px) {
-    .proposta-card {
-        padding: 2rem 3rem;
-    }
+  .proposta-card {
+    padding: 2rem 3rem;
+  }
 }
 
 @media screen and (min-width: 1024px) {
-    .proposta-card {
-        max-width: 1000px;
-    }
+  .proposta-card {
+    max-width: 1000px;
+  }
 }
 
 .proposta-card .head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    gap: 16px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .proposta-card .head h3 {
-    font-size: 1.6rem;
-    color: #8a84d6;
-    margin: 0;
-    flex-grow: 1;
-    min-width: 0;
+  font-size: 1.6rem;
+  color: #8a84d6;
+  margin: 0;
+  flex-grow: 1;
+  min-width: 0;
 }
 
 .proposta-card .price {
-    background-color: #3c38a6;
-    padding: 0.5rem 1rem;
-    border-radius: 12px;
-    font-weight: 700;
-    color: #fff;
-    font-size: 1rem;
-    white-space: nowrap;
-    flex-shrink: 0;
+  background-color: #3c38a6;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #fff;
+  font-size: 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .proposta-card .criadoEm {
-    font-size: 0.85rem;
-    color: #aaa;
-    margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 12px;
 }
 
 .proposta-card .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0.8rem 0 1.2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.8rem 0 1.2rem 0;
 }
 
 .proposta-card .tag {
-    background-color: #2e2b82;
-    color: #fff;
-    padding: 0.3rem 0.8rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    user-select: none;
-    transition: background-color 0.3s ease;
+  background-color: #2e2b82;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  user-select: none;
+  transition: background-color 0.3s ease;
 }
 
 .proposta-card .tag:hover {
-    background-color: #4b47c7;
+  background-color: #4b47c7;
 }
 
 .proposta-card .description {
-    font-size: 1.05rem;
-    color: #ddd;
-    line-height: 1.4;
-    margin-bottom: 1.5rem;
-    min-height: 60px;
+  font-size: 1.05rem;
+  color: #ddd;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  min-height: 60px;
 }
 
 .proposta-card .client-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .proposta-card .client {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-grow: 1;
-    min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  min-width: 0;
 }
 
 .proposta-card .profilePic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #444;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #444;
+  flex-shrink: 0;
 }
 
 .proposta-card .client-name {
-    font-size: 1rem;
-    color: #eee;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 1rem;
+  color: #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .proposta-card .buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: nowrap;
-    flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 .proposta-card .buttons button {
-    background-color: #3c38a6;
-    border: none;
-    padding: 0.55rem 1.2rem;
-    border-radius: 10px;
-    color: white;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.15s ease;
-    white-space: nowrap;
+  background-color: #3c38a6;
+  border: none;
+  padding: 0.55rem 1.2rem;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.15s ease;
+  white-space: nowrap;
 }
 
 .proposta-card .buttons button:hover {
-    background-color: #2e2b82;
-    transform: scale(1.05);
+  background-color: #2e2b82;
+  transform: scale(1.05);
 }
 
 .proposta-card .buttons button:active {
-    transform: scale(0.95);
-    transition-duration: 0.1s;
+  transform: scale(0.95);
+  transition-duration: 0.1s;
 }
 
 .proposta-card .buttons button.candidatos {
-    min-width: 250px;
-    text-align: center;
+  min-width: 250px;
+  text-align: center;
 }
 
 .proposta-card .buttons button.enviar {
-    min-width: 250px;
-    text-align: center;
+  min-width: 250px;
+  text-align: center;
 }
 
 body.modal-open {
-    position: fixed;
-    width: 100%;
-    overflow: hidden;
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
 }
 
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    z-index: 1000;
-    overflow: auto;
-    padding: 60px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1000;
+  overflow: auto;
+  padding: 60px 20px;
 }
 
 .modal-content {
-    background: transparent;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 90vw;
-    width: 100%;
-    color: white;
-    overflow: visible;
+  background:transparent;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90vw;
+  width: 100%;
+  color: white;
+  overflow: visible; 
 }
 
+
 .modal-close {
-    cursor: pointer;
-    font-size: 24px;
-    float: right;
+  cursor: pointer;
+  font-size: 24px;
+  float: right;
 }
 
 .modal-header {
-    margin-bottom: 1rem;
-    padding: 10px;
+  margin-bottom: 1rem;
+  padding: 10px;
 }
 
 .modal-header .modal-titulo h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
 }
 
 .modal-header .modal-titulo {
-    border-bottom: 1px solid gray;
+  border-bottom: 1px solid gray;
 }
 
 .modal-header .modal-creator {
-    font-size: 1rem;
-    color: gray;
-    margin-block: 5px;
+  font-size: 1rem;
+  color: gray;
+  margin-block: 5px;
 }
 
 .modal-header .modal-creator a {
-    color: #6c63ff;
-    text-decoration: none;
+  color: #6c63ff;
+  text-decoration: none;
 }
 
 .modal-image {
-    background-color: #ccc;
-    width: 100%;
-    aspect-ratio: 16/9;
-    margin-bottom: 1rem;
+  background-color: #ccc;
+  width: 100%;
+  aspect-ratio: 16/9;
+  margin-bottom: 1rem;
 }
 
 .modal-description {
-    font-size: 1.2rem;
-    color: white;
-    width: 100%;
-    padding: 50px;
+  font-size: 1.2rem;
+  color: white;
+  width: 100%;
+  padding: 50px;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .left {
-    text-align: left;
+  text-align: left;
 }
 
 .right {
-    text-align: right;
+  text-align: right;
 }
 
 .section-infos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 1rem;
-    flex-direction: column;
-    padding-block: 1rem;
-    border-block: 1px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+  flex-direction: column;
+  padding-block: 1rem;
+  border-block: 1px solid gray;
 }
 
 .titulo-container h1 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
 }
 
 .tags-container {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .tag-span {
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 1rem;
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
 .data-container .data-criado {
-    font-size: 1rem;
-    color: gray;
+  font-size: 1rem;
+  color: gray;
 }
 
 .footer-section {
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    flex-wrap: wrap;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .footer-left {
-    flex: 1;
-    min-width: 250px;
+  flex: 1;
+  min-width: 250px;
 }
 
 .footer-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
 }
 
 .footer-description {
-    color: #aaa;
-    font-size: 0.9rem;
+  color: #aaa;
+  font-size: 0.9rem;
 }
 
 .footer-right {
-    flex: 1;
-    min-width: 250px;
-    background-color: #2a2a2a;
-    border-radius: 15px;
+  flex: 1;
+  min-width: 250px;
+  background-color: #2a2a2a;
+  border-radius: 15px;
 }
 
 .card-autor {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    border-radius: 15px;
-    align-items: center;
-    background-color: black;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 15px;
+  align-items: center;
+  background-color: black;
+  padding: 10px;
 }
 
 .header-card-autor {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
-    padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding-left: 10px;
 }
 
 .container-1,
 .container-2 {
-    flex: 1;
-    flex-direction: row;
+  flex: 1;
+  flex-direction: row;
 }
 
 .container-1 {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    flex: none;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  flex: none;
 }
 
 .header-card-autor-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px;
-    height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
 }
 
 .header-card-autor-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 .header-card-autor-title {
-    font-size: 1rem;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
+  font-size: 1rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .header-card-autor-title p {
-    font-size: 0.8rem;
-    color: gray;
+  font-size: 0.8rem;
+  color: gray;
 }
 
 .container-2 {
-    width: 100%;
-    display: flex;
-    height: 100%;
-    flex-direction: row;
-    gap: 5px;
-    justify-content: flex-end;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .container-2 .button-container {
-    border: none;
-    width: 100%;
-    display: flex;
-    height: 100%;
-    background-color: #3c38a6;
-    color: white;
-    padding: 10px 20px;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    font-size: 1rem;
+  border: none;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  background-color: #3c38a6;
+  color: white;
+  padding: 10px 20px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
 .container-2 a {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .outros-projetos {
-    width: 100%;
-    padding-block: 10px;
+  width: 100%;
+  padding-block: 10px;
 }
-
 .outros-projetos img {
-    border: 4px solid #3c38a6;
-    border-radius: 8px;
+  border: 4px solid #3c38a6;
+  border-radius: 8px;
+}
+.outros-projetos h3 {
+  text-align: center;
+  font-size: 1.5rem; 
+  color: white; 
+  margin-bottom: 1rem; 
 }
 
-.outros-projetos h3 {
-    text-align: center;
-    font-size: 1.5rem;
-    color: white;
-    margin-bottom: 1rem;
+.card-projeto {
+    width: auto; 
+    padding: 0;
 }
 
 .containerComentarios {
-    background-color: #1a1a1a;
-    padding: 1px;
+  background-color: #1a1a1a;
+  padding: 1px;
 }
 
 .message-card {
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    color: white;
-    max-width: 500px;
-    background-color: #2a2a2a;
-    margin-top: 10px;
-    padding-bottom: 1px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  color: white;
+  background-color: #2a2a2a;
+  margin-top: 10px;
+  padding-bottom: 1px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .user-info img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
 }
 
 .user-details {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-name {
-    font-weight: bold;
-    font-size: 15px;
-    color: white;
-    letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  letter-spacing: 1px;
 }
 
 .message-time {
-    font-size: 12px;
-    color: rgb(221, 221, 221);
+  font-size: 12px;
+  color: rgb(221, 221, 221);
 }
 
 .message-text {
-    font-size: 14px;
-    color: white;
-    margin-bottom: 12px;
-    text-indent: 10px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: pre-wrap;
-    margin-left: 10px;
-    margin-right: 2px;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 12px;
+  text-indent: 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  margin-left: 10px;
+  margin-right: 2px;
 }
 
 .message-actions {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .message-actions a {
-    color: #6c63ff;
-    text-decoration: none;
-    font-weight: bold;
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .message-actions a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .input-box {
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    gap: 10px;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .input-box input {
-    flex: 1;
-    padding: 10px 14px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    outline: none;
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
 }
 
 .input-box button {
-    padding: 10px 18px;
-    border: none;
-    background: #3c38a6;
-    color: white;
-    font-weight: bold;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background 0.3s;
+  padding: 10px 18px;
+  border: none;
+  background: #3c38a6;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 .input-box button:hover {
-    background: #574fd9;
+  background: #574fd9;
 }
 
 .button_categoria.active {
-    background-color: #3c38a6;
+  background-color: #3c38a6;
 }
-
 .modal .componente-img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  display: block;
 }
-
 .card_projeto .autor {
+    
     display: flex;
-    align-items: center;
+    align-items: center; 
     gap: 15px;
-    padding: 15px 20px;
-    background-color: var(--cor-fundo-autor);
-    border-top: 1px solid var(--cor-borda-sutil);
-    flex-shrink: 0;
-    justify-content: flex-start;
+    padding: 15px 20px; 
+    background-color: var(--cor-fundo-autor); 
+    border-top: 1px solid var(--cor-borda-sutil); 
+    flex-shrink: 0; 
+    justify-content: flex-start; 
 }
 
 .card_projeto .autor img {
-    width: 48px;
+    width: 48px; 
     height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--cor-primaria);
-    box-shadow: 0 2px 8px rgba(60, 56, 166, 0.4);
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 3px solid var(--cor-primaria); 
+    box-shadow: 0 2px 8px rgba(60, 56, 166, 0.4); 
+    transition: transform 0.3s ease, border-color 0.3s ease; 
 }
 
 .card_projeto .autor img:hover {
     transform: scale(1.1);
-    border-color: var(--cor-secundaria);
+    border-color: var(--cor-secundaria); 
 }
 
 .card_projeto .autor .username {
-    font-size: 1.15em;
-    font-weight: 600;
-    color: #50555e;
-    margin: 0;
+    font-size: 1.15em; 
+    font-weight: 600; 
+    color: #50555e; 
+    margin: 0; 
     line-height: 1.2;
-    white-space: nowrap;
+    white-space: nowrap; 
     overflow: hidden;
-    text-overflow: ellipsis;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-overflow: ellipsis; 
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); 
+    
 }
 
 @media (max-width: 480px) {
     .card_projeto .autor {
-        padding: 12px 15px;
-        gap: 10px;
+        padding: 12px 15px; 
+        gap: 10px; 
     }
-
     .card_projeto .autor img {
-        width: 40px;
+        width: 40px; 
         height: 40px;
-        border-width: 2px;
+        border-width: 2px; 
     }
-
     .card_projeto .autor .username {
         font-size: 1.05em;
     }
 }
 
+
 #modalCandidatosTitulo {
-    color: #5274D9;
+    color: #5274D9; 
     margin-bottom: 25px;
     text-align: center;
     font-size: 1.8em;
@@ -1025,30 +1037,30 @@ body.modal-open {
 #listaCandidatos {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 20px; 
 }
 
 .candidato-item {
     background-color: #3a3a3a;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 10px; 
     border: 1px solid #444;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    gap: 15px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
 }
 
 .candidato-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .candidato-header {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 15px; 
 }
 
 .candidato-foto {
@@ -1056,31 +1068,31 @@ body.modal-open {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #5274D9;
-    flex-shrink: 0;
+    border: 3px solid #5274D9; 
+    flex-shrink: 0; 
 }
 
 .candidato-info h3 {
     margin: 0;
     color: #fff;
-    font-size: 1.3em;
+    font-size: 1.3em; 
     font-weight: 600;
 }
 
 .candidato-info p {
     margin: 0;
     color: #bbb;
-    font-size: 1em;
+    font-size: 1em; 
     font-weight: 400;
 }
 
 .candidato-mensagem {
     color: #ccc;
     font-style: italic;
-    line-height: 1.5;
-    margin-top: 5px;
-    padding-left: 75px;
-    border-left: 3px solid #5274D9;
+    line-height: 1.5; 
+    margin-top: 5px; 
+    padding-left: 75px; 
+    border-left: 3px solid #5274D9; 
     padding-left: 10px;
     margin-left: 60px;
 }
@@ -1089,20 +1101,20 @@ body.modal-open {
     display: inline-block;
     background-color: #5274D9;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 20px; 
     border-radius: 6px;
     text-decoration: none;
-    align-self: flex-end;
+    align-self: flex-end; 
     font-size: 1em;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    border: none;
+    border: none; 
     cursor: pointer;
 }
 
 .ver-perfil-candidato:hover {
-    background-color: #405ca6;
-    transform: translateY(-1px);
+    background-color: #405ca6; 
+    transform: translateY(-1px); 
 }
 
 @media (max-width: 768px) {
@@ -1110,155 +1122,138 @@ body.modal-open {
         width: 95%;
         padding: 15px;
     }
-
     .candidato-item {
         padding: 15px;
     }
-
     .candidato-foto {
         width: 50px;
         height: 50px;
     }
-
     .candidato-info h3 {
         font-size: 1.1em;
     }
-
     .candidato-info p {
         font-size: 0.85em;
     }
-
     .candidato-mensagem {
         padding-left: 65px;
         margin-left: 55px;
     }
 }
-
 .exp {
-    width: 20px;
-    height: 20px;
-    background-color: #ccc;
-    border-radius: 4px;
-    margin-right: 5px;
-    transform: scale(1);
-    transition: background-color 0.4s ease, transform 0.3s ease;
+  width: 20px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+  transform: scale(1);
+  transition: background-color 0.4s ease, transform 0.3s ease;
 }
 
 .exp.ativo {
-    background-color: #4caf50;
-    transform: scale(1.0);
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+  background-color: #4caf50;
+  transform: scale(1.0); 
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
 }
-
 .favorite.favoritado svg path {
-    fill: #5274D9;
+    fill: #5274D9; 
 }
-
 .favorite svg {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; 
 }
 
 .favorite.favoritado svg {
-    animation: pulse-favorite 0.5s ease-in-out;
+    animation: pulse-favorite 0.5s ease-in-out; 
 }
 
 @keyframes pulse-favorite {
     0% {
         transform: scale(1);
     }
-
     50% {
-        transform: scale(1.2);
+        transform: scale(1.2); 
     }
-
     100% {
-        transform: scale(1);
+        transform: scale(1); 
     }
 }
 
 .favorite:hover svg {
-    transform: scale(1.1);
+    transform: scale(1.1); 
 }
 
-/* ESTILOS DO CARROSSEL */
 .carousel-container {
     position: relative;
     width: 100%;
     overflow: hidden;
-    margin-top: 20px;
-    padding: 0; 
+    margin-top: 15px;
+    border-radius: 5px;
+    background-color: #2c2c2c;
+    padding: 10px;
 }
 
-.carousel-slides {
+.carousel-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    overflow-x: hidden; 
-    gap: 20px; 
-
-    -webkit-overflow-scrolling: touch;
-    &::-webkit-scrollbar {
-        display: none;
-        width: 0;
-        height: 0;
-    }
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 
-.carousel-slides .card-projeto {
-    flex: 0 0 auto; 
-    width: calc((100% - 20px) / 2);
-    max-width: 400px; 
-    min-width: 280px; 
-    scroll-snap-align: start; 
-    box-sizing: border-box; 
+.carousel-item {
+    min-width: calc(33.333% - 10px);
+    box-sizing: border-box;
+    margin-right: 10px;
+    height: 200px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+
+.carousel-item:last-child {
+    margin-right: 0;
+}
+
+.carousel-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .carousel-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
     z-index: 10;
-    font-size: 28px;
-    border-radius: 50%;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 5px;
+    font-size: 1.5em;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
 }
 
 .carousel-button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-    transform: translateY(-50%) scale(1.05);
+    opacity: 1;
 }
 
 .carousel-button.prev {
-    left: 5px; 
+    left: 10px;
 }
 
 .carousel-button.next {
-    right: 5px; 
+    right: 10px;
 }
 
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+@media (max-width: 768px) {
+    .carousel-item {
+        min-width: calc(50% - 10px);
+    }
 }
 
-.indicator-dot {
-    height: 10px;
-    width: 10px;
-    background-color: #bbb;
-    border-radius: 50%;
-    margin: 0 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+@media (max-width: 480px) {
+    .carousel-item {
+        min-width: 100%;
+    }
 }
-
-.indicator-dot.active {
-    background-color: #717171;
-}
-

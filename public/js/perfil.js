@@ -576,31 +576,31 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
         const todosProjetos = autorProjetosSnap.val();
         const projetosDoAutor = Object.entries(todosProjetos)
             .filter(([id, proj]) => proj.userId === autorData.id && id !== projeto.id)
-            .slice(0, 6);
+            .slice(0, 6); // Limite de 6 projetos para o carrossel
 
         outrosProjetosHTML = projetosDoAutor.map(([id, proj]) => `
-            <div class="card-projeto" data-projeto-id="${id}" style="cursor: pointer;">
+            <div class="carousel-item card-projeto" data-projeto-id="${id}" style="cursor: pointer;">
                 <img src="${proj.capaUrl || 'https://via.placeholder.com/150'}" alt="${proj.titulo}" style="width:100%; height:100%; object-fit:cover; border-radius:3px;">
             </div>
         `).join('');
     }
 
     return `
-         <div class="section-infos">
-        <div class="titulo-container">
-            <h1 id="txtTituloTag">${projeto.titulo || 'Sem Título'}</h1>
+        <div class="section-infos">
+            <div class="titulo-container">
+                <h1 id="txtTituloTag">${projeto.titulo || 'Sem Título'}</h1>
+            </div>
+            <div id="modalTagsContainer" class="tags-container">
+                ${tagsHTML}
+            </div>
+            <div class="data-container">
+                <p id="data-criado" class="data-criado">criado em ${dataCriacao}</p>
+            </div>
         </div>
-        <div id="modalTagsContainer" class="tags-container">
-            ${tagsHTML}
-        </div>
-        <div class="data-container">
-            <p id="data-criado" class="data-criado">criado em ${dataCriacao}</p>
-        </div>
-    </div>
 
-    <div class="footer-section">
-        
-        <div class="area-superior-projeto"> <div class="card-autor-e-carrossel"> <div class="card-autor">
+        <div class="footer-section">
+            <div class="footer-left">
+                <div class="card-autor">
                     <div class="header-card-autor">
                         <div class="container-1">
                             <div class="header-card-autor-image">
@@ -616,27 +616,26 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
                             <a id="btnVerPerfil" href="/perfil?id=${autorData.id}"><button class="button-container">Ver Perfil</button></a>
                         </div>
                     </div>
-                    <div class="carousel-container">
-                        <div class="carousel-slides">
-                            ${outrosProjetosHTML}
+                    <div class="outros-projetos">
+                        <h3>Outros projetos de ${autorData.nome || 'Autor'}</h3>
+                        <div class="carousel-container">
+                            <div class="carousel-track">
+                                ${outrosProjetosHTML}
+                            </div>
+                            <button class="carousel-button prev">&#10094;</button>
+                            <button class="carousel-button next">&#10095;</button>
                         </div>
-                        <button class="carousel-button prev">❮</button>
-                        <button class="carousel-button next">❯</button>
-                        <div class="carousel-indicators"></div>
                     </div>
+                </div>
+                <div class="input-box" style="margin-top: 20px;">
+                    <input type="text" id="commentInput" placeholder="Escreva um comentário...">
+                    <button id="btnEnviarComentario">Enviar</button>
+                </div>
+                <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
+                    ${comentariosHTML}
                 </div>
             </div>
         </div>
-
-        <div class="area-comentarios-projeto"> <div class="input-box">
-                <input type="text" id="commentInput" placeholder="Escreva um comentário...">
-                <button id="btnEnviarComentario">Enviar</button>
-            </div>
-            <div class="containerComentarios" id="comentariosProjeto" style="margin-top: 20px;">
-                ${comentariosHTML}
-            </div>
-        </div>
-    </div>
     `;
 }
 
@@ -731,118 +730,68 @@ async function abrirModalProjeto(projetoId) {
         const blocoExtraHTML = await criarBlocoExtraProjetoHTML(projetoData, autorData, comentarios);
 
         modalBody.innerHTML = `
-        ${cabecalhoHTML}
-        <div id="conteudoProjeto" style="padding: 20px;">
-            ${componentesHTML}
-        </div>
-        <div id="blocoExtraProjeto" style="padding: 20px;">
-            ${blocoExtraHTML}
-        </div>
-    `;
+    ${cabecalhoHTML}
+    <div id="conteudoProjeto" style="padding: 20px;">
+        ${componentesHTML}
+    </div>
+    <div id="blocoExtraProjeto" style="padding: 20px;">
+        ${blocoExtraHTML}
+    </div>
+`;
 
-    modal.style.display = 'flex';
-    modal.dataset.currentProjectId = projetoId;
+modal.style.display = 'flex';
+modal.dataset.currentProjectId = projetoId;
 
-    const carouselSlides = modalBody.querySelector('.carousel-slides');
-    const prevButton = modalBody.querySelector('.carousel-button.prev');
-    const nextButton = modalBody.querySelector('.carousel-button.next');
-    const indicatorsContainer = modalBody.querySelector('.carousel-indicators');
+const carouselContainer = modalBody.querySelector('.carousel-container');
+if (carouselContainer) {
+    const carouselTrack = carouselContainer.querySelector('.carousel-track');
+    const prevButton = carouselContainer.querySelector('.carousel-button.prev');
+    const nextButton = carouselContainer.querySelector('.carousel-button.next');
+    const carouselItems = carouselTrack.querySelectorAll('.carousel-item');
 
-    if (carouselSlides && prevButton && nextButton) {
-        let currentIndex = 0;
-        const slides = Array.from(carouselSlides.children); 
+    let currentIndex = 0;
+    const itemsPerView = Math.floor(carouselContainer.offsetWidth / carouselItems[0].offsetWidth); 
 
-        if (slides.length === 0) {
-            console.warn("Nenhum slide encontrado no carrossel. Verifique se 'outrosProjetosHTML' está gerando os cards.");
-            
+    function updateCarousel() {
+       
+        if (currentIndex < 0) {
+            currentIndex = carouselItems.length - itemsPerView;
+        } else if (currentIndex >= carouselItems.length - itemsPerView + 1) {
+            currentIndex = 0;
         }
 
-        let slideWidth = 0;
-        if (slides.length > 0) {
-            
-            slideWidth = slides[0].offsetWidth + 20; 
-            
-            
-            console.log('Largura computada do primeiro slide (offsetWidth):', slides[0].offsetWidth);
-            console.log('GAP (do CSS): 20');
-            console.log('slideWidth para o translateX:', slideWidth);
-        } else {
-            console.error("Não foi possível calcular slideWidth pois não há slides. Carrossel pode não funcionar.");
-        }
+        const itemWidth = carouselItems[0].offsetWidth + 10; 
+        carouselTrack.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+
         
-        if (indicatorsContainer) {
-            slides.forEach((_, index) => {
-                const dot = document.createElement('span');
-                dot.classList.add('indicator-dot');
-                if (index === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => {
-                    currentIndex = index;
-                    updateCarousel();
-                });
-                indicatorsContainer.appendChild(dot);
-            });
-        }
-
-        function updateCarousel() {
-            carouselSlides.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-
-            if (indicatorsContainer) {
-                Array.from(indicatorsContainer.children).forEach((dot, index) => {
-                    if (index === currentIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            }
-        }
-
-        prevButton.addEventListener('click', () => {
-            currentIndex = Math.max(0, currentIndex - 1);
-            updateCarousel();
-        });
-
-        nextButton.addEventListener('click', () => {
-            currentIndex = Math.min(slides.length - 1, currentIndex + 1);
-            updateCarousel();
-        });
-
-        window.addEventListener('resize', () => {
-            if (modal.style.display === 'flex' && modal.dataset.currentProjectId === projetoId) {
-                const newSlideWidth = slides[0] ? slides[0].offsetWidth + 20 : 0;
-                if (newSlideWidth !== slideWidth) {
-                    slideWidth = newSlideWidth; 
-                    updateCarousel();
-                }
-            }
-        });
+        prevButton.style.display = (currentIndex === 0) ? 'none' : 'block';
+        nextButton.style.display = (currentIndex >= carouselItems.length - itemsPerView) ? 'none' : 'block';
     }
-    
-    modalBody.querySelectorAll('.carousel-slides .card-projeto').forEach(otherProjectCard => {
-        otherProjectCard.addEventListener('click', async (e) => {
-            
-            e.stopPropagation(); 
-            
-            const otherProjectId = e.currentTarget.dataset.projetoId;
-            if (otherProjectId) {
-                await abrirModalProjeto(otherProjectId); 
-            } else {
-                console.warn("ID do projeto não encontrado no card clicado.", e.currentTarget);
-            }
-        });
+
+    prevButton.addEventListener('click', () => {
+        currentIndex--;
+        updateCarousel();
     });
 
-        modal.style.display = 'flex';
-        modal.dataset.currentProjectId = projetoId;
+    nextButton.addEventListener('click', () => {
+        currentIndex++;
+        updateCarousel();
+    });
 
-        modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
-            otherProjectCard.addEventListener('click', async (e) => {
-                const otherProjectId = e.currentTarget.dataset.projetoId;
-                if (otherProjectId) {
-                    await abrirModalProjeto(otherProjectId);
-                }
-            });
-        });
+    
+    window.addEventListener('resize', updateCarousel);
+    updateCarousel(); 
+}
+
+
+modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
+    otherProjectCard.addEventListener('click', async (e) => {
+        const otherProjectId = e.currentTarget.dataset.projetoId;
+        if (otherProjectId) {
+            await abrirModalProjeto(otherProjectId);
+        }
+    });
+});
 
         const btnEnviarComentario = document.getElementById('btnEnviarComentario');
         if (btnEnviarComentario) {
