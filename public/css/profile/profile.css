@@ -744,7 +744,7 @@ body.modal-open {
   gap: 1rem;
   border-radius: 15px;
   align-items: center;
-  background-color: black;
+  background-color: rgb(36, 35, 35);
   padding: 10px;
 }
 
@@ -838,14 +838,8 @@ body.modal-open {
   padding-block: 10px;
 }
 .outros-projetos img {
-  border: 4px solid #3c38a6;
+  
   border-radius: 8px;
-}
-.outros-projetos h3 {
-  text-align: center;
-  font-size: 1.5rem; 
-  color: white; 
-  margin-bottom: 1rem; 
 }
 
 .card-projeto {
@@ -1216,6 +1210,7 @@ body.modal-open {
     border-radius: 5px;
     background-color: transparent; 
     padding: 10px;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .carousel-track {
@@ -1232,6 +1227,14 @@ body.modal-open {
     overflow: hidden;
 }
 
+.carousel-item:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+.carousel-item:hover img {
+    transform: scale(1.05); 
+    transition: transform 0.3s ease;
+}
 
 .carousel-item:last-child {
     margin-right: 0;
@@ -1282,4 +1285,14 @@ body.modal-open {
     .carousel-item {
         min-width: 100%;
     }
+}
+.combined-section {
+    background-color: #2a2a2a; 
+    padding: 20px; 
+    margin-top: 20px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+}
+h3{
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
 }

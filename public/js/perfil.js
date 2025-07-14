@@ -190,7 +190,7 @@ function formatarTempoComentario(timestamp) {
     }
 }
 
-function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0, cardIndex = 0, isProjectFavoritedByViewer = false) { 
+function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, isProjectLikedByViewer = false, autorNome = 'Desconhecido', autorFotoUrl = 'https://via.placeholder.com/50', visualizacoes = 0, curtidas = 0, comentarios = 0, cardIndex = 0, isProjectFavoritedByViewer = false) {
     const card = document.createElement('div');
     card.className = 'card_projeto';
     card.dataset.projetoId = id;
@@ -201,12 +201,12 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
     const autorDisplayFoto = autorFotoUrl;
     const mostrarEdit = projeto.userId === perfilUserId && auth.currentUser && auth.currentUser.uid === perfilUserId && aba === 'projetos';
     let isLikedForDisplay = isProjectLikedByViewer;
-    let isFavoritedForDisplay = isProjectFavoritedByViewer; 
+    let isFavoritedForDisplay = isProjectFavoritedByViewer;
 
     if (aba === 'curtidos' && perfilUserId === currentUserId) {
         isLikedForDisplay = true;
     }
-    if (aba === 'favoritos' && perfilUserId === currentUserId) { 
+    if (aba === 'favoritos' && perfilUserId === currentUserId) {
         isFavoritedForDisplay = true;
     }
 
@@ -342,9 +342,9 @@ function criarCardProposta(p, aba = 'projetos') {
             </div>
             <div class="buttons">
                 ${isDonoDoPerfil
-                    ? `<button class="candidatos" data-proposta-id="${p.id}">Candidatos</button>`
-                    : `<button class="enviar">Se candidatar</button>`
-                }
+            ? `<button class="candidatos" data-proposta-id="${p.id}">Candidatos</button>`
+            : `<button class="enviar">Se candidatar</button>`
+        }
             </div>
         </div>
     `;
@@ -586,6 +586,7 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
     }
 
     return `
+    <div class="combined-section">
         <div class="section-infos">
             <div class="titulo-container">
                 <h1 id="txtTituloTag">${projeto.titulo || 'Sem Título'}</h1>
@@ -617,7 +618,7 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
                         </div>
                     </div>
                     <div class="outros-projetos">
-                        <h3>Outros projetos de ${autorData.nome || 'Autor'}</h3>
+                       
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 ${outrosProjetosHTML}
@@ -627,14 +628,18 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
                         </div>
                     </div>
                 </div>
+                <h3>comentarios</h3>
+                <div class="message-card">
                 <div class="input-box" style="margin-top: 20px;">
                     <input type="text" id="commentInput" placeholder="Escreva um comentário...">
                     <button id="btnEnviarComentario">Enviar</button>
                 </div>
-                <div class="message-card" id="comentariosProjeto" style="margin-top: 20px;">
+                <div id="comentariosProjeto" style="margin-top: 20px;">
                     ${comentariosHTML}
                 </div>
+                </div>
             </div>
+        </div>
         </div>
     `;
 }
@@ -739,59 +744,59 @@ async function abrirModalProjeto(projetoId) {
     </div>
 `;
 
-modal.style.display = 'flex';
-modal.dataset.currentProjectId = projetoId;
+        modal.style.display = 'flex';
+        modal.dataset.currentProjectId = projetoId;
 
-const carouselContainer = modalBody.querySelector('.carousel-container');
-if (carouselContainer) {
-    const carouselTrack = carouselContainer.querySelector('.carousel-track');
-    const prevButton = carouselContainer.querySelector('.carousel-button.prev');
-    const nextButton = carouselContainer.querySelector('.carousel-button.next');
-    const carouselItems = carouselTrack.querySelectorAll('.carousel-item');
+        const carouselContainer = modalBody.querySelector('.carousel-container');
+        if (carouselContainer) {
+            const carouselTrack = carouselContainer.querySelector('.carousel-track');
+            const prevButton = carouselContainer.querySelector('.carousel-button.prev');
+            const nextButton = carouselContainer.querySelector('.carousel-button.next');
+            const carouselItems = carouselTrack.querySelectorAll('.carousel-item');
 
-    let currentIndex = 0;
-    const itemsPerView = Math.floor(carouselContainer.offsetWidth / carouselItems[0].offsetWidth); 
+            let currentIndex = 0;
+            const itemsPerView = Math.floor(carouselContainer.offsetWidth / carouselItems[0].offsetWidth);
 
-    function updateCarousel() {
-       
-        if (currentIndex < 0) {
-            currentIndex = carouselItems.length - itemsPerView;
-        } else if (currentIndex >= carouselItems.length - itemsPerView + 1) {
-            currentIndex = 0;
+            function updateCarousel() {
+
+                if (currentIndex < 0) {
+                    currentIndex = carouselItems.length - itemsPerView;
+                } else if (currentIndex >= carouselItems.length - itemsPerView + 1) {
+                    currentIndex = 0;
+                }
+
+                const itemWidth = carouselItems[0].offsetWidth + 10;
+                carouselTrack.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+
+
+                prevButton.style.display = (currentIndex === 0) ? 'none' : 'block';
+                nextButton.style.display = (currentIndex >= carouselItems.length - itemsPerView) ? 'none' : 'block';
+            }
+
+            prevButton.addEventListener('click', () => {
+                currentIndex--;
+                updateCarousel();
+            });
+
+            nextButton.addEventListener('click', () => {
+                currentIndex++;
+                updateCarousel();
+            });
+
+
+            window.addEventListener('resize', updateCarousel);
+            updateCarousel();
         }
 
-        const itemWidth = carouselItems[0].offsetWidth + 10; 
-        carouselTrack.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
 
-        
-        prevButton.style.display = (currentIndex === 0) ? 'none' : 'block';
-        nextButton.style.display = (currentIndex >= carouselItems.length - itemsPerView) ? 'none' : 'block';
-    }
-
-    prevButton.addEventListener('click', () => {
-        currentIndex--;
-        updateCarousel();
-    });
-
-    nextButton.addEventListener('click', () => {
-        currentIndex++;
-        updateCarousel();
-    });
-
-    
-    window.addEventListener('resize', updateCarousel);
-    updateCarousel(); 
-}
-
-
-modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
-    otherProjectCard.addEventListener('click', async (e) => {
-        const otherProjectId = e.currentTarget.dataset.projetoId;
-        if (otherProjectId) {
-            await abrirModalProjeto(otherProjectId);
-        }
-    });
-});
+        modalBody.querySelectorAll('.outros-projetos .card-projeto').forEach(otherProjectCard => {
+            otherProjectCard.addEventListener('click', async (e) => {
+                const otherProjectId = e.currentTarget.dataset.projetoId;
+                if (otherProjectId) {
+                    await abrirModalProjeto(otherProjectId);
+                }
+            });
+        });
 
         const btnEnviarComentario = document.getElementById('btnEnviarComentario');
         if (btnEnviarComentario) {
@@ -907,7 +912,7 @@ containerCard.addEventListener('click', async (event) => {
         }
         return;
     }
-     const favoriteButton = event.target.closest('.favorite'); 
+    const favoriteButton = event.target.closest('.favorite');
     if (favoriteButton) {
         if (!auth.currentUser) {
             alert('Você precisa estar logado para favoritar projetos!');
@@ -920,7 +925,7 @@ containerCard.addEventListener('click', async (event) => {
         const favoritosRef = ref(db, `Favoritos/${projectId}/${userId}`);
 
         if (isCurrentlyFavorited) {
-            await set(favoritosRef, null); 
+            await set(favoritosRef, null);
             favoriteButton.dataset.favorited = 'false';
             favoriteButton.classList.remove('favoritado');
             favoriteButton.innerHTML = `
@@ -934,12 +939,12 @@ containerCard.addEventListener('click', async (event) => {
 
             const index = abas.favoritos.findIndex(card => card.dataset.projetoId === projectId);
             if (index > -1) {
-                abas.favoritos[index].remove(); 
-                abas.favoritos.splice(index, 1); 
+                abas.favoritos[index].remove();
+                abas.favoritos.splice(index, 1);
             }
 
         } else {
-            await set(favoritosRef, true); 
+            await set(favoritosRef, true);
             favoriteButton.dataset.favorited = 'true';
             favoriteButton.classList.add('favoritado');
             favoriteButton.innerHTML = `
@@ -962,8 +967,8 @@ containerCard.addEventListener('click', async (event) => {
                     const curtidas = curtidasCountSnap.exists() ? Object.keys(curtidasCountSnap.val()).length : 0;
                     const comentariosCountSnap = await get(ref(db, `Comentarios/${projectId}`));
                     const comentarios = comentariosCountSnap.exists() ? Object.keys(comentariosCountSnap.val()).length : 0;
-                    const isLikedByViewer = todasCurtidas[projectId] && todasCurtidas[projectId][currentUserId]; 
-                    
+                    const isLikedByViewer = todasCurtidas[projectId] && todasCurtidas[projectId][currentUserId];
+
                     criarCardProjeto(projectId, projetoData, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, 0, true);
                 }
             }
@@ -978,7 +983,7 @@ containerCard.addEventListener('click', async (event) => {
     if (cardProjeto) {
         const clickedElement = event.target;
         const isInteractiveElement = clickedElement.closest('.like') || clickedElement.closest('.edit') || clickedElement.closest('.delete') || clickedElement.closest('.autor-link');
-        
+
         if (!isInteractiveElement) {
             const projetoId = cardProjeto.dataset.projetoId;
             if (projetoId) {
@@ -1033,7 +1038,7 @@ onAuthStateChanged(auth, async (user) => {
         projetosSnap,
         curtidasSnap,
         comentariosGlobaisSnap,
-        favoritosSnap, 
+        favoritosSnap,
         tipoUsuario
     ] = await Promise.all([
         get(ref(db, 'Propostas')),
@@ -1063,10 +1068,10 @@ onAuthStateChanged(auth, async (user) => {
         }
     });
 
-   const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
+    const todosProjetos = projetosSnap.exists() ? projetosSnap.val() : {};
     const todasCurtidas = curtidasSnap.exists() ? curtidasSnap.val() : {};
     const todosComentarios = comentariosGlobaisSnap.exists() ? comentariosGlobaisSnap.val() : {};
-    const todosFavoritos = favoritosSnap.exists() ? favoritosSnap.val() : {}; 
+    const todosFavoritos = favoritosSnap.exists() ? favoritosSnap.val() : {};
 
     const userIdsToFetch = new Set();
     Object.values(todosProjetos).forEach(proj => userIdsToFetch.add(proj.userId));
@@ -1091,11 +1096,11 @@ onAuthStateChanged(auth, async (user) => {
 
     let curtidosIndex = 0;
     Object.entries(todasCurtidas).forEach(([projetoId, usuariosQueCurtiram]) => {
-        if (usuariosQueCurtiram[perfilUserId]) { 
+        if (usuariosQueCurtiram[perfilUserId]) {
             const projeto = todosProjetos[projetoId];
             if (projeto) {
                 const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
-                const isFavoritedByViewer = todosFavoritos[projetoId] && todosFavoritos[projetoId][currentUserId]; 
+                const isFavoritedByViewer = todosFavoritos[projetoId] && todosFavoritos[projetoId][currentUserId];
                 const autorData = usersData[projeto.userId] || {};
                 const visualizacoes = projeto.visualizacoes || 0;
                 const curtidas = Object.keys(usuariosQueCurtiram).length;
@@ -1109,23 +1114,23 @@ onAuthStateChanged(auth, async (user) => {
     let favoritosIndex = 0;
     if (todosFavoritos) {
         Object.entries(todosFavoritos).forEach(([projetoId, usuariosQueFavoritaram]) => {
-            if (usuariosQueFavoritaram[perfilUserId]) { 
+            if (usuariosQueFavoritaram[perfilUserId]) {
                 const projeto = todosProjetos[projetoId];
                 if (projeto) {
                     const isLikedByViewer = todasCurtidas[projetoId] && todasCurtidas[projetoId][currentUserId];
-                    const isFavoritedByViewer = todosFavoritos[projetoId] && todosFavoritos[projetoId][currentUserId]; 
+                    const isFavoritedByViewer = todosFavoritos[projetoId] && todosFavoritos[projetoId][currentUserId];
                     const autorData = usersData[projeto.userId] || {};
                     const visualizacoes = projeto.visualizacoes || 0;
                     const curtidas = todasCurtidas[projetoId] ? Object.keys(todasCurtidas[projetoId]).length : 0;
                     const comentarios = todosComentarios[projetoId] ? Object.keys(todosComentarios[projetoId]).length : 0;
-                    
+
                     criarCardProjeto(projetoId, projeto, 'favoritos', currentUserId, isLikedByViewer, autorData.nome, autorData.foto_perfil, visualizacoes, curtidas, comentarios, favoritosIndex++, isFavoritedByViewer);
                 }
             }
         });
     }
 
-     if (tipoUsuario === 'Contratante') {
+    if (tipoUsuario === 'Contratante') {
         if (propostasSnap.exists()) {
             const propostas = propostasSnap.val();
             Object.entries(propostas).forEach(([propostaId, p]) => {
@@ -1140,7 +1145,7 @@ onAuthStateChanged(auth, async (user) => {
             Object.entries(todosProjetos).forEach(([id, dados]) => {
                 if (dados.userId === perfilUserId) {
                     const isLikedByViewer = todasCurtidas[id] && todasCurtidas[id][currentUserId];
-                    const isFavoritedByViewer = todosFavoritos[id] && todosFavoritos[id][currentUserId]; 
+                    const isFavoritedByViewer = todosFavoritos[id] && todosFavoritos[id][currentUserId];
                     const autorData = usersData[dados.userId] || {};
                     const visualizacoes = dados.visualizacoes || 0;
                     const curtidas = todasCurtidas[id] ? Object.keys(todasCurtidas[id]).length : 0;
@@ -1152,7 +1157,7 @@ onAuthStateChanged(auth, async (user) => {
         }
     }
 
-    mostrarCards('projetos'); 
+    mostrarCards('projetos');
 
     const quantidadePropostasFinalizadas = 10;
 
