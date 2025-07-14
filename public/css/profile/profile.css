@@ -1313,3 +1313,19 @@ h3{
     text-align: center;
     font-family: 'Roboto Mono', monospace;
 }
+.floating-card-infos {
+  position: fixed;
+  top: 0;
+  left: 0; 
+  background: transparent !important;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+  padding: 16px;
+  z-index: 1000;
+  display: none; 
+  color: #eee;
+}
+#floatingCardInfos {
+  background: transparent !important;
+  box-shadow: none !important;
+}

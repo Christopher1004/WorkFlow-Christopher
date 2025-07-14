@@ -144,6 +144,9 @@
     </div>
   </div>
 
+
+  <div id="floatingCardInfos" class="floating-card-infos"></div>
+
 </section>
 
 <script type="module" src="/js/perfil.js"></script>
@@ -340,4 +343,48 @@
       el.style.display = 'block';
     });
   }
+</script>
+<script>
+  const cardInfos = document.querySelector('.card-infos');
+const profilePic = document.querySelector('.profile-pic');
+const floatingCard = document.getElementById('floatingCardInfos');
+
+function copiarConteudoCard() {
+  floatingCard.innerHTML = ''; 
+  const clonedProfilePic = profilePic.cloneNode(true);
+  floatingCard.appendChild(clonedProfilePic);
+
+  const clonedCardInfos = cardInfos.cloneNode(true);
+  const clonedProfilePicDentro = clonedCardInfos.querySelector('.profile-pic');
+  if (clonedProfilePicDentro) {
+    clonedProfilePicDentro.remove();
+  }
+  floatingCard.appendChild(clonedCardInfos);
+}
+
+function atualizarPosicaoELargura() {
+  const rect = cardInfos.getBoundingClientRect();
+  floatingCard.style.left = rect.left + 'px';
+  floatingCard.style.width = rect.width + 'px';
+  floatingCard.style.top = '0'; 
+  floatingCard.style.position = 'fixed';
+  floatingCard.style.zIndex = '9999'; 
+}
+
+function onScrollOrResize() {
+  const rect = cardInfos.getBoundingClientRect();
+  if (rect.bottom <= 0) {
+    copiarConteudoCard();
+    atualizarPosicaoELargura();
+    floatingCard.style.display = 'block';
+  } else {
+    floatingCard.style.display = 'none';
+  }
+}
+
+window.addEventListener('scroll', onScrollOrResize);
+window.addEventListener('resize', onScrollOrResize);
+
+onScrollOrResize();
+
 </script>
