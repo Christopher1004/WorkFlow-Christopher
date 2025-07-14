@@ -5,6 +5,23 @@
 @import "partials/layout.css";
 @import "partials/card-infos.css";
 
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}
+
+.section-1 {
+  margin: 0;   
+  padding: 0;  
+  width: 100%; 
+}
+
+.banner {
+  margin: 0;
+  padding: 0;
+}
+
 .modal {
   display: none;
   position: fixed;

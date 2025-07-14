@@ -13,6 +13,7 @@ app.use(expressLayouts)
 app.set('layout', 'base')
 app.use((req,res,next) => {
     res.locals.currentRoute = req.path;
+    res.locals.isProfilePage = req.path.includes('/perfil');
     next();
 })
 
