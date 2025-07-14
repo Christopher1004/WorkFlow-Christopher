@@ -84,11 +84,14 @@ async function escutarUltimaMensagem(userId, outroUid) {
 
         conversasMap.delete(outroUid);
 
+        let mensagensNaoLidas = 0;
+
         const unsubscribeMsg = onChildAdded(mensagensRef, (snapMsg) => {
             const msg = snapMsg.val();
             if (!msg.timestamp) return;
 
-            const mensagemNaoLida = msg.autor !== userIdLogado && msg.timestamp > ultimaMensagemLida;
+            const naoLida = msg.autor !== userIdLogado && msg.timestamp > ultimaMensagemLida;
+            if (naoLida) mensagensNaoLidas++;
 
             conversasMap.set(outroUid, {
                 id: outroUid,
@@ -96,7 +99,8 @@ async function escutarUltimaMensagem(userId, outroUid) {
                 avatar,
                 ultimaMensagem: msg.timestamp,
                 ultimaMensagemTexto: msg.texto ? msg.texto : (msg.imagem ? "📷 Imagem" : ""),
-                lida: !mensagemNaoLida
+                lida: mensagensNaoLidas === 0,
+                qtdNaoLidas: mensagensNaoLidas
             });
 
             atualizarSidebarEBadge();
@@ -164,13 +168,19 @@ function renderizarSidebar(userIdLogadoParam) {
                 right: 10px;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 10px;
-                height: 10px;
-                background: red;
+                width: 17px;
+                height: 17px;
+                background: #4276FE;
                 border-radius: 50%;
-                border: 1px solid white;
                 z-index: 10;
-            "></span>` : ''}
+                color: white;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+            ${conversa.qtdNaoLidas > 99 ? '99+' : conversa.qtdNaoLidas}
+            </span>` : ''}
         `;
 
         chatUser.addEventListener("click", () => {
@@ -258,6 +268,17 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
             const textoMsg = document.createElement('span');
             textoMsg.textContent = msg.texto;
             div.appendChild(textoMsg);
+        }
+
+        if (msg.link) {
+            const linkEl = document.createElement("a");
+            linkEl.href = msg.link;
+            linkEl.target = "_blank";
+            linkEl.textContent = msg.link;
+            linkEl.style.color = "#4EAFFF";
+            linkEl.style.display = "block";
+            linkEl.style.marginBottom = "6px";
+            div.appendChild(linkEl);
         }
 
         const horario = document.createElement('small');
