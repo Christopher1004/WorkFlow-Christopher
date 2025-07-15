@@ -1,285 +1,221 @@
-<link rel="stylesheet" href="/css/projects/create_project/create_project.css">
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<div class="top-menu">
-    <div class="buttons">
-        <a id="btnCancelar"><button class="cancelar">Cancelar</button></a>
-        <button id="btnProximo" class="proximo">Proximo</button>
-    </div>
-</div>
-
-<section class="creator">
-    <div class="left">
-        <div class="componente">
-            <div class="componentes toolbar">
-                <h2>Componentes</h2>
-                <div class="texto" id="btnTexto" draggable="true" data-type="texto">
-                    <image class="icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-                            <g fill="none">
-                                <path d="M0 0h24v24H0z" />
-                                <path fill="currentColor"
-                                    d="M5 3.5a1.5 1.5 0 1 0 0 3h5.5V20a1.5 1.5 0 0 0 3 0V6.5H19a1.5 1.5 0 0 0 0-3z" />
-                            </g>
-                        </svg>
-                    </image>
-                    <p>texto</p>
-                </div>
-                <div class="imagem" id="btnImage" draggable="true" data-type="imagem">
-                    <image class="icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2">
-                                <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" />
-                                <circle cx="8.5" cy="8.5" r="2.5" />
-                                <path
-                                    d="M14.526 12.621L6 22h12.133A3.867 3.867 0 0 0 22 18.133V18c0-.466-.175-.645-.49-.99l-4.03-4.395a2 2 0 0 0-2.954.006" />
-                            </g>
-                        </svg>
-                    </image>
-                    <p>Imagem</p>
-                </div>
-            </div>
-        </div>
-        <div class="camadas">
-            <h2>Camada</h2>
-            <div class="camadaArea">
-                <!--
-    area camada <- somente para eu encontrar aonde esta
-    -->
-            </div>
-        </div>
-
-    </div>
-    <div class="right">
-        <div class="opcoes">
-            <button class="btn-bold" onclick="formatarTexto('bold')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
-                    <path fill="currentColor"
-                        d="M4 2h4.5a3.501 3.501 0 0 1 2.852 5.53A3.499 3.499 0 0 1 9.5 14H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1m1 7v3h4.5a1.5 1.5 0 0 0 0-3Zm3.5-2a1.5 1.5 0 0 0 0-3H5v3Z" />
-                </svg>
-            </button>
-            <button class="btn-italic" onclick="formatarTexto('italic')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" d="M11 5h6M7 19h6m1-14l-4 14" />
-                </svg>
-            </button>
-            <button class="btn-align-left" onclick="formatarTexto('justifyRight')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <g fill="none">
-                        <path
-                            d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
-                        <path fill="currentColor"
-                            d="M20 17.5a1.5 1.5 0 0 1 .144 2.993L20 20.5H10a1.5 1.5 0 0 1-.144-2.993L10 17.5zm0-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm0-5a1.5 1.5 0 0 1 .144 2.993L20 10.5H10a1.5 1.5 0 0 1-.144-2.993L10 7.5zm0-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
-                    </g>
-                </svg>
-            </button>
-            <button class="btn-align-center" onclick="formatarTexto('justifyCenter')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <g fill="none">
-                        <path
-                            d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
-                        <path fill="currentColor"
-                            d="M17 17.5a1.5 1.5 0 0 1 .144 2.993L17 20.5H7a1.5 1.5 0 0 1-.144-2.993L7 17.5zm3-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm-3-5a1.5 1.5 0 0 1 .144 2.993L17 10.5H7a1.5 1.5 0 0 1-.144-2.993L7 7.5zm3-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
-                    </g>
-                </svg>
-            </button>
-            <button class="btn-align-right" onclick="formatarTexto('justifyLeft')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <g fill="none">
-                        <path
-                            d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
-                        <path fill="currentColor"
-                            d="M14 17.5a1.5 1.5 0 0 1 .144 2.993L14 20.5H4a1.5 1.5 0 0 1-.144-2.993L4 17.5zm6-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3zm-6-5a1.5 1.5 0 0 1 .144 2.993L14 10.5H4a1.5 1.5 0 0 1-.144-2.993L4 7.5zm6-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5z" />
-                    </g>
-                </svg>
-            </button>
-            <button class="btn-h1" onclick="formatarTexto('formatBlock', 'h1')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m7 5v-6.786a.1.1 0 0 0-.164-.077L16 12.5" />
-                </svg>
-            </button>
-            <button class="btn-h2" onclick="formatarTexto('formatBlock', 'h2')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m4-1c0-1 3-1.5 3 1c0 1.977-2.932 2-2.999 4.898A.1.1 0 0 0 16.1 17h3.2" />
-                </svg>
-            </button>
-            <button class="btn-h3" onclick="formatarTexto('formatBlock', 'h3')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m4-1c0-.5.832-1 1.6-1s1.9.311 1.9 1.5a1.535 1.535 0 0 1-.952 1.482c-.01.004-.008.023.002.024c.261.04 1.45.3 1.45 1.794c0 1.2-.5 2.2-2.2 2.2c0 0-1.8 0-1.8-.7" />
-                </svg>
-            </button>
-            <button class="btn-h4" onclick="formatarTexto('formatBlock', 'h4')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                        d="M6 7v5m0 5v-5m0 0h6m0-5v5m0 5v-5m6-2l-2.717 4.851a.1.1 0 0 0 .087.149h4.83M19 17v-3.4" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="artboard">
-            <div class="content">
-                <!-- arena componente -->
-            </div>
-        </div>
-    </div>
-</section>
-<script>
-    function formatarTexto(comando, valor = null) {
-        if (valor) {
-            document.execCommand(comando, false, valor);
-        } else {
-            document.execCommand(comando, false, null);
-        }
-    }
-</script>
-<div class="modalSalvar">
-    <h2>Detalhes</h2>
-    <div class="container-titulo">
-        <label for="Titulo">Titulo</label>
-        <input type="text" name="Titulo" id="titulo">
-    </div>
-    <div class="container-capa">
-        <label for="capa">Capa</label>
-        <input type="file" name="capa" id="capa" class="capa-uploader" hidden>
-
-        <div id="capaPreview" class="capa-upload" style="min-width: 500px;">
-            <div class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 12V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11m18-4v7a2 2 0 0 1-2 2h-3m5-9c-6.442 0-10.105 1.985-12.055 4.243M3 16v3a2 2 0 0 0 2 2v0h11M3 16c1.403-.234 3.637-.293 5.945.243M16 21c-1.704-2.768-4.427-4.148-7.055-4.757M8.5 7C8 7 7 7.3 7 8.5S8 10 8.5 10S10 9.7 10 8.5S9 7 8.5 7" />
-                </svg>
-            </div>
-            <p>Puxe ou solte por clique aqui para fazer o upload da imagem.</p>
-        </div>
-    </div>
-    <div class="container-tags">
-        <label for="tags">Tags</label>
-        <div class="tags-disponiveis">
-            <span class="tag-btn">Design</span>
-            <span class="tag-btn">UI Design</span>
-            <span class="tag-btn">3D Design</span>
-            <span class="tag-btn">Web Design</span>
-            <span class="tag-btn">UX</span>
-            <span class="tag-btn">Interior Design</span>
-            <span class="tag-btn">Poster Design</span>
-        </div>
-
-    </div>
-    <div class="button-finalizar">
-        <button id="btnFinalizar" class="finalizar">Finalizar</button>
-    </div>
-
-</div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Criar Projetos</title>
+    <link rel="stylesheet" href="css\projects\create_project\create_project.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
 
 <style>
-    .tag-chip {
-        display: inline-block;
-        background: #3c38a6;
-        padding: 5px 10px;
-        margin: 5px;
-        color: white;
-        border-radius: 15px;
-        font-size: 14px;
-
-    }
-
-    .tag-chip button {
-        background: none;
-        border: none;
-        margin-top: 2px;
-        margin-left: 5px;
-        cursor: pointer;
-    }
-
-    .tags-disponiveis {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 8px;
-    }
-
-    .tag-btn {
-        padding: 6px 12px;
-        border-radius: 20px;
-        background-color: #444;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .tag-btn.selected {
-        background-color: #4f46e5;
-    }
-</style>
-
-
-
-<div id="modal-confirmacao" class="modal hidden">
-    <div class="modal-content">
-        <p>Confirmar a Criação do Projeto?</p>
-        <div class="modal-buttons">
-            <button id="btn-nao">Não</button>
-            <button id="btn-sim">Sim</button>
-        </div>
-    </div>
-</div>
-<div id="modal-sucesso" class="modal hidden">
-    <div class="modal-content">
-        <p id="mensagemModal">Projeto salvo com sucesso</p>
-    </div>
-</div>
-<style>
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
+    html, body {
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1010;
+        width: 100%;
     }
+    section {
+        min-height: 100vh;
+    }
+    .navbar {
+    display: none;
+}
 
-    .modal-content {
-        background-color: #2c2c2c;
-        color: white;
-        padding: 30px;
-        border-radius: 10px;
-        text-align: center;
-    }
+.footer {
+    display: none;
+}
 
-    .modal-buttons {
-        margin-top: 20px;
-    }
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--gray-100);
+}
 
-    .modal-buttons button {
-        margin: 0 10px;
-        padding: 10px 20px;
-        cursor: pointer;
-        background-color: #444;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
+ion-icon {
+  color: var(--gray-25);
+}
 
-    .modal-buttons button:hover {
-        background-color: #666;
-    }
+.modalComponentes {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
 
-    .hidden {
-        display: none;
-    }
+.modalComponentes.open {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+.modalComponentes.closing {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+    pointer-events: none;
+}
+
+.modalOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+}
+.modalOverlay.active {
+    display: block;
+}
 </style>
-<script src="js/projects/create_project/modal.js"></script>
-<script type="module" src="/js/main.js"></script>
-<script type="module" src="/js/projects/create_project/componentesProjeto.js"></script>
-<script type="module" src="/js/projects/create_project/criarProjetoBanco.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <section class="flex flex-col h-full w-full">
+        <div class="topbar w-full flex flex-row justify-between pd-2">
+            <button class="btn btn-gray">Cancelar</button>
+            <button class="btn btn-purple">Salvar</button>
+        </div>
+        <div class="artboard w-full flex flex-col h-full flex justify-start items-center">
+            <div class="projetoVazio" style="width: 300px;">
+                <h1 class="text-xl text-center mg-0">Esse projeto está vazio</h1>
+                <p class="text-lg text-center text-gray-25">Adicione algo para começar. Clique em + para adicionar o conteúdo</p>
+            </div>
+
+            <div class="contentProject w-full pd-3" style="max-width: 900px;">
+                <div class="PTitulo pd-y-3 w-full">
+                    <h1 class="text-3xl text-white mg-0">Escreva algo</h1>
+                </div>
+    
+                <div class="Pimage w-full">
+                    <img src="assets\image\createproject\Paleta de cores.jpg" alt="" style="width: 100%;">
+                </div>
+
+            <div class="Ptext w-full">
+                <p class="text-lg">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere eros quis convallis gravida. Quisque urna velit, scelerisque ut luctus ac, venenatis feugiat nulla. Morbi consectetur, erat ac mattis tincidunt, turpis ante porta dolor, sit amet ultrices erat lorem ut neque. Nullam id ex ut magna faucibus blandit in vitae orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer porta at mauris at lacinia.
+                </p>
+            </div>
+            <div class="PTitulo pd-y-3 w-full">
+                <h1 class="text-3xl text-white mg-0">Cores deste projeto</h1>
+            </div>
+
+            <div class="Pcores pd-y-3 w-full">
+                <div class="row flex flex-row gap-3 mg-b-2">
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #4287f5; height: 150px;">
+                        <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
+                    </div>
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #ce42f5; height: 150px;">
+                        <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
+                    </div>
+                </div>
+                <div class="row flex flex-row gap-3 mg-b-2">
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #c2f542; height: 150px;">
+                        <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
+                    </div>
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #f59342; height: 150px;">
+                        <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
+                    </div>
+                </div>
+                <div class="row flex flex-row gap-3 mg-b-2">
+                    <button class="btn btn-gray w-full">Adicionar mais cores</button>
+                </div>
+            </div>
+            </div>
+
+        </div>
+        
+        <div id="addComponent" class="addbutton w-full flex justify-end pd-5">
+            <button class="btn btn-purple">
+                <p class="text-3xl mg-0 pd-0">+</p>
+            </button>
+        </div>
+    </section>
+
+    <dialog id="modalComponentes" class="modalComponentes bg-gray-100 pd-3 border border-solid rounded-lg border-gray">
+        <div class="top flex flex-row flex items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
+            <h1 class="text-xl flex flex-1 mg-0 text-white">Adicionar componente</h1>
+            <button id="close" class="closemodal" style="background-color: var(--background); border: 0px;"><ion-icon name="close-outline" size="large"></ion-icon></button>
+        </div>
+        <div class="content">
+            <div class="row flex flex-row gap-3 mg-b-2">
+                <div class="cardComponent" style="width: 240px;">
+                    <div class="imgCard overflow-hidden rounded-lg overflow-hidden" style="background-color: black; width: 240px; height: 140px;">
+                        <img src="assets/image/createproject/Texto.jpg" alt="">
+                    </div>
+                    <div class="infoCard">
+                        <h2 class="text-lg font-medium text-white mg-0">Texto Simples</h2>
+                        <p class="text-xs text-gray-25 mg-0">Apenas um texto simples para escrever algo</p>
+                    </div>
+                </div>
+                <div class="cardComponent" style="width: 240px;">
+                    <div class="imgCard overflow-hidden rounded-lg" style="background-color: black; width: 240px; height: 140px;">
+                        <img src="assets/image/createproject/Sessão.jpg" alt="">
+                    </div>
+                    <div class="infoCard">
+                        <h2 class="text-lg font-medium text-white mg-0">Título</h2>
+                        <p class="text-xs text-gray-25 mg-0">Título para os textos e imagens</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row flex flex-row gap-3 mg-b-2">
+                <div class="cardComponent" style="width: 240px;">
+                    <div class="imgCard overflow-hidden rounded-lg" style="background-color: black; width: 240px; height: 140px;">
+                        <img src="assets/image/createproject/Imagem.jpg" alt="">
+                    </div>
+                    <div class="infoCard">
+                        <h2 class="text-lg font-medium text-white mg-0">Imagem</h2>
+                        <p class="text-xs text-gray-25 mg-0">Adicione uma imagem do seu projeto</p>
+                    </div>
+                </div>
+                <div class="cardComponent" style="width: 240px;">
+                    <div class="imgCard overflow-hidden rounded-lg" style="background-color: black; width: 240px; height: 140px;">
+                        <img src="assets/image/createproject/Paleta de cores.jpg" alt="">
+                    </div>
+                    <div class="infoCard">
+                        <h2 class="text-lg font-medium text-white mg-0">Palete de cores</h2>
+                        <p class="text-xs text-gray-25 mg-0">Mostre as cores deste projeto</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <div id="modalOverlay" class="modalOverlay"></div>
+
+    <script>
+        const buttonOpen = document.getElementById("addComponent");
+        const modal = document.getElementById("modalComponentes");
+        const buttonClose = document.getElementById("close");
+        const overlay = document.getElementById("modalOverlay");
+
+        buttonOpen.onclick = function () {
+            modal.showModal();
+            overlay.classList.add("active");
+            // Garante que a classe 'open' seja adicionada após o showModal
+            setTimeout(() => modal.classList.add("open"), 10);
+        }
+
+        function closeModal() {
+            modal.classList.remove("open");
+            modal.classList.add("closing");
+            overlay.classList.remove("active");
+            setTimeout(() => {
+                modal.classList.remove("closing");
+                modal.close();
+            }, 300); // Tempo igual ao transition do CSS
+        }
+
+        buttonClose.onclick = closeModal;
+        overlay.onclick = closeModal;
+
+        // Impede o fechamento instantâneo pelo ESC ou backdrop
+        modal.addEventListener('cancel', function(event) {
+            event.preventDefault();
+            closeModal();
+        });
+    </script>

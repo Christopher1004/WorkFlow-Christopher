@@ -2,44 +2,59 @@
     <title>Primeiros Passos</title>
     <link rel="stylesheet" href="/css/cadastro/passos.css">
     <link rel="icon" type="image/x-icon" href="/assets/icons/icon.ico">
-
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'work sans', sans-serif;
+        }
+    </style>
 </head>
-<section class="section-4">
-    <div class="conteudo">
-        <div class="topo">
-            <img src="/assets/image/Union.png" alt="logo">
-            <h1>Primeiros Passos</h1>
-            <h3>Precisamos de algumas informações adicionais para iniciar sua jornada, não se preocupe, isso não vai
-                demorar</h3>
+
+<section class="section-4 mg-0 pd-0 h-full w-full flex flex-row sm:flex-col">
+    <div class="conteudo bg-background text-center mg-0 w-full flex flex-row sm:flex-col pd-0">
+        <div class="lado flex flex-1 flex-col justify-center pd-10 bg-base-100 sm:pd-4 sm:w-full sm:items-center">
+            <div class="logo" style="width: 120px; height: 40px;">
+                <img src="/assets/image/Union.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h1 class="text-3xl text-left sm:text-center mg-b-2">Primeiros Passos</h1>
+            <p class="text-lg text-left font-normal sm:text-center mg-b-4">Precisamos de algumas informações adicionais para iniciar sua jornada, não se preocupe, isso não vai demorar.</p>
         </div>
 
-        <div class="contratante">
-            <form method="post" id="formcontratante">
-                <label> O que você busca?</label>
-                <input type="text" name="tprofissao" id="tprofissao" class="caixadetexto" placeholder=" " maxlength="50"
-                    minlength="5" /> <br />
+        <div class="contratante flex flex-1 h-full items-center pd-5 sm:pd-2 sm:w-full">
+            <form method="post" id="formcontratante" class="w-full flex text-left flex-col items-end sm:items-center">
+                <label class="w-full text-left sm:text-center">Nome</label>
+                <input type="text" name="nome" id="nome" class="form-control sm w-full" placeholder="" maxlength="50" minlength="5"/>
 
-                <label> Qual o tamanho da sua empresa?</label>
-                <input type="text" name="tcarreira" id="tcarreira" class="caixadetexto" placeholder=" " maxlength="50"
-                    minlength="5" /> <br />
+                <label class="w-full text-left sm:text-center">O que você busca?</label>
+                <input type="text" name="tprofissao" id="tprofissao" class="form-control sm w-full" placeholder="Ex: Designer, Programador..." maxlength="50" minlength="5"/>
 
-                <label> Que tipo de freelancer você busca? </label>
-                <input type="text" name="tlingua" id="tlingua" class="caixadetexto" placeholder=" " maxlength="50"
-                    minlength="5" /> <br />
 
-                <input type="submit" name="btnproximo" id="btnproximo" class="botao" value="Próximo" />
+                <label class="w-full text-left sm:text-center">Qual seu segmento?</label>
+                <input type="text" name="tramo" id="tramo" class="form-control sm w-full" placeholder="Ex: automobilístico, lobístico..." maxlength="50" minlength="5"/>
 
+                <label class="w-full text-left sm:text-center">Qual o tamanho da sua empresa?</label>
+                <select class="sm" name="tamanho" id="tamanhoEmpresa">
+                    <option value="Micro">Micro (1 funcionários)</option>
+                    <option value="pequena">Pequena (2 a 50 funcionários)</option>
+                    <option value="Média">Média (50 a 1000 funcionários)</option>
+                    <option value="Grande">Grande (mais de 1000 funcionários)</option>
+                </select>
+
+                <label class="w-full text-left sm:text-center">Que tipo de freelancer você busca?</label>
+                <select name="tipoFreelancer" id="tipoFreelancer" class="sm">
+                    <option value="iniciante">Iniciante</option>
+                    <option value="mediano">Mediano</option>
+                    <option value="Profissional">Profissional</option>
+                </select>
+
+                <input type="submit" name="btnproximo" id="btnproximo" class="btn btn-purple btn-block mg-t-4 sm:mg-t-2" value="Próximo" />
             </form>
         </div>
-
-
     </div>
-    </div>
-
-
 </section>
 
-
-
-
-<script src="../../src/js/hamburguer.js"></script>
+<script src="/js/hamburguer.js"></script>

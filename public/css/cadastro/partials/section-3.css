@@ -220,8 +220,11 @@ body {
     width: 100%;
     padding: 20px;
     border-radius: 5px;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
     border: none;
-    background-color: var(--primary);
+    background-color: var(--base-100);
     transition: 0.3s;
 }
 

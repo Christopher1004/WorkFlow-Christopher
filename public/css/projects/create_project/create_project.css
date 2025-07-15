@@ -1,13 +1,18 @@
 @import "../../globals/globals.css";
 
-@import "../../index/partials/nav.css";
-@import  "./partials/background.css";
-@import  "./partials/title.css";
-@import  "./partials/sections.css";
-@import  "./partials/camada.css";
-@import  "./partials/top-menu.css";
-@import  "./partials/component.css";
-@import  "./partials/menu.css";
-@import  "./partials/opcoes.css";
-@import  "./partials/artboard.css";
-@import  "./partials/modal.css";
+body {
+    background-color: var(--gray-100);
+    opacity: 1;
+    background-image: radial-gradient(var(--gray-25) 0.65px, #000000 0.65px);
+    background-size: 13px 13px;
+}
+
+.topbar {
+    position: fixed;
+}
+
+.addbutton {
+    position: fixed;
+    top: 100;
+    bottom: 0;
+}

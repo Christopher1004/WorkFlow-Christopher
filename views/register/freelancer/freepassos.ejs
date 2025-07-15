@@ -3,41 +3,81 @@
     <link rel="stylesheet" href="/css/cadastro/passos.css">
     <link rel="icon" type="image/x-icon" href="/assets/icons/icon.ico">
 
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'work sans', sans-serif;
+    }
+
+    </style>
+
 </head>
 
 
-<section class="section-4">
-    <div class="conteudo">
-        <div class="topo">
-            <img src="/assets/image/Union.png" alt="logo">
-            <h1>Primeiros Passos</h1>
-            <h3>Precisamos de algumas informações adicionais para iniciar sua jornada, não se preocupe, isso não vai
-                demorar</h3>
+<section class="section-4 mg-0 pd-0 h-full w-full flex flex-row sm:flex-col">
+    <div class="conteudo bg-background text-center mg-0 w-full flex flex-row sm:flex-col pd-0">
+        <div class="lado flex flex-1 flex-col justify-center pd-10 bg-base-100 sm:pd-4 sm:w-full sm:items-center">
+            <div class="logo" style="width: 120px; height: 40px;">
+                <img src="/assets/image/Union.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h1 class="text-3xl text-left sm:text-center mg-b-2">Primeiros Passos</h1>
+            <p class="text-lg text-left font-normal sm:text-center mg-b-4">Precisamos de algumas informações adicionais para iniciar sua jornada, não se preocupe, isso não vai demorar.</p>
         </div>
 
-        <div class="freelancer">
-            <form method="post" id="formfreelancer">
-                <label> Profissão</label>
-                <input type="text" name="tprofissao" id="tprofissao" class="caixadetexto" placeholder=" " maxlength="50"
-                    minlength="5" /> <br />
+        <div class="freelancer flex flex-1 items-center pd-5 sm:pd-2 sm:w-full">
+            
+            <form method="post" id="formfreelancer" class="w-full flex text-left flex-col items-end sm:items-center">
 
-                <label> Tempo de carreira</label>
-                <input type="text" name="tcarreira" id="tcarreira" class="caixadetexto" placeholder=" " maxlength="50"
-                    minlength="5" /> <br />
+                <label class="w-full text-left sm:text-center">Nome</label>
+                <input type="text" name="nome" id="nome" class="form-control sm w-full" placeholder="" maxlength="50" minlength="5"/>
+                <label class="w-full text-left sm:text-center">Profissão</label>
+                <input type="text" name="tprofissao" id="tprofissao" class="form-control sm w-full" placeholder="Designer" minlength="5"/>
 
-                <label> Quais linguas você fala? </label>
-                <input type="text" name="tlingua" id="tlingua" class="caixadetexto" placeholder=" " maxlength="50"
-                    minlength="5" /> <br />
+                <label class="w-full text-left sm:text-center">Tempo de carreira</label>
+                <input type="text" name="tcarreira" id="tcarreira" class="form-control sm w-full" placeholder="1 ano" minlength="5"/>
 
-                <input type="submit" name="btnproximo" id="btnproximo" class="botao" value="Próximo" />
+                <label class="w-full text-left sm:text-center">Fala outro idioma além do Português?</label>
+                <select class="sm w-full" name="idioma" id="confirmarMultiIdioma">
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
 
+                <input type="text" name="tlingua" id="tlingua" class="form-control sm w-full" placeholder="idioma secundária" minlength="5" disabled/>
+                <input type="text" name="tlingua" id="tlingua" class="form-control sm w-full" placeholder="idioma terciário" minlength="5" disabled/>
+                <input type="text" name="tlingua" id="tlingua" class="form-control sm w-full" placeholder="idioma quartário" minlength="5" disabled/>
+
+                <input type="submit" name="btnproximo" id="btnproximo" class="btn btn-purple btn-block mg-t-4 sm:mg-t-2" value="Próximo" />
             </form>
         </div>
-
-
     </div>
-    </div>
-
-
 </section>
-<script src="js/hamburguer.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('confirmarMultiIdioma');
+    const campos = Array.from(document.querySelectorAll('input[name="tlingua"]'));
+
+    function atualizarCampos() {
+        if (select.value === 'sim') {
+            campos.forEach(campo => {
+                campo.disabled = false;
+            });
+        } else {
+            campos.forEach(campo => {
+                campo.value = '';
+                campo.disabled = true;
+            });
+        }
+    }
+
+    select.addEventListener('change', atualizarCampos);
+
+    // Executa ao carregar a página
+    atualizarCampos();
+});
+</script>

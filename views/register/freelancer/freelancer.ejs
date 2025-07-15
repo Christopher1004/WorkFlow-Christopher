@@ -15,39 +15,38 @@
 
         <div class="conteudo">
             <div class="topo">
-                <img src="/assets/image/Union.png" alt="logo">
-                <h1 class="text-2xl">Criar nova conta</h1>
-                <h3>Preencha todos os campos abaixo</h3>
+                <h1 class="text-2xl">Criar sua conta</h1>
             </div>
 
             <div class="freelancer">
                 <form id="formfreelancer">
-                    <label> Email</label>
+                    <label class="mg-0">Email</label>
                     <input type="email" name="temail" id="txtEmail" class="caixadetexto" placeholder="email"
                         maxlength="50" minlength="5" />
 
-                    <label> Senha</label>
+                    <label class="mg-0">Senha</label>
                     <input type="password" name="tsenha" id="txtSenha" class="caixadetexto" placeholder="senha"
                         maxlength="50" minlength="5" />
 
-                    <label> Confirmar Senha</label>
+                    <label class="mg-0">Confirmar Senha</label>
                     <input type="password" name="tsenha" id="tConfirmarSenha" class="caixadetexto"
                         placeholder="confirmar senha" maxlength="50" minlength="5" />
 
-                    <label> Data de nascimento</label>
+                    <label class="mg-0">Data de nascimento</label>
                     <div class="dataenviar">
                         <input type="date" name="tdata" id="txtData" class="tdata" placeholder=" " maxlength="50"
                             minlength="5" />
                         <div id="form-error" class="error-message">Por favor, preencha todos os campos.</div>
 
                         <div class="container-button">
-                            <button class="cancelar" onclick="window.location.href='/login'">Cancelar</button>
-                            <input type="submit" name="btnenviar" id="btnenviar" class="botao" value="Cadastrar" />
+                            <button class="btn cancelar" onclick="window.location.href='/login'">Cancelar</button>
+                            <input type="btn btn-purple submit" name="btnenviar" id="btnenviar" class="botao" value="Cadastrar" />
                         </div>
                     </div>
 
                 </form>
             </div>
+            <h3>ou cadastrar-se com</h3>
             <div class="auth">
                 <button class="auth-link google">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">

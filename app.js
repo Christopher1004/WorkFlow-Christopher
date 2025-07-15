@@ -38,13 +38,9 @@ app.use('/criarProposta', criarPropostaRouter)
 const criarProjetosRoutes = require('./routes/criarProjeto')
 app.use('/criarProjeto', criarProjetosRoutes)
 
-const freelancerInfo = require('./routes/Freelancer/freeInfo')
-app.use('/freeInfo', freelancerInfo)
 const freePassos = require('./routes/Freelancer/passosFree')
 app.use('/freePassos', freePassos)
 
-const contraInfo = require('./routes/Contratante/infoContra')
-app.use('/contraInfo', contraInfo)
 const contraPasso = require('./routes/Contratante/contraPasso')
 app.use('/contraPasso', contraPasso)
 
