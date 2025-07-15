@@ -1328,3 +1328,31 @@ h3{
   background: transparent !important;
   box-shadow: none !important;
 }
+.floating-card-infos.aparecendo {
+  display: block;
+  animation: fadeSlideIn 0.4s ease forwards;
+}
+.floating-card-infos.sumindo {
+  animation: fadeSlideOut 0.4s ease forwards;
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

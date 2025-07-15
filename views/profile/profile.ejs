@@ -371,14 +371,54 @@ function atualizarPosicaoELargura() {
   floatingCard.style.zIndex = '9999'; 
 }
 
+let floatingVisible = false;
+
+function animarSumirCard() {
+  cardInfos.classList.remove('aparecendo');
+  cardInfos.classList.remove('sumindo');
+  void cardInfos.offsetWidth;
+  cardInfos.classList.add('sumindo');
+}
+
+function animarAparecerCard() {
+  cardInfos.classList.remove('aparecendo');
+  cardInfos.classList.remove('sumindo');
+  void cardInfos.offsetWidth;
+  cardInfos.classList.add('aparecendo');
+}
+
 function onScrollOrResize() {
   const rect = cardInfos.getBoundingClientRect();
-  if (rect.bottom <= 0) {
+
+  if (rect.bottom <= 0 && !floatingVisible) {
     copiarConteudoCard();
     atualizarPosicaoELargura();
+
+    floatingCard.classList.remove('sumindo');
+    floatingCard.classList.add('aparecendo');
     floatingCard.style.display = 'block';
-  } else {
-    floatingCard.style.display = 'none';
+
+    cardInfos.classList.remove('aparecendo');
+    cardInfos.classList.add('sumindo');
+
+    floatingVisible = true;
+
+  } else if (rect.bottom > 0 && floatingVisible) {
+
+    floatingCard.classList.remove('aparecendo');
+    floatingCard.classList.add('sumindo');
+
+    cardInfos.classList.remove('sumindo');
+    cardInfos.classList.add('aparecendo');
+
+    floatingVisible = false;
+
+    setTimeout(() => {
+      if (!floatingVisible) {
+        floatingCard.classList.remove('sumindo');
+        floatingCard.style.display = 'none';
+      }
+    }, 400);
   }
 }
 
