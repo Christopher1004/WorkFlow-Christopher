@@ -85,6 +85,9 @@ body {
     text-decoration: underline;
     cursor: pointer;
 }
+.message img:hover{
+    cursor: pointer;
+}
 .chat-user.animated {
     opacity: 1;
     transform: translateY(0);

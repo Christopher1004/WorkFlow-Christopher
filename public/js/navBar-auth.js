@@ -74,9 +74,11 @@ onAuthStateChanged(auth, async (user) => {
 
                 if (snapshot.exists()) {
                     userData = snapshot.val()
+                    btnAdd.textContent = 'Criar Projeto'
                 }
                 else {
                     snapshot = await get(contratanteRef)
+                    btnAdd.textContent = 'Criar Proposta'
                     if (snapshot.exists()) {
                         userData = snapshot.val()
                     }
@@ -128,8 +130,10 @@ onAuthStateChanged(auth, async (user) => {
 
                     if (freelancerSnap.exists()) {
                         window.location.href = '/criarProjeto';
+                        btnAdd.textContent = 'Criar Projeto'
                     } else {
                         window.location.href = '/criarProposta';
+                        btnAdd.textContent = 'Criar Proposta'
                     }
                 } catch (error) {
                     console.error('Erro ao verificar tipo de usuário:', error);
@@ -213,7 +217,6 @@ async function escutarMensagensNaoLidasNavbar(uid) {
 
     atualizarBadgeNavbar(totalNaoLidas);
 
-    // Agora ativa os listeners para novas mensagens e atualizações de leitura
     for (const outroId of conversaIds) {
         const mensagensRef = ref(db, `Conversas/${uid}/${outroId}/mensagens`);
         const leituraRef = ref(db, `LeituraMensagens/${uid}/${outroId}`);
@@ -222,7 +225,6 @@ async function escutarMensagensNaoLidasNavbar(uid) {
 
         onValue(leituraRef, (snap) => {
             ultimaLeitura = snap.val()?.timestamp || 0;
-            // Recalcula a contagem toda novamente para refletir atualização da leitura
             recalcularNaoLidas(uid).then(cont => atualizarBadgeNavbar(cont));
         });
 
@@ -231,15 +233,13 @@ async function escutarMensagensNaoLidasNavbar(uid) {
             if (!msg || !msg.timestamp || msg.autor === uid) return;
 
             if (msg.timestamp > ultimaLeitura) {
-                // Nova mensagem não lida chegou, adiciona 1
-                // Para garantir a contagem correta, recalcula tudo
+                
                 recalcularNaoLidas(uid).then(cont => atualizarBadgeNavbar(cont));
             }
         });
     }
 }
 
-// Função para recalcular todas as mensagens não lidas
 async function recalcularNaoLidas(uid) {
     const conversasRef = ref(db, `Conversas/${uid}`);
     const snapConversas = await get(conversasRef);

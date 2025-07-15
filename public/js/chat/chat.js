@@ -261,7 +261,13 @@ function selecionarChatUser(chatUserEl, dadosUsuario, userIdLogadoParam, destina
             imagem.style.maxWidth = "400px";
             imagem.style.borderRadius = "8px";
             imagem.style.marginBottom = "6px";
+            imagem.addEventListener('click', (e) => {
+                e.stopPropagation()
+                imagemModalConteudo.src = msg.imagem
+                imagemModal.style.display = 'flex'
+            })
             div.appendChild(imagem);
+
         }
 
         if (msg.texto) {
@@ -311,3 +317,11 @@ function limparChat() {
     document.querySelector(".nenhum-contato-selecionado").style.display = "flex";
     destinatarioId = null;
 }
+
+const imagemModal = document.getElementById("imagemModal");
+const imagemModalConteudo = document.getElementById("imagemModalConteudo");
+
+imagemModal.addEventListener("click", () => {
+    imagemModal.style.display = "none";
+    imagemModalConteudo.src = "";
+});
