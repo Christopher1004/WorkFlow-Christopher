@@ -335,7 +335,7 @@ body, html {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
   background-color: #fff;
   position: absolute;
-  top: -70px;
+  top: -80px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -350,7 +350,7 @@ body, html {
 }
 
 .card-infos {
-  padding-top: 90px;
+  padding-top: 70px;
   background: transparent !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -377,7 +377,7 @@ body, html {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .editarinfos:hover {
@@ -1315,7 +1315,6 @@ h3{
 }
 .floating-card-infos {
   position: fixed;
-  top: 0;
   left: 0; 
   background: transparent !important;
   border-radius: 0 0 12px 12px;
