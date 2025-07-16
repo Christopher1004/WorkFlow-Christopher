@@ -7,117 +7,140 @@
     <title>Criar Projetos</title>
     <link rel="stylesheet" href="css\projects\create_project\create_project.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 
 <style>
-    html, body {
+    html,
+    body {
         height: 100%;
         width: 100%;
     }
+
     section {
         min-height: 100vh;
     }
+
     .navbar {
-    display: none;
-}
+        display: none;
+    }
 
-.footer {
-    display: none;
-}
+    .footer {
+        display: none;
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--gray-100);
-}
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--gray-100);
+    }
 
-ion-icon {
-  color: var(--gray-25);
-}
+    ion-icon {
+        color: var(--gray-25);
+    }
 
-.modalComponentes {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-}
+    .modalComponentes {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        pointer-events: none;
+    }
 
-.modalComponentes.open {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    pointer-events: auto;
-}
+    .modalComponentes.open {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+    }
 
-.modalComponentes.closing {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-    pointer-events: none;
-}
+    .modalComponentes.closing {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+        pointer-events: none;
+    }
 
-.modalOverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.6);
-    z-index: 999;
-}
-.modalOverlay.active {
-    display: block;
-}
+    .modalOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+    }
+
+    .modalOverlay.active {
+        display: block;
+    }
 </style>
-    <section class="flex flex-col h-full w-full">
-        <div class="topbar w-full flex flex-row justify-between pd-2">
-            <button class="btn btn-gray">Cancelar</button>
-            <button class="btn btn-purple">Salvar</button>
+<section class="flex flex-col h-full w-full">
+    <div class="topbar w-full flex flex-row justify-between pd-2">
+        <button class="btn btn-gray">Cancelar</button>
+        <button class="btn btn-purple">Salvar</button>
+    </div>
+    <div class="artboard w-full flex flex-col flex-1 justify-start items-center"
+        style="overflow-y: auto; position: relative;">
+        <div class="projetoVazio"
+            style="width: 300px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h1 class="text-xl text-center mg-0">Esse projeto está vazio</h1>
+            <p class="text-lg text-center text-gray-25">Adicione algo para começar. Clique em + para adicionar o
+                conteúdo</p>
         </div>
-        <div class="artboard w-full flex flex-col h-full flex justify-start items-center">
-            <div class="projetoVazio" style="width: 300px;">
-                <h1 class="text-xl text-center mg-0">Esse projeto está vazio</h1>
-                <p class="text-lg text-center text-gray-25">Adicione algo para começar. Clique em + para adicionar o conteúdo</p>
-            </div>
 
-            <div class="contentProject w-full pd-3" style="max-width: 900px;">
-                <div class="PTitulo pd-y-3 w-full">
-                    <h1 class="text-3xl text-white mg-0">Escreva algo</h1>
-                </div>
-    
-                <div class="Pimage w-full">
-                    <img src="assets\image\createproject\Paleta de cores.jpg" alt="" style="width: 100%;">
-                </div>
 
-            <div class="Ptext w-full">
+        <div class="contentProject w-full pd-3" style="max-width: 900px;">
+            <!--
+
+            <div class="Ptext w-full componente-removivel" style="position: relative;">
+                <button class="btn-remover" title="Remover componente">
+                    &times;
+                </button>
                 <p class="text-lg">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere eros quis convallis gravida. Quisque urna velit, scelerisque ut luctus ac, venenatis feugiat nulla. Morbi consectetur, erat ac mattis tincidunt, turpis ante porta dolor, sit amet ultrices erat lorem ut neque. Nullam id ex ut magna faucibus blandit in vitae orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer porta at mauris at lacinia.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere eros quis convallis gravida.
+                    Quisque urna velit, scelerisque ut luctus ac, venenatis feugiat nulla. Morbi consectetur, erat ac
+                    mattis tincidunt, turpis ante porta dolor, sit amet ultrices erat lorem ut neque. Nullam id ex ut
+                    magna faucibus blandit in vitae orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                    Integer porta at mauris at lacinia.
                 </p>
             </div>
+
+            <div class="PTitulo pd-y-3 w-full">
+                <h1 class="text-3xl text-white mg-0">Escreva algo</h1>
+            </div>
+
+            <div class="Pimage w-full">
+                <img src="assets\image\createproject\Paleta de cores.jpg" alt="" style="width: 100%;">
+            </div>
+
+            
             <div class="PTitulo pd-y-3 w-full">
                 <h1 class="text-3xl text-white mg-0">Cores deste projeto</h1>
             </div>
 
             <div class="Pcores pd-y-3 w-full">
                 <div class="row flex flex-row gap-3 mg-b-2">
-                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #4287f5; height: 150px;">
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg"
+                        style="background-color: #4287f5; height: 150px;">
                         <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
                     </div>
-                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #ce42f5; height: 150px;">
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg"
+                        style="background-color: #ce42f5; height: 150px;">
                         <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
                     </div>
                 </div>
                 <div class="row flex flex-row gap-3 mg-b-2">
-                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #c2f542; height: 150px;">
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg"
+                        style="background-color: #c2f542; height: 150px;">
                         <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
                     </div>
-                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg" style="background-color: #f59342; height: 150px;">
+                    <div class="color flex justify-start items-end w-full pd-2 rounded-lg"
+                        style="background-color: #f59342; height: 150px;">
                         <h1 class="colorCode text-xl font-medium mg-0">#22113</h1>
                     </div>
                 </div>
@@ -125,97 +148,74 @@ ion-icon {
                     <button class="btn btn-gray w-full">Adicionar mais cores</button>
                 </div>
             </div>
-            </div>
+                    -->
 
         </div>
-        
-        <div id="addComponent" class="addbutton w-full flex justify-end pd-5">
-            <button class="btn btn-purple">
-                <p class="text-3xl mg-0 pd-0">+</p>
-            </button>
-        </div>
-    </section>
+    </div>
 
-    <dialog id="modalComponentes" class="modalComponentes bg-gray-100 pd-3 border border-solid rounded-lg border-gray">
-        <div class="top flex flex-row flex items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
-            <h1 class="text-xl flex flex-1 mg-0 text-white">Adicionar componente</h1>
-            <button id="close" class="closemodal" style="background-color: var(--background); border: 0px;"><ion-icon name="close-outline" size="large"></ion-icon></button>
-        </div>
-        <div class="content">
-            <div class="row flex flex-row gap-3 mg-b-2">
-                <div class="cardComponent" style="width: 240px;">
-                    <div class="imgCard overflow-hidden rounded-lg overflow-hidden" style="background-color: black; width: 240px; height: 140px;">
-                        <img src="assets/image/createproject/Texto.jpg" alt="">
-                    </div>
-                    <div class="infoCard">
-                        <h2 class="text-lg font-medium text-white mg-0">Texto Simples</h2>
-                        <p class="text-xs text-gray-25 mg-0">Apenas um texto simples para escrever algo</p>
-                    </div>
+    <div id="addComponent" class="addbutton w-full flex justify-end pd-5">
+        <button class="btn btn-purple">
+            <p class="text-3xl mg-0 pd-0">+</p>
+        </button>
+    </div>
+</section>
+
+<dialog id="modalComponentes" class="modalComponentes bg-gray-100 pd-3 border border-solid rounded-lg border-gray">
+    <div
+        class="top flex flex-row flex items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
+        <h1 class="text-xl flex flex-1 mg-0 text-white">Adicionar componente</h1>
+        <button id="close" class="closemodal" style="background-color: var(--background); border: 0px;"><ion-icon
+                name="close-outline" size="large"></ion-icon></button>
+    </div>
+    <div class="content">
+        <div class="row flex flex-row gap-3 mg-b-2">
+            <div class="cardComponent" data-component="texto" style="width: 240px;">
+                <div class="imgCard overflow-hidden rounded-lg overflow-hidden"
+                    style="background-color: black; width: 240px; height: 140px;">
+                    <img src="assets/image/createproject/Texto.jpg" alt="">
                 </div>
-                <div class="cardComponent" style="width: 240px;">
-                    <div class="imgCard overflow-hidden rounded-lg" style="background-color: black; width: 240px; height: 140px;">
-                        <img src="assets/image/createproject/Sessão.jpg" alt="">
-                    </div>
-                    <div class="infoCard">
-                        <h2 class="text-lg font-medium text-white mg-0">Título</h2>
-                        <p class="text-xs text-gray-25 mg-0">Título para os textos e imagens</p>
-                    </div>
+                <div class="infoCard">
+                    <h2 class="text-lg font-medium text-white mg-0">Texto Simples</h2>
+                    <p class="text-xs text-gray-25 mg-0">Apenas um texto simples para escrever algo</p>
                 </div>
             </div>
-            <div class="row flex flex-row gap-3 mg-b-2">
-                <div class="cardComponent" style="width: 240px;">
-                    <div class="imgCard overflow-hidden rounded-lg" style="background-color: black; width: 240px; height: 140px;">
-                        <img src="assets/image/createproject/Imagem.jpg" alt="">
-                    </div>
-                    <div class="infoCard">
-                        <h2 class="text-lg font-medium text-white mg-0">Imagem</h2>
-                        <p class="text-xs text-gray-25 mg-0">Adicione uma imagem do seu projeto</p>
-                    </div>
+            <div class="cardComponent" data-component="titulo" style="width: 240px;">
+                <div class="imgCard overflow-hidden rounded-lg"
+                    style="background-color: black; width: 240px; height: 140px;">
+                    <img src="assets/image/createproject/Sessão.jpg" alt="">
                 </div>
-                <div class="cardComponent" style="width: 240px;">
-                    <div class="imgCard overflow-hidden rounded-lg" style="background-color: black; width: 240px; height: 140px;">
-                        <img src="assets/image/createproject/Paleta de cores.jpg" alt="">
-                    </div>
-                    <div class="infoCard">
-                        <h2 class="text-lg font-medium text-white mg-0">Palete de cores</h2>
-                        <p class="text-xs text-gray-25 mg-0">Mostre as cores deste projeto</p>
-                    </div>
+                <div class="infoCard">
+                    <h2 class="text-lg font-medium text-white mg-0">Título</h2>
+                    <p class="text-xs text-gray-25 mg-0">Título para os textos e imagens</p>
                 </div>
             </div>
         </div>
-    </dialog>
+        <div class="row flex flex-row gap-3 mg-b-2">
+            <div class="cardComponent" data-component="imagem" style="width: 240px;">
+                <div class="imgCard overflow-hidden rounded-lg"
+                    style="background-color: black; width: 240px; height: 140px;">
+                    <img src="assets/image/createproject/Imagem.jpg" alt="">
+                </div>
+                <div class="infoCard">
+                    <h2 class="text-lg font-medium text-white mg-0">Imagem</h2>
+                    <p class="text-xs text-gray-25 mg-0">Adicione uma imagem do seu projeto</p>
+                </div>
+            </div>
+            <div class="cardComponent" data-component="paleta" style="width: 240px;">
+                <div class="imgCard overflow-hidden rounded-lg"
+                    style="background-color: black; width: 240px; height: 140px;">
+                    <img src="assets/image/createproject/Paleta de cores.jpg" alt="">
+                </div>
+                <div class="infoCard">
+                    <h2 class="text-lg font-medium text-white mg-0">Palete de cores</h2>
+                    <p class="text-xs text-gray-25 mg-0">Mostre as cores deste projeto</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</dialog>
 
-    <div id="modalOverlay" class="modalOverlay"></div>
+<div id="modalOverlay" class="modalOverlay"></div>
 
-    <script>
-        const buttonOpen = document.getElementById("addComponent");
-        const modal = document.getElementById("modalComponentes");
-        const buttonClose = document.getElementById("close");
-        const overlay = document.getElementById("modalOverlay");
-
-        buttonOpen.onclick = function () {
-            modal.showModal();
-            overlay.classList.add("active");
-            // Garante que a classe 'open' seja adicionada após o showModal
-            setTimeout(() => modal.classList.add("open"), 10);
-        }
-
-        function closeModal() {
-            modal.classList.remove("open");
-            modal.classList.add("closing");
-            overlay.classList.remove("active");
-            setTimeout(() => {
-                modal.classList.remove("closing");
-                modal.close();
-            }, 300); // Tempo igual ao transition do CSS
-        }
-
-        buttonClose.onclick = closeModal;
-        overlay.onclick = closeModal;
-
-        // Impede o fechamento instantâneo pelo ESC ou backdrop
-        modal.addEventListener('cancel', function(event) {
-            event.preventDefault();
-            closeModal();
-        });
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="/js/projects/criarProjeto/criarComponente.js"></script>

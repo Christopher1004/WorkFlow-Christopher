@@ -16,3 +16,75 @@ body {
     top: 100;
     bottom: 0;
 }
+
+.componente-removivel .btn-remover {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #F84241;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.componente-removivel:hover .btn-remover {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.componente-removivel .drag-handle {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: #30BFA5;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    cursor: grab;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.componente-removivel:hover .drag-handle {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.highlight {
+    animation: highlightAnim 2s ease forwards;
+}
+
+@keyframes highlightAnim {
+    0% {
+        background-color: #fff3b0;
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.sortable-ghost {
+    opacity: 0.3;
+}
+
+.sortable-drag {
+    background-color: #333;
+    border: 1px dashed #666;
+}
+
+.sortable-chosen {
+    background-color: #2a2a2a;
+}
