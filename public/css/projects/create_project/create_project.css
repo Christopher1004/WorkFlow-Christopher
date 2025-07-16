@@ -9,6 +9,7 @@ body {
 
 .topbar {
     position: fixed;
+    z-index: 10;
 }
 
 .addbutton {
@@ -87,4 +88,148 @@ body {
 
 .sortable-chosen {
     background-color: #2a2a2a;
+}
+
+.modal-final {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1100;
+    width: 360px;
+    max-width: 95vw;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    padding: 20px;
+    color: white;
+}
+
+.modal-final.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-final.closing {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.modal-final-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-final-top h1 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.modal-final-top button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-final-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-final-content input {
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: white;
+}
+
+.modal-final-content input::placeholder {
+    color: #aaa;
+}
+
+.modal-final-content button {
+    padding: 0.75rem;
+    background-color: #5274D9;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal-final-content button:hover {
+    background-color: #682ee2;
+}
+
+.modal-overlay-final {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1090;
+}
+
+.modal-overlay-final.active {
+    display: block;
+}
+
+.modal-final {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1100;
+    width: 500px;
+    max-width: 95vw;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    padding: 24px;
+    color: white;
+}
+
+.upload-container {
+    border: 2px dashed #555;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.upload-container:hover {
+    border-color: #7b3aed;
+    background-color: #333;
+}
+
+.upload-container ion-icon {
+    font-size: 2rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+}
+
+.upload-container p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #aaa;
 }

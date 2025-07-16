@@ -9,6 +9,68 @@ const buttonOpen = document.getElementById("addComponent");
 const buttonClose = document.getElementById("close");
 const overlay = document.getElementById("modalOverlay");
 
+const btnCancelar = document.getElementById('btnCancelar')
+btnCancelar.addEventListener('click', () =>{
+    window.location.href = '/'
+})
+document.addEventListener('DOMContentLoaded', () => {
+    const btnSalvar = document.getElementById('btnSalvar');
+    const modal = document.getElementById('modalSalvarProjeto');
+    const overlay = document.getElementById('overlaySalvar');
+    const btnFechar = document.getElementById('btnFecharModalFinal');
+    const uploadContainer = document.getElementById('uploadContainer');
+    const inputCapa = document.getElementById('capaFinal');
+    const previewCapa = document.getElementById('previewCapa');
+
+    btnSalvar.addEventListener('click', () => {
+        modal.showModal();
+        overlay.classList.add('active');
+        setTimeout(() => modal.classList.add('open'), 10);
+    });
+
+    function fecharModal() {
+        modal.classList.remove('open');
+        modal.classList.add('closing');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            modal.classList.remove('closing');
+            modal.close();
+        }, 300);
+    }
+
+    btnFechar.addEventListener('click', fecharModal);
+    overlay.addEventListener('click', fecharModal);
+
+    uploadContainer.addEventListener('click', () => {
+        inputCapa.click();
+    });
+
+    inputCapa.addEventListener('change', () => {
+        const file = inputCapa.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                previewCapa.src = e.target.result;
+                previewCapa.style.display = 'block';
+                uploadContainer.querySelector('ion-icon').style.display = 'none';
+                uploadContainer.querySelector('p').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('btnSalvarFinal').addEventListener('click', () => {
+        const titulo = document.getElementById('tituloFinal').value.trim();
+        const capa = inputCapa.files[0];
+        const tags = document.getElementById('tagsFinal').value.trim();
+
+        console.log({ titulo, capa, tags });
+
+        fecharModal();
+    });
+});
+
+
 new Sortable(contentProject, {
     animation: 150,
     ghostClass: 'sortable-ghost',

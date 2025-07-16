@@ -79,10 +79,12 @@
         display: block;
     }
 </style>
+
 <section class="flex flex-col h-full w-full">
     <div class="topbar w-full flex flex-row justify-between pd-2">
-        <button class="btn btn-gray">Cancelar</button>
-        <button class="btn btn-purple">Salvar</button>
+        <button class="btn btn-gray" id="btnCancelar" type="button">Cancelar</button>
+        <button class="btn btn-purple" id="btnSalvar" type="button">Salvar</button>
+
     </div>
     <div class="artboard w-full flex flex-col flex-1 justify-start items-center"
         style="overflow-y: auto; position: relative;">
@@ -94,7 +96,7 @@
         </div>
 
 
-        <div class="contentProject w-full pd-3" style="max-width: 900px;">
+        <div class="contentProject w-full pd-3 mg-t-20" style="max-width: 900px;">
             <!--
 
             <div class="Ptext w-full componente-removivel" style="position: relative;">
@@ -214,8 +216,31 @@
         </div>
     </div>
 </dialog>
-
 <div id="modalOverlay" class="modalOverlay"></div>
+<dialog id="modalSalvarProjeto" class="modal-final" style="border: none;">
+    <div class="modal-final-top pd-2">
+        <h1 class="text-lg flex-1 mg-0">Finalizar Projeto</h1>
+        <button id="btnFecharModalFinal" class="btnFecharModalFinal"
+            style="background: none; border: none; font-size: 1.5rem;">&times;</button>
+    </div>
+    <div class="modal-final-content flex flex-col gap-3 pd-2">
+        <input type="text" id="tituloFinal" placeholder="Título do projeto" class="rounded" />
+
+        <div id="uploadContainer" class="upload-container flex flex-col justify-center items-center text-center pd-2"
+            style="border: 2px dashed #666; border-radius: 8px; cursor: pointer;">
+            <ion-icon name="image-outline" size="large"></ion-icon>
+            <p style="margin: 0;">Clique para escolher a imagem de capa</p>
+            <img id="previewCapa" style="display: none; max-width: 100%; border-radius: 6px;" />
+        </div>
+        <input type="file" id="capaFinal" accept="image/*" style="display: none;" />
+
+        <input type="text" id="tagsFinal" placeholder="Tags separadas por vírgula" class="rounded" />
+        <button id="btnSalvarFinal" class="btn btn-purple">Salvar Projeto</button>
+    </div>
+</dialog>
+
+<div id="overlaySalvar" class="modal-overlay-final"></div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script type="module" src="/js/projects/criarProjeto/criarComponente.js"></script>
