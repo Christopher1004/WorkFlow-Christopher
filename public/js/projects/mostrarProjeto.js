@@ -30,7 +30,6 @@ const container = document.querySelector("#card-zone");
 const modal = document.getElementById("modal");
 
 async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, userId }, cardIndex = 0) {
-    console.log("Criando card para projeto:", id, titulo);
     const card = document.createElement("div");
     card.className = "card_projeto";
     card.dataset.projetoId = id;
@@ -194,14 +193,12 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
             });
     });
 
-    // Adicionar evento de carregamento da imagem para efeito fade
     const img = card.querySelector('.thumbnail');
     if (img) {
         img.addEventListener('load', () => {
             img.classList.add('loaded');
         });
 
-        // Fallback para imagens que já estão em cache
         if (img.complete) {
             img.classList.add('loaded');
         }
@@ -289,32 +286,39 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
 
     const dbRef = ref(db);
 
+    console.log('Buscando componentes do projeto...');
+
     get(child(dbRef, `componentesProjeto/${idProjeto}`))
         .then((snapshot) => {
+            console.log('componentesProjeto snapshot:', snapshot.exists(), snapshot.val());
+
             if (snapshot.exists()) {
                 const componentes = snapshot.val();
-                Object.values(componentes).forEach(comp => {
-                    const compDiv = document.createElement('div');
-                    compDiv.classList.add('componente-item');
+                Object.keys(componentes)
+                    .sort((a, b) => Number(a) - Number(b))
+                    .forEach(key => {
+                        const comp = componentes[key];
+                        const compDiv = document.createElement('div');
+                        compDiv.classList.add('componente-item');
 
-                    if (comp.tipo === 'imagem') {
-                        const img = document.createElement('img');
-                        img.src = comp.conteudo || '';
-                        img.alt = 'Imagem do projeto';
-                        img.style.width = '100%';
-                        img.style.maxWidth = '100%';
-                        img.style.borderRadius = '10px';
-                        compDiv.appendChild(img);
-                    } else if (comp.tipo === 'texto') {
-                        const p = document.createElement('p');
-                        p.innerHTML = comp.conteudo || '';
-                        compDiv.appendChild(p);
-                    } else {
-                        compDiv.textContent = `Tipo: ${comp.tipo || 'N/A'} - Conteúdo: ${comp.conteudo || 'Sem conteúdo'}`;
-                    }
+                        if (comp.tipo === 'imagem') {
+                            const img = document.createElement('img');
+                            img.src = comp.conteudo || '';
+                            img.alt = 'Imagem do projeto';
+                            img.style.width = '100%';
+                            img.style.maxWidth = '100%';
+                            img.style.borderRadius = '10px';
+                            compDiv.appendChild(img);
+                        } else if (comp.tipo === 'texto') {
+                            const p = document.createElement('p');
+                            p.innerHTML = comp.conteudo || '';
+                            compDiv.appendChild(p);
+                        } else {
+                            compDiv.textContent = `Tipo: ${comp.tipo || 'N/A'} - Conteúdo: ${comp.conteudo || 'Sem conteúdo'}`;
+                        }
 
-                    containerComponentes.appendChild(compDiv);
-                });
+                        containerComponentes.appendChild(compDiv);
+                    });
             } else {
                 containerComponentes.textContent = 'Nenhum componente encontrado para este projeto.';
             }
@@ -358,7 +362,6 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                             timestamp
                         };
 
-                        // Gera a key para a mensagem (no nó do usuário logado)
                         const refMensagensUser = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
                         const novaMsgKey = push(refMensagensUser).key;
 
@@ -410,7 +413,6 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                     modalUserPhoto.src = userPhoto;
                     modalTag.textContent = tagAutor;
 
-                    // Atualizar informações da floating island
                     if (window.updateIslandInfo) {
                         window.updateIslandInfo({
                             title: titulo,
@@ -431,7 +433,6 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
         detail: { idProjeto }
     }));
 
-    // Configurar listener de scroll para a island
     if (window.setupIslandScrollListener) {
         setTimeout(() => {
             window.setupIslandScrollListener();
