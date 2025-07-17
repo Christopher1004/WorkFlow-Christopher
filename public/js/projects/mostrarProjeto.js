@@ -194,14 +194,12 @@ async function criarCardProjeto(id, { titulo, descricao, dataCriacao, capaUrl, u
             });
     });
 
-    // Adicionar evento de carregamento da imagem para efeito fade
     const img = card.querySelector('.thumbnail');
     if (img) {
         img.addEventListener('load', () => {
             img.classList.add('loaded');
         });
 
-        // Fallback para imagens que já estão em cache
         if (img.complete) {
             img.classList.add('loaded');
         }
@@ -431,7 +429,6 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
         detail: { idProjeto }
     }));
 
-    // Configurar listener de scroll para a island
     if (window.setupIslandScrollListener) {
         setTimeout(() => {
             window.setupIslandScrollListener();

@@ -1,325 +1,354 @@
-const cardComponents = document.querySelectorAll('.cardComponent');
-const contentProject = document.querySelector('.contentProject');
-const modal = document.getElementById('modalComponentes');
-const modalOverlay = document.getElementById('modalOverlay');
-const closeModalBtn = document.getElementById('close');
-const projetoVazio = document.querySelector('.projetoVazio');
-const addButton = document.querySelector('#addComponent button');
-const buttonOpen = document.getElementById("addComponent");
-const buttonClose = document.getElementById("close");
-const overlay = document.getElementById("modalOverlay");
+import { salvarProjetoFirebase } from "./salvarProjetoBanco.js";
+import { supabase } from "./salvarImagensSupabase.js";
+import { uploadImagemSupabase } from "./salvarImagensSupabase.js";
 
-const btnCancelar = document.getElementById('btnCancelar')
-btnCancelar.addEventListener('click', () =>{
-    window.location.href = '/'
-})
+export let capaUrlGlobal = null
 document.addEventListener('DOMContentLoaded', () => {
+    const cardComponents = document.querySelectorAll('.cardComponent');
+    const contentProject = document.querySelector('.contentProject');
+
+    const modal = document.getElementById('modalComponentes');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeModalBtn = document.getElementById('close');
+    const projetoVazio = document.querySelector('.projetoVazio');
+    const addButton = document.querySelector('#addComponent button');
+    const buttonOpen = document.getElementById("addComponent");
+    const buttonClose = closeModalBtn;
+    const overlay = modalOverlay;
+
+    const btnCancelar = document.getElementById('btnCancelar');
+    const btnFinalizarProjeto = document.getElementById('btnSalvarFinal');
+
     const btnSalvar = document.getElementById('btnSalvar');
-    const modal = document.getElementById('modalSalvarProjeto');
-    const overlay = document.getElementById('overlaySalvar');
-    const btnFechar = document.getElementById('btnFecharModalFinal');
+    const modalSalvarProjeto = document.getElementById('modalSalvarProjeto');
+    const overlaySalvar = document.getElementById('overlaySalvar');
+    const btnFecharModalFinal = document.getElementById('btnFecharModalFinal');
     const uploadContainer = document.getElementById('uploadContainer');
     const inputCapa = document.getElementById('capaFinal');
     const previewCapa = document.getElementById('previewCapa');
 
+
     btnSalvar.addEventListener('click', () => {
-        modal.showModal();
-        overlay.classList.add('active');
-        setTimeout(() => modal.classList.add('open'), 10);
+        modalSalvarProjeto.showModal();
+        overlaySalvar.classList.add('active');
+        setTimeout(() => modalSalvarProjeto.classList.add('open'), 10);
     });
 
-    function fecharModal() {
-        modal.classList.remove('open');
-        modal.classList.add('closing');
-        overlay.classList.remove('active');
+    function fecharModalSalvarProjeto() {
+        modalSalvarProjeto.classList.remove('open');
+        modalSalvarProjeto.classList.add('closing');
+        overlaySalvar.classList.remove('active');
         setTimeout(() => {
-            modal.classList.remove('closing');
+            modalSalvarProjeto.classList.remove('closing');
+            modalSalvarProjeto.close();
+        }, 300);
+    }
+
+    btnFecharModalFinal.addEventListener('click', fecharModalSalvarProjeto);
+    overlaySalvar.addEventListener('click', fecharModalSalvarProjeto);
+
+    uploadContainer.addEventListener('click', () => inputCapa.click());
+
+    inputCapa.addEventListener('change', async () => {
+        const file = inputCapa.files[0]
+
+        if (!file) return
+
+        try {
+            const filePath = `projetos/${Date.now()}_${file.name}`
+
+            const { data, error } = await supabase.storage
+                .from('imagensprojeto')
+                .upload(filePath, file)
+
+            if (error) throw error;
+
+            const { data: publicUrlData } = supabase
+                .storage
+                .from('imagensprojeto')
+                .getPublicUrl(filePath)
+
+            capaUrlGlobal = publicUrlData.publicUrl
+
+            previewCapa.src = capaUrlGlobal;
+            previewCapa.style.display = 'block';
+            uploadContainer.querySelector('ion-icon').style.display = 'none';
+            uploadContainer.querySelector('p').style.display = 'none';
+            console.log('Imagem capa enviada com sucesso:', capaUrlGlobal);
+
+        }
+        catch (error) {
+            console.error('Erro ao enviar imagem de capa:', error);
+            alert('Erro ao enviar a imagem de capa.');
+            capaUrlGlobal = null;
+        }
+    });
+
+    btnFinalizarProjeto.addEventListener('click', async () => {
+        try {
+            await salvarProjetoFirebase();
+            fecharModalSalvarProjeto();
+            alert('Projeto Salvo com sucesso');
+        } catch (error) {
+            console.error('Erro ao salvar projeto', error);
+            alert('Erro ao salvar projeto');
+        }
+    });
+
+    btnCancelar.addEventListener('click', () => window.location.href = '/');
+
+
+    buttonOpen.onclick = function () {
+        modal.showModal();
+        overlay.classList.add("active");
+        setTimeout(() => modal.classList.add("open"), 10);
+    };
+
+    function closeModal() {
+        modal.classList.remove("open");
+        modal.classList.add("closing");
+        overlay.classList.remove("active");
+        setTimeout(() => {
+            modal.classList.remove("closing");
             modal.close();
         }, 300);
     }
 
-    btnFechar.addEventListener('click', fecharModal);
-    overlay.addEventListener('click', fecharModal);
+    buttonClose.onclick = closeModal;
+    overlay.onclick = closeModal;
 
-    uploadContainer.addEventListener('click', () => {
-        inputCapa.click();
+    modal.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeModal();
     });
 
-    inputCapa.addEventListener('change', () => {
-        const file = inputCapa.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                previewCapa.src = e.target.result;
-                previewCapa.style.display = 'block';
-                uploadContainer.querySelector('ion-icon').style.display = 'none';
-                uploadContainer.querySelector('p').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
+    new Sortable(contentProject, {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        dragClass: 'sortable-drag',
+        chosenClass: 'sortable-chosen',
+        handle: '.drag-handle'
     });
 
-    document.getElementById('btnSalvarFinal').addEventListener('click', () => {
-        const titulo = document.getElementById('tituloFinal').value.trim();
-        const capa = inputCapa.files[0];
-        const tags = document.getElementById('tagsFinal').value.trim();
-
-        console.log({ titulo, capa, tags });
-
-        fecharModal();
-    });
-});
-
-
-new Sortable(contentProject, {
-    animation: 150,
-    ghostClass: 'sortable-ghost',
-    dragClass: 'sortable-drag',
-    chosenClass: 'sortable-chosen',
-    handle: '.drag-handle'
-});
-
-
-buttonOpen.onclick = function () {
-    modal.showModal();
-    overlay.classList.add("active");
-    setTimeout(() => modal.classList.add("open"), 10);
-}
-
-function closeModal() {
-    modal.classList.remove("open");
-    modal.classList.add("closing");
-    overlay.classList.remove("active");
-    setTimeout(() => {
-        modal.classList.remove("closing");
-        modal.close();
-    }, 300);
-}
-
-buttonClose.onclick = closeModal;
-overlay.onclick = closeModal;
-
-modal.addEventListener('cancel', function (event) {
-    event.preventDefault();
-    closeModal();
-});
-
-function verificarProjetoVazio() {
-    const temComponentes = contentProject.querySelectorAll('.Ptext, .PTitulo, .Pimage, .Pcores').length > 0;
-    projetoVazio.style.display = temComponentes ? 'none' : 'block'
-}
-
-cardComponents.forEach(card => {
-    card.addEventListener('click', () => {
-        const type = card.dataset.component
-        let html = ''
-
-        switch (type) {
-            case 'texto':
-                html = `
-                    <div class="Ptext componente-removivel w-full" style="position: relative;">
-                        <button class="btn-remover" title="Remover componente">
-                            &times;
-                        </button>
-                        <span class="drag-handle">≡</span>
-
-                        <p class="text-lg">Novo texto adicionado ao projeto.</p>
-                    </div>`;
-                break;
-            case 'titulo':
-                html = `
-                    <div class="PTitulo pd-y-3 w-full componente-removivel" style="position: relative;">
-                    <button class="btn-remover" title="Remover componente">
-                        &times;
-                    </button>
-                    <span class="drag-handle">≡</span>
-
-                    <h1 class="text-3xl text-white mg-0">Novo Título</h1>
-                    </div>`;
-                break;
-            case 'imagem':
-                html = `
-                    <div class="Pimage w-full componente-removivel" style="position: relative;">
-                    <button class="btn-remover" title="Remover componente">
-                        &times;
-                    </button>
-                    <span class="drag-handle">≡</span>
-
-                        <img src="assets/image/createproject/Imagem.jpg" alt="Imagem adicionada" style="width: 100%;">
-                    </div>`;
-                break;
-            case 'paleta':
-                html = `
-                    <div class="componente-removivel w-full" style="position: relative;">
-                        <button class="btn-remover" title="Remover componente">&times;</button>
-                        <span class="drag-handle" title="Ordenar componente">≡</span>
-                        <div class="PTitulo pd-y-3 w-full">
-                        <h1 class="text-3xl text-white mg-0">Cores do Projeto</h1>
-                        </div>
-                        <div class="Pcores pd-y-3 w-full">
-                        <div class="paleta-cores flex flex-row flex-wrap gap-3 mg-b-2">
-                            ${gerarBlocoCor('#3498db')}
-                            ${gerarBlocoCor('#e74c3c')}
-                        </div>
-                        <div class="row flex flex-row gap-3 mg-b-2">
-                            <button class="btn btn-gray w-full btn-add-cor">Adicionar mais cores</button>
-                        </div>
-                        </div>
-                    </div>
-                    `;
-        }
-        contentProject.insertAdjacentHTML('beforeend', html);
-        const componentes = contentProject.querySelectorAll('.componente-removivel')
-        const novaComp = componentes[componentes.length - 1]
-
-        novaComp.scrollIntoView({ behavior: 'smooth', block: 'center' })
-
-        novaComp.classList.add('highlight')
-
-        if (type === 'texto') {
-            const p = novaComp.querySelector('p')
-            configurarEdicaoTexto(p)
-        }
-
-        if (type == 'titulo') {
-            const h1 = novaComp.querySelector('h1')
-            configurarEdicaoTitulo(h1)
-        }
-        if (type === 'imagem') {
-            const img = novaComp.querySelector('img')
-            configurarEdicaoImagem(img)
-        }
-        if (type === 'paleta') {
-
-            const coresContainer = novaComp.querySelector('.paleta-cores');
-            coresContainer.querySelectorAll('.cor-editavel').forEach(configurarCorIndividual);
-
-            const blocosCor = novaComp.querySelectorAll('.cor-editavel');
-            blocosCor.forEach(bloco => configurarCorIndividual(bloco));
-
-            const btnAddCor = novaComp.querySelector('.btn-add-cor');
-
-            btnAddCor.addEventListener('click', () => {
-                const novaCorHTML = gerarBlocoCor('#888888');
-                coresContainer.insertAdjacentHTML('beforeend', novaCorHTML);
-                const novaCor = coresContainer.lastElementChild;
-                configurarCorIndividual(novaCor);
-            });
-            new Sortable(coresContainer, {
-                animation: 150,
-                ghostClass: 'sortable-ghost',
-                handle: '.drag-handle-cor'
-            });
-        }
-        setTimeout(() => novaComp.classList.remove('highlight'), 2000)
-        verificarProjetoVazio()
-        closeModal()
-
-        const btnRemover = novaComp.querySelector('.btn-remover')
-        btnRemover.addEventListener('click', () => {
-            novaComp.remove()
-            verificarProjetoVazio()
-        })
-    })
-})
-
-function AtivarModoEdicaoTexto(pElement) {
-    const textoAtual = pElement.textContent
-    const textArea = document.createElement('textarea')
-    textArea.className = 'text-lg'
-    textArea.value = textoAtual
-    textArea.style.width = '100%'
-    textArea.style.minHeight = '80px'
-
-    pElement.replaceWith(textArea)
-    textArea.focus()
-
-    function salvarEdicao() {
-        const novoTexto = textArea.value.trim()
-        const novoP = document.createElement('p')
-        novoP.className = 'text-lg'
-        novoP.textContent = novoTexto || 'Texto Vazio'
-        textArea.replaceWith(novoP)
-        configurarEdicaoTexto(novoP
-        )
+    function verificarProjetoVazio() {
+        const temComponentes = contentProject.querySelectorAll('.Ptext, .PTitulo, .Pimage, .Pcores').length > 0;
+        projetoVazio.style.display = temComponentes ? 'none' : 'block';
     }
-    textArea.addEventListener('blur', salvarEdicao)
-    textArea.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            textArea.blur()
-        }
-    })
-}
-function configurarEdicaoTexto(pElement) {
-    pElement.addEventListener('dblclick', () => {
-        AtivarModoEdicaoTexto(pElement)
-    })
-}
 
+    cardComponents.forEach(card => {
+        card.addEventListener('click', () => {
+            const type = card.dataset.component;
+            let html = '';
 
-function configurarEdicaoImagem(imgElement) {
-    imgElement.addEventListener('dblclick', () => {
-        const input = document.createElement('input')
-        input.type = 'file'
-        input.accept = 'image/*'
-        input.style.display = 'none'
-
-        input.addEventListener('change', () => {
-            const file = input.files[0]
-            if (file) {
-                const url = URL.createObjectURL(file)
-                imgElement.src = url
+            switch (type) {
+                case 'texto':
+                    html = `
+            <div class="Ptext componente-removivel w-full" data-tipo="texto"  style="position: relative;">
+              <button class="btn-remover" title="Remover componente">&times;</button>
+              <span class="drag-handle">≡</span>
+              <p class="text-lg">Novo texto adicionado ao projeto.</p>
+            </div>`;
+                    break;
+                case 'titulo':
+                    html = `
+            <div class="PTitulo pd-y-3 w-full componente-removivel" data-tipo="titulo" style="position: relative;">
+              <button class="btn-remover" title="Remover componente">&times;</button>
+              <span class="drag-handle">≡</span>
+              <h1 class="text-3xl text-white mg-0">Novo Título</h1>
+            </div>`;
+                    break;
+                case 'imagem':
+                    html = `
+            <div class="Pimage w-full componente-removivel" data-tipo="imagem" style="position: relative;">
+              <button class="btn-remover" title="Remover componente">&times;</button>
+              <span class="drag-handle">≡</span>
+              <img src="assets/image/createproject/Imagem.jpg" alt="Imagem adicionada" style="width: 100%;">
+            </div>`;
+                    break;
+                case 'paleta':
+                    html = `
+            <div class="componente-removivel w-full" data-tipo="paleta" style="position: relative;">
+              <button class="btn-remover" title="Remover componente">&times;</button>
+              <span class="drag-handle" title="Ordenar componente">≡</span>
+              <div class="PTitulo pd-y-3 w-full">
+                <h1 class="text-3xl text-white mg-0">Cores do Projeto</h1>
+              </div>
+              <div class="Pcores pd-y-3 w-full">
+                <div class="paleta-cores flex flex-row flex-wrap gap-3 mg-b-2">
+                  ${gerarBlocoCor('#3498db')}
+                  ${gerarBlocoCor('#e74c3c')}
+                </div>
+                <div class="row flex flex-row gap-3 mg-b-2">
+                  <button class="btn btn-gray w-full btn-add-cor">Adicionar mais cores</button>
+                </div>
+              </div>
+            </div>`;
+                    break;
             }
-        })
-        document.body.appendChild(input)
-        input.click()
-        input.remove()
-    })
-}
 
-function ativarEdicaoTitulo(h1Element) {
-    const textoAtual = h1Element.textContent;
-    const input = document.createElement('input');
-    input.value = textoAtual;
+            contentProject.insertAdjacentHTML('beforeend', html);
+            const componentes = contentProject.querySelectorAll('.componente-removivel');
+            const novaComp = componentes[componentes.length - 1];
 
-    input.className = 'text-3xl';
-    input.style.width = '100%';
-    input.style.backgroundColor = '#1e1e1e';
-    input.style.color = 'white';
-    input.style.border = '1px solid #555';
-    input.style.borderRadius = '4px';
-    input.style.padding = '8px';
+            novaComp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            novaComp.classList.add('highlight');
 
-    h1Element.replaceWith(input);
-    input.focus();
+            if (type === 'texto') configurarEdicaoTexto(novaComp.querySelector('p'));
+            if (type === 'titulo') configurarEdicaoTitulo(novaComp.querySelector('h1'));
+            if (type === 'imagem') configurarEdicaoImagem(novaComp.querySelector('img'));
+            if (type === 'paleta') {
+                const coresContainer = novaComp.querySelector('.paleta-cores');
 
-    function salvarEdicao() {
-        const novoTexto = input.value.trim();
-        const novoH1 = document.createElement('h1');
-        novoH1.className = 'text-3xl mg-0';
-        novoH1.textContent = novoTexto || 'Título vazio';
-        input.replaceWith(novoH1);
-        configurarEdicaoTitulo(novoH1);
+                coresContainer.querySelectorAll('.cor-editavel').forEach(configurarCorIndividual);
+
+                const btnAddCor = novaComp.querySelector('.btn-add-cor');
+                btnAddCor.addEventListener('click', () => {
+                    const novaCorHTML = gerarBlocoCor('#888888');
+                    coresContainer.insertAdjacentHTML('beforeend', novaCorHTML);
+                    const novaCor = coresContainer.lastElementChild;
+                    configurarCorIndividual(novaCor);
+                });
+
+                new Sortable(coresContainer, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    handle: '.drag-handle-cor'
+                });
+            }
+
+            setTimeout(() => novaComp.classList.remove('highlight'), 2000);
+            verificarProjetoVazio();
+            closeModal();
+
+            const btnRemover = novaComp.querySelector('.btn-remover');
+            btnRemover.addEventListener('click', () => {
+                novaComp.remove();
+                verificarProjetoVazio();
+            });
+        });
+    });
+
+
+    function AtivarModoEdicaoTexto(pElement) {
+        const textoAtual = pElement.textContent;
+        const textArea = document.createElement('textarea');
+        textArea.className = 'text-lg';
+        textArea.value = textoAtual;
+        textArea.style.width = '100%';
+        textArea.style.minHeight = '80px';
+
+        pElement.replaceWith(textArea);
+        textArea.focus();
+
+        function salvarEdicao() {
+            const novoTexto = textArea.value.trim();
+            const novoP = document.createElement('p');
+            novoP.className = 'text-lg';
+            novoP.textContent = novoTexto || 'Texto Vazio';
+            textArea.replaceWith(novoP);
+            configurarEdicaoTexto(novoP);
+        }
+
+        textArea.addEventListener('blur', salvarEdicao);
+        textArea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                textArea.blur();
+            }
+        });
     }
 
-    input.addEventListener('blur', salvarEdicao);
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            input.blur();
+    function configurarEdicaoTexto(pElement) {
+        pElement.addEventListener('dblclick', () => AtivarModoEdicaoTexto(pElement));
+    }
+
+
+    function ativarEdicaoTitulo(h1Element) {
+        const textoAtual = h1Element.textContent;
+        const input = document.createElement('input');
+        input.value = textoAtual;
+
+        input.className = 'text-3xl mg-0';
+        input.style.width = '100%';
+        input.style.backgroundColor = '#1e1e1e';
+        input.style.color = 'white';
+        input.style.border = '1px solid #555';
+        input.style.borderRadius = '4px';
+        input.style.padding = '8px';
+
+        h1Element.replaceWith(input);
+        input.focus();
+
+        function salvarEdicao() {
+            const novoTexto = input.value.trim();
+            const novoH1 = document.createElement('h1');
+            novoH1.className = 'text-3xl mg-0';
+            novoH1.textContent = novoTexto || 'Título vazio';
+            input.replaceWith(novoH1);
+            configurarEdicaoTitulo(novoH1);
         }
-    });
-}
 
-function configurarEdicaoTitulo(h1Element) {
-    h1Element.addEventListener('dblclick', () => {
-        ativarEdicaoTitulo(h1Element);
-    });
-}
+        input.addEventListener('blur', salvarEdicao);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                input.blur();
+            }
+        });
+    }
 
-function gerarBlocoCor(hex) {
-    return `
+    function configurarEdicaoTitulo(h1Element) {
+        h1Element.addEventListener('dblclick', () => ativarEdicaoTitulo(h1Element));
+    }
+
+
+    function configurarEdicaoImagem(imgElement) {
+        imgElement.addEventListener('dblclick', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.style.display = 'none';
+
+            input.addEventListener('change', async () => {
+                const file = input.files[0];
+                if (file) {
+                    try {
+                        const timestamp = Date.now();
+                        const fileName = `imagem_${timestamp}.${file.name.split('.').pop()}`;
+
+                        const { data, error } = await supabase.storage
+                            .from('imagensprojeto') 
+                            .upload(fileName, file);
+
+                        if (error) {
+                            console.error('Erro ao enviar imagem para Supabase:', error);
+                            alert("Erro ao enviar imagem.");
+                            return;
+                        }
+
+                        const { data: publicUrlData } = supabase.storage
+                            .from('imagensprojeto')
+                            .getPublicUrl(fileName);
+
+                        const urlPublica = publicUrlData.publicUrl;
+                        imgElement.src = urlPublica;
+
+                    } catch (e) {
+                        console.error("Erro inesperado:", e);
+                        alert("Erro inesperado ao processar a imagem.");
+                    }
+                }
+            });
+
+            document.body.appendChild(input);
+            input.click();
+            input.remove();
+        });
+    }
+
+
+    function gerarBlocoCor(hex) {
+        return `
     <div class="color cor-editavel flex justify-start items-end pd-2 rounded-lg" 
          style="background-color: ${hex}; height: 150px; width: calc(50% - 12px); position: relative;">
         <button class="btn-remover-cor" style="
@@ -363,107 +392,105 @@ function gerarBlocoCor(hex) {
         ">
         <h1 class="colorCode text-xl font-medium mg-0">${hex}</h1>
     </div>`;
-}
+    }
 
+    function configurarCorIndividual(bloco) {
+        const removerBtn = bloco.querySelector('.btn-remover-cor');
+        const dragHandle = bloco.querySelector('.drag-handle-cor');
+        const inputCor = bloco.querySelector('.input-cor');
+        const label = bloco.querySelector('.colorCode');
 
-function configurarCorIndividual(bloco) {
-    const removerBtn = bloco.querySelector('.btn-remover-cor');
-    const dragHandle = bloco.querySelector('.drag-handle-cor');
-    const inputCor = bloco.querySelector('.input-cor');
-    const label = bloco.querySelector('.colorCode');
+        bloco.addEventListener('mouseenter', () => {
+            removerBtn.style.opacity = '1';
+            dragHandle.style.opacity = '1';
+            removerBtn.style.pointerEvents = 'auto';
+        });
+        bloco.addEventListener('mouseleave', () => {
+            removerBtn.style.opacity = '0';
+            dragHandle.style.opacity = '0';
+            removerBtn.style.pointerEvents = 'none';
+        });
 
-    bloco.addEventListener('mouseenter', () => {
-        removerBtn.style.opacity = '1';
-        dragHandle.style.opacity = '1';
-        removerBtn.style.pointerEvents = 'auto';
+        removerBtn.addEventListener('click', () => {
+            bloco.remove();
+        });
+
+        inputCor.addEventListener('input', () => {
+            const novaCor = inputCor.value;
+            bloco.style.backgroundColor = novaCor;
+            label.textContent = novaCor;
+        });
+
+        bloco.addEventListener('dblclick', () => inputCor.click());
+    }
+
+    const tagsInput = document.getElementById('tagsInput');
+    const tagsWrapper = document.getElementById('tagsWrapper');
+    const tagsFinal = document.getElementById('tagsFinal');
+    let tags = [];
+
+    function renderTags() {
+        tagsWrapper.innerHTML = '';
+        tags.forEach((tag, idx) => {
+            const tagEl = document.createElement('span');
+            tagEl.className = 'form-tag sm mg-b-1 flex h-full items-center gap-1';
+            tagEl.textContent = tag;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'tag-remove items-center text-xs bg-gray-50 text-white rounded-full flex items-center pd-0 justify-center mg-l-1';
+            removeBtn.style.width = '18px';
+            removeBtn.style.height = '18px';
+            removeBtn.style.marginLeft = '4px';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.onclick = () => {
+                tags.splice(idx, 1);
+                renderTags();
+            };
+
+            tagEl.appendChild(removeBtn);
+            tagsWrapper.appendChild(tagEl);
+        });
+        tagsWrapper.appendChild(tagsInput);
+        tagsFinal.value = tags.join(',');
+    }
+
+    function addTagFromInput() {
+        let value = tagsInput.value.trim();
+        if (value.endsWith(',')) value = value.slice(0, -1);
+        if (value && !tags.includes(value)) {
+            tags.push(value);
+            renderTags();
+        }
+        tagsInput.value = '';
+        tagsInput.focus();
+    }
+
+    tagsInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            addTagFromInput();
+        } else if (e.key === 'Backspace' && tagsInput.value === '') {
+            tags.pop();
+            renderTags();
+        }
     });
-    bloco.addEventListener('mouseleave', () => {
-        removerBtn.style.opacity = '0';
-        dragHandle.style.opacity = '0';
-        removerBtn.style.pointerEvents = 'none';
+
+    tagsInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text');
+        text.split(',').forEach(tag => {
+            const t = tag.trim();
+            if (t && !tags.includes(t)) tags.push(t);
+        });
+        renderTags();
+        tagsInput.value = '';
     });
 
-    removerBtn.addEventListener('click', () => {
-        bloco.remove();
-    });
+    if (tagsFinal.value) {
+        tags = tagsFinal.value.split(',').map(t => t.trim()).filter(Boolean);
+        renderTags();
+    }
 
-    inputCor.addEventListener('input', () => {
-        const novaCor = inputCor.value;
-        bloco.style.backgroundColor = novaCor;
-        label.textContent = novaCor;
-    });
-
-    bloco.addEventListener('dblclick', () => inputCor.click());
-}
-
-// Campo de tags dinâmico
-
-// Campo de tags dinâmico inline
-const tagsInput = document.getElementById('tagsInput');
-const tagsWrapper = document.getElementById('tagsWrapper');
-const tagsFinal = document.getElementById('tagsFinal');
-let tags = [];
-
-function renderTags() {
-  tagsWrapper.innerHTML = '';
-  tags.forEach((tag, idx) => {
-    const tagEl = document.createElement('span');
-    tagEl.className = 'form-tag sm mg-b-1 flex h-full items-center gap-1';
-    tagEl.textContent = tag;
-
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.className = 'tag-remove items-center text-xs bg-gray-50 text-white rounded-full flex items-center pd-0 justify-center mg-l-1';
-    removeBtn.style.width = '18px';
-    removeBtn.style.height = '18px';
-    removeBtn.style.marginLeft = '4px';
-    removeBtn.innerHTML = '&times;';
-    removeBtn.onclick = () => {
-      tags.splice(idx, 1);
-      renderTags();
-    };
-
-    tagEl.appendChild(removeBtn);
-    tagsWrapper.appendChild(tagEl);
-  });
-  // Sempre adicionar o input no final
-  tagsWrapper.appendChild(tagsInput);
-  tagsFinal.value = tags.join(',');
-}
-
-function addTagFromInput() {
-  let value = tagsInput.value.trim();
-  if (value.endsWith(',')) value = value.slice(0, -1);
-  if (value && !tags.includes(value)) {
-    tags.push(value);
-    renderTags();
-  }
-  tagsInput.value = '';
-  tagsInput.focus(); // Mantém o foco no input após adicionar uma tag
-}
-
-tagsInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ',') {
-    e.preventDefault();
-    addTagFromInput();
-  } else if (e.key === 'Backspace' && tagsInput.value === '') {
-    tags.pop();
-    renderTags();
-  }
+    verificarProjetoVazio();
 });
-
-tagsInput.addEventListener('paste', (e) => {
-  e.preventDefault();
-  const text = (e.clipboardData || window.clipboardData).getData('text');
-  text.split(',').forEach(tag => {
-    const t = tag.trim();
-    if (t && !tags.includes(t)) tags.push(t);
-  });
-  renderTags();
-  tagsInput.value = '';
-});
-
-if (tagsFinal.value) {
-  tags = tagsFinal.value.split(',').map(t => t.trim()).filter(Boolean);
-  renderTags();
-}
