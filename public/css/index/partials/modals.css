@@ -54,6 +54,7 @@ body {
     width: 100%;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
     position: relative;
+    z-index: 2000;
 }
 
 /* Floating Island */
@@ -67,7 +68,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50px;
     padding: 12px 20px;
-    z-index: 1002;
+    z-index: 2002;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;

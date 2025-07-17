@@ -12,7 +12,9 @@ export async function salvarProjetoFirebase() {
     const userId = user.uid;
 
     const titulo = document.getElementById('tituloFinal').value.trim();
-    const tags = document.getElementById('tagsFinal').value.trim();
+    const tagsInput = document.getElementById('tagsFinal').value.trim();
+    const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+
 
     if (!titulo || !tags || !capaUrlGlobal) {
         alert('Preencha todos os campos e selecione uma imagem de capa!');
@@ -76,7 +78,7 @@ export async function salvarProjetoFirebase() {
             };
 
             const componentesRef = ref(db, `componentesProjeto/${projectId}/${index}`);
-            await set (componentesRef, componenteData)
+            await set(componentesRef, componenteData)
             index++
         } catch (error) {
             console.error(`Erro ao processar componente do tipo ${tipo}:`, error);
