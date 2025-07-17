@@ -1,11 +1,10 @@
 const gulp = require('gulp');
 const livereload = require('gulp-livereload');
-// Remover require do imagemin
 
 // Tarefa para otimizar imagens
 async function optimizeImages() {
   const imagemin = (await import('gulp-imagemin')).default;
-  return gulp.src('public/assets/image/**/*')
+  return gulp.src('public/assets/image/**/*', { encoding: false })
     .pipe(imagemin())
     .pipe(gulp.dest('public/assets/image'));
 }
