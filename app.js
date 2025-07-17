@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const app = express()
-
+const PORT = process.env.PORT || 3000;
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 
@@ -50,9 +50,10 @@ app.use('/confirmarEmail', confirmarEmail)
 const chat = require('./routes/chat')
 app.use('/Chat', chat)
 
-const config = require('./routes/settings')
+const config = require('./routes/settings');
+const { prototype } = require('events');
 app.use('/configuracoes', config)
 
-app.listen(3000, () => {
-    console.log("Servidor em execução na porta 3000")
+app.listen(PORT, () => {
+    console.log("Servidor em execução na porta " + PORT)
 })
