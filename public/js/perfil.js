@@ -644,6 +644,7 @@ async function criarBlocoExtraProjetoHTML(projeto, autorData, comentarios) {
     `;
 }
 
+
 async function deletarProjeto(projectId) {
     if (!auth.currentUser || auth.currentUser.uid !== perfilUserId) {
         alert('Você não tem permissão para deletar este projeto.');
@@ -744,8 +745,93 @@ async function abrirModalProjeto(projetoId) {
     </div>
 `;
 
-        modal.style.display = 'flex';
-        modal.dataset.currentProjectId = projetoId;
+      modal.style.display = 'flex';
+modal.dataset.currentProjectId = projetoId;
+
+const btnContatar = modalBody.querySelector('#contactar');
+if (btnContatar) {
+  btnContatar.dataset.userId = autorData.id || '';
+  btnContatar.dataset.nome = autorData.nome || '';
+  btnContatar.dataset.avatar = autorData.foto_perfil || '';
+
+  const novoBtnContatar = btnContatar.cloneNode(true);
+  btnContatar.replaceWith(novoBtnContatar);
+
+  novoBtnContatar.addEventListener('click', async () => {
+    const authUser = auth.currentUser;
+    if (!authUser) {
+      alert('Você precisa estar logado para contatar o autor.');
+      return;
+    }
+
+    const userIdLogado = authUser.uid;
+    const userIdContato = novoBtnContatar.dataset.userId;
+    const nomeContato = novoBtnContatar.dataset.nome;
+    const avatarContato = novoBtnContatar.dataset.avatar;
+
+    try {
+      const db = getDatabase();
+
+      const conversaLogadoRef = ref(db, `Conversas/${userIdLogado}/${userIdContato}`);
+      const conversaContatoRef = ref(db, `Conversas/${userIdContato}/${userIdLogado}`);
+
+      const [snapshotLogado, snapshotContato] = await Promise.all([
+        get(conversaLogadoRef),
+        get(conversaContatoRef)
+      ]);
+
+      if (snapshotLogado.exists() && snapshotContato.exists()) {
+        window.location.href = `/chat?user=${userIdContato}`;
+        return;
+      }
+
+      let dadosUserLogado = null;
+      const snapshotFreelancer = await get(ref(db, `Freelancer/${userIdLogado}`));
+      if (snapshotFreelancer.exists()) {
+        dadosUserLogado = snapshotFreelancer.val();
+      } else {
+        const snapshotContratante = await get(ref(db, `Contratante/${userIdLogado}`));
+        if (snapshotContratante.exists()) {
+          dadosUserLogado = snapshotContratante.val();
+        }
+      }
+
+      if (!dadosUserLogado) {
+        alert("Erro ao obter seus dados para criar a conversa.");
+        return;
+      }
+
+      const timestampAgora = Date.now();
+
+      await Promise.all([
+        set(conversaLogadoRef, {
+          nome: nomeContato,
+          avatar: avatarContato,
+          timestamp: timestampAgora
+        }),
+        set(conversaContatoRef, {
+          nome: dadosUserLogado.nome || '',
+          avatar: dadosUserLogado.foto_perfil || '',
+          timestamp: timestampAgora
+        })
+      ]);
+
+      const mensagensRef = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
+      await push(mensagensRef, {
+        autor: userIdLogado,
+        texto: "Você iniciou uma conversa.",
+        timestamp: timestampAgora
+      });
+
+      alert("Contato salvo! Agora você será redirecionado ao chat.");
+      window.location.href = `/chat?user=${userIdContato}`;
+    } catch (error) {
+      console.error("Erro ao salvar contato:", error);
+      alert("Erro ao salvar contato. Tente novamente mais tarde.");
+    }
+  });
+}
+
 
         const carouselContainer = modalBody.querySelector('.carousel-container');
         if (carouselContainer) {
