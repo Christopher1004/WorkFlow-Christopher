@@ -1,6 +1,5 @@
 import { salvarProjetoFirebase } from "./salvarProjetoBanco.js";
 import { supabase } from "./salvarImagensSupabase.js";
-import { uploadImagemSupabase } from "./salvarImagensSupabase.js";
 
 export let capaUrlGlobal = null
 document.addEventListener('DOMContentLoaded', () => {
@@ -84,11 +83,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const modalSucesso = document.getElementById('modalSucesso');
     btnFinalizarProjeto.addEventListener('click', async () => {
         try {
             await salvarProjetoFirebase();
             fecharModalSalvarProjeto();
-            alert('Projeto Salvo com sucesso');
+
+            modalSucesso.classList.remove('hidden');
+
+            setTimeout(() => {
+                modalSucesso.classList.add('hidden');
+                window.location.href = '/'; 
+            }, 2500);
+
         } catch (error) {
             console.error('Erro ao salvar projeto', error);
             alert('Erro ao salvar projeto');
@@ -317,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const fileName = `imagem_${timestamp}.${file.name.split('.').pop()}`;
 
                         const { data, error } = await supabase.storage
-                            .from('imagensprojeto') 
+                            .from('imagensprojeto')
                             .upload(fileName, file);
 
                         if (error) {
@@ -349,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gerarBlocoCor(hex) {
         return `
-    <div class="color cor-editavel flex justify-start items-end pd-2 rounded-lg" 
+    <div class="color cor-editavel  flex justify-start items-end pd-2 rounded-lg" data-cor="${hex}" 
          style="background-color: ${hex}; height: 150px; width: calc(50% - 12px); position: relative;">
         <button class="btn-remover-cor" style="
             position: absolute;
@@ -418,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inputCor.addEventListener('input', () => {
             const novaCor = inputCor.value;
             bloco.style.backgroundColor = novaCor;
+            bloco.setAttribute('data-cor', novaCor)
             label.textContent = novaCor;
         });
 

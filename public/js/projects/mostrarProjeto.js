@@ -313,7 +313,44 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
                             const p = document.createElement('p');
                             p.innerHTML = comp.conteudo || '';
                             compDiv.appendChild(p);
-                        } else {
+                        }
+                        else if (comp.tipo === 'titulo') {
+                            const h2 = document.createElement('h2')
+                            h2.innerHTML = comp.conteudo || "Titulo Vazio"
+                            h2.style.fontSize = '2.5rem'
+                            h2.style.fontWeight = 'bold'
+                            h2.style.marginBottom = '10px'
+                            compDiv.appendChild(h2)
+                        }
+                        else if (comp.tipo === 'paleta') {
+                            let cores = []
+                            try {
+                                cores = typeof comp.conteudo === 'string' ? JSON.parse(comp.conteudo) : comp.conteudo
+                            }
+                            catch {
+                                cores = []
+                            }
+
+                            const coresHtml = cores.map(cor => `
+                                <div class="color cor-visual flex justify-start items-end pd-2 rounded-lg" 
+                                    style="background-color: ${cor}; height: 150px; width: calc(50% - 12px); position: relative;">
+                                <h1 class="colorCode text-xl font-medium mg-0">${cor}</h1>
+                                </div>`).join('');
+                            const paletaDiv = document.createElement('div');
+                            paletaDiv.classList.add('componente-item', 'paleta-container');
+                            paletaDiv.innerHTML = `
+                                <div class="PTitulo pd-y-3 w-full">
+                                    <h1 class="text-3xl text-white mg-0">Cores do Projeto</h1>
+                                </div>
+                                <div class="Pcores pd-y-3 w-full">
+                                    <div class="paleta-cores flex flex-row flex-wrap gap-3 mg-b-2">
+                                        ${coresHtml}
+                                    </div>
+                                </div>`;
+
+                            containerComponentes.appendChild(paletaDiv);
+                        }
+                        else {
                             compDiv.textContent = `Tipo: ${comp.tipo || 'N/A'} - Conteúdo: ${comp.conteudo || 'Sem conteúdo'}`;
                         }
 

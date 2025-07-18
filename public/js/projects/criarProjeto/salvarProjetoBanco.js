@@ -2,6 +2,17 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-aut
 import { getDatabase, ref, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { capaUrlGlobal } from "./criarComponente.js";
 
+
+function pegarCoresDaPaleta() {
+    const cores = []
+    const blocos = document.querySelectorAll('.paleta-cores .cor-editavel')
+    blocos.forEach(bloco => {
+        const cor = bloco.getAttribute('data-cor')
+        if (cor) cores.push(cor)
+    })
+    return cores
+
+}
 export async function salvarProjetoFirebase() {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -45,7 +56,6 @@ export async function salvarProjetoFirebase() {
 
     for (const componente of componentes) {
         const tipo = componente.getAttribute('data-tipo');
-        console.log(`Processando componente do tipo: ${tipo}`);
 
         let conteudo;
 
@@ -62,8 +72,7 @@ export async function salvarProjetoFirebase() {
 
                 conteudo = src;
             } else if (tipo === 'paleta') {
-                const cores = componente.querySelectorAll('[data-cor]');
-                conteudo = Array.from(cores).map(c => c.getAttribute('data-cor'));
+                conteudo = pegarCoresDaPaleta()
             }
 
             if (!conteudo || conteudo.length === 0) {

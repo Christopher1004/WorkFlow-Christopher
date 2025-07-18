@@ -39,6 +39,36 @@
         color: var(--gray-25);
     }
 
+    .modal-sucesso {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-conteudo {
+        background: #1e1e1e;
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 400px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-conteudo h2 {
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    .hidden {
+        display: none;
+    }
 </style>
 
 <section class="flex flex-col h-full w-full">
@@ -124,7 +154,8 @@
 </section>
 
 <dialog id="modalComponentes" class="modalComponentes bg-gray-100 pd-3 border border-solid rounded-lg border-gray">
-    <div class="top flex flex-row flex items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
+    <div
+        class="top flex flex-row flex items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
         <h1 class="text-xl flex flex-1 mg-0 text-white">Adicionar componente</h1>
         <button id="close" class="closemodal" style="background-color: var(--background); border: 0px;"><ion-icon
                 name="close-outline" size="large"></ion-icon></button>
@@ -178,16 +209,20 @@
 </dialog>
 <div id="modalOverlay" class="modalOverlay"></div>
 <dialog id="modalSalvarProjeto" class="modal-final bg-gray-100 pd-3 border border-solid rounded-lg border-gray">
-    <div class="top flex flex-row items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
+    <div
+        class="top flex flex-row items-center pd-b-2 border-b border-t-0 border-r-0 border-l-0 mg-b-2 border-solid border-gray">
         <h1 class="text-xl flex flex-1 mg-0 text-white font-medium">Finalizar Projeto</h1>
-        <button id="btnFecharModalFinal" class="closemodal" style="background: none; border: none;"><ion-icon name="close-outline" size="large"></ion-icon></button>
+        <button id="btnFecharModalFinal" class="closemodal" style="background: none; border: none;"><ion-icon
+                name="close-outline" size="large"></ion-icon></button>
     </div>
     <div class="content">
         <div class="flex flex-col gap-1">
             <label for="" class="mg-0">Titulo</label>
-            <input type="text" id="tituloFinal" placeholder="Título do projeto" class="form-control sm w-full" style="margin-bottom: 0px;"/>
+            <input type="text" id="tituloFinal" placeholder="Título do projeto" class="form-control sm w-full"
+                style="margin-bottom: 0px;" />
             <label for="" class="mg-0">Container</label>
-            <div id="uploadContainer" class="upload-container flex flex-col justify-center items-center text-center border-dashed border-2 border-gray-50 rounded-lg cursor-pointer">
+            <div id="uploadContainer"
+                class="upload-container flex flex-col justify-center items-center text-center border-dashed border-2 border-gray-50 rounded-lg cursor-pointer">
                 <ion-icon name="image-outline" size="large"></ion-icon>
                 <p class="mg-0">Clique para escolher a imagem de capa</p>
                 <img id="previewCapa" style="display: none; max-width: 100%; border-radius: 6px;" />
@@ -196,14 +231,15 @@
 
             <div id="tagsInputContainer" class="flex flex-col gap-0">
                 <label for="">Tags</label>
-              <div id="tagsInputBox" class="form-control mg-0 pd-0 w-full flex flex-row flex-wrap items-center gap-0">
-                <div id="tagsWrapper" class="flex items-center flex-row flex-wrap mg-0 pd-1">
-                    <input type="text" class="tagsInput form-control sm bg-gray-100 flex-1 text-white" id="tagsInput" style="margin-bottom: 0px; box-shadow: none; border: none; outline: none;">
+                <div id="tagsInputBox" class="form-control mg-0 pd-0 w-full flex flex-row flex-wrap items-center gap-0">
+                    <div id="tagsWrapper" class="flex items-center flex-row flex-wrap mg-0 pd-1">
+                        <input type="text" class="tagsInput form-control sm bg-gray-100 flex-1 text-white"
+                            id="tagsInput" style="margin-bottom: 0px; box-shadow: none; border: none; outline: none;">
+                    </div>
                 </div>
-              </div>
-              <label for="tagsInput" class="text-xs text-gray-25 mg-0">
-                Deixe as tags separadas por vírgula ou Enter (ex: design, app, ui, ux)
-              </label>
+                <label for="tagsInput" class="text-xs text-gray-25 mg-0">
+                    Deixe as tags separadas por vírgula ou Enter (ex: design, app, ui, ux)
+                </label>
             </div>
             <input type="hidden" id="tagsFinal" name="tagsFinal" />
             <button id="btnSalvarFinal" class="btn btn-purple">Salvar Projeto</button>
@@ -212,6 +248,11 @@
 </dialog>
 
 <div id="overlaySalvar" class="modal-overlay-final"></div>
+<div id="modalSucesso" class="modal-sucesso hidden">
+    <div class="modal-conteudo">
+        <h2>Projeto salvo com sucesso!</h2>
+    </div>
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
