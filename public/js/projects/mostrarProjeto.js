@@ -390,22 +390,18 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
 
                         const db = getDatabase();
 
+                        const conversaRefLogado = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
+                        const conversaRefContato = ref(db, `Conversas/${userIdContato}/${userIdLogado}/mensagens`);
+
+                        const conversaLogadoSnap = await get(conversaRefLogado);
+                        const conversaContatoSnap = await get(conversaRefContato);
+
+                        const jaExisteConversa = conversaLogadoSnap.exists() || conversaContatoSnap.exists();
+
                         const timestamp = Date.now();
 
-                        // Cria a mensagem "Você iniciou uma conversa" só para o usuário que clicou
-                        const novaMensagem = {
-                            texto: "Você iniciou uma conversa",
-                            autor: userIdLogado,
-                            timestamp
-                        };
-
-                        const refMensagensUser = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
-                        const novaMsgKey = push(refMensagensUser).key;
-
+                        // Atualizações comuns (nome/avatar/timestamp)
                         const updates = {};
-
-                        updates[`Conversas/${userIdLogado}/${userIdContato}/mensagens/${novaMsgKey}`] = novaMensagem;
-
                         updates[`Conversas/${userIdLogado}/${userIdContato}/nome`] = nomeContato;
                         updates[`Conversas/${userIdLogado}/${userIdContato}/avatar`] = avatarContato;
                         updates[`Conversas/${userIdLogado}/${userIdContato}/ultimoTimestamp`] = timestamp;
@@ -416,6 +412,17 @@ async function abrirModalProjeto(idProjeto, titulo, descricao, dataCriacao, user
 
                         updates[`LeituraMensagens/${userIdLogado}/${userIdContato}/timestamp`] = timestamp;
                         updates[`LeituraMensagens/${userIdContato}/${userIdLogado}/timestamp`] = 0;
+
+                        if (!jaExisteConversa) {
+                            const refMensagensUser = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
+                            const novaMsgKey = push(refMensagensUser).key;
+
+                            updates[`Conversas/${userIdLogado}/${userIdContato}/mensagens/${novaMsgKey}`] = {
+                                texto: "Você iniciou uma conversa",
+                                autor: userIdLogado,
+                                timestamp
+                            };
+                        }
 
                         await update(ref(db), updates);
 

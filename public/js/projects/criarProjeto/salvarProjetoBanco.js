@@ -1,5 +1,5 @@
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, push, set,get, update ,serverTimestamp, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { capaUrlGlobal } from "./criarComponente.js";
 
 
@@ -13,7 +13,18 @@ function pegarCoresDaPaleta() {
     return cores
 
 }
-export async function salvarProjetoFirebase() {
+async function pegarDataCriacao(projectId) {
+    const db = getDatabase();
+    const projetoRef = ref(db, `Projetos/${projectId}`);
+    const snapshot = await get(projetoRef);
+    if (snapshot.exists()) {
+        const data = snapshot.val();
+        return data.dataCriacao || null;
+    }
+    return null;
+}
+
+export async function salvarProjetoFirebase(editId = null) {
     const auth = getAuth();
     const user = auth.currentUser;
     if (!user) {
@@ -26,37 +37,42 @@ export async function salvarProjetoFirebase() {
     const tagsInput = document.getElementById('tagsFinal').value.trim();
     const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
 
-
     if (!titulo || !tags || !capaUrlGlobal) {
         alert('Preencha todos os campos e selecione uma imagem de capa!');
         return;
     }
 
-    let capaUrl = capaUrlGlobal;
-
     const db = getDatabase();
-    const projetosRef = ref(db, 'Projetos');
-    const novoProjetoRef = push(projetosRef);
+    let projectId = editId;
 
-    const projectId = novoProjetoRef.key;
+    let dataCriacao = null;
+    if (projectId) {
+        dataCriacao = await pegarDataCriacao(projectId);
+    } else {
+        const projetosRef = ref(db, 'Projetos');
+        const novoProjetoRef = push(projetosRef);
+        projectId = novoProjetoRef.key;
+        dataCriacao = new Date().toISOString();
+    }
 
     const projetoData = {
         userId,
         titulo,
         tags,
-        capaUrl,
-        dataCriacao: new Date().toISOString()
+        capaUrl: capaUrlGlobal,
+        dataCriacao,               
+        dataAtualizacao: new Date().toISOString()
     };
 
-    await set(novoProjetoRef, projetoData);
+    await update(ref(db, `Projetos/${projectId}`), projetoData);
+
+    await remove(ref(db, `componentesProjeto/${projectId}`));
 
     const componentes = document.querySelectorAll('#contentProject > div');
-
-    let index = 0
+    let index = 0;
 
     for (const componente of componentes) {
         const tipo = componente.getAttribute('data-tipo');
-
         let conteudo;
 
         try {
@@ -68,15 +84,13 @@ export async function salvarProjetoFirebase() {
                 conteudo = h1?.textContent.trim() || '';
             } else if (tipo === 'imagem') {
                 const img = componente.querySelector('img');
-                const src = img?.src || '';
-
-                conteudo = src;
+                conteudo = img?.src || '';
             } else if (tipo === 'paleta') {
-                conteudo = pegarCoresDaPaleta()
+                conteudo = pegarCoresDaPaleta();
             }
 
-            if (!conteudo || conteudo.length === 0) {
-                console.warn('Conteúdo vazio, pulando.');
+            if (!conteudo || (Array.isArray(conteudo) && conteudo.length === 0)) {
+                console.warn('Conteúdo vazio, pulando componente.');
                 continue;
             }
 
@@ -86,12 +100,13 @@ export async function salvarProjetoFirebase() {
                 conteudo
             };
 
-            const componentesRef = ref(db, `componentesProjeto/${projectId}/${index}`);
-            await set(componentesRef, componenteData)
-            index++
+            await set(ref(db, `componentesProjeto/${projectId}/${index}`), componenteData);
+            index++;
         } catch (error) {
             console.error(`Erro ao processar componente do tipo ${tipo}:`, error);
             continue;
         }
     }
+
+    return projectId;
 }
