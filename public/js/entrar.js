@@ -62,14 +62,14 @@ form.addEventListener('submit', async (event) => {
       if (data.nome && data.bio && data.tag && data.foto_perfil) {
         window.location.href = '/'; 
       } else {
-        window.location.href = `freeInfo?userId=${userId}`; 
+        window.location.href = `freePassos?userId=${userId}`; 
       }
     } else if (contratanteSnap.exists()) {
       const data = contratanteSnap.val();
       if (data.nome && data.bio && data.tag && data.foto_perfil) {
         window.location.href = '/'; 
       } else {
-        window.location.href = `freeInfo?userId=${userId}`; 
+        window.location.href = `ContraPasso?userId=${userId}`; 
       }
     }
   } catch (error) {
