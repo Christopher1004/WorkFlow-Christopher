@@ -12,6 +12,8 @@
         </div>
         <div class="links">
             <a href="/" class="text-xs projetos <%= currentRoute === '/' ? 'active' : '' %>">Projetos</a>
+            <a href="/categorias"
+                class="text-xs  categorias <%= currentRoute === '/categorias' ? 'active' : '' %>">Categorias</a>
             <a href="/propostas"
                 class="text-xs  propostas <%= currentRoute === '/propostas' ? 'active' : '' %>">Propostas</a>
             <a href="/freelancers"
@@ -20,7 +22,7 @@
         <div class="searchbarContainer">
             <div class="searchbar">
                 <img src="/assets/image/search-icon.svg" alt="searchIcon" class="icon">
-                <input type="text" class="text-xs searchbar-input" id="searchInput" placeholder="Buscar projeto...">
+                <input type="text" class="text-xs searchbar-input shadow-0" id="searchInput" placeholder="Buscar projeto...">
             </div>
         </div>
         <div class="buttonsContainer">

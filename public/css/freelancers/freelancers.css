@@ -1,6 +1,18 @@
 @import "../globals/globals.css";
-@import "../index/partials/nav.css";
-
-@import "partials/layout.css";
-@import "partials/filter.css";
 @import "partials/freelancers-card.css";
+
+.select-filter {
+    max-width: 200px;
+    width: 100%;
+}
+
+@media (max-width: 655px) {
+    .category {
+        width: 100%;
+        max-width: none;
+    }
+    .select-filter {
+        width: 100%;
+        max-width: none;
+    }
+}

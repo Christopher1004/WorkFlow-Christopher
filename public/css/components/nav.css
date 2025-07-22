@@ -110,6 +110,8 @@ body {
 
 .searchbar-input:focus {
     outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 .buttonsContainer {
@@ -163,7 +165,7 @@ body {
 
 @media (max-width: 990px) {
     .navbar {
-        overflow: visible;
+        overflow: hidden;
         justify-content: center;
         height: 80px;
         padding-top: 20px;
