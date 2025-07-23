@@ -19,6 +19,8 @@ const db = getDatabase(app)
 
 const btnLogin = document.getElementById('btnEntrar');
 const btnRegister = document.getElementById('btnCriarConta');
+const aRegister = document.getElementById('aRegister');
+const aLogin = document.getElementById('aLogin');
 const userControls = document.getElementById('userControls');
 const userPhoto = document.getElementById('userPhoto');
 const userPhotoDrop = document.getElementById('userPhotoDrop')
@@ -37,6 +39,8 @@ if (cacheUsuario && tempoCache && Date.now() - tempoCache < 5 * 60 * 1000) {
 
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnRegister) btnRegister.style.display = 'none';
+        if (aLogin) aLogin.style.display = 'none';
+        if (aRegister) aRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
 
         const nome = dados.nome || 'Usuário';
@@ -301,10 +305,3 @@ function atualizarBadgeNavbar(contagem) {
         badge.style.display = 'none';
     }
 }
-
-
-
-
-
-
-
