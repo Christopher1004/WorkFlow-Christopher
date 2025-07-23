@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias</title>
+    <link rel="stylesheet" href="/css/category/category.css" />
+</head>
+<body>
+    <div class="topo flex flex-col items-center justify-between pd-x-4 pd-t-3">
+        <div class="flex flex-row items-center justify-between w-full pd-y-3">
+            <h1 class="text-white text-3xl mg-0">Categorias</h1>
+            <p class="text-gray-25 mg-0">Busque pro projetos do seu interesse</p>
+        </div>
+        <div class="searchbar form-control sm flex w-full row">
+            <div class="icon">
+                <ion-icon name="search"></ion-icon>
+            </div>
+            <input type="text" class="bg-gray-100 text-sm border-none outline-none text-white h-full w-full" name="searchbar" id="search-category" placeholder="Buscar por categoria" class="input input-bordered w-full" />
+        </div>
+        <div class="alfabeto pd-y-2 w-full flex flex-row">
+            <% const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''); %>
+            <% letras.forEach(letra => { %>
+                <div class="letra flex flex-1 items-center justify-center bg-gray-50 cursor-pointer rounded-lg" onclick="scrollToCategoria('<%= letra %>')">
+                    <%= letra %>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    <div class="container-categorias flex flex-col pd-x-4">
+
+        <!-- Letras de Categorias -->
+
+        <!-- Letra A -->
+        <div class="letra-categorias mg-b-3" id="categoria-A">
+            <h2 class="text-white text-2xl mg-0 w-full border-0 border-b border-solid border-gray-25">A</h2>
+            
+            <div class="category-card justify-between mg-t-2 pd-2 bg-gray-75 border border-solid border-gray-50 rounded-lg flex flex-row h-full">
+                <div class="category-header flex flex-col w-full">
+                    <h2 class="mg-0">Aero Design</h2>
+                    <div class="details">
+                        <p class="mg-0 text-gray-25">Projetos: 20</p>
+                        <p class="mg-0 text-gray-25">Seguindo: 30</p>
+                    </div>
+                </div>
+                <div class="project-examples w-full">
+                    <div class="project-example-card-1 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-2 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-3 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Letra B -->
+        <div class="letra-categorias mg-b-3" id="categoria-B">
+            <h2 class="text-white text-2xl mg-0 w-full border-0 border-b border-solid border-gray-25">B</h2>
+
+            <div class="category-card justify-between mg-t-2 pd-2 bg-gray-75 border border-solid border-gray-50 rounded-lg flex flex-row h-full">
+                <div class="category-header flex flex-col w-full">
+                    <h2 class="mg-0">Aero Design</h2>
+                    <div class="details">
+                        <p class="mg-0 text-gray-25">Projetos: 20</p>
+                        <p class="mg-0 text-gray-25">Seguindo: 30</p>
+                    </div>
+                </div>
+                <div class="project-examples w-full">
+                    <div class="project-example-card-1 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-2 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-3 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                </div>
+            </div>
+            <div class="category-card justify-between mg-t-2 pd-2 bg-gray-75 border border-solid border-gray-50 rounded-lg flex flex-row h-full">
+                <div class="category-header flex flex-col w-full">
+                    <h2 class="mg-0">Aero Design</h2>
+                    <div class="details">
+                        <p class="mg-0 text-gray-25">Projetos: 20</p>
+                        <p class="mg-0 text-gray-25">Seguindo: 30</p>
+                    </div>
+                </div>
+                <div class="project-examples w-full">
+                    <div class="project-example-card-1 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-2 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-3 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                </div>
+            </div>
+            <div class="category-card justify-between mg-t-2 pd-2 bg-gray-75 border border-solid border-gray-50 rounded-lg flex flex-row h-full">
+                <div class="category-header flex flex-col w-full">
+                    <h2 class="mg-0">Aero Design</h2>
+                    <div class="details">
+                        <p class="mg-0 text-gray-25">Projetos: 20</p>
+                        <p class="mg-0 text-gray-25">Seguindo: 30</p>
+                    </div>
+                </div>
+                <div class="project-examples w-full">
+                    <div class="project-example-card-1 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-2 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-3 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Letra C -->
+        <div class="letra-categorias mg-b-3" id="categoria-C">
+            <h2 class="text-white text-2xl mg-0 w-full border-0 border-b border-solid border-gray-25">C</h2>
+
+            <div class="category-card justify-between mg-t-2 pd-2 bg-gray-75 border border-solid border-gray-50 rounded-lg flex flex-row h-full">
+                <div class="category-header flex flex-col w-full">
+                    <h2 class="mg-0">Aero Design</h2>
+                    <div class="details">
+                        <p class="mg-0 text-gray-25">Projetos: 20</p>
+                        <p class="mg-0 text-gray-25">Seguindo: 30</p>
+                    </div>
+                </div>
+                <div class="project-examples w-full">
+                    <div class="project-example-card-1 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-2 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                    <div class="project-example-card-3 bg-base-100 rounded-lg h-full" style="aspect-ratio: 4/3; max-height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function scrollToCategoria(letra) {
+            const elemento = document.getElementById(`categoria-${letra}`);
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
