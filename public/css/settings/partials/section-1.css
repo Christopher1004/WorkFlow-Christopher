@@ -2,12 +2,12 @@
   --primary: #5274D9;
   --primary-hover: #3C5BE3;
   --gradient: linear-gradient(135deg, #5274D9, #3C38A6);
-  --background: #0d0f12;
-  --secondary-bg: #16191d;
-  --card-bg: #1e2227;
+  --background: #161617;      
+  --secondary-bg: #171616;    
+  --card-bg: #1e1c1c;         
   --text: #ffffff;
   --text-light: #b5b5b5;
-  --border: #2c2f34;
+  --border: #171616;          
   --accent: #f5deb3;
   --radius: 12px;
   --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
