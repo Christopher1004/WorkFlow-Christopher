@@ -283,6 +283,67 @@
         margin-right: 8px;
         filter: brightness(0) invert(0.7);
     }
+  .containerNotifyChat .btnNotificacoes,
+.containerNotifyChat .chat button {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 50%;
+  padding: 8px;
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+  will-change: transform, box-shadow, filter;
+  outline-offset: 4px;
+  transform-origin: center center; 
+}
+
+.containerNotifyChat .btnNotificacoes:hover,
+.containerNotifyChat .chat button:hover {
+  transform: scale(1.12);
+  box-shadow:
+    0 8px 15px rgba(108, 109, 204, 0.35),
+    0 0 10px 3px rgba(108, 109, 204, 0.3);
+  filter: drop-shadow(0 0 6px rgba(108, 109, 204, 0.6));
+  cursor: pointer;
+}
+
+/* Foco */
+.containerNotifyChat .btnNotificacoes:focus,
+.containerNotifyChat .chat button:focus {
+  outline: 2px solid #6c6dcc;
+  outline-offset: 3px;
+}
+
+/* Animação de balanço do sino */
+@keyframes sinoShake {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(15deg);
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  45% {
+    transform: rotate(8deg);
+  }
+  60% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.containerNotifyChat .btnNotificacoes:hover ion-icon {
+  animation: sinoShake 0.8s ease-in-out infinite;
+  transform-origin: center bottom; 
+  cursor: pointer;
+}
+
 </style>
 <script type="module" src="/js/navBar-auth.js"></script>
 <script>
