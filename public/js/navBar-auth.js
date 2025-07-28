@@ -174,6 +174,8 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         if (btnLogin) btnLogin.style.display = 'inline-block';
         if (btnRegister) btnRegister.style.display = 'inline-block';
+        if (aLogin) aLogin.style.display = 'inline-block';
+        if (aRegister) aRegister.style.display = 'inline-block';
         if (userControls) userControls.style.display = 'none';
 
         if (userPhoto) {
