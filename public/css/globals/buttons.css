@@ -32,6 +32,10 @@
   background: var(--gray-50);
   color: var(--white);
 }
+.btn-gray-75 {
+  background: var(--gray-75);
+  color: var(--white);
+}
 .btn-success {
   background: var(--quaternary);
   color: var(--white);
@@ -52,7 +56,10 @@
   background: var(--warning-dark);
 }
 .btn-gray:hover:not(:disabled) {
-  background: var(--gray-100);
+  background: var(--gray-75);
+}
+.btn-gray-75:hover:not(:disabled) {
+  background: var(--gray-50);
 }
 .btn-success:hover:not(:disabled) {
   background: #059669;

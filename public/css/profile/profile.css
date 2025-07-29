@@ -1356,3 +1356,26 @@ h3{
     transform: translateY(20px);
   }
 }
+.edit svg {
+    stroke: #426AB2;
+    stroke-width: 2.5;  
+    fill:transparent;       
+     filter: drop-shadow(0 0 1px #426AB2) drop-shadow(0 0 10px #426AB2);
+}
+.delete svg {
+    fill: transparent;        
+    filter: drop-shadow(0 0 1px rgb(199, 29, 29)) drop-shadow(0 0 10px rgb(199, 29, 29));
+}
+.like svg {
+    stroke: #426AB2;
+    stroke-width: 2.5;  
+    fill:transparent;        
+     filter: drop-shadow(0 0 1px #426AB2) drop-shadow(0 0 10px #426AB2);
+}
+.favorite svg {
+    stroke: #426AB2;
+    stroke-width: 2.5; 
+    fill:transparent;    
+     filter: drop-shadow(0 0 1px #426AB2) drop-shadow(0 0 10px #426AB2);
+}
+

@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, update, onValue, onChildAdded, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
@@ -18,6 +19,8 @@ const db = getDatabase(app)
 
 const btnLogin = document.getElementById('btnEntrar');
 const btnRegister = document.getElementById('btnCriarConta');
+const aRegister = document.getElementById('aRegister');
+const aLogin = document.getElementById('aLogin');
 const userControls = document.getElementById('userControls');
 const userPhoto = document.getElementById('userPhoto');
 const userPhotoDrop = document.getElementById('userPhotoDrop')
@@ -36,6 +39,8 @@ if (cacheUsuario && tempoCache && Date.now() - tempoCache < 5 * 60 * 1000) {
 
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnRegister) btnRegister.style.display = 'none';
+        if (aLogin) aLogin.style.display = 'none';
+        if (aRegister) aRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
 
         const nome = dados.nome || 'Usuário';
@@ -59,6 +64,17 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         const uid = user.uid
         escutarMensagensNaoLidasNavbar(uid)
+
+        const statusRef = ref(db, 'status/' + uid)
+        await update(statusRef, {
+            online: true,
+            last_seen: Date.now()
+        })
+
+        onDisconnect(statusRef).update({
+            online: false,
+            last_seen: Date.now()
+        })
         if (btnLogin) btnLogin.style.display = 'none';
         if (btnRegister) btnRegister.style.display = 'none';
         if (userControls) userControls.style.display = 'flex';
@@ -110,10 +126,18 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         if (dropDownLogout) {
-            dropDownLogout.onclick = () => {
+            dropDownLogout.onclick = async () => {
                 signOut(auth)
                     .then(() => {
                         console.log("Usuário deslogado.");
+                        const uid = auth.currentUser?.uid;
+                        if (uid) {
+                            const statusRef = ref(db, 'status/' + uid);
+                             update(statusRef, {
+                                online: false,
+                                last_seen: Date.now()
+                            });
+                        }
                         window.location.reload();
                     })
                     .catch((error) => {
@@ -150,6 +174,8 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         if (btnLogin) btnLogin.style.display = 'inline-block';
         if (btnRegister) btnRegister.style.display = 'inline-block';
+        if (aLogin) aLogin.style.display = 'inline-block';
+        if (aRegister) aRegister.style.display = 'inline-block';
         if (userControls) userControls.style.display = 'none';
 
         if (userPhoto) {
@@ -233,7 +259,7 @@ async function escutarMensagensNaoLidasNavbar(uid) {
             if (!msg || !msg.timestamp || msg.autor === uid) return;
 
             if (msg.timestamp > ultimaLeitura) {
-                
+
                 recalcularNaoLidas(uid).then(cont => atualizarBadgeNavbar(cont));
             }
         });
@@ -281,10 +307,3 @@ function atualizarBadgeNavbar(contagem) {
         badge.style.display = 'none';
     }
 }
-
-
-
-
-
-
-

@@ -237,6 +237,8 @@
 .border-shadow-primary { box-shadow: 0 0 0 1px var(--primary); }
 .border-shadow-secundary { box-shadow: 0 0 0 1px var(--secundary); }
 
+.outline-none { outline: none; }
+
 /* Bordas com gradiente */
 .border-gradient-primary { border: 2px solid; border-image: linear-gradient(135deg, var(--primary), var(--primary-dark)) 1; }
 .border-gradient-secundary { border: 2px solid; border-image: linear-gradient(135deg, var(--secundary), var(--primary)) 1; }

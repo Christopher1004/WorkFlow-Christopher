@@ -110,10 +110,13 @@ body {
 
 .searchbar-input:focus {
     outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 .buttonsContainer {
     display: flex;
+    flex-direction: row;
     gap: 10px;
     justify-content: flex-end;
     align-items: center;
@@ -144,6 +147,15 @@ body {
     transition: background-color 0.3s ease-in-out;
 }
 
+.aLogin {
+    display: flex;
+    text-decoration: none;
+}
+.Register {
+    display: flex;
+    text-decoration: none;
+}
+
 .sair {
     background-color: var(--primary);
     color: #FFFFFF;
@@ -161,15 +173,32 @@ body {
     transition: background-color 0.3s ease-in-out;
 }
 
+.mobile-only {
+    display: none;
+}
+
+.userPhoto {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ddd;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    border: 3px solid #3c38a6;
+    transition: 0.3s ease;
+}
+
 @media (max-width: 990px) {
     .navbar {
-        overflow: visible;
+        overflow: hidden;
         justify-content: center;
         height: 80px;
         padding-top: 20px;
     }
 
-    .links, .searchbarContainer, .buttonsContainer {
+    .links, .searchbarContainer {
         display: none;
         width: 100%;
         height: auto;
@@ -184,7 +213,7 @@ body {
 
     .nav-active .links,
     .nav-active .searchbarContainer,
-    .nav-active .buttonsContainer {
+    .nav-active {
         display: flex;
         opacity: 1;
         transform: translateY(0);
@@ -256,21 +285,34 @@ body {
     .links a {
         width: 100%;
         margin: 0;
-        height: 60px;
         justify-content: center;
         padding: 0;
-    };
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+
+    .userPhoto {
+        display: none;
+    }
 
     .buttonsContainer {
         display: flex;
-        justify-content: center;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
         width: 100%;
         height: 100%;
         padding: 0;
         margin: 0;
         gap: 10px;
+    }
+
+    .container-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
     }
 
     .buttonsContainer a {
@@ -296,5 +338,17 @@ body {
 
     .searchbar {
         height: 50px;
+    }
+
+    .userControls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: auto;
+    }
+
+    .buttonAdd {
+        width: 100%;
     }
 }

@@ -11,27 +11,22 @@
   transition: border 0.2s, box-shadow 0.2s;
   outline: none;
   box-sizing: border-box;
-  margin-bottom: 1.6rem;
 }
 
 .form-control:focus, input:focus, select:focus, textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(66, 118, 254, 0.1);
 }
 
 .form-control.error, input.error, select.error, textarea.error {
   border-color: var(--alert);
-  box-shadow: 0 0 0 3px rgba(248, 66, 65, 0.1);
 }
 
 .form-control.success, input.success, select.success, textarea.success {
   border-color: var(--success);
-  box-shadow: 0 0 0 3px rgba(53, 67, 106, 0.1);
 }
 
 .form-control.warning, input.warning, select.warning, textarea.warning {
   border-color: var(--warning);
-  box-shadow: 0 0 0 3px rgba(255, 142, 12, 0.1);
 }
 
 .form-control:disabled, input:disabled, select:disabled, textarea:disabled {
@@ -47,7 +42,6 @@
   padding: 0.6rem 1rem;
   font-size: var(--f1);
   border-radius: 0.4rem;
-  margin-bottom: 0.8rem;
 }
 
 /* Small */
@@ -55,7 +49,6 @@
   padding: 0.8rem 1.2rem;
   font-size: var(--f2);
   border-radius: 0.6rem;
-  margin-bottom: 1rem;
 }
 
 /* Medium (padrão) */
@@ -63,7 +56,6 @@
   padding: 1.2rem 1.6rem;
   font-size: var(--f3);
   border-radius: 0.8rem;
-  margin-bottom: 1.6rem;
 }
 
 /* Large */
@@ -71,7 +63,6 @@
   padding: 1.6rem 2rem;
   font-size: var(--f4);
   border-radius: 1rem;
-  margin-bottom: 2rem;
 }
 
 /* Extra Large */
@@ -79,7 +70,6 @@
   padding: 2rem 2.4rem;
   font-size: var(--f5);
   border-radius: 1.2rem;
-  margin-bottom: 2.4rem;
 }
 
 /* LABEL */
@@ -822,6 +812,25 @@ input[type=number] {
   right: 1.2rem;
 }
 
+ option {
+   background-color: var(--gray-50);
+   color: var(--white);
+   border: 2px solid var(--gray-50);
+   border-bottom: none;
+   padding: 0.5rem 1rem;
+ }
+ 
+ option:first-child {
+   border-top-left-radius: 0.8rem;
+   border-top-right-radius: 0.8rem;
+ }
+ 
+ option:last-child {
+   border-bottom: 2px solid var(--gray-50);
+   border-bottom-left-radius: 0.8rem;
+   border-bottom-right-radius: 0.8rem;
+}
+
 /* Responsividade para ícones */
 @media (max-width: 768px) {
   .form-control.has-icon-left {
@@ -839,4 +848,52 @@ input[type=number] {
   .form-icon-right {
     right: 1rem;
   }
+}
+
+/* MENU SUSPENSO COM PESQUISA */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  background: var(--gray-75);
+  border: 2px solid var(--gray-50);
+  border-radius: 0.8rem;
+  width: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown .dropdown-content input {
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--gray-50);
+  border-radius: 0.6rem;
+  font-size: var(--f2);
+  background: var(--gray-100);
+  color: var(--white);
+}
+
+.dropdown .dropdown-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown .dropdown-content ul li {
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  color: var(--white);
+}
+
+.dropdown .dropdown-content ul li:hover {
+  background: var(--primary);
+}
+
+.dropdown.open .dropdown-content {
+  display: block;
 }

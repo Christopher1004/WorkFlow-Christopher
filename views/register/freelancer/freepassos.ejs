@@ -23,7 +23,7 @@
     <div class="conteudo bg-background text-center mg-0 w-full flex flex-row sm:flex-col pd-0">
         <div class="lado flex flex-1 flex-col justify-center pd-10 bg-base-100 sm:pd-4 sm:w-full sm:items-center">
             <div class="logo" style="width: 120px; height: 40px;">
-                <img src="/assets/image/Union.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                <img src="/assets/image/logoWorkFlow-com-nome.svg" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h1 class="text-3xl text-left sm:text-center mg-b-2">Primeiros Passos</h1>
             <p class="text-lg text-left font-normal sm:text-center mg-b-4">Precisamos de algumas informações adicionais para iniciar sua jornada, não se preocupe, isso não vai demorar.</p>
@@ -50,6 +50,7 @@
                 <input type="text" name="tlingua" id="tlingua" class="form-control sm w-full" placeholder="idioma secundária" minlength="5" disabled/>
                 <input type="text" name="tlingua" id="tlingua" class="form-control sm w-full" placeholder="idioma terciário" minlength="5" disabled/>
                 <input type="text" name="tlingua" id="tlingua" class="form-control sm w-full" placeholder="idioma quartário" minlength="5" disabled/>
+
 
                 <input type="submit" name="btnproximo" id="btnproximo" class="btn btn-purple btn-block mg-t-4 sm:mg-t-2" value="Próximo" />
             </form>
@@ -81,3 +82,55 @@ document.addEventListener('DOMContentLoaded', function() {
     atualizarCampos();
 });
 </script>
+<script type="module">
+import { getDatabase, update, ref } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAAtfGyZc3SLzdK10zdq-ALyTyIs1s4qwQ",
+    authDomain: "workflow-da28d.firebaseapp.com",
+    projectId: "workflow-da28d",
+    storageBucket: "workflow-da28d.firebasestorage.app",
+    messagingSenderId: "939828605253",
+    appId: "1:939828605253:web:0a286fe00f1c29ba614e2c",
+    measurementId: "G-3LXB7BR5M1"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+const form = document.getElementById('formfreelancer');
+
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('userId');
+
+if (!userId) {
+    alert('Usuário não identificado. Faça login.');
+    window.location.href = '/login';
+}
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();  
+
+    const nome = document.getElementById("nome").value.trim();
+    const profissao = document.getElementById("tprofissao").value.trim();
+
+    if (!nome || !profissao) {
+        alert("Por favor preencha nome e profissão.");
+        return;
+    }
+
+    try {
+        await update(ref(database, `Freelancer/${userId}`), {
+            nome,
+            tag: profissao
+        });
+
+        alert("Perfil Freelancer salvo com sucesso!");
+        window.location.href = "/";
+    } catch (error) {
+        alert("Erro ao salvar: " + error.message);
+    }
+});
+</script>
+

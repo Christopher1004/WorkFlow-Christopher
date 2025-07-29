@@ -218,19 +218,28 @@ function criarCardProjeto(id, projeto, aba = 'projetos', currentUserId = null, i
             <div class="thumbnail-overlay">
                 <div class="project-overlay-content">
                     <div class="icons-column">
-                        <div class="like ${isLikedForDisplay ? 'curtido' : ''}" title="${isLikedForDisplay ? 'Descurtir' : 'Curtir'}" style="cursor:pointer;" data-projeto-id="${id}" data-liked="${isLikedForDisplay ? 'true' : 'false'}">
-                            ${isLikedForDisplay ? `
-                                <svg width="25" height="25" viewBox="0 0 24 24" fill="red" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                                </svg>
-                            ` : `
-                                <svg width="25" height="25" viewBox="-2 -2 28 28" xmlns="http://www.w3.org/2000/svg" class="feather feather-heart">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
-                                        fill="none" stroke="black" />
-                                </svg>
-                            `}
-                        </div>
+                       <div class="like ${isLikedForDisplay ? 'curtido' : ''}" 
+     title="${isLikedForDisplay ? 'Descurtir' : 'Curtir'}" 
+     style="cursor:pointer;" 
+     data-projeto-id="${id}" 
+     data-liked="${isLikedForDisplay ? 'true' : 'false'}"> 
+    ${isLikedForDisplay ? `
+        <svg width="25" height="25" viewBox="0 0 24 24" 
+             fill="red" stroke="red" stroke-width="2" 
+             stroke-linecap="round" stroke-linejoin="round" 
+             class="feather feather-heart">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+    ` : `
+        <svg width="25" height="25" viewBox="-2 -2 28 28" 
+             xmlns="http://www.w3.org/2000/svg" 
+             class="feather feather-heart">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M10.2366 18.4731L18.35 10.3598L18.483 10.2267L18.4809 10.2246C20.6263 7.93881 20.5826 4.34605 18.35 2.11339C16.1173 -0.11928 12.5245 -0.16292 10.2387 1.98247L10.2366 1.98036L10.2366 1.98039L10.2366 1.98037L10.2345 1.98247C7.94862 -0.162927 4.35586 -0.119289 2.12319 2.11338C-0.109476 4.34605 -0.153114 7.93881 1.99228 10.2246L1.99017 10.2268L10.2365 18.4731L10.2366 18.4731L10.2366 18.4731Z"
+                fill="none" stroke="#426AB2" />
+        </svg>
+    `}
+</div>
                         <div class="favorite ${isFavoritedForDisplay ? 'favoritado' : ''}" title="${isFavoritedForDisplay ? 'Desfavoritar' : 'Favoritar'}" style="cursor:pointer;" data-projeto-id="${id}" data-favorited="${isFavoritedForDisplay ? 'true' : 'false'}">
                             ${isFavoritedForDisplay ? `
                                 <svg width="25" height="25" viewBox="0 0 64 64" fill="#426AB2" xmlns="http://www.w3.org/2000/svg">
@@ -745,92 +754,92 @@ async function abrirModalProjeto(projetoId) {
     </div>
 `;
 
-      modal.style.display = 'flex';
-modal.dataset.currentProjectId = projetoId;
+        modal.style.display = 'flex';
+        modal.dataset.currentProjectId = projetoId;
 
-const btnContatar = modalBody.querySelector('#contactar');
-if (btnContatar) {
-  btnContatar.dataset.userId = autorData.id || '';
-  btnContatar.dataset.nome = autorData.nome || '';
-  btnContatar.dataset.avatar = autorData.foto_perfil || '';
+        const btnContatar = modalBody.querySelector('#contactar');
+        if (btnContatar) {
+            btnContatar.dataset.userId = autorData.id || '';
+            btnContatar.dataset.nome = autorData.nome || '';
+            btnContatar.dataset.avatar = autorData.foto_perfil || '';
 
-  const novoBtnContatar = btnContatar.cloneNode(true);
-  btnContatar.replaceWith(novoBtnContatar);
+            const novoBtnContatar = btnContatar.cloneNode(true);
+            btnContatar.replaceWith(novoBtnContatar);
 
-  novoBtnContatar.addEventListener('click', async () => {
-    const authUser = auth.currentUser;
-    if (!authUser) {
-      alert('Você precisa estar logado para contatar o autor.');
-      return;
-    }
+            novoBtnContatar.addEventListener('click', async () => {
+                const authUser = auth.currentUser;
+                if (!authUser) {
+                    alert('Você precisa estar logado para contatar o autor.');
+                    return;
+                }
 
-    const userIdLogado = authUser.uid;
-    const userIdContato = novoBtnContatar.dataset.userId;
-    const nomeContato = novoBtnContatar.dataset.nome;
-    const avatarContato = novoBtnContatar.dataset.avatar;
+                const userIdLogado = authUser.uid;
+                const userIdContato = novoBtnContatar.dataset.userId;
+                const nomeContato = novoBtnContatar.dataset.nome;
+                const avatarContato = novoBtnContatar.dataset.avatar;
 
-    try {
-      const db = getDatabase();
+                try {
+                    const db = getDatabase();
 
-      const conversaLogadoRef = ref(db, `Conversas/${userIdLogado}/${userIdContato}`);
-      const conversaContatoRef = ref(db, `Conversas/${userIdContato}/${userIdLogado}`);
+                    const conversaLogadoRef = ref(db, `Conversas/${userIdLogado}/${userIdContato}`);
+                    const conversaContatoRef = ref(db, `Conversas/${userIdContato}/${userIdLogado}`);
 
-      const [snapshotLogado, snapshotContato] = await Promise.all([
-        get(conversaLogadoRef),
-        get(conversaContatoRef)
-      ]);
+                    const [snapshotLogado, snapshotContato] = await Promise.all([
+                        get(conversaLogadoRef),
+                        get(conversaContatoRef)
+                    ]);
 
-      if (snapshotLogado.exists() && snapshotContato.exists()) {
-        window.location.href = `/chat?user=${userIdContato}`;
-        return;
-      }
+                    if (snapshotLogado.exists() && snapshotContato.exists()) {
+                        window.location.href = `/chat?user=${userIdContato}`;
+                        return;
+                    }
 
-      let dadosUserLogado = null;
-      const snapshotFreelancer = await get(ref(db, `Freelancer/${userIdLogado}`));
-      if (snapshotFreelancer.exists()) {
-        dadosUserLogado = snapshotFreelancer.val();
-      } else {
-        const snapshotContratante = await get(ref(db, `Contratante/${userIdLogado}`));
-        if (snapshotContratante.exists()) {
-          dadosUserLogado = snapshotContratante.val();
+                    let dadosUserLogado = null;
+                    const snapshotFreelancer = await get(ref(db, `Freelancer/${userIdLogado}`));
+                    if (snapshotFreelancer.exists()) {
+                        dadosUserLogado = snapshotFreelancer.val();
+                    } else {
+                        const snapshotContratante = await get(ref(db, `Contratante/${userIdLogado}`));
+                        if (snapshotContratante.exists()) {
+                            dadosUserLogado = snapshotContratante.val();
+                        }
+                    }
+
+                    if (!dadosUserLogado) {
+                        alert("Erro ao obter seus dados para criar a conversa.");
+                        return;
+                    }
+
+                    const timestampAgora = Date.now();
+
+                    await Promise.all([
+                        set(conversaLogadoRef, {
+                            nome: nomeContato,
+                            avatar: avatarContato,
+                            timestamp: timestampAgora
+                        }),
+                        set(conversaContatoRef, {
+                            nome: dadosUserLogado.nome || '',
+                            avatar: dadosUserLogado.foto_perfil || '',
+                            timestamp: timestampAgora
+                        })
+                    ]);
+
+                    const mensagensRef = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
+                    await push(mensagensRef, {
+                        autor: userIdLogado,
+                        texto: "Você iniciou uma conversa.",
+                        timestamp: timestampAgora
+                    });
+
+                    alert("Contato salvo! Agora você será redirecionado ao chat.");
+                    window.location.href = `/chat?user=${userIdContato}`;
+                } catch (error) {
+                    console.error("Erro ao salvar contato:", error);
+                    alert("Erro ao salvar contato. Tente novamente mais tarde.");
+                }
+            });
         }
-      }
-
-      if (!dadosUserLogado) {
-        alert("Erro ao obter seus dados para criar a conversa.");
-        return;
-      }
-
-      const timestampAgora = Date.now();
-
-      await Promise.all([
-        set(conversaLogadoRef, {
-          nome: nomeContato,
-          avatar: avatarContato,
-          timestamp: timestampAgora
-        }),
-        set(conversaContatoRef, {
-          nome: dadosUserLogado.nome || '',
-          avatar: dadosUserLogado.foto_perfil || '',
-          timestamp: timestampAgora
-        })
-      ]);
-
-      const mensagensRef = ref(db, `Conversas/${userIdLogado}/${userIdContato}/mensagens`);
-      await push(mensagensRef, {
-        autor: userIdLogado,
-        texto: "Você iniciou uma conversa.",
-        timestamp: timestampAgora
-      });
-
-      alert("Contato salvo! Agora você será redirecionado ao chat.");
-      window.location.href = `/chat?user=${userIdContato}`;
-    } catch (error) {
-      console.error("Erro ao salvar contato:", error);
-      alert("Erro ao salvar contato. Tente novamente mais tarde.");
-    }
-  });
-}
 
 
         const carouselContainer = modalBody.querySelector('.carousel-container');

@@ -1,6 +1,6 @@
 import { salvarProjetoFirebase } from "./salvarProjetoBanco.js";
 import { supabase } from "./salvarImagensSupabase.js";
-import { uploadImagemSupabase } from "./salvarImagensSupabase.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 export let capaUrlGlobal = null
 document.addEventListener('DOMContentLoaded', () => {
@@ -84,11 +84,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const modalSucesso = document.getElementById('modalSucesso');
     btnFinalizarProjeto.addEventListener('click', async () => {
         try {
-            await salvarProjetoFirebase();
+            await salvarProjetoFirebase(editId);
             fecharModalSalvarProjeto();
-            alert('Projeto Salvo com sucesso');
+            modalSucesso.classList.remove('hidden');
+            setTimeout(() => {
+                modalSucesso.classList.add('hidden');
+                window.location.href = '/';
+            }, 2500);
+
         } catch (error) {
             console.error('Erro ao salvar projeto', error);
             alert('Erro ao salvar projeto');
@@ -317,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const fileName = `imagem_${timestamp}.${file.name.split('.').pop()}`;
 
                         const { data, error } = await supabase.storage
-                            .from('imagensprojeto') 
+                            .from('imagensprojeto')
                             .upload(fileName, file);
 
                         if (error) {
@@ -349,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gerarBlocoCor(hex) {
         return `
-    <div class="color cor-editavel flex justify-start items-end pd-2 rounded-lg" 
+    <div class="color cor-editavel  flex justify-start items-end pd-2 rounded-lg" data-cor="${hex}" 
          style="background-color: ${hex}; height: 150px; width: calc(50% - 12px); position: relative;">
         <button class="btn-remover-cor" style="
             position: absolute;
@@ -418,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inputCor.addEventListener('input', () => {
             const novaCor = inputCor.value;
             bloco.style.backgroundColor = novaCor;
+            bloco.setAttribute('data-cor', novaCor)
             label.textContent = novaCor;
         });
 
@@ -493,4 +500,152 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     verificarProjetoVazio();
+
+    function obterEditIdDaUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('editId');
+    }
+
+    async function carregarProjetoExistente(editId) {
+        const db = getDatabase();
+
+        try {
+            const projetoRef = ref(db, `Projetos/${editId}`);
+            const projetoSnap = await get(projetoRef);
+
+            if (!projetoSnap.exists()) {
+                console.warn("Projeto não encontrado");
+                return;
+            }
+
+            const dadosProjeto = projetoSnap.val();
+
+            if (dadosProjeto.titulo) {
+                document.getElementById('tituloFinal').value = dadosProjeto.titulo;
+            }
+
+            if (dadosProjeto.tags) {
+                tags = dadosProjeto.tags
+                renderTags()
+            }
+
+            if (dadosProjeto.capaUrl) {
+                capaUrlGlobal = dadosProjeto.capaUrl;
+                const capaPreview = document.getElementById('previewCapa');
+                const uploadIcon = uploadContainer.querySelector('ion-icon');
+                const uploadText = uploadContainer.querySelector('p');
+                if (capaPreview) capaPreview.src = dadosProjeto.capaUrl;
+                if (uploadIcon) uploadIcon.style.display = 'none';
+                if (uploadText) uploadText.style.display = 'none';
+                capaPreview.style.display = 'block';
+            }
+
+            const componentesRef = ref(db, `componentesProjeto/${editId}`);
+            const componentesSnap = await get(componentesRef);
+
+            if (!componentesSnap.exists()) {
+                console.warn("Sem componentes no projeto.");
+                return;
+            }
+
+            const componentes = componentesSnap.val();
+            const indicesOrdenados = Object.keys(componentes).sort((a, b) => a - b);
+
+            for (const index of indicesOrdenados) {
+                const { tipo, conteudo } = componentes[index];
+
+                let html = '';
+
+                switch (tipo) {
+                    case 'texto':
+                        html = `
+                    <div class="Ptext componente-removivel w-full" data-tipo="texto" style="position: relative;">
+                        <button class="btn-remover" title="Remover componente">&times;</button>
+                        <span class="drag-handle">≡</span>
+                        <p class="text-lg">${conteudo}</p>
+                    </div>`;
+                        break;
+                    case 'titulo':
+                        html = `
+                    <div class="PTitulo pd-y-3 w-full componente-removivel" data-tipo="titulo" style="position: relative;">
+                        <button class="btn-remover" title="Remover componente">&times;</button>
+                        <span class="drag-handle">≡</span>
+                        <h1 class="text-3xl text-white mg-0">${conteudo}</h1>
+                    </div>`;
+                        break;
+                    case 'imagem':
+                        html = `
+                    <div class="Pimage w-full componente-removivel" data-tipo="imagem" style="position: relative;">
+                        <button class="btn-remover" title="Remover componente">&times;</button>
+                        <span class="drag-handle">≡</span>
+                        <img src="${conteudo}" alt="Imagem adicionada" style="width: 100%;">
+                    </div>`;
+                        break;
+                    case 'paleta':
+                        html = `
+                    <div class="componente-removivel w-full" data-tipo="paleta" style="position: relative;">
+                        <button class="btn-remover" title="Remover componente">&times;</button>
+                        <span class="drag-handle" title="Ordenar componente">≡</span>
+                        <div class="PTitulo pd-y-3 w-full">
+                            <h1 class="text-3xl text-white mg-0">Cores do Projeto</h1>
+                        </div>
+                        <div class="Pcores pd-y-3 w-full">
+                            <div class="paleta-cores flex flex-row flex-wrap gap-3 mg-b-2">
+                                ${conteudo.map(cor => gerarBlocoCor(cor)).join('')}
+                            </div>
+                            <div class="row flex flex-row gap-3 mg-b-2">
+                                <button class="btn btn-gray w-full btn-add-cor">Adicionar mais cores</button>
+                            </div>
+                        </div>
+                    </div>`;
+                        break;
+                    default:
+                        console.warn("Tipo de componente desconhecido:", tipo);
+                        continue;
+                }
+
+                contentProject.insertAdjacentHTML('beforeend', html);
+
+                const novoComponente = contentProject.lastElementChild;
+
+                if (tipo === 'texto') configurarEdicaoTexto(novoComponente.querySelector('p'));
+                if (tipo === 'titulo') configurarEdicaoTitulo(novoComponente.querySelector('h1'));
+                if (tipo === 'imagem') configurarEdicaoImagem(novoComponente.querySelector('img'));
+                if (tipo === 'paleta') {
+                    const coresContainer = novoComponente.querySelector('.paleta-cores');
+
+                    coresContainer.querySelectorAll('.cor-editavel').forEach(configurarCorIndividual);
+
+                    const btnAddCor = novoComponente.querySelector('.btn-add-cor');
+                    btnAddCor.addEventListener('click', () => {
+                        const novaCorHTML = gerarBlocoCor('#888888');
+                        coresContainer.insertAdjacentHTML('beforeend', novaCorHTML);
+                        const novaCor = coresContainer.lastElementChild;
+                        configurarCorIndividual(novaCor);
+                    });
+
+                    new Sortable(coresContainer, {
+                        animation: 150,
+                        ghostClass: 'sortable-ghost',
+                        handle: '.drag-handle-cor'
+                    });
+                }
+
+                const btnRemover = novoComponente.querySelector('.btn-remover');
+                btnRemover.addEventListener('click', () => {
+                    novoComponente.remove();
+                    verificarProjetoVazio();
+                });
+            }
+
+        } catch (error) {
+            console.error("Erro ao carregar projeto existente:", error);
+        }
+        verificarProjetoVazio()
+    }
+
+    const editId = obterEditIdDaUrl();
+    if (editId) {
+        carregarProjetoExistente(editId);
+    }
 });
